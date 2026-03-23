@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sophos Demo Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sophos-navy: #003366;
+      --sophos-blue: #0050a0;
+      --sophos-light: #e8f0fe;
+      --surface: #fafbfc;
+      --surface-raised: #ffffff;
+      --border: #dfe3e8;
+      --border-focus: #0050a0;
+      --text-primary: #1a2332;
+      --text-secondary: #5a6577;
+      --text-muted: #8c95a4;
+      --danger: #d43f3f;
+      --success: #1a8754;
+      --warning: #c67b17;
+      --accent: #0050a0;
+      --radius: 8px;
+      --radius-lg: 12px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--surface);
+      color: var(--text-primary);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* ── Header ──────────────────────────────── */
+    .site-header {
+      background: var(--sophos-navy);
+      color: white;
+      padding: 0 32px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .site-header .logo {
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+    }
+    .site-header .divider {
+      width: 1px;
+      height: 20px;
+      background: rgba(255,255,255,0.25);
+    }
+    .site-header .subtitle {
+      font-weight: 400;
+      font-size: 14px;
+      opacity: 0.85;
+    }
+
+    /* ── Layout ──────────────────────────────── */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .page-subtitle {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    /* ── Cards / Sections ────────────────────── */
+    .card {
+      background: var(--surface-raised);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title .icon { font-size: 16px; }
+
+    /* ── Form Elements ───────────────────────── */
+    .field { margin-bottom: 16px; }
+    .field:last-child { margin-bottom: 0; }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .field-row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--text-primary);
+      background: white;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      outline: none;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(0, 80, 160, 0.1);
+    }
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    select {
+      cursor: pointer;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ── Checkbox Grid ───────────────────────── */
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 8px;
+    }
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .checkbox-item:hover {
+      border-color: var(--accent);
+      background: var(--sophos-light);
+    }
+    .checkbox-item input { display: none; }
+    .checkbox-item.checked {
+      border-color: var(--accent);
+      background: var(--sophos-light);
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* ── Scenario Type Selector ──────────────── */
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+    }
+    .scenario-option {
+      padding: 14px 16px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      transition: all 0.15s;
+      position: relative;
+    }
+    .scenario-option:hover {
+      border-color: var(--accent);
+    }
+    .scenario-option.selected {
+      border-color: var(--accent);
+      background: var(--sophos-light);
+    }
+    .scenario-option .so-icon {
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+    .scenario-option .so-name {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+    .scenario-option .so-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* ── Generate Button ─────────────────────── */
+    .generate-section {
+      text-align: center;
+      padding: 20px 0;
+    }
+    .btn-generate {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 40px;
+      background: var(--sophos-blue);
+      color: white;
+      border: none;
+      border-radius: var(--radius-lg);
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: -0.01em;
+    }
+    .btn-generate:hover { background: var(--sophos-navy); transform: translateY(-1px); }
+    .btn-generate:active { transform: translateY(0); }
+    .btn-generate:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .btn-generate .spinner {
+      display: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    .btn-generate.loading .spinner { display: block; }
+    .btn-generate.loading .btn-text { display: none; }
+    .btn-generate.loading .btn-loading-text { display: inline; }
+    .btn-loading-text { display: none; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Result Panel ────────────────────────── */
+    .result-panel {
+      display: none;
+      margin-top: 24px;
+    }
+    .result-panel.visible { display: block; }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .result-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--success);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .result-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .btn-action {
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: white;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+    .btn-action:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-action.primary {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+    .btn-action.primary:hover { background: var(--sophos-navy); }
+
+    /* ── JSON Preview ────────────────────────── */
+    .json-preview {
+      background: #1e2433;
+      color: #c5cbd9;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .json-preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: #161b27;
+      font-size: 12px;
+      color: #7a839a;
+    }
+    .json-preview pre {
+      padding: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      overflow-x: auto;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    /* ── Scenario Summary ────────────────────── */
+    .scenario-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .summary-stat {
+      padding: 12px 14px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .summary-stat .stat-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+    .summary-stat .stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .summary-stat.danger .stat-value { color: var(--danger); }
+    .summary-stat.warning .stat-value { color: var(--warning); }
+    .summary-stat.success .stat-value { color: var(--success); }
+
+    /* ── Error ────────────────────────────────── */
+    .error-banner {
+      display: none;
+      padding: 12px 16px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: var(--radius);
+      color: var(--danger);
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+    .error-banner.visible { display: block; }
+
+    /* ── Responsive ──────────────────────────── */
+    @media (max-width: 600px) {
+      .container { padding: 20px 16px 60px; }
+      .page-title { font-size: 22px; }
+      .field-row, .field-row-3 { grid-template-columns: 1fr; }
+      .scenario-grid { grid-template-columns: 1fr; }
+      .result-header { flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="logo">Sophos</div>
+    <div class="divider"></div>
+    <div class="subtitle">Demo Scenario Builder</div>
+  </header>
+
+  <div class="container">
+    <h1 class="page-title">Build Your Demo Scenario</h1>
+    <p class="page-subtitle">Fill in the details below and we'll generate a ready-to-load scenario for the Sophos Central Demo Mode extension.</p>
+
+    <form id="intakeForm" autocomplete="off">
+
+      <!-- Customer Details -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🏢</span> Customer Details</div>
+        <div class="field-row">
+          <div class="field">
+            <label for="customerName">Company Name</label>
+            <input type="text" id="customerName" placeholder="e.g., Mercy Hospital" required>
+          </div>
+          <div class="field">
+            <label for="industry">Industry</label>
+            <select id="industry" required>
+              <option value="">Select industry...</option>
+              <option value="healthcare">Healthcare</option>
+              <option value="finance">Financial Services</option>
+              <option value="manufacturing">Manufacturing</option>
+              <option value="education">Education</option>
+              <option value="retail">Retail</option>
+              <option value="government">Government</option>
+              <option value="legal">Legal</option>
+              <option value="technology">Technology</option>
+              <option value="energy">Energy / Utilities</option>
+              <option value="construction">Construction</option>
+              <option value="nonprofit">Nonprofit</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row-3">
+          <div class="field">
+            <label for="endpointCount">Endpoints</label>
+            <input type="number" id="endpointCount" value="2500" min="10" max="100000">
+          </div>
+          <div class="field">
+            <label for="serverCount">Servers</label>
+            <input type="number" id="serverCount" value="186" min="0" max="10000">
+          </div>
+          <div class="field">
+            <label for="products">Sophos Products</label>
+            <select id="products">
+              <option value="endpoint,xdr">Endpoint + XDR</option>
+              <option value="endpoint,xdr,mdr">Endpoint + XDR + MDR</option>
+              <option value="endpoint,xdr,email">Endpoint + XDR + Email</option>
+              <option value="endpoint,xdr,firewall">Endpoint + XDR + Firewall</option>
+              <option value="full-stack">Full Stack (All Products)</option>
+              <option value="endpoint">Endpoint Only</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scenario Type -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🎯</span> Scenario Type</div>
+        <div class="scenario-grid">
+          <div class="scenario-option selected" data-value="ransomware">
+            <div class="so-icon">🔴</div>
+            <div class="so-name">Ransomware Attack</div>
+            <div class="so-desc">Active ransomware with CryptoGuard detection and containment</div>
+          </div>
+          <div class="scenario-option" data-value="phishing">
+            <div class="so-icon">🎣</div>
+            <div class="so-name">Phishing Campaign</div>
+            <div class="so-desc">Email-borne attack with Sophos Email + endpoint integration</div>
+          </div>
+          <div class="scenario-option" data-value="xdr">
+            <div class="so-icon">🔍</div>
+            <div class="so-name">XDR Investigation</div>
+            <div class="so-desc">Multi-stage intrusion with full MITRE kill chain</div>
+          </div>
+          <div class="scenario-option" data-value="mdr">
+            <div class="so-icon">🛡️</div>
+            <div class="so-name">MDR Response</div>
+            <div class="so-desc">Sophos MDR team detects and responds to active threat</div>
+          </div>
+          <div class="scenario-option" data-value="insider">
+            <div class="so-icon">👤</div>
+            <div class="so-name">Insider Threat</div>
+            <div class="so-desc">Data exfiltration or unauthorized access by employee</div>
+          </div>
+          <div class="scenario-option" data-value="healthy">
+            <div class="so-icon">🟢</div>
+            <div class="so-name">Healthy Environment</div>
+            <div class="so-desc">Clean, well-managed — show "day in the life" operations</div>
+          </div>
+        </div>
+        <input type="hidden" id="scenarioType" value="ransomware">
+      </div>
+
+      <!-- Attack Details (conditional) -->
+      <div class="card" id="attackDetails">
+        <div class="card-title"><span class="icon">⚔️</span> Attack Details</div>
+        <div class="field-row">
+          <div class="field">
+            <label for="threatActor">Threat Actor / Malware</label>
+            <select id="threatActor">
+              <option value="">Auto-select based on scenario</option>
+              <option value="LockBit 3.0">LockBit 3.0</option>
+              <option value="BlackCat/ALPHV">BlackCat / ALPHV</option>
+              <option value="Cl0p">Cl0p</option>
+              <option value="Black Basta">Black Basta</option>
+              <option value="Akira">Akira</option>
+              <option value="Medusa">Medusa</option>
+              <option value="Rhysida">Rhysida</option>
+              <option value="APT29">APT29 (Cozy Bear)</option>
+              <option value="APT28">APT28 (Fancy Bear)</option>
+              <option value="Lazarus">Lazarus Group</option>
+              <option value="FIN7">FIN7</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="entryPoint">Entry Point</label>
+            <select id="entryPoint">
+              <option value="">Auto-select</option>
+              <option value="phishing-email">Phishing Email</option>
+              <option value="exploit-public-app">Exploit Public Application</option>
+              <option value="drive-by-download">Drive-by Download</option>
+              <option value="compromised-credentials">Compromised Credentials</option>
+              <option value="usb-removable">USB / Removable Media</option>
+              <option value="supply-chain">Supply Chain Compromise</option>
+              <option value="rdp-brute-force">RDP Brute Force</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row-3">
+          <div class="field">
+            <label for="hostsAffected">Hosts Affected</label>
+            <input type="number" id="hostsAffected" value="3" min="1" max="100">
+          </div>
+          <div class="field">
+            <label for="department">Department Targeted</label>
+            <input type="text" id="department" placeholder="e.g., Finance, IT, Billing">
+          </div>
+          <div class="field">
+            <label for="mdrResponse">MDR Involvement?</label>
+            <select id="mdrResponse">
+              <option value="no">No — Self-managed</option>
+              <option value="yes">Yes — Sophos MDR</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Story -->
+      <div class="card">
+        <div class="card-title"><span class="icon">📖</span> Custom Story <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-muted)">(optional)</span></div>
+        <div class="field">
+          <label for="storyDescription">Describe the demo scenario in your own words</label>
+          <textarea id="storyDescription" rows="3" placeholder="e.g., 'I want to show how Sophos MDR detected a LockBit attack at 2am, isolated the affected hosts, and had a full report ready for the customer by morning. The prospect is comparing us against CrowdStrike.'"></textarea>
+          <div class="hint">The more detail you provide, the more tailored the scenario. AI fills in realistic technical details.</div>
+        </div>
+      </div>
+
+      <!-- Demo Focus -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🎪</span> Demo Focus</div>
+        <div class="field">
+          <label>Products to Highlight</label>
+          <div class="checkbox-grid">
+            <label class="checkbox-item checked"><input type="checkbox" name="focus" value="endpoint" checked>🖥️ Endpoint</label>
+            <label class="checkbox-item checked"><input type="checkbox" name="focus" value="xdr" checked>🔍 XDR</label>
+            <label class="checkbox-item"><input type="checkbox" name="focus" value="mdr">🛡️ MDR</label>
+            <label class="checkbox-item"><input type="checkbox" name="focus" value="email">📧 Email</label>
+            <label class="checkbox-item"><input type="checkbox" name="focus" value="firewall">🔥 Firewall</label>
+            <label class="checkbox-item"><input type="checkbox" name="focus" value="ztna">🔒 ZTNA</label>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="talkingPoints">Key Talking Points</label>
+            <input type="text" id="talkingPoints" placeholder="e.g., rapid response time, MITRE coverage, automated containment">
+          </div>
+          <div class="field">
+            <label for="competitor">Competitor Comparison</label>
+            <select id="competitor">
+              <option value="">None</option>
+              <option value="CrowdStrike">CrowdStrike</option>
+              <option value="SentinelOne">SentinelOne</option>
+              <option value="Microsoft Defender">Microsoft Defender</option>
+              <option value="Palo Alto">Palo Alto Cortex</option>
+              <option value="Trend Micro">Trend Micro</option>
+              <option value="Carbon Black">Carbon Black</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Generate -->
+      <div class="error-banner" id="errorBanner"></div>
+
+      <div class="generate-section">
+        <button type="submit" class="btn-generate" id="generateBtn">
+          <div class="spinner"></div>
+          <span class="btn-text">🎯 Generate Scenario</span>
+          <span class="btn-loading-text">Generating with Claude...</span>
+        </button>
+      </div>
+
+    </form>
+
+    <!-- Result -->
+    <div class="result-panel" id="resultPanel">
+      <div class="result-header">
+        <div class="result-title">✅ Scenario Ready</div>
+        <div class="result-actions">
+          <button class="btn-action" id="copyBtn">📋 Copy JSON</button>
+          <button class="btn-action primary" id="downloadBtn">💾 Download .json</button>
+        </div>
+      </div>
+
+      <div class="scenario-summary" id="scenarioSummary"></div>
+
+      <div class="json-preview">
+        <div class="json-preview-header">
+          <span id="scenarioFileName">scenario.json</span>
+          <span id="scenarioSize"></span>
+        </div>
+        <pre id="jsonOutput"></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ── Scenario Type Selection ──
+    const scenarioOptions = document.querySelectorAll('.scenario-option');
+    const scenarioTypeInput = document.getElementById('scenarioType');
+    const attackDetails = document.getElementById('attackDetails');
+
+    scenarioOptions.forEach(opt => {
+      opt.addEventListener('click', () => {
+        scenarioOptions.forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        scenarioTypeInput.value = opt.dataset.value;
+
+        // Show/hide attack details
+        attackDetails.style.display = opt.dataset.value === 'healthy' ? 'none' : 'block';
+
+        // Auto-set MDR if MDR scenario
+        if (opt.dataset.value === 'mdr') {
+          document.getElementById('mdrResponse').value = 'yes';
+        }
+      });
+    });
+
+    // ── Checkbox Grid ──
+    document.querySelectorAll('.checkbox-item').forEach(item => {
+      const cb = item.querySelector('input');
+      if (cb.checked) item.classList.add('checked');
+      item.addEventListener('click', (e) => {
+        if (e.target.tagName === 'INPUT') return;
+        cb.checked = !cb.checked;
+        item.classList.toggle('checked', cb.checked);
+      });
+      cb.addEventListener('change', () => {
+        item.classList.toggle('checked', cb.checked);
+      });
+    });
+
+    // ── Form Submission ──
+    let generatedScenario = null;
+
+    document.getElementById('intakeForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const btn = document.getElementById('generateBtn');
+      const errorBanner = document.getElementById('errorBanner');
+      const resultPanel = document.getElementById('resultPanel');
+
+      btn.classList.add('loading');
+      btn.disabled = true;
+      errorBanner.classList.remove('visible');
+      resultPanel.classList.remove('visible');
+
+      const focusCheckboxes = document.querySelectorAll('input[name="focus"]:checked');
+      const demoFocus = Array.from(focusCheckboxes).map(cb => cb.value).join(', ');
+
+      const formData = {
+        customerName: document.getElementById('customerName').value,
+        industry: document.getElementById('industry').value,
+        endpointCount: parseInt(document.getElementById('endpointCount').value) || 2500,
+        serverCount: parseInt(document.getElementById('serverCount').value) || 186,
+        products: document.getElementById('products').value,
+        scenarioType: scenarioTypeInput.value,
+        threatActor: document.getElementById('threatActor').value,
+        entryPoint: document.getElementById('entryPoint').value,
+        hostsAffected: parseInt(document.getElementById('hostsAffected').value) || 3,
+        department: document.getElementById('department').value,
+        mdrResponse: document.getElementById('mdrResponse').value,
+        storyDescription: document.getElementById('storyDescription').value,
+        demoFocus,
+        talkingPoints: document.getElementById('talkingPoints').value,
+        competitor: document.getElementById('competitor').value,
+        includeEmail: demoFocus.includes('email'),
+      };
+
+      try {
+        const resp = await fetch('/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        });
+
+        const data = await resp.json();
+
+        if (!data.ok) throw new Error(data.error || 'Generation failed');
+
+        generatedScenario = data.scenario;
+        showResult(data.scenario);
+
+      } catch (err) {
+        errorBanner.textContent = '❌ ' + err.message;
+        errorBanner.classList.add('visible');
+      } finally {
+        btn.classList.remove('loading');
+        btn.disabled = false;
+      }
+    });
+
+    // ── Show Result ──
+    function showResult(scenario) {
+      const panel = document.getElementById('resultPanel');
+      const summary = document.getElementById('scenarioSummary');
+      const jsonOutput = document.getElementById('jsonOutput');
+      const fileName = document.getElementById('scenarioFileName');
+      const sizeEl = document.getElementById('scenarioSize');
+
+      // Summary stats
+      const alertCount = scenario.alerts?.items?.length || 0;
+      const caseCount = scenario.cases?.items?.length || 0;
+      const detectionCount = scenario.detections?.items?.length || 0;
+      const healthScore = scenario.healthScore?.override ?? '—';
+      const highAlerts = scenario.alerts?.summaryDelta?.high || 0;
+
+      summary.innerHTML = `
+        <div class="summary-stat ${highAlerts > 0 ? 'danger' : 'success'}">
+          <div class="stat-value">${alertCount}</div>
+          <div class="stat-label">Alerts</div>
+        </div>
+        <div class="summary-stat ${caseCount > 0 ? 'warning' : 'success'}">
+          <div class="stat-value">${caseCount}</div>
+          <div class="stat-label">Cases</div>
+        </div>
+        <div class="summary-stat">
+          <div class="stat-value">${detectionCount}</div>
+          <div class="stat-label">Detections</div>
+        </div>
+        <div class="summary-stat ${healthScore < 80 ? 'danger' : healthScore < 90 ? 'warning' : 'success'}">
+          <div class="stat-value">${healthScore}</div>
+          <div class="stat-label">Health Score</div>
+        </div>
+      `;
+
+      // JSON preview
+      const json = JSON.stringify(scenario, null, 2);
+      jsonOutput.textContent = json;
+      fileName.textContent = (scenario.id || 'scenario') + '.json';
+      sizeEl.textContent = (json.length / 1024).toFixed(1) + ' KB';
+
+      panel.classList.add('visible');
+      panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ── Copy ──
+    document.getElementById('copyBtn').addEventListener('click', () => {
+      if (!generatedScenario) return;
+      navigator.clipboard.writeText(JSON.stringify(generatedScenario, null, 2));
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => { btn.textContent = '📋 Copy JSON'; }, 2000);
+    });
+
+    // ── Download ──
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+      if (!generatedScenario) return;
+      const json = JSON.stringify(generatedScenario, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = (generatedScenario.id || 'scenario') + '.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+
+</body>
+</html>
