@@ -1,0 +1,154 @@
+[
+  {
+    "method": "POST",
+    "url": "https://www.google-analytics.com/g/collect",
+    "count": 39,
+    "status": 204,
+    "bodySize": 0,
+    "pages": [
+      null,
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "endpoint-settings",
+      "firewall-management",
+      "email-security",
+      "threat-analysis-center",
+      "tac-cases",
+      "xdr-queries",
+      "account-health",
+      "global-settings",
+      "people",
+      "reports",
+      "logs-audit",
+      "partner-dashboard"
+    ],
+    "responseKeys": null
+  },
+  {
+    "method": "POST",
+    "url": "https://pagead2.googlesyndication.com/ccm/collect",
+    "count": 38,
+    "status": 200,
+    "bodySize": 0,
+    "pages": [
+      null,
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "endpoint-settings",
+      "firewall-management",
+      "email-security",
+      "threat-analysis-center",
+      "tac-cases",
+      "xdr-queries",
+      "account-health",
+      "global-settings",
+      "people",
+      "reports",
+      "logs-audit",
+      "partner-dashboard"
+    ],
+    "responseKeys": null
+  },
+  {
+    "method": "POST",
+    "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
+    "count": 19,
+    "status": 200,
+    "bodySize": 0,
+    "pages": [
+      null,
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "endpoint-settings",
+      "firewall-management",
+      "email-security",
+      "threat-analysis-center",
+      "tac-cases",
+      "xdr-queries",
+      "account-health",
+      "global-settings",
+      "people",
+      "reports",
+      "logs-audit",
+      "partner-dashboard"
+    ],
+    "responseKeys": null
+  },
+  {
+    "method": "GET",
+    "url": "https://c.go-mpulse.net/api/config.json",
+    "count": 2,
+    "status": 200,
+    "bodySize": 768,
+    "pages": [
+      null
+    ],
+    "responseKeys": [
+      "h.key",
+      "h.d",
+      "h.t",
+      "h.cr",
+      "session_id",
+      "site_domain",
+      "beacon_url",
+      "autorun",
+      "BW",
+      "RT"
+    ]
+  },
+  {
+    "method": "POST",
+    "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/SelfAsserted",
+    "count": 1,
+    "status": 200,
+    "bodySize": 16,
+    "pages": [
+      null
+    ],
+    "responseKeys": [
+      "status"
+    ]
+  },
+  {
+    "method": "GET",
+    "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/api/SelfAsserted/confirmed",
+    "count": 1,
+    "status": 200,
+    "bodySize": 162110,
+    "pages": [
+      null
+    ],
+    "responseKeys": null
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/manage/endpoint/policies",
+    "count": 1,
+    "status": 302,
+    "bodySize": 0,
+    "pages": [
+      "endpoint-policies"
+    ],
+    "responseKeys": null
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/manage/endpoint/settings",
+    "count": 1,
+    "status": 302,
+    "bodySize": 0,
+    "pages": [
+      "endpoint-settings"
+    ],
+    "responseKeys": null
+  }
+]

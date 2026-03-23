@@ -1,0 +1,1391 @@
+{
+  "discoveredAt": "2026-03-23T01:49:15.018Z",
+  "totalCalls": 102,
+  "uniqueEndpoints": 8,
+  "endpoints": [
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-V88TEQ7EYL&gtm=45je63i0h1v9105765022z89102479716za20gzb9102479716zd9102479716&_p=1774230386905&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=1383829335.1774230388&ul=en-us&sr=1400x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~115616986~115938466~115938469~116024733~117484252~117884344&sid=1774230387&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6ImI3OTc2MTU5LTdhZWItNDkxZS1iYjc2LTFiNGUwMWRkNTBjNiJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_ss=1&tfd=2507",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "count": 39,
+      "pages": [
+        null,
+        "dashboard",
+        "alerts",
+        "devices-computers",
+        "devices-servers",
+        "endpoint-policies",
+        "endpoint-settings",
+        "firewall-management",
+        "email-security",
+        "threat-analysis-center",
+        "tac-cases",
+        "xdr-queries",
+        "account-health",
+        "global-settings",
+        "people",
+        "reports",
+        "logs-audit",
+        "partner-dashboard"
+      ]
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1762551467.1774230388&navt=n&npa=1&_tu=CA&gtm=45fe63i0h1v9181465312z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938466~115938469~116024733~117484252&apve=1&apvf=f&apvc=1&tids=DC-9570324&tid=DC-9570324&tft=1774230387996&tfd=2527",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "count": 38,
+      "pages": [
+        null,
+        "dashboard",
+        "alerts",
+        "devices-computers",
+        "devices-servers",
+        "endpoint-policies",
+        "endpoint-settings",
+        "firewall-management",
+        "email-security",
+        "threat-analysis-center",
+        "tac-cases",
+        "xdr-queries",
+        "account-health",
+        "global-settings",
+        "people",
+        "reports",
+        "logs-audit",
+        "partner-dashboard"
+      ]
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "count": 19,
+      "pages": [
+        null,
+        "dashboard",
+        "alerts",
+        "devices-computers",
+        "devices-servers",
+        "endpoint-policies",
+        "endpoint-settings",
+        "firewall-management",
+        "email-security",
+        "threat-analysis-center",
+        "tac-cases",
+        "xdr-queries",
+        "account-health",
+        "global-settings",
+        "people",
+        "reports",
+        "logs-audit",
+        "partner-dashboard"
+      ]
+    },
+    {
+      "url": "https://c.go-mpulse.net/api/config.json",
+      "fullUrl": "https://c.go-mpulse.net/api/config.json?key=RDWGF-UPRHD-XS89W-PHRJ5-TMW6V&d=login.sophos.com&t=5914101&v=1.720.0&sl=0&si=584c8a4b-e472-42a8-b4e8-4239721ba32e-tcbwxd&plugins=AK,ConfigOverride,Continuity,PageParams,IFrameDelay,AutoXHR,SPA,History,Angular,Backbone,Ember,RT,CrossDomain,BW,PaintTiming,NavigationTiming,ResourceTiming,Memory,CACHE_RELOAD,Errors,TPAnalytics,UserTiming,Akamai,Early,EventTiming,LOGN&acao=&ak.ai=1034553",
+      "method": "GET",
+      "status": 200,
+      "contentType": "application/json",
+      "bodySize": 768,
+      "sampleResponse": {
+        "h.key": "RDWGF-UPRHD-XS89W-PHRJ5-TMW6V",
+        "h.d": "arlid:1034553",
+        "h.t": 1774230387197,
+        "h.cr": "0335ab6593e27cbacecb308b2b7b7b25b9acd680-6fc04ee2-6fbbfd0f",
+        "session_id": "8881f3b8-db18-40d2-b31a-87c30919afd8",
+        "site_domain": "arlid:1034553",
+        "beacon_url": "//17de4c19.akstat.io/",
+        "autorun": true,
+        "BW": {
+          "enabled": false
+        },
+        "RT": {
+          "cookie": null,
+          "session_exp": 1800
+        },
+        "ResourceTiming": {
+          "enabled": true,
+          "splitAtPath": true
+        },
+        "PageParams": {
+          "xhr": "none",
+          "pageGroups": [],
+          "customMetrics": [],
+          "customTimers": [],
+          "customDimensions": [],
+          "urlPatterns": [],
+          "params": true
+        },
+        "Akamai": {
+          "enabled": true,
+          "mapping_xhr_base_url": "akamaihd.net",
+          "mapping_xhr_url_path": "/eum/getdns.txt",
+          "mapping_xhr_url_v4_prefix": "trial-eum-clientnsv4-s",
+          "mapping_xhr_url_v6_prefix": "trial-eum-clienttons-s"
+        },
+        "user_ip": "1bf2367b4"
+      },
+      "responseKeys": [
+        "h.key",
+        "h.d",
+        "h.t",
+        "h.cr",
+        "session_id",
+        "site_domain",
+        "beacon_url",
+        "autorun",
+        "BW",
+        "RT"
+      ],
+      "count": 2,
+      "pages": [
+        null
+      ]
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/SelfAsserted",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/SelfAsserted?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "text/json; charset=utf-8",
+      "bodySize": 16,
+      "sampleResponse": {
+        "status": "200"
+      },
+      "responseKeys": [
+        "status"
+      ],
+      "count": 1,
+      "pages": [
+        null
+      ]
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/api/SelfAsserted/confirmed",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/api/SelfAsserted/confirmed?csrf_token=U3M1aGcyand6ZjI1emZlditUWFM3WmhHOUNUSU01ekozQjFWOWR3ZWhrcXBKK3RVSERrRER2Vi84aUZVUXN0d013eUI1TlJZNTY2SnJMRFQwNVNSb0E9PTsyMDI2LTAzLTIzVDAxOjQ2OjI2LjExNDg0NTZaO3MrdGNsQzVVL2dmdEk1U2RsZ1F4OXc9PTt7Ik9yY2hlc3RyYXRpb25TdGVwIjoxfQ==&tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin&diags=%7B%22pageViewId%22%3A%2217b7430e-70dd-4dd1-af63-38654cd2c0ed%22%2C%22pageId%22%3A%22SelfAsserted%22%2C%22trace%22%3A%5B%7B%22ac%22%3A%22T005%22%2C%22acST%22%3A1774230386%2C%22acD%22%3A2%7D%2C%7B%22ac%22%3A%22T021%20-%20URL%3Ahttps%3A%2F%2Fd2y1fnwu0z0lk0.cloudfront.net%2Fmain%2F3312%2Fhtml%2Fenter-email.html%22%2C%22acST%22%3A1774230386%2C%22acD%22%3A152%7D%2C%7B%22ac%22%3A%22T019%22%2C%22acST%22%3A1774230386%2C%22acD%22%3A3%7D%2C%7B%22ac%22%3A%22T004%22%2C%22acST%22%3A1774230386%2C%22acD%22%3A1%7D%2C%7B%22ac%22%3A%22T003%22%2C%22acST%22%3A1774230386%2C%22acD%22%3A1%7D%2C%7B%22ac%22%3A%22T035%22%2C%22acST%22%3A1774230387%2C%22acD%22%3A0%7D%2C%7B%22ac%22%3A%22T030Online%22%2C%22acST%22%3A1774230387%2C%22acD%22%3A0%7D%2C%7B%22ac%22%3A%22T017T010%22%2C%22acST%22%3A1774230391%2C%22acD%22%3A948%7D%2C%7B%22ac%22%3A%22T002%22%2C%22acST%22%3A1774230392%2C%22acD%22%3A0%7D%2C%7B%22ac%22%3A%22T017T010%22%2C%22acST%22%3A1774230391%2C%22acD%22%3A948%7D%5D%7D",
+      "method": "GET",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "bodySize": 162110,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "count": 1,
+      "pages": [
+        null
+      ]
+    },
+    {
+      "url": "https://central.sophos.com/manage/endpoint/policies",
+      "fullUrl": "https://central.sophos.com/manage/endpoint/policies",
+      "method": "GET",
+      "status": 302,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "endpoint-policies",
+      "count": 1,
+      "pages": [
+        "endpoint-policies"
+      ]
+    },
+    {
+      "url": "https://central.sophos.com/manage/endpoint/settings",
+      "fullUrl": "https://central.sophos.com/manage/endpoint/settings",
+      "method": "GET",
+      "status": 302,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "endpoint-settings",
+      "count": 1,
+      "pages": [
+        "endpoint-settings"
+      ]
+    }
+  ],
+  "rawCalls": [
+    {
+      "url": "https://c.go-mpulse.net/api/config.json",
+      "fullUrl": "https://c.go-mpulse.net/api/config.json?key=RDWGF-UPRHD-XS89W-PHRJ5-TMW6V&d=login.sophos.com&t=5914101&v=1.720.0&sl=0&si=584c8a4b-e472-42a8-b4e8-4239721ba32e-tcbwxd&plugins=AK,ConfigOverride,Continuity,PageParams,IFrameDelay,AutoXHR,SPA,History,Angular,Backbone,Ember,RT,CrossDomain,BW,PaintTiming,NavigationTiming,ResourceTiming,Memory,CACHE_RELOAD,Errors,TPAnalytics,UserTiming,Akamai,Early,EventTiming,LOGN&acao=&ak.ai=1034553",
+      "method": "GET",
+      "status": 200,
+      "contentType": "application/json",
+      "bodySize": 768,
+      "sampleResponse": {
+        "h.key": "RDWGF-UPRHD-XS89W-PHRJ5-TMW6V",
+        "h.d": "arlid:1034553",
+        "h.t": 1774230387197,
+        "h.cr": "0335ab6593e27cbacecb308b2b7b7b25b9acd680-6fc04ee2-6fbbfd0f",
+        "session_id": "8881f3b8-db18-40d2-b31a-87c30919afd8",
+        "site_domain": "arlid:1034553",
+        "beacon_url": "//17de4c19.akstat.io/",
+        "autorun": true,
+        "BW": {
+          "enabled": false
+        },
+        "RT": {
+          "cookie": null,
+          "session_exp": 1800
+        },
+        "ResourceTiming": {
+          "enabled": true,
+          "splitAtPath": true
+        },
+        "PageParams": {
+          "xhr": "none",
+          "pageGroups": [],
+          "customMetrics": [],
+          "customTimers": [],
+          "customDimensions": [],
+          "urlPatterns": [],
+          "params": true
+        },
+        "Akamai": {
+          "enabled": true,
+          "mapping_xhr_base_url": "akamaihd.net",
+          "mapping_xhr_url_path": "/eum/getdns.txt",
+          "mapping_xhr_url_v4_prefix": "trial-eum-clientnsv4-s",
+          "mapping_xhr_url_v6_prefix": "trial-eum-clienttons-s"
+        },
+        "user_ip": "1bf2367b4"
+      },
+      "responseKeys": [
+        "h.key",
+        "h.d",
+        "h.t",
+        "h.cr",
+        "session_id",
+        "site_domain",
+        "beacon_url",
+        "autorun",
+        "BW",
+        "RT"
+      ]
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-V88TEQ7EYL&gtm=45je63i0h1v9105765022z89102479716za20gzb9102479716zd9102479716&_p=1774230386905&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=1383829335.1774230388&ul=en-us&sr=1400x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~115616986~115938466~115938469~116024733~117484252~117884344&sid=1774230387&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6ImI3OTc2MTU5LTdhZWItNDkxZS1iYjc2LTFiNGUwMWRkNTBjNiJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_ss=1&tfd=2507",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-9C69ZCXVH6&gtm=45je63i0h1v9101178334z89102479716za20gzb9102479716zd9102479716&_p=1774230386905&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=1383829335.1774230388&ul=en-us&are=1&frm=0&pscdl=denied&_geo=1&_rdi=1&_s=1&tag_exp=103116026~103200004~115938466~115938469~116024733~117484252~118131589&sid=1774230387&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6ImI3OTc2MTU5LTdhZWItNDkxZS1iYjc2LTFiNGUwMWRkNTBjNiJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=2496",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1762551467.1774230388&navt=n&npa=1&_tu=CA&gtm=45fe63i0h1v9181465312z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938466~115938469~116024733~117484252&apve=1&apvf=f&apvc=1&tids=DC-9570324&tid=DC-9570324&tft=1774230387996&tfd=2527",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1762551467.1774230388&navt=n&npa=1&_tu=CA&gtm=45be63i0h1v892049667z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938466~115938468~116024733~117484252~118104773&apve=1&apvf=f&apvc=0&tids=AW-743773256&tid=AW-743773256&tft=1774230387997&tfd=2529",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-V88TEQ7EYL&gtm=45je63i0h1v9105765022z89102479716za20gzb9102479716zd9102479716&_p=1774230386905&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=1383829335.1774230388&ul=en-us&sr=1400x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=denied&_prs=gs&_s=2&tag_exp=103116026~103200004~115616986~115938466~115938469~116024733~117484252~117884344&sid=1774230387&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6ImI3OTc2MTU5LTdhZWItNDkxZS1iYjc2LTFiNGUwMWRkNTBjNiJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=sophos_engagement&_c=1&_et=3736&tfd=6245",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/SelfAsserted",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/SelfAsserted?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "text/json; charset=utf-8",
+      "bodySize": 16,
+      "sampleResponse": {
+        "status": "200"
+      },
+      "responseKeys": [
+        "status"
+      ]
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/api/SelfAsserted/confirmed",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/api/SelfAsserted/confirmed?csrf_token=U3M1aGcyand6ZjI1emZlditUWFM3WmhHOUNUSU01ekozQjFWOWR3ZWhrcXBKK3RVSERrRER2Vi84aUZVUXN0d013eUI1TlJZNTY2SnJMRFQwNVNSb0E9PTsyMDI2LTAzLTIzVDAxOjQ2OjI2LjExNDg0NTZaO3MrdGNsQzVVL2dmdEk1U2RsZ1F4OXc9PTt7Ik9yY2hlc3RyYXRpb25TdGVwIjoxfQ==&tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin&diags=%7B%22pageViewId%22%3A%2217b7430e-70dd-4dd1-af63-38654cd2c0ed%22%2C%22pageId%22%3A%22SelfAsserted%22%2C%22trace%22%3A%5B%7B%22ac%22%3A%22T005%22%2C%22acST%22%3A1774230386%2C%22acD%22%3A2%7D%2C%7B%22ac%22%3A%22T021%20-%20URL%3Ahttps%3A%2F%2Fd2y1fnwu0z0lk0.cloudfront.net%2Fmain%2F3312%2Fhtml%2Fenter-email.html%22%2C%22acST%22%3A1774230386%2C%22acD%22%3A152%7D%2C%7B%22ac%22%3A%22T019%22%2C%22acST%22%3A1774230386%2C%22acD%22%3A3%7D%2C%7B%22ac%22%3A%22T004%22%2C%22acST%22%3A1774230386%2C%22acD%22%3A1%7D%2C%7B%22ac%22%3A%22T003%22%2C%22acST%22%3A1774230386%2C%22acD%22%3A1%7D%2C%7B%22ac%22%3A%22T035%22%2C%22acST%22%3A1774230387%2C%22acD%22%3A0%7D%2C%7B%22ac%22%3A%22T030Online%22%2C%22acST%22%3A1774230387%2C%22acD%22%3A0%7D%2C%7B%22ac%22%3A%22T017T010%22%2C%22acST%22%3A1774230391%2C%22acD%22%3A948%7D%2C%7B%22ac%22%3A%22T002%22%2C%22acST%22%3A1774230392%2C%22acD%22%3A0%7D%2C%7B%22ac%22%3A%22T017T010%22%2C%22acST%22%3A1774230391%2C%22acD%22%3A948%7D%5D%7D",
+      "method": "GET",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "bodySize": 162110,
+      "sampleResponse": null,
+      "responseKeys": null
+    },
+    {
+      "url": "https://c.go-mpulse.net/api/config.json",
+      "fullUrl": "https://c.go-mpulse.net/api/config.json?key=RDWGF-UPRHD-XS89W-PHRJ5-TMW6V&d=login.sophos.com&t=5914101&v=1.720.0&sl=0&si=dda163ab-e615-429d-ae63-8108816b9300-tcbwxl&plugins=AK,ConfigOverride,Continuity,PageParams,IFrameDelay,AutoXHR,SPA,History,Angular,Backbone,Ember,RT,CrossDomain,BW,PaintTiming,NavigationTiming,ResourceTiming,Memory,CACHE_RELOAD,Errors,TPAnalytics,UserTiming,Akamai,Early,EventTiming,LOGN&acao=&ak.ai=1034553",
+      "method": "GET",
+      "status": 200,
+      "contentType": "application/json",
+      "bodySize": 51,
+      "sampleResponse": {
+        "site_domain": "arlid:1034553",
+        "rate_limited": true
+      },
+      "responseKeys": [
+        "site_domain",
+        "rate_limited"
+      ]
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=login.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2FB2C_1A_signup_signin%2Fapi%2FSelfAsserted%2Fconfirmed&scrsrc=www.googletagmanager.com&rnd=2001573638.1774230394&navt=n&npa=1&_tu=CA&gtm=45fe63i0h1v9181465312z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115616985~115938466~115938469~116024733~116991817~117484252&apve=1&apvf=f&apvc=1&tids=DC-9570324&tid=DC-9570324&tft=1774230394129&tfd=1459",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-9C69ZCXVH6&gtm=45je63i0h1v9101178334z89102479716za20gzb9102479716zd9102479716&_p=1774230393464&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=2098915523.1774230394&ul=en-us&are=1&frm=0&pscdl=denied&_geo=1&_rdi=1&_s=1&tag_exp=103116026~103200004~115938466~115938468~116024733~117484252&sid=1774230393&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2FB2C_1A_signup_signin%2Fapi%2FSelfAsserted%2Fconfirmed%3Fcsrf_token%3DU3M1aGcyand6ZjI1emZlditUWFM3WmhHOUNUSU01ekozQjFWOWR3ZWhrcXBKK3RVSERrRER2Vi84aUZVUXN0d013eUI1TlJZNTY2SnJMRFQwNVNSb0E9PTsyMDI2LTAzLTIzVDAxOjQ2OjI2LjExNDg0NTZaO3MrdGNsQzVVL2dmdEk1U2RsZ1F4OXc9PTt7Ik9yY2hlc3RyYXRpb25TdGVwIjoxfQ%3D%3D%26tx%3DStateProperties%3DeyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ%26p%3DB2C_1A_signup_signin%26diags%3D%257B%2522pageViewId%2522%253A%252217b7430e-70dd-4dd1-af63-38654cd2c0ed%2522%252C%2522pageId%2522%253A%2522SelfAsserted%2522%252C%2522trace%2522%253A%255B%257B%2522ac%2522%253A%2522T005%2522%252C%2522acST%2522%253A1774230386%252C%2522acD%2522%253A2%257D%252C%257B%2522ac%2522%253A%2522T021%2520-%2520URL%253Ahttps%253A%252F%252Fd2y1fnwu0z0lk0.cloudfront.net%252Fmain%252F3312%252Fhtml%252Fenter-email.html%2522%252C%2522acST%2522%253A1774230386%252C%2522acD%2522%253A152%257D%252C%257B%2522ac%2522%253A%2522T019%2522%252C%2522acST%2522%253A1774230386%252C%2522acD%2522%253A3%257D%252C%257B%2522ac%2522%253A%2522T004%2522%252C%2522acST%2522%253A1774230386%252C%2522acD%2522%253A1%257D%252C%257B%2522ac%2522%253A%2522T003%2522%252C%2522acST%2522%253A1774230386%252C%2522acD%2522%253A1%257D%252C%257B%2522ac%2522%253A%2522T035%2522%252C%2522acST%2522%253A1774230387%252C%2522acD%2522%253A0%257D%252C%257B%2522ac%2522%253A%2522T030Online%2522%252C%2522acST%2522%253A1774230387%252C%2522acD%2522%253A0%257D%252C%257B%2522ac%2522%253A%2522T017T010%2522%252C%2522acST%2522%253A1774230391%252C%2522acD%2522%253A948%257D%252C%257B%2522ac%2522%253A%2522T002%2522%252C%2522acST%2522%253A1774230392%252C%2522acD%2522%253A0%257D%252C%257B%2522ac%2522%253A%2522T017T010%2522%252C%2522acST%2522%253A1774230391%252C%2522acD%2522%253A948%257D%255D%257D&dr=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6ImI3OTc2MTU5LTdhZWItNDkxZS1iYjc2LTFiNGUwMWRkNTBjNiJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dt=Sophos&_tu=CA&tfd=1440",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-V88TEQ7EYL&gtm=45je63i0h1v9105765022z89102479716za20gzb9102479716zd9102479716&_p=1774230393464&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=2098915523.1774230394&ul=en-us&sr=1400x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~115616986~115938466~115938468~116024733~117484252~118104773&sid=1774230393&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2FB2C_1A_signup_signin%2Fapi%2FSelfAsserted%2Fconfirmed%3Fcsrf_token%3DU3M1aGcyand6ZjI1emZlditUWFM3WmhHOUNUSU01ekozQjFWOWR3ZWhrcXBKK3RVSERrRER2Vi84aUZVUXN0d013eUI1TlJZNTY2SnJMRFQwNVNSb0E9PTsyMDI2LTAzLTIzVDAxOjQ2OjI2LjExNDg0NTZaO3MrdGNsQzVVL2dmdEk1U2RsZ1F4OXc9PTt7Ik9yY2hlc3RyYXRpb25TdGVwIjoxfQ%3D%3D%26tx%3DStateProperties%3DeyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ%26p%3DB2C_1A_signup_signin%26diags%3D%257B%2522pageViewId%2522%253A%252217b7430e-70dd-4dd1-af63-38654cd2c0ed%2522%252C%2522pageId%2522%253A%2522SelfAsserted%2522%252C%2522trace%2522%253A%255B%257B%2522ac%2522%253A%2522T005%2522%252C%2522acST%2522%253A1774230386%252C%2522acD%2522%253A2%257D%252C%257B%2522ac%2522%253A%2522T021%2520-%2520URL%253Ahttps%253A%252F%252Fd2y1fnwu0z0lk0.cloudfront.net%252Fmain%252F3312%252Fhtml%252Fenter-email.html%2522%252C%2522acST%2522%253A1774230386%252C%2522acD%2522%253A152%257D%252C%257B%2522ac%2522%253A%2522T019%2522%252C%2522acST%2522%253A1774230386%252C%2522acD%2522%253A3%257D%252C%257B%2522ac%2522%253A%2522T004%2522%252C%2522acST%2522%253A1774230386%252C%2522acD%2522%253A1%257D%252C%257B%2522ac%2522%253A%2522T003%2522%252C%2522acST%2522%253A1774230386%252C%2522acD%2522%253A1%257D%252C%257B%2522ac%2522%253A%2522T035%2522%252C%2522acST%2522%253A1774230387%252C%2522acD%2522%253A0%257D%252C%257B%2522ac%2522%253A%2522T030Online%2522%252C%2522acST%2522%253A1774230387%252C%2522acD%2522%253A0%257D%252C%257B%2522ac%2522%253A%2522T017T010%2522%252C%2522acST%2522%253A1774230391%252C%2522acD%2522%253A948%257D%252C%257B%2522ac%2522%253A%2522T002%2522%252C%2522acST%2522%253A1774230392%252C%2522acD%2522%253A0%257D%252C%257B%2522ac%2522%253A%2522T017T010%2522%252C%2522acST%2522%253A1774230391%252C%2522acD%2522%253A948%257D%255D%257D&dr=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6ImI3OTc2MTU5LTdhZWItNDkxZS1iYjc2LTFiNGUwMWRkNTBjNiJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dt=Sophos&_tu=CA&tfd=1455",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=login.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2FB2C_1A_signup_signin%2Fapi%2FSelfAsserted%2Fconfirmed&scrsrc=www.googletagmanager.com&rnd=2001573638.1774230394&navt=n&npa=1&_tu=CA&gtm=45be63i0h1v892049667z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938466~115938468~116024733~117484252~117884344&apve=1&apvf=f&apvc=0&tids=AW-743773256&tid=AW-743773256&tft=1774230394130&tfd=1460",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "dashboard"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-9C69ZCXVH6&gtm=45je63i0h1v9101178334z89102479716za20gzb9102479716zd9102479716&_p=1774230398931&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=986817844.1774230399&ul=en-us&are=1&frm=0&pscdl=denied&_geo=1&_rdi=1&_s=1&tag_exp=103116026~103200004~115938466~115938468~116024733~117384405~117484252&sid=1774230398&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6ImQ5NmJjYjdkLTk4NGYtNGE3NC1hYzk3LTQ5YzAwNjRiOGM2YiJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1398",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "dashboard"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-V88TEQ7EYL&gtm=45je63i0h1v9105765022z89102479716za20gzb9102479716zd9102479716&_p=1774230398931&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=986817844.1774230399&ul=en-us&sr=1400x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~115616985~115938466~115938468~116024733~117484252&sid=1774230398&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6ImQ5NmJjYjdkLTk4NGYtNGE3NC1hYzk3LTQ5YzAwNjRiOGM2YiJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_ss=1&tfd=1403",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "dashboard"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=18803757.1774230400&navt=n&npa=1&_tu=CA&gtm=45fe63i0h1v9181465312z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115616986~115938466~115938469~116024733~117484252&apve=1&apvf=f&apvc=1&tids=DC-9570324&tid=DC-9570324&tft=1774230399510&tfd=1408",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "dashboard"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=18803757.1774230400&navt=n&npa=1&_tu=CA&gtm=45be63i0h1v892049667z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938466~115938468~116024733~117484252&apve=1&apvf=f&apvc=0&tids=AW-743773256&tid=AW-743773256&tft=1774230399511&tfd=1408",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "dashboard"
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "alerts"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-9C69ZCXVH6&gtm=45je63i0h1v9101178334z89102479716za20gzb9102479716zd9102479716&_p=1774230410452&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=1617554551.1774230411&ul=en-us&are=1&frm=0&pscdl=denied&_geo=1&_rdi=1&_s=1&tag_exp=103116026~103200004~115616986~115938466~115938468~116024733~117484252&sid=1774230410&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6ImQxNGFjZjNlLTUzNzktNGNiZS1hYTAyLTczOGU1ZDZiOWFiZSJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1736",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "alerts"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1716921038.1774230411&navt=n&npa=1&_tu=CA&gtm=45fe63i0h1v9181465312z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115616986~115938466~115938468~116024733~116133314~117484252~117884344~118104773&apve=1&apvf=f&apvc=1&tids=DC-9570324&tid=DC-9570324&tft=1774230411020&tfd=1745",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "alerts"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1716921038.1774230411&navt=n&npa=1&_tu=CA&gtm=45be63i0h1v892049667z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115616986~115938466~115938468~116024733~117484252&apve=1&apvf=f&apvc=0&tids=AW-743773256&tid=AW-743773256&tft=1774230411021&tfd=1745",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "alerts"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-V88TEQ7EYL&gtm=45je63i0h1v9105765022z89102479716za20gzb9102479716zd9102479716&_p=1774230410452&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=1617554551.1774230411&ul=en-us&sr=1400x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~115938466~115938468~116024733~117484252~118104773&sid=1774230410&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6ImQxNGFjZjNlLTUzNzktNGNiZS1hYTAyLTczOGU1ZDZiOWFiZSJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_ss=1&tfd=1741",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "alerts"
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "devices-computers"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-9C69ZCXVH6&gtm=45je63i0h1v9101178334z89102479716za20gzb9102479716zd9102479716&_p=1774230419987&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=90392228.1774230421&ul=en-us&are=1&frm=0&pscdl=denied&_geo=1&_rdi=1&_s=1&tag_exp=103116026~103200004~115938466~115938468~116024733~117384406~117484252~118104773&sid=1774230420&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6ImI0Yjk5ZWI2LTM1NmItNDRjOC1hYzNkLWQ4OGQyZGRmNzRiNyJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1801",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "devices-computers"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-V88TEQ7EYL&gtm=45je63i0h1v9105765022z89102479716za20gzb9102479716zd9102479716&_p=1774230419987&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=90392228.1774230421&ul=en-us&sr=1400x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~115938466~115938469~116024733~117484252~118104773&sid=1774230420&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6ImI0Yjk5ZWI2LTM1NmItNDRjOC1hYzNkLWQ4OGQyZGRmNzRiNyJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_ss=1&tfd=1807",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "devices-computers"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1115671378.1774230421&navt=n&npa=1&_tu=CA&gtm=45fe63i0h1v9181465312z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938466~115938468~116024733~117484252&apve=1&apvf=f&apvc=1&tids=DC-9570324&tid=DC-9570324&tft=1774230420567&tfd=1811",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "devices-computers"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1115671378.1774230421&navt=n&npa=1&_tu=CA&gtm=45be63i0h1v892049667z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115616986~115938466~115938468~116024733~117484252~118104773&apve=1&apvf=f&apvc=0&tids=AW-743773256&tid=AW-743773256&tft=1774230420568&tfd=1812",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "devices-computers"
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "devices-servers"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-V88TEQ7EYL&gtm=45je63i0h1v9105765022z89102479716za20gzb9102479716zd9102479716&_p=1774230429278&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=1367820198.1774230430&ul=en-us&sr=1400x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~115616985~115938465~115938468~116024733~117484252&sid=1774230429&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6Ijk3MzA1ZGZiLTk3N2QtNGExYy04ODQ3LTUyOGFjYTNjOGM4MSJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_ss=1&tfd=1540",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "devices-servers"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-9C69ZCXVH6&gtm=45je63i0h1v9101178334z89102479716za20gzb9102479716zd9102479716&_p=1774230429278&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=1367820198.1774230430&ul=en-us&are=1&frm=0&pscdl=denied&_geo=1&_rdi=1&_s=1&tag_exp=103116026~103200004~115616986~115938465~115938468~116024733~117384406~117484252&sid=1774230429&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6Ijk3MzA1ZGZiLTk3N2QtNGExYy04ODQ3LTUyOGFjYTNjOGM4MSJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1534",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "devices-servers"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1180360837.1774230430&navt=n&npa=1&_tu=CA&gtm=45be63i0h1v892049667z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115616986~115938465~115938469~116024733~117484252&apve=1&apvf=f&apvc=0&tids=AW-743773256&tid=AW-743773256&tft=1774230429852&tfd=1545",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "devices-servers"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1180360837.1774230430&navt=n&npa=1&_tu=CA&gtm=45fe63i0h1v9181465312z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938465~115938469~116024733~117484252&apve=1&apvf=f&apvc=1&tids=DC-9570324&tid=DC-9570324&tft=1774230429852&tfd=1544",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "devices-servers"
+    },
+    {
+      "url": "https://central.sophos.com/manage/endpoint/policies",
+      "fullUrl": "https://central.sophos.com/manage/endpoint/policies",
+      "method": "GET",
+      "status": 302,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "endpoint-policies"
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "endpoint-policies"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-V88TEQ7EYL&gtm=45je63i0h1v9105765022z89102479716za20gzb9102479716zd9102479716&_p=1774230438648&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=509518215.1774230439&ul=en-us&sr=1400x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~115616985~115938466~115938468~116024733~117484252~117884344~118104771&sid=1774230438&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6IjUyNzQxNDIxLTBkNDEtNGQwMy1hMDFmLWFhZTQwMjg2MjZhYSJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_ss=1&tfd=1629",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "endpoint-policies"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-9C69ZCXVH6&gtm=45je63i0h1v9101178334z89102479716za20gzb9102479716zd9102479716&_p=1774230438648&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=509518215.1774230439&ul=en-us&are=1&frm=0&pscdl=denied&_geo=1&_rdi=1&_s=1&tag_exp=103116026~103200004~115616985~115938466~115938468~116024733~117484252~118104772&sid=1774230438&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6IjUyNzQxNDIxLTBkNDEtNGQwMy1hMDFmLWFhZTQwMjg2MjZhYSJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1625",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "endpoint-policies"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=184569410.1774230439&navt=n&npa=1&_tu=CA&gtm=45fe63i0h1v9181465312z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115616986~115938466~115938469~116024733~117484252&apve=1&apvf=f&apvc=1&tids=DC-9570324&tid=DC-9570324&tft=1774230439219&tfd=1634",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "endpoint-policies"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=184569410.1774230439&navt=n&npa=1&_tu=CA&gtm=45be63i0h1v892049667z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115616985~115938466~115938468~116024733~116133313~117484252&apve=1&apvf=f&apvc=0&tids=AW-743773256&tid=AW-743773256&tft=1774230439219&tfd=1634",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "endpoint-policies"
+    },
+    {
+      "url": "https://central.sophos.com/manage/endpoint/settings",
+      "fullUrl": "https://central.sophos.com/manage/endpoint/settings",
+      "method": "GET",
+      "status": 302,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "endpoint-settings"
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "endpoint-settings"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-9C69ZCXVH6&gtm=45je63i0h1v9101178334z89102479716za20gzb9102479716zd9102479716&_p=1774230447272&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=1555280117.1774230448&ul=en-us&are=1&frm=0&pscdl=denied&_geo=1&_rdi=1&_s=1&tag_exp=103116026~103200004~115616986~115938466~115938469~116024733~117484252&sid=1774230447&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6IjJjZTA1MThjLTlmNTYtNDQxOS05N2VhLTk2YTBiOTgxYjcwOCJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1864",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "endpoint-settings"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=272993282.1774230448&navt=n&npa=1&_tu=CA&gtm=45fe63i0h1v9181465312z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938466~115938469~116024733~117484252~118128922&apve=1&apvf=f&apvc=1&tids=DC-9570324&tid=DC-9570324&tft=1774230447847&tfd=1873",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "endpoint-settings"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=272993282.1774230448&navt=n&npa=1&_tu=CA&gtm=45be63i0h1v892049667z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938466~115938469~116024733~117484252~118104772&apve=1&apvf=f&apvc=0&tids=AW-743773256&tid=AW-743773256&tft=1774230447848&tfd=1874",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "endpoint-settings"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-V88TEQ7EYL&gtm=45je63i0h1v9105765022z89102479716za20gzb9102479716zd9102479716&_p=1774230447272&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=1555280117.1774230448&ul=en-us&sr=1400x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~115938466~115938469~116024733~117484252&sid=1774230447&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6IjJjZTA1MThjLTlmNTYtNDQxOS05N2VhLTk2YTBiOTgxYjcwOCJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_ss=1&tfd=1869",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "endpoint-settings"
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "firewall-management"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-9C69ZCXVH6&gtm=45je63i0h1v9101178334z89102479716za20gzb9102479716zd9102479716&_p=1774230455434&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=1021644755.1774230456&ul=en-us&are=1&frm=0&pscdl=denied&_geo=1&_rdi=1&_s=1&tag_exp=103116026~103200004~115938466~115938469~116024733~117484252&sid=1774230455&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6IjMxNmRmOTVhLTYxY2EtNGUxNC04MDA5LWVkYWUxNmU2MWViMCJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1424",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "firewall-management"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1146926527.1774230456&navt=n&npa=1&_tu=CA&gtm=45fe63i0h1v9181465312z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938466~115938468~116024733~117484252&apve=1&apvf=f&apvc=1&tids=DC-9570324&tid=DC-9570324&tft=1774230456003&tfd=1434",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "firewall-management"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-V88TEQ7EYL&gtm=45je63i0h1v9105765022z89102479716za20gzb9102479716zd9102479716&_p=1774230455434&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=1021644755.1774230456&ul=en-us&sr=1400x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~115616985~115938466~115938469~116024733~117484252&sid=1774230455&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6IjMxNmRmOTVhLTYxY2EtNGUxNC04MDA5LWVkYWUxNmU2MWViMCJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_ss=1&tfd=1429",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "firewall-management"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1146926527.1774230456&navt=n&npa=1&_tu=CA&gtm=45be63i0h1v892049667z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938466~115938468~116024733~117484252&apve=1&apvf=f&apvc=0&tids=AW-743773256&tid=AW-743773256&tft=1774230456004&tfd=1434",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "firewall-management"
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "email-security"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-9C69ZCXVH6&gtm=45je63i0h1v9101178334z89102479716za20gzb9102479716zd9102479716&_p=1774230464563&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=1462073447.1774230465&ul=en-us&are=1&frm=0&pscdl=denied&_geo=1&_rdi=1&_s=1&tag_exp=103116026~103200004~115938465~115938468~116024733~117484252&sid=1774230464&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6ImNjYmVmZTE4LTc2YzEtNDMwNC05OWJiLWFkYzU4NDE3NTU5NSJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1383",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "email-security"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-V88TEQ7EYL&gtm=45je63i0h1v9105765022z89102479716za20gzb9102479716zd9102479716&_p=1774230464563&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=1462073447.1774230465&ul=en-us&sr=1400x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~115938465~115938469~116024733~117484252~117884344~118104773&sid=1774230464&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6ImNjYmVmZTE4LTc2YzEtNDMwNC05OWJiLWFkYzU4NDE3NTU5NSJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_ss=1&tfd=1389",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "email-security"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=192605533.1774230465&navt=n&npa=1&_tu=CA&gtm=45fe63i0h1v9181465312z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938465~115938469~116024733~117484252&apve=1&apvf=f&apvc=1&tids=DC-9570324&tid=DC-9570324&tft=1774230465138&tfd=1393",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "email-security"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=192605533.1774230465&navt=n&npa=1&_tu=CA&gtm=45be63i0h1v892049667z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938465~115938468~116024733~117484252~118104773&apve=1&apvf=f&apvc=0&tids=AW-743773256&tid=AW-743773256&tft=1774230465138&tfd=1394",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "email-security"
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "threat-analysis-center"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-9C69ZCXVH6&gtm=45je63i0h1v9101178334z89102479716za20gzb9102479716zd9102479716&_p=1774230472856&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=161255618.1774230473&ul=en-us&are=1&frm=0&pscdl=denied&_geo=1&_rdi=1&_s=1&tag_exp=103116026~103200004~115938466~115938468~116024733~117384405~117484252&sid=1774230472&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6IjgzMzA3NjEwLTlhMWYtNGZhZC1iYTU2LWYxOTI0Yjk4Njg4ZCJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1554",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "threat-analysis-center"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-V88TEQ7EYL&gtm=45je63i0h1v9105765022z89102479716za20gzb9102479716zd9102479716&_p=1774230472856&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=161255618.1774230473&ul=en-us&sr=1400x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~115938466~115938469~116024733~117484252&sid=1774230472&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6IjgzMzA3NjEwLTlhMWYtNGZhZC1iYTU2LWYxOTI0Yjk4Njg4ZCJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_ss=1&tfd=1560",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "threat-analysis-center"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1220924674.1774230473&navt=n&npa=1&_tu=CA&gtm=45fe63i0h1v9181465312z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938466~115938468~116024733~117484252&apve=1&apvf=f&apvc=1&tids=DC-9570324&tid=DC-9570324&tft=1774230473435&tfd=1564",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "threat-analysis-center"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1220924674.1774230473&navt=n&npa=1&_tu=CA&gtm=45be63i0h1v892049667z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938466~115938469~116024733~117384405~117484252&apve=1&apvf=f&apvc=0&tids=AW-743773256&tid=AW-743773256&tft=1774230473436&tfd=1565",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "threat-analysis-center"
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "tac-cases"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-V88TEQ7EYL&gtm=45je63i0h1v9105765022z89102479716za20gzb9102479716zd9102479716&_p=1774230484245&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=1948875666.1774230485&ul=en-us&sr=1400x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~115938466~115938468~116024733~117384406~117484252&sid=1774230484&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6ImJmMWU4ZmIyLTVhODEtNDQ0ZC1iZjk5LTg3YjkxNWNhNzkxYSJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_ss=1&tfd=1625",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "tac-cases"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-9C69ZCXVH6&gtm=45je63i0h1v9101178334z89102479716za20gzb9102479716zd9102479716&_p=1774230484245&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=1948875666.1774230485&ul=en-us&are=1&frm=0&pscdl=denied&_geo=1&_rdi=1&_s=1&tag_exp=103116026~103200004~115938466~115938468~116024733~117484252~118104771~118128922&sid=1774230484&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6ImJmMWU4ZmIyLTVhODEtNDQ0ZC1iZjk5LTg3YjkxNWNhNzkxYSJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1621",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "tac-cases"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=2117652091.1774230485&navt=n&npa=1&_tu=CA&gtm=45fe63i0h1v9181465312z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115616985~115938466~115938468~116024733~117484252&apve=1&apvf=f&apvc=1&tids=DC-9570324&tid=DC-9570324&tft=1774230484813&tfd=1629",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "tac-cases"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=2117652091.1774230485&navt=n&npa=1&_tu=CA&gtm=45be63i0h1v892049667z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938466~115938469~116024733~117266401~117484252~118104773&apve=1&apvf=f&apvc=0&tids=AW-743773256&tid=AW-743773256&tft=1774230484813&tfd=1630",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "tac-cases"
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "xdr-queries"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-9C69ZCXVH6&gtm=45je63i0h1v9101178334z89102479716za20gzb9102479716zd9102479716&_p=1774230495590&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=1110176560.1774230496&ul=en-us&are=1&frm=0&pscdl=denied&_geo=1&_rdi=1&_s=1&tag_exp=103116026~103200004~115616986~115938466~115938468~116024733~117484252~118131589&sid=1774230495&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6IjdlZDAwZTkzLWY1OGQtNDBmMC1iNzRiLTllNmIxYzI4YzViZCJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1585",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "xdr-queries"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-V88TEQ7EYL&gtm=45je63i0h1v9105765022z89102479716za20gzb9102479716zd9102479716&_p=1774230495590&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=1110176560.1774230496&ul=en-us&sr=1400x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~115938466~115938469~116024733~117484252&sid=1774230495&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6IjdlZDAwZTkzLWY1OGQtNDBmMC1iNzRiLTllNmIxYzI4YzViZCJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_ss=1&tfd=1589",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "xdr-queries"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1581472600.1774230496&navt=n&npa=1&_tu=CA&gtm=45fe63i0h1v9181465312z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115616985~115938466~115938468~116024733~117484252&apve=1&apvf=f&apvc=1&tids=DC-9570324&tid=DC-9570324&tft=1774230496163&tfd=1593",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "xdr-queries"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1581472600.1774230496&navt=n&npa=1&_tu=CA&gtm=45be63i0h1v892049667z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938466~115938469~116024733~117484252&apve=1&apvf=f&apvc=0&tids=AW-743773256&tid=AW-743773256&tft=1774230496164&tfd=1594",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "xdr-queries"
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "account-health"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1024434660.1774230505&navt=n&npa=1&_tu=CA&gtm=45fe63i0h1v9181465312z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115616986~115938465~115938469~116024733~117484252&apve=1&apvf=f&apvc=1&tids=DC-9570324&tid=DC-9570324&tft=1774230505482&tfd=1593",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "account-health"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1024434660.1774230505&navt=n&npa=1&_tu=CA&gtm=45be63i0h1v892049667z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115616986~115938465~115938469~116024733~117484252~118104772&apve=1&apvf=f&apvc=0&tids=AW-743773256&tid=AW-743773256&tft=1774230505483&tfd=1594",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "account-health"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-V88TEQ7EYL&gtm=45je63i0h1v9105765022z89102479716za20gzb9102479716zd9102479716&_p=1774230504902&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=2006582964.1774230505&ul=en-us&sr=1400x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~115938465~115938468~116024733~117484252&sid=1774230504&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6IjRhZWM5OGUzLTY3OWUtNDQ3NC05MWM0LTYxMTFjNWM0YWM4OCJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_ss=1&tfd=1589",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "account-health"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-9C69ZCXVH6&gtm=45je63i0h1v9101178334z89102479716za20gzb9102479716zd9102479716&_p=1774230504902&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=2006582964.1774230505&ul=en-us&are=1&frm=0&pscdl=denied&_geo=1&_rdi=1&_s=1&tag_exp=103116026~103200004~115616986~115938465~115938469~116024733~117484252&sid=1774230504&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6IjRhZWM5OGUzLTY3OWUtNDQ3NC05MWM0LTYxMTFjNWM0YWM4OCJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1583",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "account-health"
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "global-settings"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1882908872.1774230514&navt=n&npa=1&_tu=CA&gtm=45fe63i0h1v9181465312z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115616986~115938466~115938469~116024733~117484252~118104773&apve=1&apvf=f&apvc=1&tids=DC-9570324&tid=DC-9570324&tft=1774230514310&tfd=1085",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "global-settings"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1882908872.1774230514&navt=n&npa=1&_tu=CA&gtm=45be63i0h1v892049667z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938466~115938468~116024733~117484252&apve=1&apvf=f&apvc=0&tids=AW-743773256&tid=AW-743773256&tft=1774230514311&tfd=1086",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "global-settings"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-9C69ZCXVH6&gtm=45je63i0h1v9101178334z89102479716za20gzb9102479716zd9102479716&_p=1774230513738&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=2135071895.1774230514&ul=en-us&are=1&frm=0&pscdl=denied&_geo=1&_rdi=1&_s=1&tag_exp=103116026~103200004~115616985~115938466~115938468~116024733~117384406~117484252~118128922&sid=1774230513&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6IjljYWViYmQxLWJmZWQtNGZkNi1iZWZiLTk3Nzk0MDFkMzU2MCJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1076",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "global-settings"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-V88TEQ7EYL&gtm=45je63i0h1v9105765022z89102479716za20gzb9102479716zd9102479716&_p=1774230513738&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=2135071895.1774230514&ul=en-us&sr=1400x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~115616986~115938466~115938468~116024733~117484252&sid=1774230513&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6IjljYWViYmQxLWJmZWQtNGZkNi1iZWZiLTk3Nzk0MDFkMzU2MCJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_ss=1&tfd=1080",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "global-settings"
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "people"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-9C69ZCXVH6&gtm=45je63i0h1v9101178334z89102479716za20gzb9102479716zd9102479716&_p=1774230521923&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=521026068.1774230522&ul=en-us&are=1&frm=0&pscdl=denied&_geo=1&_rdi=1&_s=1&tag_exp=103116026~103200004~115616985~115938466~115938468~116024733~117484252~118104773&sid=1774230521&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6IjM3YTU4OGQ3LWNkYWMtNDg5ZC04NzgyLWEyZjEzYjM2MDU3OCJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1431",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "people"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-V88TEQ7EYL&gtm=45je63i0h1v9105765022z89102479716za20gzb9102479716zd9102479716&_p=1774230521923&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=521026068.1774230522&ul=en-us&sr=1400x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~115938466~115938468~116024733~116991817~117484252&sid=1774230521&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6IjM3YTU4OGQ3LWNkYWMtNDg5ZC04NzgyLWEyZjEzYjM2MDU3OCJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_ss=1&tfd=1436",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "people"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=2055827692.1774230522&navt=n&npa=1&_tu=CA&gtm=45fe63i0h1v9181465312z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115616985~115938466~115938468~116024733~117384406~117484252&apve=1&apvf=f&apvc=1&tids=DC-9570324&tid=DC-9570324&tft=1774230522499&tfd=1440",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "people"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=2055827692.1774230522&navt=n&npa=1&_tu=CA&gtm=45be63i0h1v892049667z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938466~115938468~116024733~117484252~118104771&apve=1&apvf=f&apvc=0&tids=AW-743773256&tid=AW-743773256&tft=1774230522500&tfd=1441",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "people"
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "reports"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-9C69ZCXVH6&gtm=45je63i0h1v9101178334z89102479716za20gzb9102479716zd9102479716&_p=1774230530063&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=480728418.1774230531&ul=en-us&are=1&frm=0&pscdl=denied&_geo=1&_rdi=1&_s=1&tag_exp=103116026~103200004~115616985~115938466~115938468~116024733~117484252&sid=1774230530&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6Ijg1NjlmNGI1LTUyNTQtNGMzZS1hOGM3LThkODYwZjYxM2E3MiJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1398",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "reports"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-V88TEQ7EYL&gtm=45je63i0h1v9105765022z89102479716za20gzb9102479716zd9102479716&_p=1774230530063&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=480728418.1774230531&ul=en-us&sr=1400x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~115938466~115938468~116024733~117484252~118131590&sid=1774230530&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6Ijg1NjlmNGI1LTUyNTQtNGMzZS1hOGM3LThkODYwZjYxM2E3MiJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_ss=1&tfd=1403",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "reports"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1549165248.1774230531&navt=n&npa=1&_tu=CA&gtm=45fe63i0h1v9181465312z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115616985~115938466~115938469~116024733~117484252&apve=1&apvf=f&apvc=1&tids=DC-9570324&tid=DC-9570324&tft=1774230530637&tfd=1407",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "reports"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1549165248.1774230531&navt=n&npa=1&_tu=CA&gtm=45be63i0h1v892049667z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938466~115938468~116024733~117484252~118131588&apve=1&apvf=f&apvc=0&tids=AW-743773256&tid=AW-743773256&tft=1774230530637&tfd=1408",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "reports"
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "logs-audit"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-9C69ZCXVH6&gtm=45je63i0h1v9101178334z89102479716za20gzb9102479716zd9102479716&_p=1774230538121&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=999323386.1774230539&ul=en-us&are=1&frm=0&pscdl=denied&_geo=1&_rdi=1&_s=1&tag_exp=103116026~103200004~115616985~115938466~115938469~116024733~117484252&sid=1774230538&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6IjBkZjFlMTVmLTZlNzItNGMwMS1hNmYxLTE0NmY4ZWU2MGNjNCJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1291",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "logs-audit"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-V88TEQ7EYL&gtm=45je63i0h1v9105765022z89102479716za20gzb9102479716zd9102479716&_p=1774230538121&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=999323386.1774230539&ul=en-us&sr=1400x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~115616985~115938466~115938468~116024733~117484252~118128923&sid=1774230538&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D989c1e6a-2969-4a60-a1ea-6df4f91f9940%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6IjBkZjFlMTVmLTZlNzItNGMwMS1hNmYxLTE0NmY4ZWU2MGNjNCJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DSc7F7tbHFUaniD6G8qHO2sjnVNizPG3-QCReAK3-ZZE&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_ss=1&tfd=1296",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "logs-audit"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1111977269.1774230539&navt=n&npa=1&_tu=CA&gtm=45be63i0h1v892049667z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938466~115938469~116024733~117384405~117484252&apve=1&apvf=f&apvc=0&tids=AW-743773256&tid=AW-743773256&tft=1774230538692&tfd=1301",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "logs-audit"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1111977269.1774230539&navt=n&npa=1&_tu=CA&gtm=45fe63i0h1v9181465312z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115938466~115938468~116024733~117484252~118128923&apve=1&apvf=f&apvc=1&tids=DC-9570324&tid=DC-9570324&tft=1774230538691&tfd=1300",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "logs-audit"
+    },
+    {
+      "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
+      "fullUrl": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace?tx=StateProperties=eyJUSUQiOiI0OGE3ZWM3Ny1mMWE0LTQ5YzQtYTcwNC1hNDUwZmRmNTcwYmEifQ&p=B2C_1A_signup_signin",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "partner-dashboard"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-9C69ZCXVH6&gtm=45je63i0h1v9101178334z89102479716za20gzb9102479716zd9102479716&_p=1774230547000&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=1440967679.1774230548&ul=en-us&are=1&frm=0&pscdl=denied&_geo=1&_rdi=1&_s=1&tag_exp=103116026~103200004~115938465~115938468~116024733~117484252&sid=1774230547&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D6fc5d34e-4919-4c8a-ae60-91db6ff81043%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6IjE4ZDdhYzBjLWI1NWUtNDVjMC04ZmVmLWU1OWIyMGU3N2M5MyJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DDzJCJdlHUZGXOsY66tZbmVJ_sz8wm9RlLxdz-qd_2mk&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_nsi=1&_ss=1&tfd=1846",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "partner-dashboard"
+    },
+    {
+      "url": "https://www.google-analytics.com/g/collect",
+      "fullUrl": "https://www.google-analytics.com/g/collect?v=2&tid=G-V88TEQ7EYL&gtm=45je63i0h1v9105765022z89102479716za20gzb9102479716zd9102479716&_p=1774230547000&gcs=G100&gcd=13p3p3p3p5l1&npa=1&dma_cps=-&dma=0&cid=1440967679.1774230548&ul=en-us&sr=1400x900&uaa=x86&uab=64&uafvl=Not%253AA-Brand%3B99.0.0.0%7CHeadlessChrome%3B145.0.7632.6%7CChromium%3B145.0.7632.6&uamb=0&uam=&uap=Linux&uapv=&uaw=0&are=1&frm=0&pscdl=denied&_s=1&tag_exp=103116026~103200004~115938465~115938468~116024733~117484252&sid=1774230547&sct=1&seg=0&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize%3Fp%3DB2C_1A_signup_signin%26client_id%3Dd8ce821f-a1da-4b03-b7e2-1d1a9cc028f3%26redirect_uri%3Dhttps%253A%252F%252Fcentral.sophos.com%252Fcentral-login%252Fauth-code%26scope%3Dopenid%26authn_id%3D6fc5d34e-4919-4c8a-ae60-91db6ff81043%26prompt%3Dlogin%26state%3DeyJ0b2tlblNvdXJjZSI6ImF6dXJlYjJjIiwiZW5kcG9pbnQiOiJsb2dpbiIsImNzcmZUb2tlbiI6IjE4ZDdhYzBjLWI1NWUtNDVjMC04ZmVmLWU1OWIyMGU3N2M5MyJ9%26response_type%3Dcode%26code_challenge_method%3DS256%26code_challenge%3DDzJCJdlHUZGXOsY66tZbmVJ_sz8wm9RlLxdz-qd_2mk&dr=https%3A%2F%2Fcentral.sophos.com%2F&dt=Sophos&_tu=CA&en=page_view&_fv=1&_ss=1&tfd=1853",
+      "method": "POST",
+      "status": 204,
+      "contentType": "text/plain",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "partner-dashboard"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1738084936.1774230548&navt=n&npa=1&_tu=CA&gtm=45be63i0h1v892049667z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115616985~115938465~115938469~116024733~117484252~118104771&apve=1&apvf=f&apvc=0&tids=AW-743773256&tid=AW-743773256&tft=1774230547572&tfd=1858",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "partner-dashboard"
+    },
+    {
+      "url": "https://pagead2.googlesyndication.com/ccm/collect",
+      "fullUrl": "https://pagead2.googlesyndication.com/ccm/collect?frm=0&en=page_view&dr=central.sophos.com&dl=https%3A%2F%2Flogin.sophos.com%2Flogin.sophos.com%2Foauth2%2Fv2.0%2Fauthorize&scrsrc=www.googletagmanager.com&rnd=1738084936.1774230548&navt=n&npa=1&_tu=CA&gtm=45fe63i0h1v9181465312z89102479716za20gzb9102479716zd9102479716xec&gcs=G100&gcd=13p3p3p3p5l1&dma_cps=-&dma=0&tag_exp=103116026~103200004~115616986~115938465~115938469~116024733~117484252~118104772&apve=1&apvf=f&apvc=1&tids=DC-9570324&tid=DC-9570324&tft=1774230547571&tfd=1858",
+      "method": "POST",
+      "status": 200,
+      "contentType": "",
+      "bodySize": 0,
+      "sampleResponse": null,
+      "responseKeys": null,
+      "page": "partner-dashboard"
+    }
+  ]
+}
