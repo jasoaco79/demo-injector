@@ -1,154 +1,1442 @@
 [
   {
-    "method": "POST",
-    "url": "https://www.google-analytics.com/g/collect",
-    "count": 39,
-    "status": 204,
-    "bodySize": 0,
-    "pages": [
-      null,
-      "dashboard",
-      "alerts",
-      "devices-computers",
-      "devices-servers",
-      "endpoint-policies",
-      "endpoint-settings",
-      "firewall-management",
-      "email-security",
-      "threat-analysis-center",
-      "tac-cases",
-      "xdr-queries",
-      "account-health",
-      "global-settings",
-      "people",
-      "reports",
-      "logs-audit",
-      "partner-dashboard"
-    ],
-    "responseKeys": null
-  },
-  {
-    "method": "POST",
-    "url": "https://pagead2.googlesyndication.com/ccm/collect",
-    "count": 38,
+    "method": "GET",
+    "url": "https://central.sophos.com/api/billing/account",
+    "count": 45,
     "status": 200,
-    "bodySize": 0,
+    "bodySize": 360,
     "pages": [
-      null,
       "dashboard",
       "alerts",
       "devices-computers",
       "devices-servers",
       "endpoint-policies",
-      "endpoint-settings",
       "firewall-management",
-      "email-security",
-      "threat-analysis-center",
-      "tac-cases",
-      "xdr-queries",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
       "account-health",
       "global-settings",
       "people",
-      "reports",
-      "logs-audit",
-      "partner-dashboard"
+      "logs-audit"
     ],
-    "responseKeys": null
-  },
-  {
-    "method": "POST",
-    "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/client/perftrace",
-    "count": 19,
-    "status": 200,
-    "bodySize": 0,
-    "pages": [
-      null,
-      "dashboard",
-      "alerts",
-      "devices-computers",
-      "devices-servers",
-      "endpoint-policies",
-      "endpoint-settings",
-      "firewall-management",
-      "email-security",
-      "threat-analysis-center",
-      "tac-cases",
-      "xdr-queries",
-      "account-health",
-      "global-settings",
-      "people",
-      "reports",
-      "logs-audit",
-      "partner-dashboard"
+    "responseKeys": [
+      "billingContact",
+      "name",
+      "alias",
+      "uuid",
+      "syncCanRemoveLicenses"
     ],
-    "responseKeys": null
+    "queryParams": ""
   },
   {
     "method": "GET",
-    "url": "https://c.go-mpulse.net/api/config.json",
-    "count": 2,
+    "url": "https://central.sophos.com/api/sessions/current",
+    "count": 32,
     "status": 200,
-    "bodySize": 768,
+    "bodySize": 250860,
     "pages": [
-      null
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
     ],
     "responseKeys": [
-      "h.key",
-      "h.d",
-      "h.t",
-      "h.cr",
-      "session_id",
-      "site_domain",
-      "beacon_url",
-      "autorun",
-      "BW",
-      "RT"
-    ]
+      "isGreenfield",
+      "isFedrampEnv",
+      "flags",
+      "csrf",
+      "contexts",
+      "xdrProvider",
+      "features",
+      "adminPrincipalId",
+      "supportedGlobalPolicies",
+      "taegis_tenant_id",
+      "permissions",
+      "allowChangePassword"
+    ],
+    "queryParams": ""
   },
   {
-    "method": "POST",
-    "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/SelfAsserted",
-    "count": 1,
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/users/current",
+    "count": 19,
+    "status": 200,
+    "bodySize": 3601,
+    "pages": [
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "locked",
+      "customer_id",
+      "first_name",
+      "last_name",
+      "email",
+      "external_id",
+      "company_name",
+      "alias",
+      "station_permissions",
+      "hero_report_enabled",
+      "activated",
+      "name"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/features",
+    "count": 19,
+    "status": 200,
+    "bodySize": 21514,
+    "pages": [
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "[108 items] → { expired, expires_on, license_code, feature_code, license_type, valid, license_id, virtual }"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/license/usage",
+    "count": 19,
+    "status": 200,
+    "bodySize": 14741,
+    "pages": [
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "total",
+      "filtered",
+      "items"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/api/branding/host",
+    "count": 19,
+    "status": 200,
+    "bodySize": 51,
+    "pages": [
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
+    ],
+    "responseKeys": null,
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/api/branding/separator",
+    "count": 19,
     "status": 200,
     "bodySize": 16,
     "pages": [
-      null
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
+    ],
+    "responseKeys": null,
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/api/branding",
+    "count": 19,
+    "status": 200,
+    "bodySize": 4,
+    "pages": [
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
+    ],
+    "responseKeys": null,
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/api/customer/settings",
+    "count": 19,
+    "status": 200,
+    "bodySize": 44,
+    "pages": [
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "language",
+      "mfa_required"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/api/v1/roles/73757065-7261-646d-696e-5b302d39612d",
+    "count": 19,
+    "status": 200,
+    "bodySize": 1524,
+    "pages": [
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "createdAt",
+      "description",
+      "id",
+      "name",
+      "permissionSets",
+      "principalType",
+      "type",
+      "updatedAt"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/xgemail/domains",
+    "count": 18,
+    "status": 200,
+    "bodySize": 2155,
+    "pages": [
+      "dashboard",
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "items",
+      "total",
+      "nextKey",
+      "filtered"
+    ],
+    "queryParams": "productType=all"
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/auth/initialize",
+    "count": 13,
+    "status": 200,
+    "bodySize": 0,
+    "pages": [
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
+    ],
+    "responseKeys": null,
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/api/user/preferences",
+    "count": 13,
+    "status": 200,
+    "bodySize": 470,
+    "pages": [
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "last_seen_whats_new",
+      "fwcm-group-states",
+      "last.seen.whats.new",
+      "ui_theme",
+      "cwifiXSubscriptionLastNotifiedTime",
+      "language",
+      "meganav_exp",
+      "registeredApList"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/eap/enrolled",
+    "count": 13,
+    "status": 200,
+    "bodySize": 1678,
+    "pages": [
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "[4 items] → { auditableInfo, applies_to_platforms, applies_to_os_names, min_supported_os_version, policy_types, opening_date_time, withdraw_allowed, endpoint_products }"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/swg/v1/config/licensing/disabled",
+    "count": 13,
+    "status": 200,
+    "bodySize": 16,
+    "pages": [
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "result"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/evaluation-modes",
+    "count": 13,
+    "status": 200,
+    "bodySize": 76,
+    "pages": [
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "monitorModeEnabled",
+      "aggressiveActivityClassificationEnabled"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/extended_support/notifications",
+    "count": 13,
+    "status": 200,
+    "bodySize": 212,
+    "pages": [
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "unlicensed",
+      "unsupported"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/api/v1/firewalls/maintenance",
+    "count": 13,
+    "status": 200,
+    "bodySize": 45,
+    "pages": [
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "endDate",
+      "startDate",
+      "enabled"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://api.central.sophos.com/firewall-licensing/v1/firewall-features",
+    "count": 13,
+    "status": 200,
+    "bodySize": 77,
+    "pages": [
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "items",
+      "pages"
+    ],
+    "queryParams": "page=1&pageSize=100&pageTotal=true&sort=endDate:desc&licenseModel=term,usage&expiryBetween=2026-01-22,2026-04-22"
+  },
+  {
+    "method": "GET",
+    "url": "https://api.central.sophos.com/firewall-licensing/v1/firewall-transfers/pending-transfer-in",
+    "count": 13,
+    "status": 200,
+    "bodySize": 77,
+    "pages": [
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "items",
+      "pages"
+    ],
+    "queryParams": "page=1&pageSize=1&pageTotal=true"
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/api/user/preferences/banners_dismissed",
+    "count": 13,
+    "status": 200,
+    "bodySize": 0,
+    "pages": [
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
+    ],
+    "responseKeys": null,
+    "queryParams": ""
+  },
+  {
+    "method": "POST",
+    "url": "https://central.sophos.com/api/sessions/current",
+    "count": 13,
+    "status": 201,
+    "bodySize": 33,
+    "pages": [
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "ttl",
+      "isEndOfLife"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://api-us01.central.sophos.com/ews-query/v1/attacks",
+    "count": 13,
+    "status": 200,
+    "bodySize": 12,
+    "pages": [
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "items"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://api-us01.central.sophos.com/dashboard-manager/v2/dashboards",
+    "count": 13,
+    "status": 200,
+    "bodySize": 43577,
+    "pages": [
+      "dashboard",
+      "alerts",
+      "devices-computers",
+      "devices-servers",
+      "endpoint-policies",
+      "firewall-management",
+      "threat-analysis-detections",
+      "threat-analysis-cases",
+      "xdr-live-discover",
+      "account-health",
+      "global-settings",
+      "people",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "items"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/xgemail/ems/status",
+    "count": 12,
+    "status": 200,
+    "bodySize": 86,
+    "pages": [
+      "dashboard",
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "display",
+      "status",
+      "hasEmsLicense",
+      "hasCemaLicense"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://api-us01.central.sophos.com/email/v1/statistics/dashboard/widget",
+    "count": 12,
+    "status": 200,
+    "bodySize": 482,
+    "pages": [
+      "dashboard",
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "[14 items] → { name, value }"
+    ],
+    "queryParams": "message_direction=OUTBOUND&messageDirection=OUTBOUND&productType=MAILFLOW&beginDate=2026-02-22T06%3A00%3A00.000Z&endDate=2026-03-24T04%3A59%3A59.999Z&timeZoneOffset=-05%3A00"
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/user-devices",
+    "count": 10,
+    "status": 200,
+    "bodySize": 6004,
+    "pages": [
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "items",
+      "total",
+      "nextKey",
+      "filtered"
+    ],
+    "queryParams": "offset=0&limit=0&endpoint_type=mobile&get_health_status=true"
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/customer-relations/status",
+    "count": 6,
+    "status": 200,
+    "bodySize": 21,
+    "pages": [
+      "dashboard",
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
     ],
     "responseKeys": [
       "status"
-    ]
+    ],
+    "queryParams": ""
   },
   {
     "method": "GET",
-    "url": "https://login.sophos.com/login.sophos.com/B2C_1A_signup_signin/api/SelfAsserted/confirmed",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/reports/event-groupings",
+    "count": 6,
+    "status": 200,
+    "bodySize": 42323,
+    "pages": [
+      "dashboard",
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "Groups",
+      "Discriminators"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/alerts/v2/enabled",
+    "count": 6,
+    "status": 200,
+    "bodySize": 17,
+    "pages": [
+      "dashboard",
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "enabled"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/reports/web-statistics",
+    "count": 6,
+    "status": 200,
+    "bodySize": 99,
+    "pages": [
+      "dashboard",
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "summary"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "POST",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/alerts/retrieve",
+    "count": 6,
+    "status": 200,
+    "bodySize": 4728,
+    "pages": [
+      "dashboard",
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "total",
+      "filtered",
+      "summary",
+      "items",
+      "nextKey"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/xgemail/mfr/fetch-product-type",
+    "count": 6,
+    "status": 200,
+    "bodySize": 45,
+    "pages": [
+      "dashboard",
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "gateway",
+      "mailflow",
+      "ems"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/reports/endpoints",
+    "count": 6,
+    "status": 200,
+    "bodySize": 9417,
+    "pages": [
+      "dashboard",
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "whiteLabelled",
+      "items",
+      "total",
+      "summary",
+      "filtered"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/xgemail/mfr/is-certificate-migration-incomplete",
+    "count": 6,
+    "status": 200,
+    "bodySize": 4,
+    "pages": [
+      "dashboard",
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": null,
+    "queryParams": ""
+  },
+  {
+    "method": "POST",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/alerts/summary",
+    "count": 6,
+    "status": 200,
+    "bodySize": 32,
+    "pages": [
+      "dashboard",
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "high",
+      "low",
+      "medium"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://api-us01.central.sophos.com/account-health-check/v1/scores",
+    "count": 6,
+    "status": 200,
+    "bodySize": 2186,
+    "pages": [
+      "dashboard",
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "items",
+      "pages"
+    ],
+    "queryParams": "pageSize=1&pageTotal=false"
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/v1/account-health-check",
+    "count": 6,
+    "status": 200,
+    "bodySize": 2138,
+    "pages": [
+      "dashboard",
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "tenant",
+      "endpoint",
+      "networkDevice"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://api-us01.central.sophos.com/account-health-check/v1/scores/historical",
+    "count": 6,
+    "status": 200,
+    "bodySize": 3154,
+    "pages": [
+      "dashboard",
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "tenant",
+      "datapoints"
+    ],
+    "queryParams": "startDate=2026-02-23"
+  },
+  {
+    "method": "GET",
+    "url": "https://api-us01.central.sophos.com/account-health-check/v1/scores/regional",
+    "count": 6,
+    "status": 200,
+    "bodySize": 2787,
+    "pages": [
+      "dashboard",
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "bands"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://smc-user-if-cloudstation-us-west-2.prod.hydra.sophos.com/cloud-ui-rs/mobile-admin/reports/summary",
+    "count": 6,
+    "status": 200,
+    "bodySize": 425,
+    "pages": [
+      "dashboard",
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "totalDevices",
+      "totalDevicesPerPlatform",
+      "managedDevicesPerPlatform",
+      "totalDevicesPerHealthStatus"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://cloud-assets.sophos.com/assets/mfe/6a1aa3da8298532ac698615bc2505ed202c0312d/root-nav/sophos-theme/fonts/Sophos-Icon-Font.ttf",
+    "count": 6,
+    "status": 200,
+    "bodySize": 84509,
+    "pages": [
+      "dashboard",
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": null,
+    "queryParams": "enyczq"
+  },
+  {
+    "method": "GET",
+    "url": "https://smc-user-if-cloudstation-us-west-2.prod.hydra.sophos.com/cloud-ui-rs/mobile-admin/meta",
+    "count": 6,
+    "status": 200,
+    "bodySize": 171,
+    "pages": [
+      "dashboard",
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "resources",
+      "serverVersion"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://smc-user-if-cloudstation-us-west-2.prod.hydra.sophos.com/cloud-ui-rs/mobile-admin/status/configuration",
+    "count": 6,
+    "status": 200,
+    "bodySize": 215,
+    "pages": [
+      "dashboard",
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "apns",
+      "xdr",
+      "uav"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/wifi/networks",
+    "count": 5,
+    "status": 200,
+    "bodySize": 557,
+    "pages": [
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "items",
+      "total",
+      "filtered",
+      "nextKey"
+    ],
+    "queryParams": "offset=0&limit=0"
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/wifi/customer_sites",
+    "count": 5,
+    "status": 200,
+    "bodySize": 502,
+    "pages": [
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "items",
+      "total",
+      "filtered",
+      "nextKey"
+    ],
+    "queryParams": "offset=0&limit=0"
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/wifi/access_points",
+    "count": 5,
+    "status": 200,
+    "bodySize": 4314,
+    "pages": [
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "items",
+      "total",
+      "filtered",
+      "nextKey"
+    ],
+    "queryParams": "limit=0&offset=0"
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/servers",
+    "count": 5,
+    "status": 200,
+    "bodySize": 5982,
+    "pages": [
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "items",
+      "total",
+      "filtered",
+      "nextKey"
+    ],
+    "queryParams": "offset=0&limit=0&get_health_status=true"
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/wifix/v1/config/access-points",
+    "count": 5,
+    "status": 200,
+    "bodySize": 55347,
+    "pages": [
+      "endpoint-policies",
+      "firewall-management",
+      "xdr-live-discover",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "[5 items] → { status, name, location, id, comment, description, tags, uptime }"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/api/rss",
+    "count": 4,
+    "status": 200,
+    "bodySize": 1746,
+    "pages": [
+      "endpoint-policies",
+      "firewall-management",
+      "account-health",
+      "logs-audit"
+    ],
+    "responseKeys": [
+      "@version",
+      "channel"
+    ],
+    "queryParams": "url=https://docs.sophos.com/central/RSS/en-us/scloud_feed.xml"
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/threat-indicators/v2/detections/queries/detections/8fd38b41-b04f-47cd-9b44-b057f957b2bd",
+    "count": 2,
+    "status": 200,
+    "bodySize": 181,
+    "pages": [
+      "threat-analysis-detections"
+    ],
+    "responseKeys": [
+      "id",
+      "createdAt",
+      "finishedAt",
+      "resultCount",
+      "result",
+      "status"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/manage/dashboard",
     "count": 1,
     "status": 200,
-    "bodySize": 162110,
+    "bodySize": 138994,
     "pages": [
-      null
+      "dashboard"
     ],
-    "responseKeys": null
+    "responseKeys": null,
+    "queryParams": ""
   },
   {
     "method": "GET",
-    "url": "https://central.sophos.com/manage/endpoint/policies",
+    "url": "https://central.sophos.com/manage/alerts",
     "count": 1,
-    "status": 302,
-    "bodySize": 0,
+    "status": 200,
+    "bodySize": 138994,
+    "pages": [
+      "alerts"
+    ],
+    "responseKeys": null,
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/manage/devices/computers",
+    "count": 1,
+    "status": 200,
+    "bodySize": 138994,
+    "pages": [
+      "devices-computers"
+    ],
+    "responseKeys": null,
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/manage/devices/servers",
+    "count": 1,
+    "status": 200,
+    "bodySize": 138994,
+    "pages": [
+      "devices-servers"
+    ],
+    "responseKeys": null,
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/manage/endpoint-protection/policies",
+    "count": 1,
+    "status": 200,
+    "bodySize": 138994,
     "pages": [
       "endpoint-policies"
     ],
-    "responseKeys": null
+    "responseKeys": null,
+    "queryParams": ""
   },
   {
     "method": "GET",
-    "url": "https://central.sophos.com/manage/endpoint/settings",
+    "url": "https://central.sophos.com/manage/firewall",
     "count": 1,
-    "status": 302,
-    "bodySize": 0,
+    "status": 200,
+    "bodySize": 138994,
     "pages": [
-      "endpoint-settings"
+      "firewall-management"
     ],
-    "responseKeys": null
+    "responseKeys": null,
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/manage/threat-analysis-center/detections",
+    "count": 1,
+    "status": 200,
+    "bodySize": 138994,
+    "pages": [
+      "threat-analysis-detections"
+    ],
+    "responseKeys": null,
+    "queryParams": ""
+  },
+  {
+    "method": "POST",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/threat-indicators/v2/detections/queries/detections",
+    "count": 1,
+    "status": 201,
+    "bodySize": 127,
+    "pages": [
+      "threat-analysis-detections"
+    ],
+    "responseKeys": [
+      "id",
+      "createdAt",
+      "result",
+      "status"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/threat-indicators/v2/detections/timeline",
+    "count": 1,
+    "status": 200,
+    "bodySize": 641,
+    "pages": [
+      "threat-analysis-detections"
+    ],
+    "responseKeys": [
+      "from",
+      "to",
+      "tenant",
+      "resolution",
+      "intervals"
+    ],
+    "queryParams": "resolution=HOUR&from=2026-03-22T22:53:26.558Z&to=2026-03-23T22:53:26.558Z&risk=1,2,3,4,5,6,7,8,9,10&showSuppressed=false"
+  },
+  {
+    "method": "GET",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/threat-indicators/v2/detections/queries/detections/8fd38b41-b04f-47cd-9b44-b057f957b2bd/results",
+    "count": 1,
+    "status": 200,
+    "bodySize": 109399,
+    "pages": [
+      "threat-analysis-detections"
+    ],
+    "responseKeys": [
+      "items",
+      "pages"
+    ],
+    "queryParams": "page=1&pageSize=250"
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/manage/threat-analysis-center/cases",
+    "count": 1,
+    "status": 200,
+    "bodySize": 138994,
+    "pages": [
+      "threat-analysis-cases"
+    ],
+    "responseKeys": null,
+    "queryParams": ""
+  },
+  {
+    "method": "POST",
+    "url": "https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/users/query",
+    "count": 1,
+    "status": 200,
+    "bodySize": 2828,
+    "pages": [
+      "threat-analysis-cases"
+    ],
+    "responseKeys": [
+      "total",
+      "filtered",
+      "items"
+    ],
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://api-us01.central.sophos.com/cases/v1/cases",
+    "count": 1,
+    "status": 200,
+    "bodySize": 5442,
+    "pages": [
+      "threat-analysis-cases"
+    ],
+    "responseKeys": [
+      "items",
+      "pages"
+    ],
+    "queryParams": "page=1&pageSize=20&pageTotal=true&sort=createdAt:desc"
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/manage/threat-analysis-center/live-discover",
+    "count": 1,
+    "status": 200,
+    "bodySize": 138994,
+    "pages": [
+      "xdr-live-discover"
+    ],
+    "responseKeys": null,
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/manage/account-health-check",
+    "count": 1,
+    "status": 200,
+    "bodySize": 138994,
+    "pages": [
+      "account-health"
+    ],
+    "responseKeys": null,
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/manage/config",
+    "count": 1,
+    "status": 200,
+    "bodySize": 138994,
+    "pages": [
+      "global-settings"
+    ],
+    "responseKeys": null,
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/manage/people",
+    "count": 1,
+    "status": 200,
+    "bodySize": 138994,
+    "pages": [
+      "people"
+    ],
+    "responseKeys": null,
+    "queryParams": ""
+  },
+  {
+    "method": "GET",
+    "url": "https://central.sophos.com/manage/logs/audit",
+    "count": 1,
+    "status": 200,
+    "bodySize": 138994,
+    "pages": [
+      "logs-audit"
+    ],
+    "responseKeys": null,
+    "queryParams": ""
   }
 ]

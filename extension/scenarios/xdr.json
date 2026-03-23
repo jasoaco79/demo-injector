@@ -1,0 +1,190 @@
+{
+  "id": "xdr-default",
+  "name": "XDR Investigation",
+  "description": "Multi-stage intrusion: browser exploit → lateral movement to DC → data staging. 4 hosts, 31 detections. Full MITRE kill chain mapped.",
+  "version": 1,
+  "createdAt": "2026-03-23T00:00:00Z",
+  "customer": {
+    "name": "Contoso Healthcare",
+    "industry": "healthcare",
+    "endpointCount": 2500,
+    "serverCount": 186
+  },
+  "alerts": {
+    "mode": "prepend",
+    "items": [
+      {
+        "product": "endpoint",
+        "threat": "Cobalt Strike Beacon",
+        "threat_cleanable": false,
+        "created_at": "-2h",
+        "severity": "high",
+        "actionable": true,
+        "category": "runtime_detections",
+        "when": "-2h",
+        "allowedActions": ["ACKNOWLEDGE"],
+        "location": "SRV-DC01",
+        "type": "Event::Endpoint::CoreDetection::SuspiciousActivity",
+        "source": null,
+        "data": { "created_at": "-2h", "endpoint_type": "server", "endpoint_platform": "windows" },
+        "description": "Suspicious lateral movement detected: Cobalt Strike beacon activity on SRV-DC01 (Domain Controller). Source: DESKTOP-MKT003 via SMB.",
+        "info": "Adaptive Attack Protection activated — enhanced monitoring enabled"
+      },
+      {
+        "product": "endpoint",
+        "threat": "Exploit Detected",
+        "threat_cleanable": false,
+        "created_at": "-3h",
+        "severity": "high",
+        "actionable": true,
+        "category": "runtime_detections",
+        "when": "-3h",
+        "allowedActions": ["ACKNOWLEDGE"],
+        "location": "DESKTOP-MKT003",
+        "type": "Event::Endpoint::HmpaExploit::ApplicationHijack",
+        "source": null,
+        "data": { "created_at": "-3h", "endpoint_type": "computer", "endpoint_platform": "windows" },
+        "description": "Initial access: Exploitation of CVE-2026-1234 in Microsoft Edge on DESKTOP-MKT003. Process injection into svchost.exe detected and blocked.",
+        "info": null
+      },
+      {
+        "product": "endpoint",
+        "threat": null,
+        "threat_cleanable": null,
+        "created_at": "-1h",
+        "severity": "medium",
+        "actionable": false,
+        "category": "runtime_detections",
+        "when": "-1h",
+        "allowedActions": ["ACKNOWLEDGE"],
+        "location": "SRV-DB02",
+        "type": "Event::Endpoint::CoreDetection::SuspiciousQuery",
+        "source": null,
+        "data": { "created_at": "-1h", "endpoint_type": "server", "endpoint_platform": "windows" },
+        "description": "Data staging detected on SRV-DB02: Large database export (customer_records.sql, 2.4GB) copied to C:\\Windows\\Temp. Outbound transfer blocked.",
+        "info": null
+      }
+    ],
+    "summaryDelta": { "high": 2, "medium": 1, "low": 0 }
+  },
+  "cases": {
+    "mode": "prepend",
+    "items": [
+      {
+        "type": "investigation",
+        "name": "Multi-Stage Attack — {{customerName}} (Active)",
+        "managedBy": "self",
+        "createdAt": "-3h",
+        "createdBy": { "name": "Auto-generated" },
+        "updatedAt": "-15m",
+        "status": "investigating",
+        "initialDetection": {
+          "severity": 8,
+          "type": "Threat",
+          "detectionRule": "WIN-IMP-PRC-COBALT-STRIKE-BEACON-1",
+          "mitreAttacks": [
+            { "tactic": { "id": "TA0001", "name": "Initial Access", "techniques": [{ "id": "T1190", "name": "Exploit Public-Facing Application" }] } },
+            { "tactic": { "id": "TA0003", "name": "Persistence", "techniques": [{ "id": "T1053.005", "name": "Scheduled Task" }] } },
+            { "tactic": { "id": "TA0008", "name": "Lateral Movement", "techniques": [{ "id": "T1021.002", "name": "SMB/Windows Admin Shares" }] } },
+            { "tactic": { "id": "TA0009", "name": "Collection", "techniques": [{ "id": "T1560.001", "name": "Archive Collected Data" }] } },
+            { "tactic": { "id": "TA0010", "name": "Exfiltration", "techniques": [{ "id": "T1048.003", "name": "Exfiltration Over Unencrypted Non-C2 Protocol" }] } }
+          ],
+          "time": "-3h",
+          "sensor": { "type": "endpoint", "source": "Sophos Endpoint" }
+        },
+        "assignee": { "name": "SOC Analyst" },
+        "overview": "Multi-stage intrusion: Initial access via browser exploit → persistence via scheduled task → lateral movement to domain controller → data staging from database server. Exfiltration blocked. 4 hosts affected.",
+        "detectionCount": 31,
+        "escalated": true
+      }
+    ]
+  },
+  "detections": {
+    "mode": "prepend",
+    "items": [
+      {
+        "detectionCreatedAt": "-3h",
+        "connectorGeneratedAt": "-3h",
+        "connector": { "id": "SophosSensorID", "type": "endpoint", "vendor": "Sophos", "version": "SED Driver 4.2.1" },
+        "device": { "type": "computer", "hostname": "DESKTOP-MKT003" },
+        "rawData": {
+          "meta_hostname": "DESKTOP-MKT003",
+          "meta_ip_address": "192.168.1.103",
+          "meta_os_name": "Microsoft Windows 11 Enterprise",
+          "meta_username": "mike.jones",
+          "cmdline": "msedge.exe --renderer-process --exploit-heap-spray",
+          "path": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+          "parent_name": "explorer.exe"
+        },
+        "risk": 8,
+        "category": "Threat",
+        "classificationRule": "WIN-IMP-PRC-EXPLOIT-BROWSER-1",
+        "ruleDescription": "Browser exploitation — heap spray detected with shellcode injection",
+        "mitreAttacks": [
+          { "tactic": { "id": "TA0001", "name": "Initial Access", "techniques": [{ "id": "T1190", "name": "Exploit Public-Facing Application" }] } }
+        ],
+        "attackType": "Exploit",
+        "severity": 8,
+        "detectionAttack": { "name": "Multi-Stage Intrusion" },
+        "detectionLicenses": ["XDR"],
+        "geolocation": {},
+        "intelixFileReputation": {},
+        "detectionType": "Threat",
+        "suppressed": false,
+        "caseDescription": "Initial access via browser exploit"
+      },
+      {
+        "detectionCreatedAt": "-2h",
+        "connectorGeneratedAt": "-2h",
+        "connector": { "id": "SophosSensorID", "type": "endpoint", "vendor": "Sophos", "version": "SED Driver 4.2.1" },
+        "device": { "type": "server", "hostname": "SRV-DC01" },
+        "rawData": {
+          "meta_hostname": "SRV-DC01",
+          "meta_ip_address": "192.168.1.10",
+          "meta_os_name": "Microsoft Windows Server 2022",
+          "meta_username": "SYSTEM",
+          "cmdline": "cmd.exe /c \"net group \\\"Domain Admins\\\" /domain && nltest /dclist:\"",
+          "path": "C:\\Windows\\System32\\cmd.exe",
+          "parent_name": "beacon.exe"
+        },
+        "risk": 9,
+        "category": "Threat",
+        "classificationRule": "WIN-IMP-PRC-COBALT-STRIKE-LATERAL-1",
+        "ruleDescription": "Cobalt Strike beacon performing Active Directory reconnaissance",
+        "mitreAttacks": [
+          { "tactic": { "id": "TA0008", "name": "Lateral Movement", "techniques": [{ "id": "T1021.002", "name": "SMB/Windows Admin Shares" }] } }
+        ],
+        "attackType": "C2",
+        "severity": 9,
+        "detectionAttack": { "name": "Multi-Stage Intrusion" },
+        "detectionLicenses": ["XDR"],
+        "geolocation": {},
+        "intelixFileReputation": { "score": 100, "label": "Known Malicious" },
+        "detectionType": "Threat",
+        "suppressed": false,
+        "caseDescription": "Lateral movement to domain controller"
+      }
+    ]
+  },
+  "billing": {
+    "overrideName": "{{customerName}}",
+    "overrideAlias": "{{customerName}}"
+  },
+  "user": {
+    "overrideCompany": "{{customerName}}",
+    "overrideAlias": "{{customerName}}"
+  },
+  "healthScore": {
+    "override": 84
+  },
+  "endpointReport": {
+    "overrideTotal": "{{endpointCount}}",
+    "overrideSummary": {
+      "total": "{{endpointCount}}",
+      "active": "{{endpointCount * 0.87}}",
+      "unprotected": 0,
+      "inactive": "{{endpointCount * 0.05}}",
+      "dormant": "{{endpointCount * 0.08}}"
+    }
+  }
+}

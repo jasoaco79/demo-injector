@@ -1,0 +1,59 @@
+{
+  "id": "healthy-default",
+  "name": "Healthy Environment",
+  "description": "Clean environment — zero alerts, 98% health score, all endpoints protected and compliant. Perfect for 'day in the life' demos.",
+  "version": 1,
+  "createdAt": "2026-03-23T00:00:00Z",
+  "customer": {
+    "name": "Contoso Healthcare",
+    "industry": "healthcare",
+    "endpointCount": 2500,
+    "serverCount": 186
+  },
+  "alerts": {
+    "mode": "override",
+    "items": [],
+    "summaryDelta": { "high": 0, "medium": 0, "low": 0 }
+  },
+  "cases": {
+    "mode": "override",
+    "items": []
+  },
+  "detections": {
+    "mode": "override",
+    "items": []
+  },
+  "billing": {
+    "overrideName": "{{customerName}}",
+    "overrideAlias": "{{customerName}}"
+  },
+  "user": {
+    "overrideCompany": "{{customerName}}",
+    "overrideAlias": "{{customerName}}"
+  },
+  "healthScore": {
+    "override": 98
+  },
+  "endpointReport": {
+    "overrideTotal": "{{endpointCount}}",
+    "overrideSummary": {
+      "total": "{{endpointCount}}",
+      "active": "{{endpointCount * 0.92}}",
+      "unprotected": 0,
+      "inactive": "{{endpointCount * 0.02}}",
+      "dormant": "{{endpointCount * 0.06}}"
+    }
+  },
+  "emailStats": {
+    "override": [
+      { "name": "POTENTIAL_THREATS", "value": 0 },
+      { "name": "INBOUND_MAILS_SCANNED", "value": 2341 },
+      { "name": "MALICIOUS_URL", "value": 0 },
+      { "name": "SPAM", "value": 45 },
+      { "name": "LEGITIMATE", "value": 2296 }
+    ]
+  },
+  "attacks": {
+    "override": { "items": [] }
+  }
+}

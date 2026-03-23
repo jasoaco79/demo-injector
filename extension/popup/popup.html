@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      width: 340px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 13px;
+      color: #1a1a2e;
+      background: #f8f9fa;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #003366 0%, #004d99 100%);
+      color: white;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header h1 {
+      font-size: 15px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header h1 span { font-size: 18px; }
+
+    /* Toggle switch */
+    .toggle-wrap { position: relative; }
+    .toggle {
+      appearance: none;
+      width: 48px;
+      height: 26px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 13px;
+      cursor: pointer;
+      transition: background 0.2s;
+      border: none;
+    }
+    .toggle:checked { background: #22c55e; }
+    .toggle::before {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: white;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    .toggle:checked::before { transform: translateX(22px); }
+
+    .content { padding: 16px; }
+
+    .section { margin-bottom: 14px; }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+
+    select, input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 13px;
+      background: white;
+      color: #1a1a2e;
+      outline: none;
+      transition: border 0.2s;
+    }
+    select:focus, input:focus {
+      border-color: #004d99;
+      box-shadow: 0 0 0 2px rgba(0,77,153,0.15);
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+    .row > .section { flex: 1; }
+
+    .scenario-desc {
+      margin-top: 6px;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .scenario-desc.ransomware { background: #fef2f2; color: #dc2626; }
+    .scenario-desc.healthy { background: #ecfdf5; color: #059669; }
+    .scenario-desc.phishing { background: #fff7ed; color: #ea580c; }
+    .scenario-desc.xdr { background: #eff6ff; color: #2563eb; }
+    .scenario-desc.custom { background: #f5f3ff; color: #7c3aed; }
+
+    .divider {
+      height: 1px;
+      background: #e5e7eb;
+      margin: 14px 0;
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: #f0f0f0;
+      border-top: 1px solid #e5e7eb;
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+    .status-dot.active { background: #22c55e; animation: pulse 2s infinite; }
+    .status-dot.inactive { background: #9ca3af; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.2s;
+    }
+    .btn:active { transform: scale(0.98); }
+
+    .btn-primary { background: #004d99; color: white; }
+    .btn-primary:hover { background: #003366; }
+
+    .btn-secondary { background: #e5e7eb; color: #374151; }
+    .btn-secondary:hover { background: #d1d5db; }
+
+    .btn-danger { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+    .btn-danger:hover { background: #fee2e2; }
+
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .btn-row .btn { flex: 1; }
+
+    /* Import area */
+    .import-area {
+      display: none;
+      margin-top: 10px;
+    }
+    .import-area.visible { display: block; }
+
+    .import-area textarea {
+      width: 100%;
+      height: 120px;
+      padding: 8px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 10px;
+      resize: vertical;
+      outline: none;
+    }
+    .import-area textarea:focus {
+      border-color: #004d99;
+      box-shadow: 0 0 0 2px rgba(0,77,153,0.15);
+    }
+
+    .import-area .btn-row { margin-top: 6px; }
+
+    .toast {
+      display: none;
+      position: fixed;
+      bottom: 50px;
+      left: 16px;
+      right: 16px;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      text-align: center;
+      z-index: 100;
+      animation: slideUp 0.2s ease;
+    }
+    .toast.success { display: block; background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+    .toast.error { display: block; background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+
+    @keyframes slideUp {
+      from { transform: translateY(10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Custom scenario tag */
+    .custom-tag {
+      display: inline-block;
+      padding: 1px 6px;
+      background: #7c3aed;
+      color: white;
+      border-radius: 3px;
+      font-size: 9px;
+      font-weight: 600;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    /* File input */
+    .file-input { display: none; }
+
+    .scenario-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .scenario-actions {
+      display: flex;
+      gap: 4px;
+    }
+
+    .icon-btn {
+      width: 24px;
+      height: 24px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      background: white;
+      cursor: pointer;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .icon-btn:hover { background: #f3f4f6; border-color: #9ca3af; }
+    .icon-btn.danger:hover { background: #fef2f2; border-color: #fecaca; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1><span>🎯</span> Sophos Demo Mode</h1>
+    <div class="toggle-wrap">
+      <input type="checkbox" class="toggle" id="toggle">
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="section">
+      <div class="scenario-header">
+        <div class="section-label">Scenario</div>
+        <div class="scenario-actions">
+          <button class="icon-btn" id="importBtn" title="Import scenario">📥</button>
+          <button class="icon-btn" id="exportBtn" title="Export current scenario">📤</button>
+          <button class="icon-btn" id="fileBtn" title="Load from file">📁</button>
+          <button class="icon-btn danger" id="deleteBtn" title="Delete custom scenario" style="display:none">🗑️</button>
+        </div>
+      </div>
+      <select id="scenario"></select>
+      <div class="scenario-desc" id="scenarioDesc"></div>
+
+      <!-- Import area -->
+      <div class="import-area" id="importArea">
+        <textarea id="importJson" placeholder="Paste scenario JSON here..."></textarea>
+        <div class="btn-row">
+          <button class="btn btn-secondary" id="cancelImport">Cancel</button>
+          <button class="btn btn-primary" id="confirmImport">Import</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-label">Customer Name</div>
+      <input type="text" id="customerName" value="Contoso Healthcare" placeholder="e.g., Acme Corp">
+    </div>
+
+    <div class="row">
+      <div class="section">
+        <div class="section-label">Endpoints</div>
+        <input type="number" id="endpointCount" value="2500" min="10" max="50000">
+      </div>
+      <div class="section">
+        <div class="section-label">Servers</div>
+        <input type="number" id="serverCount" value="186" min="0" max="5000">
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <button class="btn btn-primary" id="reloadBtn">🔄 Apply & Reload Sophos Central</button>
+  </div>
+
+  <div class="status-bar">
+    <span><span class="status-dot inactive" id="statusDot"></span><span id="statusText">Inactive</span></span>
+    <span id="interceptedText"></span>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <input type="file" class="file-input" id="fileInput" accept=".json">
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+{
+  "id": "phishing-default",
+  "name": "Phishing Campaign",
+  "description": "Targeted phishing campaign: 47 emails blocked, 12 quarantined. Credential harvesting URLs detected. Sophos Email + Endpoint working together.",
+  "version": 1,
+  "createdAt": "2026-03-23T00:00:00Z",
+  "customer": {
+    "name": "Contoso Healthcare",
+    "industry": "healthcare",
+    "endpointCount": 2500,
+    "serverCount": 186
+  },
+  "alerts": {
+    "mode": "prepend",
+    "items": [
+      {
+        "product": "xgemail",
+        "threat": "Phishing URL",
+        "threat_cleanable": false,
+        "created_at": "-8m",
+        "severity": "high",
+        "actionable": true,
+        "category": "malware",
+        "when": "-8m",
+        "allowedActions": ["ACKNOWLEDGE"],
+        "location": "SMTP Gateway",
+        "type": "Event::Email::PhishingDetected",
+        "source": null,
+        "data": { "created_at": "-8m", "endpoint_type": "email" },
+        "description": "Targeted phishing campaign detected: 47 emails blocked containing credential harvesting links. Subject: \"Action Required: Verify Your Account\"",
+        "info": "Sophos Email blocked bulk phishing attempt"
+      },
+      {
+        "product": "xgemail",
+        "threat": "Malicious URL",
+        "threat_cleanable": false,
+        "created_at": "-6m",
+        "severity": "high",
+        "actionable": true,
+        "category": "malware",
+        "when": "-6m",
+        "allowedActions": ["ACKNOWLEDGE"],
+        "location": "SMTP Gateway",
+        "type": "Event::Email::MaliciousUrlClicked",
+        "source": null,
+        "data": { "created_at": "-6m", "endpoint_type": "email" },
+        "description": "User sarah.chen@{{customerDomain}} clicked phishing link — blocked by Sophos Web Protection at endpoint level",
+        "info": "Post-delivery click blocked by endpoint web filtering"
+      },
+      {
+        "product": "xgemail",
+        "threat": null,
+        "threat_cleanable": null,
+        "created_at": "-5m",
+        "severity": "medium",
+        "actionable": false,
+        "category": "policy",
+        "when": "-5m",
+        "allowedActions": ["ACKNOWLEDGE"],
+        "location": "SMTP Gateway",
+        "type": "Event::Email::Quarantined",
+        "source": null,
+        "data": { "created_at": "-5m", "endpoint_type": "email" },
+        "description": "12 additional suspicious emails quarantined from same sender domain \"secure-login-verify[.]com\"",
+        "info": null
+      }
+    ],
+    "summaryDelta": { "high": 2, "medium": 1, "low": 0 }
+  },
+  "cases": {
+    "mode": "prepend",
+    "items": []
+  },
+  "detections": {
+    "mode": "prepend",
+    "items": []
+  },
+  "billing": {
+    "overrideName": "{{customerName}}",
+    "overrideAlias": "{{customerName}}"
+  },
+  "user": {
+    "overrideCompany": "{{customerName}}",
+    "overrideAlias": "{{customerName}}"
+  },
+  "healthScore": {
+    "override": 89
+  },
+  "endpointReport": {
+    "overrideTotal": "{{endpointCount}}",
+    "overrideSummary": {
+      "total": "{{endpointCount}}",
+      "active": "{{endpointCount * 0.88}}",
+      "unprotected": 0,
+      "inactive": "{{endpointCount * 0.04}}",
+      "dormant": "{{endpointCount * 0.08}}"
+    }
+  },
+  "emailStats": {
+    "override": [
+      { "name": "POTENTIAL_THREATS", "value": 47 },
+      { "name": "INBOUND_MAILS_SCANNED", "value": 1284 },
+      { "name": "RBL_REJECT", "value": 312 },
+      { "name": "ENTERPRISE_BLOCKED", "value": 2 },
+      { "name": "VIRUS", "value": 3 },
+      { "name": "UNSCANNABLE", "value": 1 },
+      { "name": "INTELIX_THREAT", "value": 8 },
+      { "name": "MALICIOUS_URL", "value": 47 },
+      { "name": "IMPERSONATION", "value": 5 },
+      { "name": "SPAM", "value": 89 },
+      { "name": "BULK", "value": 567 },
+      { "name": "AUTH_FAILURE", "value": 23 },
+      { "name": "DLP_VIOLATION", "value": 0 },
+      { "name": "LEGITIMATE", "value": 784 }
+    ]
+  }
+}

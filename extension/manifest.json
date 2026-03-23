@@ -1,0 +1,60 @@
+{
+  "manifest_version": 3,
+  "name": "Sophos Central Demo Mode",
+  "version": "1.1.0",
+  "description": "Inject demo scenarios into Sophos Central for SE presentations",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://central.sophos.com/*",
+    "https://*.sophos.com/*",
+    "https://*.sophosapis.com/*"
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://central.sophos.com/*",
+        "https://*.api-upe.p.hmr.sophos.com/*",
+        "https://api.central.sophos.com/*",
+        "https://api-*.central.sophos.com/*",
+        "https://*.prod.hydra.sophos.com/*"
+      ],
+      "js": ["content/interceptor.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "https://central.sophos.com/*"
+      ],
+      "js": ["content/bridge.js"],
+      "run_at": "document_start",
+      "world": "ISOLATED"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["scenarios/*.json"],
+      "matches": ["https://central.sophos.com/*"]
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
