@@ -1,6 +1,6 @@
 # Sophos Demo — Build Gameplan
 
-**Goal:** Intercept Sophos Central API responses via mitmproxy to inject demo data. The real UI renders — we just control what data it shows.
+**Goal:** Chrome extension that intercepts Sophos Central API responses to inject demo data. The real UI renders — we just control what data it shows. No proxy, no VPS, no certs — everything runs in the browser.
 
 ---
 
@@ -297,5 +297,229 @@ sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keyc
 - 🎯 Whether actions "succeed" (without actually executing)
 
 ---
+
+---
+
+## Architecture Decision: Chrome Extension (Winner)
+
+### Options Evaluated
+
+| | Reverse Proxy | PAC File | Chrome Extension ✅ |
+|---|---|---|---|
+| **SE Setup** | Zero — just a URL | Download PAC, set proxy (30 sec) | Install extension (one click) |
+| **URL Bar** | `demo.grimstarr.com` | `central.sophos.com` ✅ | `central.sophos.com` ✅ |
+| **Redirects** | Must rewrite ALL domains — complex, fragile | No problem | No problem ✅ |
+| **Multi-domain** | Must proxy 5+ Sophos domains | Automatic | Automatic ✅ |
+| **Cookie/Auth/SSO** | Must rewrite cookies — can break SSO | Works normally | Works normally ✅ |
+| **VPS needed?** | Yes | Yes | **No** ✅ |
+| **SSL/Cert issues** | VPS needs cert | SE must trust CA cert | None ✅ |
+| **Works anywhere** | Only if VPS reachable | Only if proxy reachable | Yes — airplane, customer site ✅ |
+| **Offline possible** | No | No | Could cache responses ✅ |
+| **Distribution** | Share URL | Share PAC + cert install | Share `.crx` or private Web Store ✅ |
+| **Maintenance** | High — URL rewriting breaks | Medium | Low ✅ |
+| **Build effort** | 3-4 days | 2-3 hours | 2-3 hours |
+| **Risk of breaking** | High | Medium | Low ✅ |
+
+### Why Chrome Extension Wins
+
+1. **No VPS, no proxy, no certs** — everything runs in the browser
+2. **Real URL** — `central.sophos.com` in the address bar
+3. **Zero redirect issues** — browser handles all navigation normally
+4. **Zero SSL issues** — extension reads responses after decryption
+5. **Works anywhere** — coffee shop, customer site, airplane WiFi
+6. **Easy to distribute** — share a `.crx` file or private Chrome Web Store link
+7. **Lowest maintenance** — Sophos UI updates don't break anything
+
+---
+
+## Chrome Extension Architecture
+
+### How It Works
+
+```
+SE clicks extension icon → picks scenario → toggles ON
+    ↓
+Browser loads central.sophos.com normally (real login, real SSL)
+    ↓
+Extension's Service Worker intercepts API responses:
+    ↓
+┌─────────────────────────────────────────────────────┐
+│  Content script overrides fetch/XMLHttpRequest      │
+│                                                     │
+│  Before response reaches React app:                 │
+│    • Inject fake alerts into alert list response    │
+│    • Swap tenant name in all responses              │
+│    • Override endpoint counts                       │
+│    • Block action POSTs → return fake success       │
+│    • Modify dashboard stats                         │
+│                                                     │
+│  React app renders normally — doesn't know          │
+│  the data was modified                              │
+└─────────────────────────────────────────────────────┘
+```
+
+### Extension Structure
+
+```
+sophos-demo-extension/
+├── manifest.json              — Chrome Extension Manifest V3
+├── popup/
+│   ├── popup.html             — Scenario picker UI
+│   ├── popup.css              — Sophos-branded styling
+│   └── popup.js               — Toggle, scenario selection, settings
+├── background/
+│   └── service-worker.js      — Manages state, messaging between popup ↔ content
+├── content/
+│   └── interceptor.js         — Injected into central.sophos.com
+│       ├── Override fetch()   — Intercept API responses
+│       ├── Override XHR       — Intercept XMLHttpRequest
+│       ├── applyScenario()    — Modify response JSON per active scenario
+│       └── blockActions()     — Fake-succeed POST/PUT/DELETE
+├── scenarios/
+│   ├── base.json              — Always-on: rename tenant, block writes
+│   ├── ransomware.json        — Ransomware attack scenario data
+│   ├── healthy.json           — Clean environment, big numbers
+│   ├── phishing.json          — Email phishing campaign
+│   └── xdr.json               — XDR investigation, threat graph
+├── icons/
+│   ├── icon16.png
+│   ├── icon48.png
+│   └── icon128.png
+└── README.md
+```
+
+### Popup UI
+
+```
+┌──────────────────────────────┐
+│  🎯 Sophos Demo Mode    [ON] │
+│  ─────────────────────────── │
+│  Scenario: [Ransomware  ▾]  │
+│  ─────────────────────────── │
+│  Customer: [Contoso Health ] │
+│  Endpoints: [2,500        ] │
+│  ─────────────────────────── │
+│  ✅ Inject demo alerts       │
+│  ✅ Block real actions        │
+│  ✅ Override device counts    │
+│  ☐  Timed events (advanced) │
+│  ─────────────────────────── │
+│  Status: 🟢 Active           │
+│  Intercepted: 47 requests    │
+└──────────────────────────────┘
+```
+
+### Content Script Approach (interceptor.js)
+
+```javascript
+// Override fetch to intercept API responses
+const originalFetch = window.fetch;
+window.fetch = async function(...args) {
+    const response = await originalFetch.apply(this, args);
+    const url = args[0]?.url || args[0];
+    
+    // Check if this URL matches any interception rules
+    if (demoMode && isInterceptableURL(url)) {
+        const cloned = response.clone();
+        const data = await cloned.json();
+        const modified = applyScenario(url, data);
+        return new Response(JSON.stringify(modified), {
+            status: response.status,
+            statusText: response.statusText,
+            headers: response.headers,
+        });
+    }
+    
+    // Block dangerous actions
+    if (demoMode && isDangerousAction(url, args[0]?.method)) {
+        return new Response(JSON.stringify({ success: true }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    }
+    
+    return response;
+};
+```
+
+### Sophos Central Domains to Intercept
+
+```
+central.sophos.com          — main console + APIs
+*.sophosapis.com            — API gateway
+cloud.sophos.com            — some API endpoints
+dzr-api-amzn-*.sophos.com   — regional API endpoints
+```
+
+Login domains (pass through, don't intercept):
+```
+login.sophos.com            — authentication
+id.sophos.com               — identity/OAuth
+```
+
+### Distribution
+
+**Option A — Direct .crx file:**
+- Build extension → zip → rename to .crx
+- Share via Google Drive, Slack, email
+- SE drags into chrome://extensions with developer mode ON
+
+**Option B — Private Chrome Web Store:**
+- Publish as unlisted on Chrome Web Store
+- Share direct install link with SE team
+- Auto-updates when you push new versions
+
+**Option C — Enterprise policy deployment:**
+- If Sophos uses Google Workspace / Chrome Enterprise
+- Force-install via policy — zero SE action needed
+
+---
+
+## Updated Build Plan
+
+### Phase 1: API Discovery (~15 min)
+Same as before — discover all API endpoints and response shapes.
+Requires Chrome logged into Sophos Central.
+
+### Phase 2: Build Extension (~2-3 hours)
+1. Manifest V3 setup with content script permissions for `*.sophos.com`
+2. Content script with fetch/XHR override
+3. Popup UI with scenario selector + customer name input
+4. Background service worker for state management
+5. Base scenario (tenant rename, action blocking)
+
+### Phase 3: Demo Scenarios (~1 hour)
+Build 4 scenario JSON files from discovered API shapes.
+Each scenario defines what to inject/modify per endpoint.
+
+### Phase 4: Test & Polish (~30 min)
+1. Load extension in Chrome
+2. Navigate Sophos Central with each scenario active
+3. Verify injected data renders correctly
+4. Verify actions are blocked
+5. Test toggle on/off
+
+### Phase 5: Package & Distribute (~15 min)
+1. Build icons
+2. Package as .crx
+3. Write SE-facing README
+4. Share with team
+
+**Total estimated time: 4-5 hours**
+
+---
+
+## Session Checklist (When You're at the Machine)
+
+1. [ ] Open Chrome with `--remote-debugging-port=9222`
+2. [ ] Log into Sophos Central
+3. [ ] Run API discovery: `node scripts/discover-apis.mjs`
+4. [ ] Review `data/api-discovery.json` — map endpoint → response shapes
+5. [ ] Build extension manifest + content script
+6. [ ] Build popup UI with scenario picker
+7. [ ] Create 4 scenario JSON files from real API data
+8. [ ] Load unpacked extension in Chrome
+9. [ ] Test each scenario against live Sophos Central
+10. [ ] Package and commit
 
 *Ready to build when you have Chrome logged into Sophos Central.*
