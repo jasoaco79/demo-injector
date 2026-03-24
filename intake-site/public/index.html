@@ -412,6 +412,7 @@
     <div class="topbar-sep"></div>
     <span class="topbar-subtitle">Demo Scenario Builder</span>
     <div class="topbar-right">
+      <span class="topbar-badge" id="providerBadge" title="Loading…">⏳ CHECKING LLM…</span>
       <span class="topbar-badge">INTERNAL TOOL</span>
     </div>
   </header>
@@ -688,6 +689,35 @@
   </div>
 
   <script>
+    /* ── LLM Provider Check ── */
+    let llmAvailable = false;
+    (async () => {
+      try {
+        const resp = await fetch('/api/provider');
+        const info = await resp.json();
+        const badge = document.getElementById('providerBadge');
+        if (info.available) {
+          llmAvailable = true;
+          badge.textContent = `✅ ${info.name}`;
+          badge.title = `Model: ${info.model}`;
+          badge.style.background = 'var(--sophos-green)';
+        } else {
+          badge.textContent = '⚠️ NO LLM';
+          badge.title = 'No LLM configured — set ANTHROPIC_API_KEY, OPENAI_API_KEY, or LLM_BASE_URL';
+          badge.style.background = 'var(--sophos-orange)';
+          // Disable generate button with explanation
+          const btn = document.getElementById('genBtn');
+          btn.disabled = true;
+          btn.title = 'No LLM provider configured. Set ANTHROPIC_API_KEY, OPENAI_API_KEY, or LLM_BASE_URL.';
+          const err = document.getElementById('errBox');
+          err.innerHTML = '⚠️ <strong>No LLM configured.</strong> The form is available but AI generation requires an API key. Set <code>ANTHROPIC_API_KEY</code>, <code>OPENAI_API_KEY</code>, or <code>LLM_BASE_URL</code> (for LM Studio / Ollama) and restart the server. Built-in scenarios in the Chrome extension still work without this.';
+          err.classList.add('show');
+        }
+      } catch (e) {
+        console.warn('Provider check failed:', e);
+      }
+    })();
+
     /* ── Scenario Cards ── */
     const cards = document.querySelectorAll('.sc-card');
     const scInput = document.getElementById('scenarioType');

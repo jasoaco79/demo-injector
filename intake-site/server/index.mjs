@@ -1,8 +1,15 @@
 /**
  * Sophos Demo Scenario Builder — Server
  * 
- * Serves the intake form and uses Pi SDK (with OAuth) to generate 
- * scenario JSON from SE-provided demo requirements.
+ * Serves the intake form and generates scenario JSON via LLM.
+ * 
+ * Supported LLM backends (auto-detected in priority order):
+ *   1. Pi SDK (OAuth — uses Claude Max subscription)
+ *   2. Anthropic API (ANTHROPIC_API_KEY)
+ *   3. OpenAI API (OPENAI_API_KEY)
+ *   4. Local LLM (LLM_BASE_URL — LM Studio, Ollama, etc.)
+ * 
+ * See server/llm.mjs for configuration details.
  */
 
 import { createServer } from 'http';
@@ -10,36 +17,21 @@ import { readFile, readFileSync } from 'fs';
 import { join, extname } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import {
-  AuthStorage,
-  ModelRegistry,
-  SessionManager,
-  SettingsManager,
-  DefaultResourceLoader,
-  createAgentSession,
-} from '@mariozechner/pi-coding-agent';
+import { initLLM, getLLM, generate } from './llm.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = join(__dirname, '..', 'public');
 const PORT = process.env.PORT || 3847;
 
-// ─── Pi SDK Setup (OAuth) ────────────────────────────────────────────
-const authStorage = AuthStorage.create();
-const modelRegistry = new ModelRegistry(authStorage);
-
-// Verify auth on startup
-const startupKey = await authStorage.getApiKey('anthropic').catch(() => null);
-if (!startupKey) {
-  console.error('❌ No Anthropic API key. Run `pi` and authenticate first.');
-  process.exit(1);
-}
+// ─── Initialize LLM Provider ────────────────────────────────────────
+const llm = await initLLM();
 
 // ─── Load Schema + Examples ──────────────────────────────────────────
 const SCHEMA_MD = readFileSync(join(__dirname, '../../extension/scenarios/SCHEMA.md'), 'utf8');
 const RANSOMWARE_EXAMPLE = readFileSync(join(__dirname, '../../extension/scenarios/ransomware.json'), 'utf8');
 const XDR_EXAMPLE = readFileSync(join(__dirname, '../../extension/scenarios/xdr.json'), 'utf8');
 
-// ─── System Prompt ───────────────────────────────────────────────────
+// ─── System Prompts ──────────────────────────────────────────────────
 const SCENARIO_SYSTEM_PROMPT = `You are a Sophos Central demo scenario generator for Sales Engineers.
 
 Your job: take demo requirements from an SE and produce a valid scenario JSON file that the Sophos Central Demo Mode Chrome extension can load.
@@ -90,44 +82,24 @@ Use real threat names and MITRE techniques:
 **Exfiltration:** C2 Channel (T1041), Web Service (T1567), Encrypted Channel (T1573)
 **Impact:** Data Encrypted (T1486), Inhibit Recovery (T1490), Data Destruction (T1485)`;
 
+const DEMO_SCRIPT_SYSTEM_PROMPT = `You are a Sophos SE demo coach. Generate a step-by-step demo talk track for a Sophos Central demo.
 
-// ─── Generate Scenario via Pi SDK Session ────────────────────────────
+Output a markdown document with:
+1. A 1-paragraph OPENING HOOK (what to say to set the scene)
+2. Step-by-step WALKTHROUGH: each step has a PAGE to navigate to, WHAT TO SHOW, and WHAT TO SAY (exact words in quotes)
+3. Key TALKING POINTS to hit at each step
+4. OBJECTION HANDLERS for common prospect questions
+5. A CLOSING statement
+
+Make the talk track natural and conversational — not robotic. The SE should sound like they're telling a story, not reading a script.
+Keep it practical — 15-20 minutes total demo time.
+Reference specific data from the scenario (alert names, hostnames, MITRE techniques, health scores).`;
+
+
+// ─── Generate Scenario ───────────────────────────────────────────────
 async function generateScenario(formData) {
   const userPrompt = buildUserPrompt(formData);
-
-  // Create a lightweight in-memory session for this generation
-  const model = modelRegistry.find('anthropic', 'claude-sonnet-4-20250514');
-  if (!model) throw new Error('Model claude-sonnet-4 not found');
-
-  const loader = new DefaultResourceLoader({
-    systemPromptOverride: () => SCENARIO_SYSTEM_PROMPT,
-  });
-  await loader.reload();
-
-  const { session } = await createAgentSession({
-    model,
-    thinkingLevel: 'off',
-    authStorage,
-    modelRegistry,
-    tools: [],           // No tools needed — pure text generation
-    sessionManager: SessionManager.inMemory(),
-    settingsManager: SettingsManager.inMemory({
-      compaction: { enabled: false },
-      retry: { enabled: true, maxRetries: 2 },
-    }),
-    resourceLoader: loader,
-  });
-
-  // Collect the full response text
-  let responseText = '';
-  session.subscribe((event) => {
-    if (event.type === 'message_update' && event.assistantMessageEvent.type === 'text_delta') {
-      responseText += event.assistantMessageEvent.delta;
-    }
-  });
-
-  await session.prompt(userPrompt);
-  session.dispose();
+  const responseText = await generate(SCENARIO_SYSTEM_PROMPT, userPrompt);
 
   // Extract JSON from response
   let json = responseText.trim();
@@ -209,6 +181,18 @@ function buildUserPrompt(form) {
 }
 
 
+// ─── Industry Presets ────────────────────────────────────────────────
+const INDUSTRY_PRESETS = {
+  healthcare: { hostnames: ['HIS-SRV', 'PACS-WKS', 'RX-STATION', 'EHR-DB', 'NURSING-WKS', 'LAB-PC', 'RADIOLOGY-WKS', 'BILLING-WS'], departments: ['Radiology', 'Nursing', 'Billing', 'Pharmacy', 'IT', 'Administration', 'Lab'], users: ['sarah.chen', 'dr.patel', 'nurse.williams', 'admin.garcia', 'rx.johnson'], compliance: 'HIPAA', dataTypes: 'patient records, PHI, medical imaging' },
+  finance: { hostnames: ['TRADE-WKS', 'ATM-SRV', 'SWIFT-GW', 'RISK-DB', 'COMPLY-WKS', 'TREASURY-PC', 'AUDIT-WKS'], departments: ['Trading', 'Treasury', 'Compliance', 'Risk', 'IT', 'Operations'], users: ['trader.smith', 'cfo.martinez', 'risk.analyst', 'auditor.jones'], compliance: 'PCI-DSS, SOX', dataTypes: 'financial transactions, customer PII, trading data' },
+  manufacturing: { hostnames: ['HMI-STATION', 'PLC-GW', 'MES-SRV', 'SCADA-WKS', 'ERP-DB', 'QC-STATION', 'ENGR-WKS'], departments: ['Production', 'Engineering', 'Quality', 'IT', 'Maintenance', 'Supply Chain'], users: ['eng.kumar', 'ops.wilson', 'maint.brown', 'qa.davis'], compliance: 'IEC 62443, NIST', dataTypes: 'production data, SCADA systems, trade secrets' },
+  education: { hostnames: ['LAB-PC', 'ADMIN-WKS', 'SIS-SRV', 'LMS-DB', 'LIBRARY-WKS', 'RESEARCH-WKS'], departments: ['IT Services', 'Administration', 'Research', 'Library', 'Student Affairs'], users: ['prof.anderson', 'admin.taylor', 'student.kim', 'it.harris'], compliance: 'FERPA', dataTypes: 'student records, research data, financial aid' },
+  retail: { hostnames: ['POS-TERM', 'ECOM-SRV', 'INV-WKS', 'WMS-DB', 'STORE-MGR', 'LOYALTY-SRV'], departments: ['Point of Sale', 'E-Commerce', 'Inventory', 'IT', 'Marketing'], users: ['store.mgr', 'ecom.admin', 'inv.specialist'], compliance: 'PCI-DSS', dataTypes: 'customer payment data, loyalty information, inventory' },
+  government: { hostnames: ['SECURE-WKS', 'AGENCY-SRV', 'CAC-TERM', 'RECORDS-DB', 'PORTAL-SRV'], departments: ['IT Security', 'Records', 'Public Affairs', 'Legal', 'Administration'], users: ['analyst.doe', 'admin.smith', 'dir.johnson'], compliance: 'FISMA, FedRAMP', dataTypes: 'citizen PII, classified documents, case files' },
+  legal: { hostnames: ['ATTY-WKS', 'DOC-SRV', 'CASE-MGR', 'EDISCOVERY-DB', 'BILLING-WKS'], departments: ['Litigation', 'Corporate', 'Compliance', 'IT', 'Billing'], users: ['atty.williams', 'paralegal.jones', 'partner.chen'], compliance: 'attorney-client privilege', dataTypes: 'case files, client communications, billing records' },
+};
+
+
 // ─── HTTP Server ─────────────────────────────────────────────────────
 
 const MIME_TYPES = {
@@ -232,25 +216,28 @@ const server = createServer(async (req, res) => {
     return;
   }
 
-  // API: Industry presets (#2)
+  // API: LLM provider info
+  if (req.method === 'GET' && req.url === '/api/provider') {
+    const provider = getLLM();
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      available: !!provider,
+      name: provider?.name || null,
+      model: provider?.model || null,
+    }));
+    return;
+  }
+
+  // API: Industry presets
   if (req.method === 'GET' && req.url.startsWith('/api/presets/')) {
     const industry = req.url.split('/api/presets/')[1];
-    const presets = {
-      healthcare: { hostnames: ['HIS-SRV', 'PACS-WKS', 'RX-STATION', 'EHR-DB', 'NURSING-WKS', 'LAB-PC', 'RADIOLOGY-WKS', 'BILLING-WS'], departments: ['Radiology', 'Nursing', 'Billing', 'Pharmacy', 'IT', 'Administration', 'Lab'], users: ['sarah.chen', 'dr.patel', 'nurse.williams', 'admin.garcia', 'rx.johnson'], compliance: 'HIPAA', dataTypes: 'patient records, PHI, medical imaging' },
-      finance: { hostnames: ['TRADE-WKS', 'ATM-SRV', 'SWIFT-GW', 'RISK-DB', 'COMPLY-WKS', 'TREASURY-PC', 'AUDIT-WKS'], departments: ['Trading', 'Treasury', 'Compliance', 'Risk', 'IT', 'Operations'], users: ['trader.smith', 'cfo.martinez', 'risk.analyst', 'auditor.jones'], compliance: 'PCI-DSS, SOX', dataTypes: 'financial transactions, customer PII, trading data' },
-      manufacturing: { hostnames: ['HMI-STATION', 'PLC-GW', 'MES-SRV', 'SCADA-WKS', 'ERP-DB', 'QC-STATION', 'ENGR-WKS'], departments: ['Production', 'Engineering', 'Quality', 'IT', 'Maintenance', 'Supply Chain'], users: ['eng.kumar', 'ops.wilson', 'maint.brown', 'qa.davis'], compliance: 'IEC 62443, NIST', dataTypes: 'production data, SCADA systems, trade secrets' },
-      education: { hostnames: ['LAB-PC', 'ADMIN-WKS', 'SIS-SRV', 'LMS-DB', 'LIBRARY-WKS', 'RESEARCH-WKS'], departments: ['IT Services', 'Administration', 'Research', 'Library', 'Student Affairs'], users: ['prof.anderson', 'admin.taylor', 'student.kim', 'it.harris'], compliance: 'FERPA', dataTypes: 'student records, research data, financial aid' },
-      retail: { hostnames: ['POS-TERM', 'ECOM-SRV', 'INV-WKS', 'WMS-DB', 'STORE-MGR', 'LOYALTY-SRV'], departments: ['Point of Sale', 'E-Commerce', 'Inventory', 'IT', 'Marketing'], users: ['store.mgr', 'ecom.admin', 'inv.specialist'], compliance: 'PCI-DSS', dataTypes: 'customer payment data, loyalty information, inventory' },
-      government: { hostnames: ['SECURE-WKS', 'AGENCY-SRV', 'CAC-TERM', 'RECORDS-DB', 'PORTAL-SRV'], departments: ['IT Security', 'Records', 'Public Affairs', 'Legal', 'Administration'], users: ['analyst.doe', 'admin.smith', 'dir.johnson'], compliance: 'FISMA, FedRAMP', dataTypes: 'citizen PII, classified documents, case files' },
-      legal: { hostnames: ['ATTY-WKS', 'DOC-SRV', 'CASE-MGR', 'EDISCOVERY-DB', 'BILLING-WKS'], departments: ['Litigation', 'Corporate', 'Compliance', 'IT', 'Billing'], users: ['atty.williams', 'paralegal.jones', 'partner.chen'], compliance: 'attorney-client privilege', dataTypes: 'case files, client communications, billing records' },
-    };
-    const preset = presets[industry] || {};
+    const preset = INDUSTRY_PRESETS[industry] || {};
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(preset));
     return;
   }
 
-  // API: Generate demo script (#3)
+  // API: Generate demo script
   if (req.method === 'POST' && req.url === '/api/demo-script') {
     let body = '';
     req.on('data', (chunk) => { body += chunk; });
@@ -259,41 +246,10 @@ const server = createServer(async (req, res) => {
         const { scenario } = JSON.parse(body);
         console.log(`📝 Generating demo script for: ${scenario.name || scenario.id}`);
 
-        const model = modelRegistry.find('anthropic', 'claude-sonnet-4-20250514');
-        if (!model) throw new Error('Model not found');
-
-        const loader = new DefaultResourceLoader({
-          systemPromptOverride: () => `You are a Sophos SE demo coach. Generate a step-by-step demo talk track for a Sophos Central demo.
-
-Output a markdown document with:
-1. A 1-paragraph OPENING HOOK (what to say to set the scene)
-2. Step-by-step WALKTHROUGH: each step has a PAGE to navigate to, WHAT TO SHOW, and WHAT TO SAY (exact words in quotes)
-3. Key TALKING POINTS to hit at each step
-4. OBJECTION HANDLERS for common prospect questions
-5. A CLOSING statement
-
-Make the talk track natural and conversational — not robotic. The SE should sound like they're telling a story, not reading a script.
-Keep it practical — 15-20 minutes total demo time.
-Reference specific data from the scenario (alert names, hostnames, MITRE techniques, health scores).`,
-        });
-        await loader.reload();
-
-        const { session } = await createAgentSession({
-          model, thinkingLevel: 'off', authStorage, modelRegistry,
-          tools: [], sessionManager: SessionManager.inMemory(),
-          settingsManager: SettingsManager.inMemory({ compaction: { enabled: false } }),
-          resourceLoader: loader,
-        });
-
-        let responseText = '';
-        session.subscribe((event) => {
-          if (event.type === 'message_update' && event.assistantMessageEvent.type === 'text_delta') {
-            responseText += event.assistantMessageEvent.delta;
-          }
-        });
-
-        await session.prompt(`Generate a demo talk track for this scenario:\n\n${JSON.stringify(scenario, null, 2)}`);
-        session.dispose();
+        const responseText = await generate(
+          DEMO_SCRIPT_SYSTEM_PROMPT,
+          `Generate a demo talk track for this scenario:\n\n${JSON.stringify(scenario, null, 2)}`
+        );
 
         console.log(`✅ Demo script generated (${responseText.length} chars)`);
         res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -350,10 +306,17 @@ Reference specific data from the scenario (alert names, hostnames, MITRE techniq
 });
 
 server.listen(PORT, '0.0.0.0', () => {
+  const provider = getLLM();
   console.log(`\n🎯 Sophos Demo Scenario Builder`);
   console.log(`   Local:     http://localhost:${PORT}`);
-  console.log(`   Tailscale: http://100.86.227.112:${PORT}`);
-  console.log(`   Auth: ✅ Pi OAuth (auto-refresh)`);
-  console.log(`   Model: claude-sonnet-4`);
-  console.log(`   Schema: ✅ loaded\n`);
+  console.log(`   LLM:       ${provider ? `✅ ${provider.name} (${provider.model})` : '❌ No LLM configured — AI generation unavailable'}`);
+  console.log(`   Schema:    ✅ loaded\n`);
+
+  if (!provider) {
+    console.log(`   To enable AI generation, set one of:`);
+    console.log(`     ANTHROPIC_API_KEY=sk-ant-...`);
+    console.log(`     OPENAI_API_KEY=sk-...`);
+    console.log(`     LLM_BASE_URL=http://localhost:1234/v1  (LM Studio / Ollama)`);
+    console.log(`     Or install Pi SDK: npm link @mariozechner/pi-coding-agent\n`);
+  }
 });

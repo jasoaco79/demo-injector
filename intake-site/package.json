@@ -1,13 +1,13 @@
 {
   "name": "sophos-demo-intake",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
   "scripts": {
     "start": "node server/index.mjs",
     "dev": "node --watch server/index.mjs"
   },
-  "dependencies": {
+  "optionalDependencies": {
     "@mariozechner/pi-coding-agent": "^0.62.0"
   }
 }
