@@ -358,6 +358,72 @@ export function getLLM() {
   return activeProvider;
 }
 
+/**
+ * Hot-swap the active LLM provider at runtime.
+ * Called from the settings API to change providers without restarting.
+ * @param {string} provider — 'pi' | 'anthropic' | 'openai' | 'local'
+ * @param {object} opts — { apiKey, model, baseUrl }
+ */
+export async function setLLM(provider, opts = {}) {
+  // Temporarily set env vars for the provider constructors
+  const prevApiKeyAnthropic = process.env.ANTHROPIC_API_KEY;
+  const prevApiKeyOpenAI = process.env.OPENAI_API_KEY;
+  const prevBaseUrl = process.env.LLM_BASE_URL;
+  const prevModel = process.env.LLM_MODEL;
+
+  try {
+    if (opts.model) process.env.LLM_MODEL = opts.model;
+
+    if (provider === 'pi') {
+      const p = await createPiProvider();
+      if (!p) throw new Error('Pi SDK not available. Make sure @mariozechner/pi-coding-agent is installed and authenticated.');
+      activeProvider = p;
+    } else if (provider === 'anthropic') {
+      if (opts.apiKey) process.env.ANTHROPIC_API_KEY = opts.apiKey;
+      const p = createAnthropicProvider();
+      if (!p) throw new Error('Anthropic requires ANTHROPIC_API_KEY.');
+      activeProvider = p;
+    } else if (provider === 'openai') {
+      if (opts.apiKey) process.env.OPENAI_API_KEY = opts.apiKey;
+      const p = createOpenAIProvider();
+      if (!p) throw new Error('OpenAI requires OPENAI_API_KEY.');
+      activeProvider = p;
+    } else if (provider === 'local') {
+      if (opts.baseUrl) process.env.LLM_BASE_URL = opts.baseUrl;
+      activeProvider = createLocalProvider();
+    } else {
+      throw new Error(`Unknown provider: ${provider}`);
+    }
+
+    return activeProvider;
+  } catch (err) {
+    // Restore env on failure
+    process.env.ANTHROPIC_API_KEY = prevApiKeyAnthropic || '';
+    process.env.OPENAI_API_KEY = prevApiKeyOpenAI || '';
+    process.env.LLM_BASE_URL = prevBaseUrl || '';
+    process.env.LLM_MODEL = prevModel || '';
+    if (!process.env.ANTHROPIC_API_KEY) delete process.env.ANTHROPIC_API_KEY;
+    if (!process.env.OPENAI_API_KEY) delete process.env.OPENAI_API_KEY;
+    if (!process.env.LLM_BASE_URL) delete process.env.LLM_BASE_URL;
+    if (!process.env.LLM_MODEL) delete process.env.LLM_MODEL;
+    throw err;
+  }
+}
+
+/**
+ * Test the current provider with a minimal generation.
+ */
+export async function testLLM() {
+  if (!activeProvider) throw new Error('No LLM provider configured.');
+  const start = Date.now();
+  const result = await activeProvider.generate(
+    'You are a helpful assistant. Reply in exactly one short sentence.',
+    'Say "LLM connection successful" and nothing else.'
+  );
+  const elapsed = Date.now() - start;
+  return { ok: true, response: result.trim(), elapsed, provider: activeProvider.name, model: activeProvider.model };
+}
+
 export async function generate(systemPrompt, userPrompt) {
   if (!activeProvider) {
     throw new Error('No LLM provider configured. Set ANTHROPIC_API_KEY, OPENAI_API_KEY, or LLM_BASE_URL.');

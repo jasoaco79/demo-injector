@@ -412,9 +412,12 @@
     <div class="topbar-sep"></div>
     <span class="topbar-subtitle">Demo Scenario Builder</span>
     <div class="topbar-right">
+      <a href="/" style="color:white; text-decoration:none; font-size:13px; font-weight:600;">🔧 Builder</a>
       <a href="/scenarios.html" style="color:rgba(255,255,255,0.7); text-decoration:none; font-size:13px; transition:color 0.15s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">📚 Library</a>
+      <a href="/guide.html" style="color:rgba(255,255,255,0.7); text-decoration:none; font-size:13px; transition:color 0.15s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">📖 Guide</a>
+      <a href="/settings.html" style="color:rgba(255,255,255,0.7); text-decoration:none; font-size:13px; transition:color 0.15s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">⚙️ Settings</a>
       <span class="topbar-badge" id="providerBadge" title="Loading…">⏳ CHECKING LLM…</span>
-      <span class="topbar-badge">INTERNAL TOOL</span>
+      <button onclick="fetch('/api/logout',{method:'POST'}).then(()=>location.href='/login.html')" style="background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.7); border:1px solid rgba(255,255,255,0.15); padding:4px 12px; border-radius:4px; font-family:inherit; font-size:12px; cursor:pointer;" onmouseover="this.style.color='white';this.style.borderColor='rgba(255,255,255,0.3)'" onmouseout="this.style.color='rgba(255,255,255,0.7)';this.style.borderColor='rgba(255,255,255,0.15)'">🚪 Logout</button>
     </div>
   </header>
 

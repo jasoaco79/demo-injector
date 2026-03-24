@@ -13,11 +13,14 @@
  */
 
 import { createServer } from 'http';
-import { readFile, readFileSync, readdirSync } from 'fs';
+import { readFile, readFileSync, readdirSync, existsSync, statSync } from 'fs';
 import { join, extname } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { initLLM, getLLM, generate, generateStream } from './llm.mjs';
+import { execSync } from 'child_process';
+import { initLLM, getLLM, setLLM, testLLM, generate, generateStream } from './llm.mjs';
+import { randomBytes, createHash } from 'crypto';
+import { writeFileSync } from 'fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = join(__dirname, '..', 'public');
@@ -25,6 +28,72 @@ const PORT = process.env.PORT || 3847;
 
 // ─── Initialize LLM Provider ────────────────────────────────────────
 const llm = await initLLM();
+
+// ─── Settings Persistence ────────────────────────────────────────────
+const SETTINGS_PATH = join(__dirname, '..', '.settings.json');
+const SERVER_START = Date.now();
+
+function loadSettings() {
+  try {
+    if (existsSync(SETTINGS_PATH)) return JSON.parse(readFileSync(SETTINGS_PATH, 'utf8'));
+  } catch {}
+  return {};
+}
+
+function saveSettings(data) {
+  const current = loadSettings();
+  const merged = { ...current, ...data };
+  writeFileSync(SETTINGS_PATH, JSON.stringify(merged, null, 2), 'utf8');
+  return merged;
+}
+
+// ─── Auth ────────────────────────────────────────────────────────────
+const DEFAULT_PASSCODE = 'SophosSE2026!';
+const sessions = new Map(); // token → { created, ip }
+
+function getPasscode() {
+  const settings = loadSettings();
+  return settings.passcode || DEFAULT_PASSCODE;
+}
+
+function hashPasscode(passcode) {
+  return createHash('sha256').update(passcode).digest('hex');
+}
+
+function createSession(ip) {
+  const token = randomBytes(32).toString('hex');
+  sessions.set(token, { created: Date.now(), ip });
+  // Expire sessions after 24 hours
+  setTimeout(() => sessions.delete(token), 24 * 60 * 60 * 1000);
+  return token;
+}
+
+function getSessionToken(req) {
+  const cookie = req.headers.cookie || '';
+  const match = cookie.match(/(?:^|;\s*)sophos_demo_session=([a-f0-9]+)/);
+  return match ? match[1] : null;
+}
+
+function isAuthenticated(req) {
+  const token = getSessionToken(req);
+  return token && sessions.has(token);
+}
+
+function setSessionCookie(res, token) {
+  res.setHeader('Set-Cookie', `sophos_demo_session=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=86400`);
+}
+
+function clearSessionCookie(res) {
+  res.setHeader('Set-Cookie', `sophos_demo_session=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`);
+}
+
+// Public paths that don't require auth
+const PUBLIC_PATHS = ['/login.html', '/api/login', '/sophos-logo.svg'];
+
+function isPublicPath(url) {
+  const path = url.split('?')[0];
+  return PUBLIC_PATHS.some(p => path === p);
+}
 
 // ─── Load Schema + Examples ──────────────────────────────────────────
 const SCHEMA_MD = readFileSync(join(__dirname, '../../extension/scenarios/SCHEMA.md'), 'utf8');
@@ -255,6 +324,170 @@ const server = createServer(async (req, res) => {
   if (req.method === 'OPTIONS') {
     res.writeHead(204);
     res.end();
+    return;
+  }
+
+  // ─── Auth: Login endpoint ──────────────────────────────────────────
+  if (req.method === 'POST' && req.url === '/api/login') {
+    let body = '';
+    req.on('data', (chunk) => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const { passcode } = JSON.parse(body);
+        if (passcode === getPasscode()) {
+          const token = createSession(req.socket.remoteAddress);
+          setSessionCookie(res, token);
+          console.log(`🔓 Login successful from ${req.socket.remoteAddress}`);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ ok: true }));
+        } else {
+          console.log(`🔒 Failed login attempt from ${req.socket.remoteAddress}`);
+          res.writeHead(401, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ ok: false, error: 'Invalid passcode.' }));
+        }
+      } catch (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: false, error: 'Bad request.' }));
+      }
+    });
+    return;
+  }
+
+  // ─── Auth: Logout endpoint ─────────────────────────────────────────
+  if (req.method === 'POST' && req.url === '/api/logout') {
+    const token = getSessionToken(req);
+    if (token) sessions.delete(token);
+    clearSessionCookie(res);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: true }));
+    return;
+  }
+
+  // ─── Auth Gate ─────────────────────────────────────────────────────
+  if (!isPublicPath(req.url) && !isAuthenticated(req)) {
+    // API calls get 401, page requests get redirected to login
+    const urlPath = req.url.split('?')[0];
+    if (urlPath.startsWith('/api/')) {
+      res.writeHead(401, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Not authenticated. Please log in.' }));
+      return;
+    }
+    // Redirect to login with ?next= for return
+    const next = encodeURIComponent(req.url);
+    res.writeHead(302, { 'Location': `/login.html?next=${next}` });
+    res.end();
+    return;
+  }
+
+  // ─── Settings API ──────────────────────────────────────────────────
+
+  // GET /api/settings — return current settings
+  if (req.method === 'GET' && req.url === '/api/settings') {
+    const settings = loadSettings();
+    const provider = getLLM();
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      llm: {
+        provider: provider?.name || null,
+        model: provider?.model || null,
+        available: !!provider,
+      },
+      defaults: settings.defaults || {},
+      server: {
+        port: PORT,
+        uptime: Math.floor((Date.now() - SERVER_START) / 1000),
+        startedAt: new Date(SERVER_START).toISOString(),
+        nodeVersion: process.version,
+      },
+      hasCustomPasscode: !!settings.passcode && settings.passcode !== DEFAULT_PASSCODE,
+    }));
+    return;
+  }
+
+  // POST /api/settings/llm — switch LLM provider
+  if (req.method === 'POST' && req.url === '/api/settings/llm') {
+    let body = '';
+    req.on('data', (chunk) => { body += chunk; });
+    req.on('end', async () => {
+      try {
+        const { provider, apiKey, model, baseUrl } = JSON.parse(body);
+        console.log(`⚙️ Switching LLM provider to: ${provider}${model ? ` (${model})` : ''}`);
+        const p = await setLLM(provider, { apiKey, model, baseUrl });
+        // Persist settings (don't persist API keys to disk — just the provider choice and model)
+        saveSettings({ llmProvider: provider, llmModel: model || null, llmBaseUrl: provider === 'local' ? baseUrl : null });
+        console.log(`✅ LLM switched to: ${p.name} (${p.model})`);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, provider: p.name, model: p.model }));
+      } catch (err) {
+        console.error(`❌ LLM switch failed: ${err.message}`);
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // POST /api/settings/test-llm — test the current LLM connection
+  if (req.method === 'POST' && req.url === '/api/settings/test-llm') {
+    try {
+      console.log(`🧪 Testing LLM connection…`);
+      const result = await testLLM();
+      console.log(`✅ LLM test passed: "${result.response}" (${result.elapsed}ms)`);
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(result));
+    } catch (err) {
+      console.error(`❌ LLM test failed: ${err.message}`);
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ ok: false, error: err.message }));
+    }
+    return;
+  }
+
+  // POST /api/settings/passcode — change the login passcode
+  if (req.method === 'POST' && req.url === '/api/settings/passcode') {
+    let body = '';
+    req.on('data', (chunk) => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const { currentPasscode, newPasscode } = JSON.parse(body);
+        if (currentPasscode !== getPasscode()) {
+          res.writeHead(401, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ ok: false, error: 'Current passcode is incorrect.' }));
+          return;
+        }
+        if (!newPasscode || newPasscode.length < 6) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ ok: false, error: 'New passcode must be at least 6 characters.' }));
+          return;
+        }
+        saveSettings({ passcode: newPasscode });
+        console.log(`🔑 Passcode changed`);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true }));
+      } catch (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // POST /api/settings/defaults — save default form values
+  if (req.method === 'POST' && req.url === '/api/settings/defaults') {
+    let body = '';
+    req.on('data', (chunk) => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const defaults = JSON.parse(body);
+        saveSettings({ defaults });
+        console.log(`⚙️ Default form values saved`);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true }));
+      } catch (err) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+    });
     return;
   }
 
@@ -640,6 +873,63 @@ Use your knowledge to make educated estimates. If you don't know something, make
       }
     });
     return;
+  }
+
+  // API: Download extension as .zip
+  if (req.method === 'GET' && req.url === '/api/download-extension') {
+    try {
+      const extDir = join(__dirname, '../../extension');
+      const zipPath = '/tmp/sophos-demo-extension.zip';
+      // Build zip fresh each time (extension is only ~300KB)
+      execSync(`cd "${join(extDir, '..')}" && zip -r -q "${zipPath}" extension/ -x "extension/.git/*"`, { timeout: 10000 });
+      const zipData = readFileSync(zipPath);
+      res.writeHead(200, {
+        'Content-Type': 'application/zip',
+        'Content-Disposition': 'attachment; filename="sophos-demo-extension.zip"',
+        'Content-Length': zipData.length,
+      });
+      res.end(zipData);
+      console.log(`📦 Extension downloaded (${(zipData.length / 1024).toFixed(0)} KB)`);
+    } catch (err) {
+      console.error('❌ Extension zip error:', err.message);
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Failed to package extension: ' + err.message }));
+    }
+    return;
+  }
+
+  // API: Extension version info
+  if (req.method === 'GET' && req.url === '/api/extension-info') {
+    try {
+      const manifest = JSON.parse(readFileSync(join(__dirname, '../../extension/manifest.json'), 'utf8'));
+      const extDir = join(__dirname, '../../extension');
+      const scenarios = readdirSync(join(extDir, 'scenarios')).filter(f => f.endsWith('.json') && f !== 'SCHEMA.md');
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({
+        name: manifest.name,
+        version: manifest.version,
+        description: manifest.description,
+        scenarioCount: scenarios.length,
+        scenarios: scenarios.map(f => f.replace('.json', '')),
+      }));
+    } catch (err) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: err.message }));
+    }
+    return;
+  }
+
+  // Serve screenshots for the guide
+  if (req.method === 'GET' && req.url.startsWith('/screenshots/')) {
+    const imgPath = join(__dirname, '../..', req.url.split('?')[0]);
+    if (existsSync(imgPath)) {
+      const ext = extname(imgPath);
+      const mime = ext === '.png' ? 'image/png' : ext === '.jpg' || ext === '.jpeg' ? 'image/jpeg' : ext === '.svg' ? 'image/svg+xml' : 'application/octet-stream';
+      const data = readFileSync(imgPath);
+      res.writeHead(200, { 'Content-Type': mime });
+      res.end(data);
+      return;
+    }
   }
 
   // Static files — strip query string before resolving path

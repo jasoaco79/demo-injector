@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Installation & Usage Guide — Sophos Demo Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sophos-navy: #001a47;
+      --sophos-navy-deep: #001233;
+      --sophos-blue: #2006f7;
+      --sophos-blue-light: #eeecfe;
+      --sophos-blue-hover: #1a05cc;
+      --sophos-orange: #e87722;
+      --sophos-red: #d43f3f;
+      --sophos-green: #1a8754;
+      --sophos-yellow: #d4a017;
+      --surface: #f4f5f7;
+      --surface-card: #ffffff;
+      --border: #d8dce3;
+      --border-light: #e8ebef;
+      --text: #1c2b3a;
+      --text-secondary: #4a5b6e;
+      --text-muted: #7e8da0;
+      --text-on-dark: #ffffff;
+      --text-on-dark-muted: rgba(255,255,255,0.7);
+      --radius: 4px;
+      --radius-lg: 6px;
+      --shadow-sm: 0 1px 2px rgba(0,40,80,0.06);
+      --shadow-md: 0 2px 8px rgba(0,40,80,0.08);
+      --shadow-lg: 0 4px 20px rgba(0,40,80,0.1);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Source Sans 3', -apple-system, sans-serif;
+      background: var(--surface);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Top Bar ── */
+    .topbar {
+      background: var(--sophos-navy);
+      height: 52px;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .topbar-logo { display: flex; align-items: center; gap: 10px; }
+    .topbar-logo img { height: 26px; filter: brightness(0) invert(1); }
+    .topbar-sep { width: 1px; height: 24px; background: rgba(255,255,255,0.2); }
+    .topbar-subtitle { color: var(--text-on-dark-muted); font-size: 14px; font-weight: 400; }
+    .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 16px; }
+    .topbar-link { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; transition: color 0.15s; }
+    .topbar-link:hover { color: white; }
+    .topbar-link.active { color: white; font-weight: 600; }
+    .topbar-badge { background: var(--sophos-blue); color: white; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 10px; letter-spacing: 0.03em; }
+
+    /* ── Page Header with Download CTA ── */
+    .page-header {
+      background: var(--surface-card);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 32px 24px;
+    }
+    .page-header-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .page-header h1 { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+    .page-header p { font-size: 14px; color: var(--text-secondary); }
+    .btn-download {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px;
+      background: var(--sophos-blue);
+      color: white; border: none; border-radius: var(--radius);
+      font-family: inherit; font-size: 15px; font-weight: 600;
+      cursor: pointer; transition: background 0.15s, transform 0.1s;
+      text-decoration: none; white-space: nowrap;
+    }
+    .btn-download:hover { background: var(--sophos-blue-hover); }
+    .btn-download:active { transform: scale(0.98); }
+    .btn-download-sub { display: block; font-size: 11px; font-weight: 400; opacity: 0.8; margin-top: 1px; }
+
+    /* ── Main Content ── */
+    .main { max-width: 860px; margin: 0 auto; padding: 24px 24px 80px; }
+
+    /* ── Quick Start Banner ── */
+    .quick-start {
+      background: linear-gradient(135deg, var(--sophos-navy) 0%, #002a6b 100%);
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-lg);
+    }
+    .quick-start h2 { font-size: 18px; font-weight: 600; margin-bottom: 16px; }
+    .quick-start-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .qs-step {
+      background: rgba(255,255,255,0.1);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+    .qs-num {
+      width: 32px; height: 32px;
+      background: var(--sophos-blue);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700;
+      margin: 0 auto 10px;
+    }
+    .qs-label { font-size: 13px; font-weight: 500; line-height: 1.4; }
+
+    /* ── Sections ── */
+    .section {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+    .section-head {
+      display: flex; align-items: center; gap: 8px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border-light);
+      background: #f9fafb;
+    }
+    .section-head .icon { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+    .section-head h2 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-secondary); }
+    .section-body { padding: 24px; }
+    .section-body h3 { font-size: 16px; font-weight: 600; margin-bottom: 10px; color: var(--text); }
+    .section-body p { font-size: 14px; color: var(--text-secondary); margin-bottom: 12px; }
+    .section-body ul, .section-body ol { padding-left: 20px; margin-bottom: 12px; }
+    .section-body li { font-size: 14px; color: var(--text-secondary); margin-bottom: 6px; }
+    .section-body li strong { color: var(--text); }
+
+    /* ── Step Cards ── */
+    .step {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .step:last-child { border-bottom: none; padding-bottom: 0; }
+    .step:first-child { padding-top: 0; }
+    .step-num {
+      flex-shrink: 0;
+      width: 36px; height: 36px;
+      background: var(--sophos-blue);
+      color: white;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 700;
+    }
+    .step-content { flex: 1; }
+    .step-content h4 { font-size: 15px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+    .step-content p { font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; }
+
+    /* ── Code Blocks ── */
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      background: #f0f2f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: var(--sophos-blue);
+    }
+    .code-block {
+      background: #1a2332;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin: 10px 0;
+      overflow-x: auto;
+    }
+    .code-block code {
+      background: none;
+      color: #b8c4d4;
+      padding: 0;
+      font-size: 12.5px;
+      line-height: 1.6;
+    }
+
+    /* ── Screenshot Container ── */
+    .screenshot {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin: 12px 0;
+      box-shadow: var(--shadow-sm);
+    }
+    .screenshot img {
+      width: 100%;
+      display: block;
+    }
+    .screenshot-caption {
+      padding: 8px 12px;
+      background: #f9fafb;
+      font-size: 12px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-light);
+    }
+
+    /* ── Tips ── */
+    .tip {
+      display: flex;
+      gap: 10px;
+      padding: 12px 16px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: var(--radius);
+      margin: 12px 0;
+      font-size: 13px;
+      color: #1e40af;
+    }
+    .tip-icon { flex-shrink: 0; font-size: 16px; }
+    .warning {
+      display: flex;
+      gap: 10px;
+      padding: 12px 16px;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: var(--radius);
+      margin: 12px 0;
+      font-size: 13px;
+      color: #c2410c;
+    }
+    .warning-icon { flex-shrink: 0; font-size: 16px; }
+
+    /* ── Table of Contents ── */
+    .toc {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .toc h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 10px; }
+    .toc-list { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; }
+    .toc-list a { font-size: 14px; color: var(--sophos-blue); text-decoration: none; transition: color 0.15s; }
+    .toc-list a:hover { color: var(--sophos-blue-hover); text-decoration: underline; }
+
+    /* ── Feature Grid ── */
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+    .feature-card {
+      padding: 14px 16px;
+      background: #f9fafb;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius);
+    }
+    .feature-card .f-icon { font-size: 18px; margin-bottom: 4px; }
+    .feature-card .f-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+    .feature-card .f-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+    /* ── Keyboard Shortcut ── */
+    kbd {
+      display: inline-block;
+      padding: 2px 7px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text);
+      background: #f0f2f5;
+      border: 1px solid #cdd1d8;
+      border-radius: 3px;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+    }
+
+    /* ── Version Badge ── */
+    .version-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      background: var(--sophos-blue-light);
+      border-radius: var(--radius);
+      margin-bottom: 20px;
+      font-size: 13px;
+    }
+    .version-info .v-badge {
+      background: var(--sophos-blue);
+      color: white;
+      padding: 3px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      .main { padding: 16px 12px 60px; }
+      .quick-start-steps { grid-template-columns: repeat(2, 1fr); }
+      .feature-grid { grid-template-columns: 1fr; }
+      .toc-list { grid-template-columns: 1fr; }
+      .page-header-inner { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 480px) {
+      .quick-start-steps { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="topbar-logo">
+      <img src="/sophos-logo.svg" alt="Sophos">
+    </div>
+    <div class="topbar-sep"></div>
+    <span class="topbar-subtitle">Demo Scenario Builder</span>
+    <div class="topbar-right">
+      <a href="/" class="topbar-link">🔧 Builder</a>
+      <a href="/scenarios.html" class="topbar-link">📚 Library</a>
+      <a href="/guide.html" class="topbar-link active">📖 Guide</a>
+      <a href="/settings.html" class="topbar-link">⚙️ Settings</a>
+      <button onclick="fetch('/api/logout',{method:'POST'}).then(()=>location.href='/login.html')" class="topbar-link" style="background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.7); border:1px solid rgba(255,255,255,0.15); padding:4px 12px; border-radius:4px; font-family:inherit; font-size:12px; cursor:pointer;">🚪 Logout</button>
+    </div>
+  </header>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div>
+        <h1>Installation & Usage Guide</h1>
+        <p>Everything you need to set up and use the Sophos Central Demo Mode extension.</p>
+      </div>
+      <a href="/api/download-extension" class="btn-download">
+        📦 Download Extension
+        <span class="btn-download-sub" id="versionSub">Loading version…</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- Version Info -->
+    <div class="version-info" id="versionInfo">
+      <span class="v-badge" id="vBadge">⏳</span>
+      <span id="vText">Loading extension info…</span>
+    </div>
+
+    <!-- Quick Start -->
+    <div class="quick-start">
+      <h2>⚡ Quick Start — 2 Minutes to Your First Demo</h2>
+      <div class="quick-start-steps">
+        <div class="qs-step">
+          <div class="qs-num">1</div>
+          <div class="qs-label">Download &<br>unzip extension</div>
+        </div>
+        <div class="qs-step">
+          <div class="qs-num">2</div>
+          <div class="qs-label">Load in Chrome<br>(Developer Mode)</div>
+        </div>
+        <div class="qs-step">
+          <div class="qs-num">3</div>
+          <div class="qs-label">Pick scenario &<br>enter customer name</div>
+        </div>
+        <div class="qs-step">
+          <div class="qs-num">4</div>
+          <div class="qs-label">Toggle ON &<br>reload Sophos Central</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table of Contents -->
+    <nav class="toc">
+      <h3>On This Page</h3>
+      <ul class="toc-list">
+        <li><a href="#install">1. Installing the Extension</a></li>
+        <li><a href="#first-demo">2. Running Your First Demo</a></li>
+        <li><a href="#scenarios">3. Built-in Scenarios</a></li>
+        <li><a href="#custom">4. Custom Scenarios</a></li>
+        <li><a href="#ai-builder">5. AI Scenario Builder</a></li>
+        <li><a href="#features">6. Advanced Features</a></li>
+        <li><a href="#whatif">7. What-If Mode</a></li>
+        <li><a href="#tips">8. Demo Best Practices</a></li>
+        <li><a href="#safety">9. Safety & Troubleshooting</a></li>
+        <li><a href="#updating">10. Updating the Extension</a></li>
+      </ul>
+    </nav>
+
+    <!-- 1. Installation -->
+    <div class="section" id="install">
+      <div class="section-head">
+        <div class="icon">📥</div>
+        <h2>1. Installing the Extension</h2>
+      </div>
+      <div class="section-body">
+        <h3>Prerequisites</h3>
+        <ul>
+          <li><strong>Google Chrome</strong> (any recent version — Chromium-based browsers like Edge also work)</li>
+          <li><strong>A Sophos Central account</strong> (any tier — the extension works with whatever you have)</li>
+        </ul>
+
+        <h3>Step-by-Step Installation</h3>
+
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Download the Extension</h4>
+            <p>Click the <strong>"📦 Download Extension"</strong> button at the top of this page. You'll get a <code>sophos-demo-extension.zip</code> file.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Unzip the File</h4>
+            <p>Extract the zip file. You'll get an <code>extension/</code> folder containing the manifest, scripts, icons, and built-in scenarios.</p>
+            <div class="tip">
+              <span class="tip-icon">💡</span>
+              <span>Put the folder somewhere permanent — Chrome references it by path. Don't leave it in Downloads. A good spot: <code>~/sophos-demo-extension/</code> or <code>Documents/sophos-demo/extension/</code></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Open Chrome Extensions</h4>
+            <p>Navigate to <code>chrome://extensions/</code> in Chrome. Or: click the three dots menu (⋮) → Extensions → Manage Extensions.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Enable Developer Mode</h4>
+            <p>Look for the <strong>Developer mode</strong> toggle in the <strong>top right corner</strong> of the extensions page. Turn it <strong>ON</strong>.</p>
+            <p>Three buttons will appear: "Load unpacked", "Pack extension", and "Update".</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <h4>Load the Extension</h4>
+            <p>Click <strong>"Load unpacked"</strong> → navigate to the <code>extension/</code> folder you unzipped → click <strong>Open</strong> (or Select Folder).</p>
+            <p>You should see <strong>"Sophos Central Demo Mode"</strong> appear as a card on the extensions page.</p>
+            <div class="screenshot">
+              <img src="/screenshots/extensions-page.png" alt="Chrome extensions page showing Sophos Central Demo Mode loaded">
+              <div class="screenshot-caption">The extension loaded in Chrome's extensions page with Developer Mode enabled.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <h4>Pin the Extension Icon</h4>
+            <p>Click the puzzle piece icon (🧩) in Chrome's toolbar → find <strong>"Sophos Central Demo Mode"</strong> → click the pin icon (📌) to keep it visible.</p>
+            <p>You'll see a 🎯 icon in your toolbar. That's your demo mode toggle.</p>
+          </div>
+        </div>
+
+        <div class="tip">
+          <span class="tip-icon">✅</span>
+          <span><strong>Done!</strong> The extension is installed. You can verify by going to <code>central.sophos.com</code> and clicking the 🎯 icon — the popup should appear.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Running Your First Demo -->
+    <div class="section" id="first-demo">
+      <div class="section-head">
+        <div class="icon">🚀</div>
+        <h2>2. Running Your First Demo</h2>
+      </div>
+      <div class="section-body">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Log into Sophos Central</h4>
+            <p>Go to <a href="https://central.sophos.com" target="_blank">central.sophos.com</a> and log in normally. The extension doesn't affect login.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Open the Extension Popup</h4>
+            <p>Click the 🎯 icon in Chrome's toolbar. The popup shows:</p>
+            <ul>
+              <li><strong>Scenario dropdown</strong> — pick from built-in or custom scenarios</li>
+              <li><strong>Customer Name</strong> — the name that replaces your real tenant name</li>
+              <li><strong>Endpoints / Servers</strong> — scale the environment to match the prospect</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Configure Your Demo</h4>
+            <p>Select <strong>🔴 Ransomware Attack</strong> from the dropdown. Change the customer name to your prospect's company (e.g., "Mercy Hospital"). Set their endpoint count (e.g., 4200).</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Toggle ON & Reload</h4>
+            <p>Toggle the switch <strong>ON</strong>, then click <strong>🔄 Apply & Reload Sophos Central</strong>.</p>
+            <p>The page reloads. Now you'll see:</p>
+            <ul>
+              <li>✅ <strong>Customer name</strong> in the top-right instead of your real tenant</li>
+              <li>✅ <strong>Injected alerts</strong> on the Alerts page</li>
+              <li>✅ <strong>Fake cases</strong> with MITRE ATT&CK mapping on the Cases page</li>
+              <li>✅ <strong>Adjusted health score</strong> and device counts</li>
+              <li>✅ <strong>A floating badge</strong> at the bottom showing intercept count</li>
+            </ul>
+            <div class="screenshot">
+              <img src="/screenshots/cases-list-demo.png" alt="Sophos Central Cases page with injected demo data">
+              <div class="screenshot-caption">Cases page showing an injected ransomware case with 24 detections, MITRE mapping, and "Contoso Healthcare" tenant name.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <h4>Walk Through the Demo</h4>
+            <p>Navigate naturally through Sophos Central. The extension intercepts API responses on every page:</p>
+            <ul>
+              <li><strong>Dashboard</strong> — health scores, alert counts, device statistics</li>
+              <li><strong>Alerts</strong> — injected alerts with realistic descriptions</li>
+              <li><strong>Cases</strong> — active investigations with MITRE kill chain</li>
+              <li><strong>Case Detail</strong> — timeline, impacted entities, threat graph</li>
+              <li><strong>Detections</strong> — XDR detections with raw telemetry</li>
+              <li><strong>Devices</strong> — industry-appropriate hostnames at scale</li>
+              <li><strong>Live Discover</strong> — XDR query results</li>
+              <li><strong>Audit Logs</strong> — response actions taken</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <h4>End the Demo</h4>
+            <p>Click the 🎯 icon → toggle <strong>OFF</strong> → reload the page. Your real data is back instantly.</p>
+          </div>
+        </div>
+
+        <div class="warning">
+          <span class="warning-icon">⚠️</span>
+          <span><strong>Safety:</strong> The extension never sends any data to Sophos Central. All write operations (isolate device, acknowledge alert, etc.) are blocked and faked — you'll see a "success" response but nothing actually happens. Your real environment is completely untouched.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Built-in Scenarios -->
+    <div class="section" id="scenarios">
+      <div class="section-head">
+        <div class="icon">🎯</div>
+        <h2>3. Built-in Scenarios</h2>
+      </div>
+      <div class="section-body">
+        <p>The extension ships with <strong id="scenarioCount">9</strong> ready-to-go scenarios:</p>
+        <div id="scenarioGrid" class="feature-grid">
+          <!-- Populated by JS -->
+        </div>
+        <div class="tip">
+          <span class="tip-icon">💡</span>
+          <span>Each scenario customizes itself to whatever <strong>customer name</strong> and <strong>endpoint count</strong> you set in the popup. Template variables like <code>{{customerName}}</code> and <code>{{endpointCount}}</code> are resolved at runtime.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Custom Scenarios -->
+    <div class="section" id="custom">
+      <div class="section-head">
+        <div class="icon">✏️</div>
+        <h2>4. Custom Scenarios</h2>
+      </div>
+      <div class="section-body">
+        <h3>Importing a Scenario</h3>
+        <p>You can import custom scenario JSON files into the extension:</p>
+        <ol>
+          <li>Click the 🎯 extension icon to open the popup</li>
+          <li>Click <strong>📥 Import</strong> → paste JSON, or click <strong>📁</strong> to load a <code>.json</code> file</li>
+          <li>The scenario appears in the dropdown under <strong>"Custom Scenarios"</strong></li>
+          <li>Customer name and endpoint count auto-populate from the scenario's <code>customer{}</code> block</li>
+        </ol>
+
+        <h3>Exporting a Scenario</h3>
+        <p>Click <strong>📤 Export</strong> in the popup to download the currently selected scenario as a JSON file. Share it with other SEs.</p>
+
+        <h3>Sharing via URL</h3>
+        <p>After generating a scenario in the <a href="/">Scenario Builder</a>, click <strong>🔗 Share</strong> to copy a URL. When someone opens that URL, the scenario auto-imports — no file transfer needed.</p>
+
+        <h3>Deleting Custom Scenarios</h3>
+        <p>Select a custom scenario in the dropdown → the 🗑️ button appears → click it to remove. Built-in scenarios can't be deleted.</p>
+      </div>
+    </div>
+
+    <!-- 5. AI Scenario Builder -->
+    <div class="section" id="ai-builder">
+      <div class="section-head">
+        <div class="icon">🤖</div>
+        <h2>5. AI Scenario Builder</h2>
+      </div>
+      <div class="section-body">
+        <p>The <a href="/"><strong>Scenario Builder</strong></a> uses AI to generate custom scenarios tailored to your prospect:</p>
+        <ol>
+          <li>Go to the <a href="/">Builder page</a></li>
+          <li>Fill in prospect details: company name, industry, size</li>
+          <li>Pick a scenario type (ransomware, phishing, XDR, etc.)</li>
+          <li>Customize attack details: threat actor, entry point, affected hosts</li>
+          <li>Click <strong>Generate Scenario</strong></li>
+          <li>Review the output — alerts, cases, detections, health score</li>
+          <li>Click <strong>💾 Download .json</strong> and import into the extension</li>
+        </ol>
+
+        <div class="screenshot">
+          <img src="/screenshots/intake-full.png" alt="AI Scenario Builder intake form">
+          <div class="screenshot-caption">The Scenario Builder form with customer details, scenario type, and attack configuration.</div>
+        </div>
+
+        <h3>Additional AI Tools</h3>
+        <p>After generating a scenario, you can also:</p>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="f-icon">📝</div>
+            <div class="f-name">Demo Script</div>
+            <div class="f-desc">AI-generated talk track with page-by-page walkthrough and what to say at each step.</div>
+          </div>
+          <div class="feature-card">
+            <div class="f-icon">⚔️</div>
+            <div class="f-name">Battle Card</div>
+            <div class="f-desc">Competitive positioning vs CrowdStrike, SentinelOne, Microsoft Defender, etc.</div>
+          </div>
+          <div class="feature-card">
+            <div class="f-icon">📧</div>
+            <div class="f-name">Follow-Up Email</div>
+            <div class="f-desc">Professional post-demo email with highlights and next steps.</div>
+          </div>
+          <div class="feature-card">
+            <div class="f-icon">🔍</div>
+            <div class="f-name">Prospect Enrichment</div>
+            <div class="f-desc">Auto-research company and fill form with industry, size, compliance.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Advanced Features -->
+    <div class="section" id="features">
+      <div class="section-head">
+        <div class="icon">⚡</div>
+        <h2>6. Advanced Features</h2>
+      </div>
+      <div class="section-body">
+        <h3>Floating Demo Badge</h3>
+        <p>When demo mode is active, a small badge appears at the bottom of the Sophos Central page showing:</p>
+        <ul>
+          <li>Active scenario name</li>
+          <li>Number of intercepted API requests</li>
+          <li>A visual reminder you're in demo mode</li>
+        </ul>
+        <div class="tip">
+          <span class="tip-icon">💡</span>
+          <span>The badge is only visible to you — it's injected into the page DOM, so it doesn't appear in screenshots or screen shares unless you want it to.</span>
+        </div>
+
+        <h3>Timed Events</h3>
+        <p>Some scenarios include timed events — alerts that "fire" during the demo for dramatic effect. For example, in the ransomware scenario, a new alert may appear 60 seconds into the demo showing the attacker's lateral movement.</p>
+
+        <h3>Demo Recording</h3>
+        <p>The extension automatically tracks your demo session:</p>
+        <ul>
+          <li>Pages visited and time spent on each</li>
+          <li>Number of API requests intercepted</li>
+          <li>Session duration</li>
+        </ul>
+        <p>The last 50 sessions are saved in the extension's history.</p>
+
+        <h3>Chrome Sync</h3>
+        <p>Custom scenarios and preferences sync across your Chrome devices via <code>chrome.storage.sync</code>. Import a scenario on your laptop and it's available on your desktop too.</p>
+
+        <h3>Scenario Library</h3>
+        <p>Visit the <a href="/scenarios.html">📚 Scenario Library</a> to browse all built-in scenarios, see stats, and use <strong>"Make It Mine"</strong> for instant cloning with your prospect's details. You can also <strong>AI Remix</strong> any scenario for a different industry or threat actor.</p>
+      </div>
+    </div>
+
+    <!-- 7. What-If Mode -->
+    <div class="section" id="whatif">
+      <div class="section-head">
+        <div class="icon">🎭</div>
+        <h2>7. What-If Mode — Live Alert Injection</h2>
+      </div>
+      <div class="section-body">
+        <p>What-If Mode lets you inject alerts <strong>live during a demo</strong> with keyboard shortcuts. Great for "let me show you what happens when…" moments.</p>
+
+        <h3>Keyboard Shortcuts</h3>
+        <p>While on any Sophos Central page with demo mode active:</p>
+        <ul>
+          <li><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>1</kbd> — Inject <strong>ransomware</strong> alert</li>
+          <li><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>2</kbd> — Inject <strong>phishing</strong> alert</li>
+          <li><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>3</kbd> — Inject <strong>lateral movement</strong> alert</li>
+          <li><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>4</kbd> — Inject <strong>data exfiltration</strong> alert</li>
+          <li><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>5</kbd> — Inject <strong>device isolation</strong> notification</li>
+        </ul>
+
+        <div class="tip">
+          <span class="tip-icon">💡</span>
+          <span><strong>Pro move:</strong> During a demo, casually say "Let me show you what happens when we detect lateral movement" and hit <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>3</kbd>. A new alert appears in real-time. Navigate to the Alerts page and walk through it.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. Demo Best Practices -->
+    <div class="section" id="tips">
+      <div class="section-head">
+        <div class="icon">🏆</div>
+        <h2>8. Demo Best Practices</h2>
+      </div>
+      <div class="section-body">
+        <h3>Before the Demo</h3>
+        <ul>
+          <li><strong>Test the scenario first.</strong> Toggle on, click through the key pages, make sure everything renders. Do this 30 minutes before the call.</li>
+          <li><strong>Match the story to the prospect.</strong> If they're healthcare, use a healthcare scenario with HIPAA references and medical hostnames.</li>
+          <li><strong>Use the AI Scenario Builder</strong> to generate a custom scenario with their exact company name and industry. It takes 30 seconds.</li>
+          <li><strong>Generate a Demo Script</strong> for a suggested talk track. Even experienced SEs find the page-by-page walkthrough useful.</li>
+          <li><strong>Close browser console.</strong> Demo mode logs to console — make sure F12 DevTools is closed.</li>
+          <li><strong>Disable other extensions</strong> that might interfere (ad blockers, privacy tools, VPNs).</li>
+        </ul>
+
+        <h3>During the Demo</h3>
+        <ul>
+          <li><strong>Tell a story, don't read screens.</strong> The injected data is your backdrop — narrate the attack timeline.</li>
+          <li><strong>Use What-If Mode</strong> for dramatic moments. "Let me show you what happens when an attacker tries to move laterally…" <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>3</kbd></li>
+          <li><strong>Click into Case Detail.</strong> The MITRE ATT&CK mapping, timeline, and threat graph are the most impressive views.</li>
+          <li><strong>Show scale.</strong> "You said you have 4,200 endpoints — here's what that looks like in Sophos Central."</li>
+          <li><strong>Let them click around.</strong> The real UI responds to all interactions. If they ask "what's that?" — click it.</li>
+        </ul>
+
+        <h3>After the Demo</h3>
+        <ul>
+          <li><strong>Generate a Follow-Up Email</strong> using the 📧 button in the Scenario Builder. It references specific data from the demo.</li>
+          <li><strong>Generate a Battle Card</strong> if a competitor was discussed — send the key differentiators in the follow-up.</li>
+          <li><strong>Toggle OFF immediately</strong> after the demo to return to your real data.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 9. Safety & Troubleshooting -->
+    <div class="section" id="safety">
+      <div class="section-head">
+        <div class="icon">🔒</div>
+        <h2>9. Safety & Troubleshooting</h2>
+      </div>
+      <div class="section-body">
+        <h3>Safety Guarantees</h3>
+        <ul>
+          <li>✅ The extension <strong>never modifies any request TO Sophos Central</strong> — only the responses coming back</li>
+          <li>✅ All write operations (POST, PUT, DELETE) to action endpoints are <strong>blocked and faked</strong></li>
+          <li>✅ The extension runs <strong>entirely in your browser</strong>. No data is sent anywhere</li>
+          <li>✅ Toggling off and reloading <strong>restores your real data immediately</strong></li>
+        </ul>
+
+        <h3>Common Issues</h3>
+
+        <h4 style="margin-top: 16px;">Extension doesn't appear after loading</h4>
+        <p>Make sure you selected the <code>extension/</code> folder, not the parent folder. The folder must contain <code>manifest.json</code> at the root level.</p>
+
+        <h4 style="margin-top: 16px;">Tenant name doesn't change</h4>
+        <p>Make sure demo mode is toggled <strong>ON</strong> in the popup, and you clicked <strong>🔄 Apply & Reload</strong>. Check the browser console (F12 → Console) for <code>[Sophos Demo] 🟢 ENABLED</code>.</p>
+
+        <h4 style="margin-top: 16px;">Some pages show real data</h4>
+        <p>A few Sophos Central pages use micro-frontends that load through non-standard mechanisms. The vast majority of pages work: Dashboard, Alerts, Cases, Detections, Devices, Threat Graphs, Live Discover, Audit Logs. If a page shows real data, navigate to one that works.</p>
+
+        <h4 style="margin-top: 16px;">Extension conflicts with other extensions</h4>
+        <p>Disable ad blockers, privacy extensions, or VPN extensions during demos. They can interfere with fetch interception.</p>
+
+        <h4 style="margin-top: 16px;">Data looks stale</h4>
+        <p>Scenario timestamps are relative (e.g., "3 minutes ago"). If you loaded the scenario hours ago, just reload the page — timestamps recalculate.</p>
+
+        <div class="warning">
+          <span class="warning-icon">⚠️</span>
+          <span><strong>Never demo on a customer's Sophos Central tenant.</strong> Only use this on your own SE tenant. The extension modifies what you see in your own browser, but the URL bar shows <code>central.sophos.com</code> — a savvy prospect might notice if anything looks inconsistent.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. Updating -->
+    <div class="section" id="updating">
+      <div class="section-head">
+        <div class="icon">🔄</div>
+        <h2>10. Updating the Extension</h2>
+      </div>
+      <div class="section-body">
+        <p>When a new version is available:</p>
+        <ol>
+          <li>Download the latest extension zip from this page</li>
+          <li>Unzip and <strong>replace</strong> the old <code>extension/</code> folder with the new one</li>
+          <li>Go to <code>chrome://extensions/</code></li>
+          <li>Click the <strong>🔄 refresh icon</strong> on the Sophos Central Demo Mode card (or click "Update" at the top)</li>
+          <li>Reload any open Sophos Central tabs</li>
+        </ol>
+
+        <div class="tip">
+          <span class="tip-icon">💡</span>
+          <span>If you cloned the Git repository instead of downloading the zip, just <code>git pull</code> and refresh the extension in Chrome.</span>
+        </div>
+
+        <div class="code-block">
+          <code>cd ~/sophos-demo && git pull origin main</code>
+        </div>
+
+        <p>Your custom scenarios are stored in Chrome's extension storage — they survive updates.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    /* ── Load Extension Info ── */
+    (async () => {
+      try {
+        const resp = await fetch('/api/extension-info');
+        const info = await resp.json();
+
+        // Version sub-text on download button
+        document.getElementById('versionSub').textContent = `v${info.version} · ${info.scenarioCount} scenarios`;
+
+        // Version banner
+        document.getElementById('vBadge').textContent = `v${info.version}`;
+        document.getElementById('vText').innerHTML = `<strong>${info.name}</strong> — ${info.scenarioCount} built-in scenarios (${info.scenarios.join(', ')})`;
+
+        // Scenario count
+        document.getElementById('scenarioCount').textContent = info.scenarioCount;
+      } catch (e) {
+        document.getElementById('versionSub').textContent = 'Click to download';
+        document.getElementById('vBadge').textContent = '—';
+        document.getElementById('vText').textContent = 'Could not load extension info';
+      }
+    })();
+
+    /* ── Load Scenario Grid ── */
+    const SCENARIO_META = {
+      'ransomware': { icon: '🔴', name: 'Ransomware Attack', desc: 'CryptoLocker/LockBit detection with CryptoGuard, device isolation, and MDR response timeline.' },
+      'phishing': { icon: '🎣', name: 'Phishing Campaign', desc: 'Targeted email campaign with blocked/quarantined messages, endpoint integration, and user remediation.' },
+      'xdr': { icon: '🔍', name: 'XDR Investigation', desc: 'Multi-stage intrusion with MITRE kill chain, lateral movement, threat graphs, and XDR query results.' },
+      'mdr': { icon: '🛡️', name: 'MDR Response', desc: 'Sophos MDR detects and responds to an active threat. Full investigation timeline with analyst actions.' },
+      'insider': { icon: '👤', name: 'Insider Threat', desc: 'Data exfiltration by a departing employee. USB activity, cloud upload, and DLP alerts.' },
+      'bec': { icon: '💼', name: 'Business Email Compromise', desc: 'CEO impersonation / wire transfer fraud with email security and account takeover detection.' },
+      'supply-chain': { icon: '🔗', name: 'Supply Chain Attack', desc: 'Compromised vendor update with backdoor. Behavioral detection catches what signatures miss.' },
+      'zero-day': { icon: '🆕', name: 'Zero-Day Exploit', desc: 'Previously unknown vulnerability exploited in the wild. Deep learning detects with 99.7% confidence.' },
+      'healthy': { icon: '🟢', name: 'Healthy Environment', desc: 'Clean environment with perfect health scores. Shows day-in-the-life operations at scale.' },
+    };
+
+    (async () => {
+      try {
+        const resp = await fetch('/api/scenarios');
+        const scenarios = await resp.json();
+        const grid = document.getElementById('scenarioGrid');
+        grid.innerHTML = scenarios.map(s => {
+          const meta = SCENARIO_META[s.scenarioType] || SCENARIO_META[s.id?.replace('-default', '')] || {};
+          return `<div class="feature-card">
+            <div class="f-icon">${meta.icon || '📄'}</div>
+            <div class="f-name">${meta.name || s.name}</div>
+            <div class="f-desc">${meta.desc || s.description || `${s.alertCount} alerts, ${s.caseCount} cases`}</div>
+          </div>`;
+        }).join('');
+      } catch (e) {
+        // Fallback to static list
+        const grid = document.getElementById('scenarioGrid');
+        grid.innerHTML = Object.values(SCENARIO_META).map(m =>
+          `<div class="feature-card"><div class="f-icon">${m.icon}</div><div class="f-name">${m.name}</div><div class="f-desc">${m.desc}</div></div>`
+        ).join('');
+      }
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign In — Sophos Demo Scenario Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sophos-navy: #001a47;
+      --sophos-navy-deep: #001233;
+      --sophos-blue: #2006f7;
+      --sophos-blue-light: #eeecfe;
+      --sophos-blue-hover: #1a05cc;
+      --sophos-red: #d43f3f;
+      --sophos-green: #1a8754;
+      --text: #1c2b3a;
+      --text-secondary: #4a5b6e;
+      --text-muted: #7e8da0;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Source Sans 3', -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--sophos-navy-deep);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Background Pattern ── */
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .bg::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      right: -20%;
+      width: 80%;
+      height: 120%;
+      background: radial-gradient(ellipse, rgba(32, 6, 247, 0.12) 0%, transparent 70%);
+    }
+    .bg::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -15%;
+      width: 60%;
+      height: 80%;
+      background: radial-gradient(ellipse, rgba(32, 6, 247, 0.08) 0%, transparent 70%);
+    }
+
+    /* ── Center Card ── */
+    .login-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 400px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+    }
+
+    /* ── Card Header ── */
+    .card-header {
+      background: var(--sophos-navy);
+      padding: 36px 32px 28px;
+      text-align: center;
+    }
+    .card-header img {
+      height: 32px;
+      filter: brightness(0) invert(1);
+      margin-bottom: 16px;
+    }
+    .card-header h1 {
+      font-size: 18px;
+      font-weight: 600;
+      color: white;
+      letter-spacing: -0.01em;
+    }
+    .card-header p {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.55);
+      margin-top: 6px;
+    }
+
+    /* ── Card Body ── */
+    .card-body {
+      padding: 32px;
+    }
+
+    .field {
+      margin-bottom: 20px;
+    }
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      letter-spacing: 0.01em;
+    }
+    .input-wrap {
+      position: relative;
+    }
+    .input-wrap .icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+    .field input {
+      width: 100%;
+      padding: 11px 14px 11px 40px;
+      border: 1.5px solid #d8dce3;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--text);
+      background: #fafbfc;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+    .field input:focus {
+      border-color: var(--sophos-blue);
+      box-shadow: 0 0 0 3px rgba(32, 6, 247, 0.1);
+      background: white;
+    }
+    .field input.error {
+      border-color: var(--sophos-red);
+      box-shadow: 0 0 0 3px rgba(212, 63, 63, 0.1);
+    }
+
+    .toggle-vis {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 4px;
+      opacity: 0.5;
+      transition: opacity 0.15s;
+    }
+    .toggle-vis:hover { opacity: 0.8; }
+
+    /* ── Error ── */
+    .err {
+      display: none;
+      padding: 10px 14px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 6px;
+      color: var(--sophos-red);
+      font-size: 13px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .err.show { display: block; }
+
+    /* ── Submit ── */
+    .btn-login {
+      width: 100%;
+      padding: 12px;
+      background: var(--sophos-blue);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      letter-spacing: 0.01em;
+    }
+    .btn-login:hover { background: var(--sophos-blue-hover); }
+    .btn-login:active { transform: scale(0.98); }
+    .btn-login:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* ── Footer ── */
+    .card-footer {
+      padding: 16px 32px;
+      background: #f9fafb;
+      border-top: 1px solid #eef0f3;
+      text-align: center;
+    }
+    .card-footer p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ── Page Footer ── */
+    .page-footer {
+      text-align: center;
+      padding: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    .page-footer p {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* ── Shake Animation ── */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+    }
+    .shake { animation: shake 0.4s ease; }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+
+  <div class="login-wrap">
+    <div class="login-card" id="card">
+      <div class="card-header">
+        <img src="/sophos-logo.svg" alt="Sophos">
+        <h1>Demo Scenario Builder</h1>
+        <p>Internal tool for Sophos Sales Engineers</p>
+      </div>
+
+      <form class="card-body" id="loginForm" autocomplete="off">
+        <div class="err" id="errBox">Invalid passcode. Please try again.</div>
+
+        <div class="field">
+          <label for="passcode">Passcode</label>
+          <div class="input-wrap">
+            <span class="icon">🔒</span>
+            <input type="password" id="passcode" placeholder="Enter passcode" autofocus required>
+            <button type="button" class="toggle-vis" id="toggleVis" title="Show/hide passcode">👁️</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-login" id="loginBtn">Sign In</button>
+      </form>
+
+      <div class="card-footer">
+        <p>Contact your SE team lead for the passcode.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <p>Sophos Central Demo Scenario Builder — Internal Use Only</p>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const input = document.getElementById('passcode');
+    const err = document.getElementById('errBox');
+    const card = document.getElementById('card');
+    const btn = document.getElementById('loginBtn');
+    const toggle = document.getElementById('toggleVis');
+
+    // Toggle password visibility
+    toggle.addEventListener('click', () => {
+      const isPassword = input.type === 'password';
+      input.type = isPassword ? 'text' : 'password';
+      toggle.textContent = isPassword ? '🙈' : '👁️';
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      err.classList.remove('show');
+      input.classList.remove('error');
+      btn.disabled = true;
+      btn.textContent = 'Signing in…';
+
+      try {
+        const resp = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ passcode: input.value }),
+        });
+        const data = await resp.json();
+
+        if (data.ok) {
+          btn.textContent = '✅ Welcome!';
+          // Redirect to the page they were trying to access, or home
+          const next = new URLSearchParams(location.search).get('next') || '/';
+          setTimeout(() => { window.location.href = next; }, 300);
+        } else {
+          err.textContent = data.error || 'Invalid passcode. Please try again.';
+          err.classList.add('show');
+          input.classList.add('error');
+          card.classList.add('shake');
+          setTimeout(() => card.classList.remove('shake'), 400);
+          input.select();
+          btn.disabled = false;
+          btn.textContent = 'Sign In';
+        }
+      } catch (ex) {
+        err.textContent = 'Connection error. Please try again.';
+        err.classList.add('show');
+        btn.disabled = false;
+        btn.textContent = 'Sign In';
+      }
+    });
+
+    // Enter key auto-submits
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') form.dispatchEvent(new Event('submit'));
+    });
+  </script>
+</body>
+</html>
