@@ -38,39 +38,73 @@ async function createPiProvider() {
     const model = modelRegistry.find('anthropic', modelName);
     if (!model) return null;
 
+    // Helper: create a Pi SDK session with the given system prompt
+    async function createPiSession(systemPrompt) {
+      const loader = new pi.DefaultResourceLoader({
+        systemPromptOverride: () => systemPrompt,
+      });
+      await loader.reload();
+
+      const { session } = await pi.createAgentSession({
+        model,
+        thinkingLevel: 'off',
+        authStorage,
+        modelRegistry,
+        tools: [],
+        sessionManager: pi.SessionManager.inMemory(),
+        settingsManager: pi.SettingsManager.inMemory({
+          compaction: { enabled: false },
+          retry: { enabled: true, maxRetries: 2 },
+        }),
+        resourceLoader: loader,
+      });
+      return session;
+    }
+
     return {
       name: 'Pi SDK (OAuth)',
       model: modelName,
       generate: async (systemPrompt, userPrompt) => {
-        const loader = new pi.DefaultResourceLoader({
-          systemPromptOverride: () => systemPrompt,
-        });
-        await loader.reload();
-
-        const { session } = await pi.createAgentSession({
-          model,
-          thinkingLevel: 'off',
-          authStorage,
-          modelRegistry,
-          tools: [],
-          sessionManager: pi.SessionManager.inMemory(),
-          settingsManager: pi.SettingsManager.inMemory({
-            compaction: { enabled: false },
-            retry: { enabled: true, maxRetries: 2 },
-          }),
-          resourceLoader: loader,
-        });
-
+        const session = await createPiSession(systemPrompt);
         let text = '';
         session.subscribe((event) => {
           if (event.type === 'message_update' && event.assistantMessageEvent.type === 'text_delta') {
             text += event.assistantMessageEvent.delta;
           }
         });
-
         await session.prompt(userPrompt);
         session.dispose();
         return text;
+      },
+      generateStream: async function* (systemPrompt, userPrompt) {
+        const session = await createPiSession(systemPrompt);
+
+        // Buffer chunks and yield them via a simple async queue
+        const chunks = [];
+        let resolve = null;
+        let done = false;
+
+        session.subscribe((event) => {
+          if (event.type === 'message_update' && event.assistantMessageEvent.type === 'text_delta') {
+            chunks.push(event.assistantMessageEvent.delta);
+            if (resolve) { resolve(); resolve = null; }
+          }
+        });
+
+        const promptPromise = session.prompt(userPrompt).then(() => {
+          done = true;
+          if (resolve) { resolve(); resolve = null; }
+        });
+
+        while (!done || chunks.length > 0) {
+          if (chunks.length > 0) {
+            yield chunks.shift();
+          } else {
+            await new Promise(r => { resolve = r; });
+          }
+        }
+
+        session.dispose();
       },
     };
   } catch {
@@ -112,6 +146,47 @@ function createAnthropicProvider() {
       const data = await resp.json();
       return data.content?.[0]?.text || '';
     },
+    generateStream: async function* (systemPrompt, userPrompt) {
+      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+        },
+        body: JSON.stringify({
+          model,
+          max_tokens: 16384,
+          stream: true,
+          system: systemPrompt,
+          messages: [{ role: 'user', content: userPrompt }],
+        }),
+      });
+
+      if (!resp.ok) {
+        const err = await resp.text();
+        throw new Error(`Anthropic API ${resp.status}: ${err}`);
+      }
+
+      const decoder = new TextDecoder();
+      let buffer = '';
+      for await (const chunk of resp.body) {
+        buffer += decoder.decode(chunk, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const data = line.slice(6);
+          if (data === '[DONE]') return;
+          try {
+            const event = JSON.parse(data);
+            if (event.type === 'content_block_delta' && event.delta?.text) {
+              yield event.delta.text;
+            }
+          } catch {}
+        }
+      }
+    },
   };
 }
 
@@ -149,6 +224,47 @@ function createOpenAIProvider() {
 
       const data = await resp.json();
       return data.choices?.[0]?.message?.content || '';
+    },
+    generateStream: async function* (systemPrompt, userPrompt) {
+      const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model,
+          max_tokens: 16384,
+          stream: true,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt },
+          ],
+        }),
+      });
+
+      if (!resp.ok) {
+        const err = await resp.text();
+        throw new Error(`OpenAI API ${resp.status}: ${err}`);
+      }
+
+      const decoder = new TextDecoder();
+      let buffer = '';
+      for await (const chunk of resp.body) {
+        buffer += decoder.decode(chunk, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const data = line.slice(6);
+          if (data === '[DONE]') return;
+          try {
+            const event = JSON.parse(data);
+            const text = event.choices?.[0]?.delta?.content;
+            if (text) yield text;
+          } catch {}
+        }
+      }
     },
   };
 }
@@ -247,4 +363,22 @@ export async function generate(systemPrompt, userPrompt) {
     throw new Error('No LLM provider configured. Set ANTHROPIC_API_KEY, OPENAI_API_KEY, or LLM_BASE_URL.');
   }
   return activeProvider.generate(systemPrompt, userPrompt);
+}
+
+/**
+ * Stream generation — yields text chunks as they arrive.
+ * Returns an async iterable of strings.
+ * Falls back to single-chunk if provider doesn't support streaming.
+ */
+export async function* generateStream(systemPrompt, userPrompt) {
+  if (!activeProvider) {
+    throw new Error('No LLM provider configured. Set ANTHROPIC_API_KEY, OPENAI_API_KEY, or LLM_BASE_URL.');
+  }
+  if (activeProvider.generateStream) {
+    yield* activeProvider.generateStream(systemPrompt, userPrompt);
+  } else {
+    // Fallback: non-streaming provider — yield the whole response at once
+    const text = await activeProvider.generate(systemPrompt, userPrompt);
+    yield text;
+  }
 }

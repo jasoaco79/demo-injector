@@ -17,7 +17,7 @@ import { readFile, readFileSync, readdirSync } from 'fs';
 import { join, extname } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { initLLM, getLLM, generate } from './llm.mjs';
+import { initLLM, getLLM, generate, generateStream } from './llm.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = join(__dirname, '..', 'public');
@@ -580,8 +580,71 @@ Use your knowledge to make educated estimates. If you don't know something, make
     return;
   }
 
-  // Static files
-  let filePath = req.url === '/' ? '/index.html' : req.url;
+  // API: Streaming generation (SSE) — used by demo script, battle card, follow-up, enrichment
+  if (req.method === 'POST' && req.url === '/api/stream') {
+    let body = '';
+    req.on('data', (chunk) => { body += chunk; });
+    req.on('end', async () => {
+      try {
+        const { type, scenario, competitor, prospectName, notes } = JSON.parse(body);
+
+        let systemPrompt, userPrompt;
+
+        if (type === 'demo-script') {
+          systemPrompt = DEMO_SCRIPT_SYSTEM_PROMPT;
+          userPrompt = `Generate a demo talk track for this scenario:\n\n${JSON.stringify(scenario, null, 2)}`;
+        } else if (type === 'battle-card') {
+          const comp = competitor || scenario.competitor || 'the incumbent solution';
+          systemPrompt = BATTLE_CARD_SYSTEM_PROMPT;
+          userPrompt = `Generate a competitive battle card for Sophos vs ${comp}.\n\nThe SE is demoing this scenario:\n${JSON.stringify(scenario, null, 2)}\n\nFocus the battle card on the products and capabilities shown in this specific demo.`;
+        } else if (type === 'follow-up') {
+          systemPrompt = POST_DEMO_REPORT_SYSTEM_PROMPT;
+          userPrompt = `Generate a follow-up email after demoing Sophos Central.\n\n## Scenario Shown\n${JSON.stringify(scenario, null, 2)}\n\n`;
+          if (prospectName) userPrompt += `## Prospect\nName: ${prospectName}\n`;
+          if (notes) userPrompt += `\n## SE Notes\n${notes}\n`;
+        } else {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: `Unknown stream type: ${type}` }));
+          return;
+        }
+
+        console.log(`🌊 Streaming ${type}…`);
+
+        // SSE headers
+        res.writeHead(200, {
+          'Content-Type': 'text/event-stream',
+          'Cache-Control': 'no-cache',
+          'Connection': 'keep-alive',
+          'Access-Control-Allow-Origin': '*',
+        });
+
+        let totalChars = 0;
+        for await (const chunk of generateStream(systemPrompt, userPrompt)) {
+          totalChars += chunk.length;
+          res.write(`data: ${JSON.stringify({ text: chunk })}\n\n`);
+        }
+
+        res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
+        res.end();
+        console.log(`✅ Streamed ${type} (${totalChars} chars)`);
+      } catch (err) {
+        console.error(`❌ Stream error:`, err.message);
+        // If headers not sent yet, send error as JSON
+        if (!res.headersSent) {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: err.message }));
+        } else {
+          res.write(`data: ${JSON.stringify({ error: err.message })}\n\n`);
+          res.end();
+        }
+      }
+    });
+    return;
+  }
+
+  // Static files — strip query string before resolving path
+  const urlPath = req.url.split('?')[0];
+  let filePath = urlPath === '/' ? '/index.html' : urlPath;
   filePath = join(PUBLIC_DIR, filePath);
 
   const ext = extname(filePath);

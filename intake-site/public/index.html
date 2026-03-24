@@ -661,6 +661,7 @@
           <button class="btn-sm" id="scriptBtn">📝 Demo Script</button>
           <button class="btn-sm" id="battleBtn">⚔️ Battle Card</button>
           <button class="btn-sm" id="reportBtn">📧 Follow-Up</button>
+          <button class="btn-sm" id="shareBtn">🔗 Share</button>
           <button class="btn-sm primary" id="dlBtn">💾 Download .json</button>
         </div>
       </div>
@@ -987,6 +988,45 @@
       URL.revokeObjectURL(a.href);
     });
 
+    /* ── Streaming Helper ── */
+    async function streamGenerate(body, outputEl, onDone) {
+      outputEl.textContent = '';
+      let full = '';
+      const resp = await fetch('/api/stream', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({ error: resp.statusText }));
+        throw new Error(err.error || `HTTP ${resp.status}`);
+      }
+      const reader = resp.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          try {
+            const event = JSON.parse(line.slice(6));
+            if (event.error) throw new Error(event.error);
+            if (event.done) { if (onDone) onDone(full); return full; }
+            if (event.text) {
+              full += event.text;
+              outputEl.textContent = full;
+            }
+          } catch (e) { if (e.message !== 'Unexpected end of JSON input') throw e; }
+        }
+      }
+      if (onDone) onDone(full);
+      return full;
+    }
+
     /* ── Demo Script Generation ── */
     const scriptBtn = document.getElementById('scriptBtn');
     const scriptPanel = document.getElementById('scriptPanel');
@@ -995,30 +1035,21 @@
 
     scriptBtn.addEventListener('click', async () => {
       if (!generated) return;
-
-      // If already generated, just toggle visibility
       if (generatedScript) {
         scriptPanel.style.display = scriptPanel.style.display === 'none' ? 'block' : 'none';
         return;
       }
 
-      // Show loading state
       scriptBtn.disabled = true;
-      scriptBtn.textContent = '⏳ Generating…';
+      scriptBtn.textContent = '⏳ Streaming…';
       scriptPanel.style.display = 'block';
-      scriptOut.textContent = 'Generating demo talk track… (takes 10-15 seconds)';
+      scriptOut.textContent = '';
 
       try {
-        const resp = await fetch('/api/demo-script', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ scenario: generated }),
-        });
-        const data = await resp.json();
-        if (!data.ok) throw new Error(data.error || 'Script generation failed');
-
-        generatedScript = data.script;
-        scriptOut.textContent = generatedScript;
+        generatedScript = await streamGenerate(
+          { type: 'demo-script', scenario: generated },
+          scriptOut
+        );
         scriptPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } catch (ex) {
         scriptOut.textContent = '❌ Error: ' + ex.message;
@@ -1084,20 +1115,15 @@
       }
 
       battleBtn.disabled = true;
-      battleBtn.textContent = '⏳ Generating…';
+      battleBtn.textContent = '⏳ Streaming…';
       battlePanel.style.display = 'block';
-      battleOut.textContent = `Generating battle card vs ${competitor}… (takes 10-15 seconds)`;
+      battleOut.textContent = '';
 
       try {
-        const resp = await fetch('/api/battle-card', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ scenario: generated, competitor }),
-        });
-        const data = await resp.json();
-        if (!data.ok) throw new Error(data.error);
-        generatedBattle = data.battleCard;
-        battleOut.textContent = generatedBattle;
+        generatedBattle = await streamGenerate(
+          { type: 'battle-card', scenario: generated, competitor },
+          battleOut
+        );
         battlePanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } catch (ex) {
         battleOut.textContent = '❌ Error: ' + ex.message;
@@ -1138,23 +1164,15 @@
       }
 
       reportBtn.disabled = true;
-      reportBtn.textContent = '⏳ Generating…';
+      reportBtn.textContent = '⏳ Streaming…';
       reportPanel.style.display = 'block';
-      reportOut.textContent = 'Generating follow-up email… (takes 10-15 seconds)';
+      reportOut.textContent = '';
 
       try {
-        const resp = await fetch('/api/post-demo-report', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            scenario: generated,
-            prospectName: document.getElementById('customerName').value,
-          }),
-        });
-        const data = await resp.json();
-        if (!data.ok) throw new Error(data.error);
-        generatedReport = data.report;
-        reportOut.textContent = generatedReport;
+        generatedReport = await streamGenerate(
+          { type: 'follow-up', scenario: generated, prospectName: document.getElementById('customerName').value },
+          reportOut
+        );
         reportPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } catch (ex) {
         reportOut.textContent = '❌ Error: ' + ex.message;
@@ -1244,6 +1262,70 @@
         btn.textContent = '🔍 Enrich';
       }
     });
+
+    /* ── Scenario Sharing via URL (#7) ── */
+    document.getElementById('shareBtn').addEventListener('click', () => {
+      if (!generated) return;
+      const json = JSON.stringify(generated);
+      const b64 = btoa(unescape(encodeURIComponent(json)));
+
+      // Check URL length — most browsers support ~2MB, but be safe
+      const shareUrl = `${location.origin}/?share=${b64}`;
+      if (shareUrl.length > 100000) {
+        alert(`Scenario too large to share via URL (${(shareUrl.length/1024).toFixed(0)}KB). Use Download instead.`);
+        return;
+      }
+
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        const btn = document.getElementById('shareBtn');
+        btn.textContent = '✅ Link Copied!';
+        setTimeout(() => { btn.textContent = '🔗 Share'; }, 2500);
+      }).catch(() => {
+        // Fallback: show in a prompt
+        prompt('Share this URL:', shareUrl);
+      });
+    });
+
+    /* ── Import from URL on page load ── */
+    (function checkUrlImport() {
+      const params = new URLSearchParams(location.search);
+      const shareData = params.get('share');
+      if (!shareData) return;
+
+      try {
+        const json = decodeURIComponent(escape(atob(shareData)));
+        const scenario = JSON.parse(json);
+
+        // Clean URL without reloading
+        history.replaceState(null, '', location.pathname);
+
+        // Show the imported scenario
+        generated = scenario;
+        showResult(scenario);
+
+        // Auto-fill form fields from the scenario
+        if (scenario.customer?.name) document.getElementById('customerName').value = scenario.customer.name;
+        if (scenario.customer?.endpointCount) document.getElementById('endpointCount').value = scenario.customer.endpointCount;
+        if (scenario.customer?.serverCount) document.getElementById('serverCount').value = scenario.customer.serverCount;
+        if (scenario.customer?.industry) {
+          const sel = document.getElementById('industry');
+          for (const opt of sel.options) {
+            if (opt.value === scenario.customer.industry) { sel.value = scenario.customer.industry; break; }
+          }
+        }
+
+        // Toast notification
+        const toast = document.createElement('div');
+        toast.style.cssText = 'position:fixed; top:60px; left:50%; transform:translateX(-50%); background:var(--sophos-blue); color:white; padding:10px 24px; border-radius:6px; font-size:14px; font-weight:500; z-index:999; box-shadow:0 4px 12px rgba(0,0,0,0.15); transition:opacity 0.3s;';
+        toast.textContent = `📦 Imported shared scenario: ${scenario.name || scenario.id || 'unnamed'}`;
+        document.body.appendChild(toast);
+        setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 4000);
+      } catch (err) {
+        console.error('[Share Import] Failed to parse shared scenario:', err);
+        alert('Failed to import shared scenario. The link may be corrupted.');
+        history.replaceState(null, '', location.pathname);
+      }
+    })();
   </script>
 
 </body>
