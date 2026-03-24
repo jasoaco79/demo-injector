@@ -48,11 +48,6 @@ The real Sophos Central dashboard showing actual alert counts and health summary
 
 ![Dashboard before demo mode](screenshots/dashboard-original.png)
 
-### Extension Popup — Scenario Picker
-The popup UI with scenario selection, customer name, endpoint/server counts, and the on/off toggle.
-
-![Extension popup scenario picker](screenshots/popup-scenario.png)
-
 ### Chrome Extensions Page
 Extension loaded in developer mode showing version and permissions.
 
