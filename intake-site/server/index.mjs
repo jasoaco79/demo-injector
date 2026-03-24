@@ -188,6 +188,12 @@ function buildUserPrompt(form) {
   prompt += `- Make alert descriptions compelling — the SE reads them aloud during the demo\n`;
   prompt += `- Include caseDetail.extraActivities with 3-5 timeline entries showing the investigation/response story\n`;
   prompt += `- Include threatGraphs.stacCases with a matching threat graph entry\n`;
+  prompt += `- Include auditLogs with 3-5 admin/system actions matching the scenario story (device isolations, credential resets, firewall rules, etc.)\n`;
+  prompt += `- Include liveDiscover.queryResults with a realistic XDR query and 4-6 result rows showing suspicious processes/activity\n`;
+
+  if (form.includeEmail || form.scenarioType === 'phishing') {
+    prompt += `- Include emailHistory.messages with 5 sample emails (mix of BLOCKED, QUARANTINED, DELIVERED) and emailHistory.quarantine with 3 quarantined items\n`;
+  }
 
   if (form.scenarioType === 'mdr' || form.mdrResponse === 'yes') {
     prompt += `- Set cases managedBy to "mtr" and assignee to "Sophos MDR Team"\n`;

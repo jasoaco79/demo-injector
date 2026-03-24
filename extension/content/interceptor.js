@@ -652,6 +652,80 @@
       return data;
     }
 
+    // ── Audit Logs (/api/audit/logs or /api/logs/audit) ──
+    if (url.includes('/audit') && (url.includes('/logs') || url.includes('/events'))) {
+      if (s.auditLogs) {
+        if (s.auditLogs.mode === 'override') {
+          interceptedCount++;
+          return {
+            items: s.auditLogs.items || [],
+            total: s.auditLogs.items?.length || 0,
+            filtered: s.auditLogs.items?.length || 0,
+            nextKey: null,
+            pages: s.auditLogs.items ? { current: 1, size: 50, total: 1, items: s.auditLogs.items.length } : undefined,
+          };
+        }
+        if (s.auditLogs.mode === 'prepend' && s.auditLogs.items?.length && data.items) {
+          data.items = [...s.auditLogs.items, ...data.items];
+          data.total = (data.total || 0) + s.auditLogs.items.length;
+          if (data.filtered !== undefined) data.filtered = (data.filtered || 0) + s.auditLogs.items.length;
+          interceptedCount++;
+        }
+      }
+      return data;
+    }
+
+    // ── Live Discover Queries (/xdr-query, /live-discover, /osquery) ──
+    if (url.includes('/live-discover/') || url.includes('/xdr-query/') || url.includes('/osquery/')) {
+      // Query results
+      if (url.includes('/results') || url.includes('/data')) {
+        if (s.liveDiscover?.queryResults) {
+          interceptedCount++;
+          return s.liveDiscover.queryResults;
+        }
+      }
+      // Saved queries / query catalog
+      if (url.includes('/queries') && !url.includes('/results')) {
+        if (s.liveDiscover?.savedQueries) {
+          interceptedCount++;
+          return s.liveDiscover.savedQueries;
+        }
+      }
+      // Connected endpoints for query targeting
+      if (url.includes('/endpoints') || url.includes('/devices')) {
+        if (s.liveDiscover?.connectedEndpoints) {
+          interceptedCount++;
+          return s.liveDiscover.connectedEndpoints;
+        }
+      }
+      return data;
+    }
+
+    // ── Email Message History / Quarantine ──
+    if (url.includes('/email/') || url.includes('/xgemail/')) {
+      // Message search / history
+      if (url.includes('/messages') || url.includes('/message-history') || url.includes('/search')) {
+        if (s.emailHistory?.messages) {
+          interceptedCount++;
+          return s.emailHistory.messages;
+        }
+      }
+      // Quarantine
+      if (url.includes('/quarantine')) {
+        if (s.emailHistory?.quarantine) {
+          interceptedCount++;
+          return s.emailHistory.quarantine;
+        }
+      }
+      // Message detail / trace
+      if (url.match(/\/messages?\/[\w-]+$/)) {
+        if (s.emailHistory?.messageDetail) {
+          interceptedCount++;
+          return s.emailHistory.messageDetail;
+        }
+      }
+    }
+
     // ── Catch-all: log unhandled Sophos API calls for debugging ──
     if (url.includes('sophos.com') && !url.includes('/manage/') && !url.includes('assets/')) {
       const shortUrl = url.replace(/https:\/\/[^/]+/, '').split('?')[0].slice(0, 80);

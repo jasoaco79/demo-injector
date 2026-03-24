@@ -86,6 +86,156 @@
   "healthScore": {
     "override": 89
   },
+  "auditLogs": {
+    "mode": "prepend",
+    "items": [
+      {
+        "timestamp": "-5m",
+        "type": "system_event",
+        "category": "email",
+        "action": "Bulk phishing campaign blocked",
+        "actor": "Sophos Email",
+        "actorType": "system",
+        "target": "SMTP Gateway",
+        "targetType": "service",
+        "result": "success",
+        "description": "47 inbound emails blocked from sender domain secure-login-verify[.]com. Reason: malicious URL detected (credential harvesting). Subject pattern: 'Action Required: Verify Your Account'."
+      },
+      {
+        "timestamp": "-4m",
+        "type": "system_event",
+        "category": "email",
+        "action": "Post-delivery remediation",
+        "actor": "Sophos Email",
+        "actorType": "system",
+        "target": "12 messages",
+        "targetType": "email",
+        "result": "success",
+        "description": "12 emails quarantined post-delivery via clawback. Messages had already been delivered to user inboxes before URL was reclassified as malicious."
+      },
+      {
+        "timestamp": "-3m",
+        "type": "system_event",
+        "category": "endpoint",
+        "action": "Malicious URL blocked at endpoint",
+        "actor": "Sophos Web Protection",
+        "actorType": "system",
+        "target": "DESKTOP-HR007",
+        "targetType": "endpoint",
+        "result": "blocked",
+        "description": "User sarah.chen clicked phishing link in delivered email. Sophos Web Protection on DESKTOP-HR007 blocked navigation to https://secure-login-verify[.]com/portal/login.php. No credentials exposed."
+      }
+    ]
+  },
+  "emailHistory": {
+    "messages": {
+      "items": [
+        {
+          "timestamp": "-8m",
+          "direction": "INBOUND",
+          "from": "no-reply@secure-login-verify.com",
+          "to": "sarah.chen@{{customerDomain}}",
+          "subject": "Action Required: Verify Your Account Immediately",
+          "status": "BLOCKED",
+          "reason": "MALICIOUS_URL",
+          "size": 45230,
+          "attachments": 0,
+          "urls": ["https://secure-login-verify.com/portal/login.php?uid=sarah.chen"],
+          "scanResults": { "spamScore": 92, "phishingScore": 99, "malwareDetected": false, "sandboxResult": "MALICIOUS" }
+        },
+        {
+          "timestamp": "-8m",
+          "direction": "INBOUND",
+          "from": "no-reply@secure-login-verify.com",
+          "to": "mike.jones@{{customerDomain}}",
+          "subject": "Action Required: Verify Your Account Immediately",
+          "status": "BLOCKED",
+          "reason": "MALICIOUS_URL",
+          "size": 45180,
+          "attachments": 0,
+          "urls": ["https://secure-login-verify.com/portal/login.php?uid=mike.jones"],
+          "scanResults": { "spamScore": 92, "phishingScore": 99, "malwareDetected": false, "sandboxResult": "MALICIOUS" }
+        },
+        {
+          "timestamp": "-8m",
+          "direction": "INBOUND",
+          "from": "no-reply@secure-login-verify.com",
+          "to": "lisa.park@{{customerDomain}}",
+          "subject": "Urgent: Account Verification Required",
+          "status": "QUARANTINED",
+          "reason": "SUSPICIOUS_URL",
+          "size": 44890,
+          "attachments": 0,
+          "urls": ["https://secure-login-verify.com/portal/verify.php?uid=lisa.park"],
+          "scanResults": { "spamScore": 88, "phishingScore": 95, "malwareDetected": false, "sandboxResult": "SUSPICIOUS" }
+        },
+        {
+          "timestamp": "-7m",
+          "direction": "INBOUND",
+          "from": "support@secure-login-verify.com",
+          "to": "david.kim@{{customerDomain}}",
+          "subject": "Your Account Has Been Locked — Verify Now",
+          "status": "QUARANTINED",
+          "reason": "IMPERSONATION",
+          "size": 52100,
+          "attachments": 1,
+          "urls": ["https://secure-login-verify.com/unlock.php"],
+          "scanResults": { "spamScore": 90, "phishingScore": 97, "malwareDetected": false, "sandboxResult": "MALICIOUS" }
+        },
+        {
+          "timestamp": "-6m",
+          "direction": "INBOUND",
+          "from": "no-reply@secure-login-verify.com",
+          "to": "emma.wilson@{{customerDomain}}",
+          "subject": "Action Required: Verify Your Account Immediately",
+          "status": "DELIVERED",
+          "reason": null,
+          "size": 44500,
+          "attachments": 0,
+          "urls": ["https://secure-login-verify.com/portal/login.php?uid=emma.wilson"],
+          "scanResults": { "spamScore": 65, "phishingScore": 72, "malwareDetected": false, "sandboxResult": "CLEAN" },
+          "postDeliveryAction": "QUARANTINED",
+          "postDeliveryReason": "URL reclassified as malicious after SophosLabs analysis"
+        }
+      ],
+      "total": 47,
+      "filtered": 47,
+      "pages": { "current": 1, "size": 20, "total": 3, "items": 47 }
+    },
+    "quarantine": {
+      "items": [
+        {
+          "timestamp": "-5m",
+          "from": "no-reply@secure-login-verify.com",
+          "to": "lisa.park@{{customerDomain}}",
+          "subject": "Urgent: Account Verification Required",
+          "reason": "SUSPICIOUS_URL",
+          "status": "quarantined",
+          "canRelease": true
+        },
+        {
+          "timestamp": "-5m",
+          "from": "support@secure-login-verify.com",
+          "to": "david.kim@{{customerDomain}}",
+          "subject": "Your Account Has Been Locked — Verify Now",
+          "reason": "IMPERSONATION",
+          "status": "quarantined",
+          "canRelease": false
+        },
+        {
+          "timestamp": "-4m",
+          "from": "no-reply@secure-login-verify.com",
+          "to": "emma.wilson@{{customerDomain}}",
+          "subject": "Action Required: Verify Your Account Immediately",
+          "reason": "POST_DELIVERY_CLAWBACK",
+          "status": "quarantined",
+          "canRelease": false
+        }
+      ],
+      "total": 12,
+      "filtered": 12
+    }
+  },
   "endpointReport": {
     "overrideTotal": "{{endpointCount}}",
     "overrideSummary": {

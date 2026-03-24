@@ -280,6 +280,85 @@
   "healthScore": {
     "override": 72
   },
+  "auditLogs": {
+    "mode": "prepend",
+    "items": [
+      {
+        "timestamp": "-1m",
+        "type": "admin_action",
+        "category": "endpoint",
+        "action": "Device isolation initiated",
+        "actor": "SOC Analyst",
+        "actorType": "admin",
+        "target": "DESKTOP-FIN042",
+        "targetType": "endpoint",
+        "result": "success",
+        "description": "DESKTOP-FIN042 isolated from network following CryptoLocker ransomware detection. User: sarah.chen."
+      },
+      {
+        "timestamp": "-2m",
+        "type": "system_event",
+        "category": "endpoint",
+        "action": "Threat cleanup initiated",
+        "actor": "Sophos Endpoint",
+        "actorType": "system",
+        "target": "DESKTOP-FIN042",
+        "targetType": "endpoint",
+        "result": "success",
+        "description": "Automatic cleanup of 'Troj/Ransom-GKL' initiated on DESKTOP-FIN042. File quarantined: cryptolocker.exe"
+      },
+      {
+        "timestamp": "-2m",
+        "type": "system_event",
+        "category": "endpoint",
+        "action": "CryptoGuard activation",
+        "actor": "Sophos Endpoint",
+        "actorType": "system",
+        "target": "DESKTOP-FIN042",
+        "targetType": "endpoint",
+        "result": "success",
+        "description": "CryptoGuard blocked ransomware encryption activity. 47 files protected from encryption. Remote encryption attempt from 192.168.1.47 blocked."
+      },
+      {
+        "timestamp": "-3m",
+        "type": "system_event",
+        "category": "endpoint",
+        "action": "Tamper Protection triggered",
+        "actor": "Sophos Endpoint",
+        "actorType": "system",
+        "target": "DESKTOP-FIN042",
+        "targetType": "endpoint",
+        "result": "blocked",
+        "description": "Tamper Protection blocked attempt to disable real-time scanning by malicious process invoice_march2026.exe (PID 9412)."
+      }
+    ]
+  },
+  "liveDiscover": {
+    "queryResults": {
+      "id": "auto",
+      "status": "completed",
+      "query": "SELECT pid, name, path, cmdline, parent FROM processes WHERE name LIKE '%powershell%' OR cmdline LIKE '%vssadmin%' OR cmdline LIKE '%shadow%'",
+      "queryName": "Ransomware Indicator Hunt — Shadow Copy & PowerShell",
+      "startedAt": "-2m",
+      "completedAt": "-1m",
+      "endpointsQueried": 12,
+      "endpointsResponded": 12,
+      "totalResults": 4,
+      "columns": [
+        { "name": "pid", "type": "INTEGER" },
+        { "name": "name", "type": "TEXT" },
+        { "name": "path", "type": "TEXT" },
+        { "name": "cmdline", "type": "TEXT" },
+        { "name": "endpoint_hostname", "type": "TEXT" }
+      ],
+      "rows": [
+        [12028, "powershell.exe", "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "powershell.exe -ExecutionPolicy Bypass -C \"vssadmin delete shadows /all /quiet\"", "DESKTOP-FIN042"],
+        [8844, "powershell.exe", "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "powershell.exe -ep bypass -file C:\\Users\\sarah.chen\\AppData\\Local\\Temp\\encrypt.ps1", "DESKTOP-FIN042"],
+        [9412, "invoice_march2026.exe", "C:\\Users\\sarah.chen\\Downloads\\invoice_march2026.exe", "invoice_march2026.exe --encrypt --target=C:\\Users", "DESKTOP-FIN042"],
+        [3104, "wmic.exe", "C:\\Windows\\System32\\wbem\\WMIC.exe", "wmic shadowcopy delete", "DESKTOP-FIN042"]
+      ]
+    }
+  },
   "endpointReport": {
     "overrideTotal": "{{endpointCount}}",
     "overrideSummary": {
