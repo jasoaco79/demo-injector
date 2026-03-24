@@ -8,6 +8,7 @@ const scenarioSelect = document.getElementById('scenario');
 const customerName = document.getElementById('customerName');
 const endpointCount = document.getElementById('endpointCount');
 const serverCount = document.getElementById('serverCount');
+const showBadge = document.getElementById('showBadge');
 const scenarioDesc = document.getElementById('scenarioDesc');
 const statusDot = document.getElementById('statusDot');
 const statusText = document.getElementById('statusText');
@@ -133,6 +134,7 @@ function saveState() {
     customerName: customerName.value,
     endpointCount: parseInt(endpointCount.value) || 2500,
     serverCount: parseInt(serverCount.value) || 186,
+    showBadge: showBadge.checked,
     interceptedCount: 0,
   };
   chrome.runtime.sendMessage({ type: 'SET_STATE', state }, () => {
@@ -152,6 +154,7 @@ async function init() {
     customerName.value = state.customerName || 'Contoso Healthcare';
     endpointCount.value = state.endpointCount || 2500;
     serverCount.value = state.serverCount || 186;
+    showBadge.checked = state.showBadge !== false; // default true
     updateUI(state);
   });
 }
@@ -162,6 +165,7 @@ init();
 // ─── Event Listeners ─────────────────────────────────────────────────
 
 toggle.addEventListener('change', saveState);
+showBadge.addEventListener('change', saveState);
 
 scenarioSelect.addEventListener('change', () => {
   // When switching scenarios, load customer defaults from scenario JSON

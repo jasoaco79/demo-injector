@@ -1610,7 +1610,7 @@
   let badgeElement = null;
 
   function updateBadge() {
-    if (demoState.enabled && activeScenario) {
+    if (demoState.enabled && activeScenario && demoState.showBadge !== false) {
       if (!badgeElement) {
         badgeElement = document.createElement('div');
         badgeElement.id = '__sophos_demo_badge__';
@@ -1632,6 +1632,10 @@
       badgeElement.innerHTML = `<span style="opacity:0.7">🎯</span> <span>${scenarioName}</span> <span style="opacity:0.5">|</span> <span>${cn}</span> <span style="opacity:0.5">|</span> <span style="color:#4ade80">${interceptedCount} intercepted</span>`;
       badgeElement.style.display = 'flex';
     } else if (badgeElement) {
+      badgeElement.style.display = 'none';
+    }
+    // Also hide if badge is disabled
+    if (demoState.showBadge === false && badgeElement) {
       badgeElement.style.display = 'none';
     }
   }
