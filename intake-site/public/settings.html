@@ -4,6 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Settings — Sophos Demo Builder</title>
+  <meta property="og:title" content="Sophos Demo Scenario Builder">
+  <meta property="og:description" content="Build custom demo scenarios for Sophos Central. Internal tool for Sales Engineers.">
+  <meta property="og:image" content="https://injector.grimstarr.com/og-image.png">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://injector.grimstarr.com/og-image.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
@@ -245,6 +251,14 @@
       .provider-grid { grid-template-columns: repeat(2, 1fr); }
       .field-grid-2, .field-grid-3 { grid-template-columns: 1fr; }
       .info-grid { grid-template-columns: 1fr; }
+      .topbar { flex-wrap: wrap; height: auto; padding: 10px 16px; gap: 8px; }
+      .topbar-subtitle, .topbar-sep { display: none; }
+      .nav-toggle { display: block; }
+      .topbar-right { display: none; flex-direction: column; width: 100%; gap: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1); }
+      .topbar-right.open { display: flex; }
+      .page-header { padding: 16px; }
+      .page-header h1 { font-size: 18px; }
+      .btn-row { flex-wrap: wrap; }
     }
   </style>
 </head>
@@ -257,7 +271,8 @@
     </div>
     <div class="topbar-sep"></div>
     <span class="topbar-subtitle">Demo Scenario Builder</span>
-    <div class="topbar-right">
+    <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">☰</button>
+    <div class="topbar-right" id="navLinks">
       <a href="/" class="topbar-link">🔧 Builder</a>
       <a href="/scenarios.html" class="topbar-link">📚 Library</a>
       <a href="/guide.html" class="topbar-link">📖 Guide</a>

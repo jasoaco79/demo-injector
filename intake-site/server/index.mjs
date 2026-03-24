@@ -90,7 +90,7 @@ function clearSessionCookie(res, req) {
 }
 
 // Public paths that don't require auth
-const PUBLIC_PATHS = ['/login.html', '/api/login', '/sophos-logo.svg'];
+const PUBLIC_PATHS = ['/login.html', '/api/login', '/sophos-logo.svg', '/og-image.png'];
 
 function isPublicPath(url) {
   const path = url.split('?')[0];

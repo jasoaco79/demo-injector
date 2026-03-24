@@ -4,6 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sophos Demo Builder</title>
+  <meta property="og:title" content="Sophos Demo Scenario Builder">
+  <meta property="og:description" content="Build custom demo scenarios for Sophos Central. Internal tool for Sales Engineers.">
+  <meta property="og:image" content="https://injector.grimstarr.com/og-image.png">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://injector.grimstarr.com/og-image.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
@@ -386,6 +392,23 @@
       margin: 0;
     }
 
+    /* ── Mobile Nav ── */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.8);
+      font-size: 22px;
+      cursor: pointer;
+      padding: 4px;
+      margin-left: auto;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
     /* ── Responsive ── */
     @media (max-width: 700px) {
       .main { padding: 16px 12px 60px; }
@@ -393,6 +416,23 @@
       .field-grid-2, .field-grid-3 { grid-template-columns: 1fr; }
       .stats { grid-template-columns: repeat(2, 1fr); }
       .result-bar { flex-direction: column; gap: 10px; }
+      .result-btns { flex-wrap: wrap; justify-content: center; }
+      .topbar { flex-wrap: wrap; height: auto; padding: 10px 16px; gap: 8px; }
+      .topbar-subtitle { display: none; }
+      .topbar-sep { display: none; }
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+        padding-top: 8px;
+        border-top: 1px solid rgba(255,255,255,0.1);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a, .nav-links button, .nav-links span { font-size: 14px !important; }
+      .page-header { padding: 16px; }
+      .page-header h1 { font-size: 18px; }
     }
     @media (max-width: 480px) {
       .scenario-grid { grid-template-columns: 1fr; }
@@ -411,13 +451,14 @@
     </div>
     <div class="topbar-sep"></div>
     <span class="topbar-subtitle">Demo Scenario Builder</span>
-    <div class="topbar-right">
+    <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">☰</button>
+    <div class="topbar-right nav-links" id="navLinks">
       <a href="/" style="color:white; text-decoration:none; font-size:13px; font-weight:600;">🔧 Builder</a>
-      <a href="/scenarios.html" style="color:rgba(255,255,255,0.7); text-decoration:none; font-size:13px; transition:color 0.15s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">📚 Library</a>
-      <a href="/guide.html" style="color:rgba(255,255,255,0.7); text-decoration:none; font-size:13px; transition:color 0.15s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">📖 Guide</a>
-      <a href="/settings.html" style="color:rgba(255,255,255,0.7); text-decoration:none; font-size:13px; transition:color 0.15s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">⚙️ Settings</a>
-      <span class="topbar-badge" id="providerBadge" title="Loading…">⏳ CHECKING LLM…</span>
-      <button onclick="fetch('/api/logout',{method:'POST'}).then(()=>location.href='/login.html')" style="background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.7); border:1px solid rgba(255,255,255,0.15); padding:4px 12px; border-radius:4px; font-family:inherit; font-size:12px; cursor:pointer;" onmouseover="this.style.color='white';this.style.borderColor='rgba(255,255,255,0.3)'" onmouseout="this.style.color='rgba(255,255,255,0.7)';this.style.borderColor='rgba(255,255,255,0.15)'">🚪 Logout</button>
+      <a href="/scenarios.html" style="color:rgba(255,255,255,0.7); text-decoration:none; font-size:13px;">📚 Library</a>
+      <a href="/guide.html" style="color:rgba(255,255,255,0.7); text-decoration:none; font-size:13px;">📖 Guide</a>
+      <a href="/settings.html" style="color:rgba(255,255,255,0.7); text-decoration:none; font-size:13px;">⚙️ Settings</a>
+      <span class="topbar-badge" id="providerBadge" title="Loading…">⏳ LLM</span>
+      <button onclick="fetch('/api/logout',{method:'POST'}).then(()=>location.href='/login.html')" style="background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.7); border:1px solid rgba(255,255,255,0.15); padding:4px 12px; border-radius:4px; font-family:inherit; font-size:12px; cursor:pointer;">🚪 Logout</button>
     </div>
   </header>
 

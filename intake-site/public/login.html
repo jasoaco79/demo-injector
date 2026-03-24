@@ -4,6 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sign In — Sophos Demo Scenario Builder</title>
+  <meta property="og:title" content="Sophos Demo Scenario Builder">
+  <meta property="og:description" content="Build custom demo scenarios for Sophos Central. Internal tool for Sales Engineers.">
+  <meta property="og:image" content="https://injector.grimstarr.com/og-image.png">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sophos Demo Scenario Builder">
+  <meta name="twitter:description" content="Build custom demo scenarios for Sophos Central. Internal tool for Sales Engineers.">
+  <meta name="twitter:image" content="https://injector.grimstarr.com/og-image.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -63,7 +71,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      padding: 16px;
       position: relative;
       z-index: 1;
     }
@@ -85,6 +93,7 @@
     }
     .card-header img {
       height: 32px;
+      max-width: 80%;
       filter: brightness(0) invert(1);
       margin-bottom: 16px;
     }
@@ -231,6 +240,14 @@
       80% { transform: translateX(6px); }
     }
     .shake { animation: shake 0.4s ease; }
+
+    @media (max-width: 480px) {
+      .card-header { padding: 28px 24px 22px; }
+      .card-header h1 { font-size: 16px; }
+      .card-body { padding: 24px; }
+      .card-footer { padding: 14px 24px; }
+      .page-footer p { font-size: 11px; }
+    }
   </style>
 </head>
 <body>

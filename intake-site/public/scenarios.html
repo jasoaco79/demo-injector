@@ -4,6 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Scenario Library — Sophos Demo Builder</title>
+  <meta property="og:title" content="Sophos Demo Scenario Builder">
+  <meta property="og:description" content="Build custom demo scenarios for Sophos Central. Internal tool for Sales Engineers.">
+  <meta property="og:image" content="https://injector.grimstarr.com/og-image.png">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://injector.grimstarr.com/og-image.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
@@ -40,6 +46,8 @@
     .topbar-link { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; transition: color 0.15s; }
     .topbar-link:hover { color: white; }
     .topbar-badge { background: var(--sophos-blue); color: white; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 10px; }
+    .nav-toggle { display: none; background: none; border: none; color: rgba(255,255,255,0.8); font-size: 22px; cursor: pointer; padding: 4px; margin-left: auto; }
+    .btn-logout { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 4px; font-family: inherit; font-size: 12px; cursor: pointer; }
 
     .page-header { background: var(--surface-card); border-bottom: 1px solid var(--border); padding: 24px 32px 20px; }
     .page-header h1 { font-size: 22px; font-weight: 600; margin-bottom: 2px; }
@@ -131,7 +139,18 @@
     .btn-modal.primary { background: var(--sophos-blue); color: white; border-color: var(--sophos-blue); }
     .btn-modal.primary:hover { background: var(--sophos-blue-hover); }
 
-    @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+    @media (max-width: 700px) {
+      .grid { grid-template-columns: 1fr; }
+      .topbar { flex-wrap: wrap; height: auto; padding: 10px 16px; gap: 8px; }
+      .topbar-subtitle, .topbar-sep { display: none; }
+      .nav-toggle { display: block; }
+      .topbar-right { display: none; flex-direction: column; width: 100%; gap: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1); }
+      .topbar-right.open { display: flex; }
+      .page-header { padding: 16px; }
+      .page-header h1 { font-size: 18px; }
+      .main { padding: 16px 12px; }
+      .modal-body { width: calc(100% - 24px); }
+    }
   </style>
 </head>
 <body>
@@ -139,12 +158,13 @@
     <div class="topbar-logo"><img src="/sophos-logo.svg" alt="Sophos"></div>
     <div class="topbar-sep"></div>
     <span class="topbar-subtitle">Scenario Library</span>
-    <div class="topbar-right">
+    <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">☰</button>
+    <div class="topbar-right" id="navLinks">
       <a href="/" class="topbar-link">🔧 Builder</a>
       <a href="/scenarios.html" class="topbar-link" style="color:white; font-weight:600;">📚 Library</a>
       <a href="/guide.html" class="topbar-link">📖 Guide</a>
       <a href="/settings.html" class="topbar-link">⚙️ Settings</a>
-      <button onclick="fetch('/api/logout',{method:'POST'}).then(()=>location.href='/login.html')" style="background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.7); border:1px solid rgba(255,255,255,0.15); padding:4px 12px; border-radius:4px; font-family:inherit; font-size:12px; cursor:pointer;" onmouseover="this.style.color='white';this.style.borderColor='rgba(255,255,255,0.3)'" onmouseout="this.style.color='rgba(255,255,255,0.7)';this.style.borderColor='rgba(255,255,255,0.15)'">🚪 Logout</button>
+      <button class="btn-logout" onclick="fetch('/api/logout',{method:'POST'}).then(()=>location.href='/login.html')">🚪 Logout</button>
     </div>
   </header>
 
