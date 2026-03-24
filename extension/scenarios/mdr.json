@@ -246,6 +246,218 @@
         "overview": "INCIDENT SUMMARY\n\nAt 01:42 AM, a spearphishing email delivered a malicious Excel macro to sarah.chen (Finance). The macro downloaded a Cobalt Strike beacon establishing C2 with 185.220.101.47. At 02:31 AM, the attacker attempted lateral movement to SRV-FS01 (file server) using stolen svc-backup credentials. At 02:39 AM, ransomware deployment began \u2014 CryptoGuard blocked encryption.\n\nMDR RESPONSE\n\u2022 02:39 AM \u2014 Alert triggered, MDR analyst assigned\n\u2022 02:44 AM \u2014 Lateral movement blocked, SRV-FS01 protected\n\u2022 02:47 AM \u2014 DESKTOP-FIN042 isolated from network\n\u2022 03:15 AM \u2014 C2 IP blocked at firewall (185.220.101.47)\n\u2022 03:30 AM \u2014 Compromised credentials (svc-backup) flagged for reset\n\u2022 04:45 AM \u2014 Full remediation complete: malware removed, persistence cleared\n\u2022 06:00 AM \u2014 Incident report delivered to customer\n\nIMPACT: 1 endpoint compromised (DESKTOP-FIN042). Lateral movement blocked before file server was reached. Zero data loss. Zero files encrypted (CryptoGuard). Estimated attacker dwell time: 57 minutes before containment.\n\nSTATUS: Contained. Awaiting customer approval to bring DESKTOP-FIN042 back online.",
         "detectionCount": 18,
         "escalated": true
+      },
+      {
+        "type": "investigation",
+        "name": "(SRV-FS01) | Lateral Movement via SMB \u2014 {{customerName}}",
+        "managedBy": "mtr",
+        "createdAt": "-2d",
+        "createdBy": {
+          "name": "Sophos MDR Team"
+        },
+        "updatedAt": "-1d",
+        "status": "resolved",
+        "initialDetection": {
+          "severity": 8,
+          "type": "Threat",
+          "detectionRule": "WIN-IMP-PRC-LATERAL-MOVEMENT-SMB-1",
+          "mitreAttacks": [
+            {
+              "tactic": {
+                "id": "TA0008",
+                "name": "Lateral Movement",
+                "techniques": [
+                  {
+                    "id": "T1021.002",
+                    "name": "SMB/Windows Admin Shares"
+                  }
+                ]
+              }
+            },
+            {
+              "tactic": {
+                "id": "TA0006",
+                "name": "Credential Access",
+                "techniques": [
+                  {
+                    "id": "T1003.001",
+                    "name": "LSASS Memory"
+                  }
+                ]
+              }
+            }
+          ],
+          "time": "-2d",
+          "sensor": {
+            "type": "endpoint",
+            "source": "Sophos Endpoint"
+          }
+        },
+        "assignee": {
+          "name": "Sophos MDR Team"
+        },
+        "overview": "MDR detected lateral movement from DESKTOP-FIN042 to SRV-FS01 using compromised svc-backup credentials. SMB admin share access was blocked. Credentials flagged for immediate reset. No data accessed on file server.",
+        "detectionCount": 6,
+        "escalated": true
+      },
+      {
+        "type": "investigation",
+        "name": "(DESKTOP-HR003) | Phishing \u2014 Credential Harvesting Blocked",
+        "managedBy": "mtr",
+        "createdAt": "-5d",
+        "createdBy": {
+          "name": "Sophos MDR Team"
+        },
+        "updatedAt": "-4d",
+        "status": "closed",
+        "initialDetection": {
+          "severity": 6,
+          "type": "Threat",
+          "detectionRule": "MAL-WEB-PHISHING-CREDENTIAL-HARVEST-1",
+          "mitreAttacks": [
+            {
+              "tactic": {
+                "id": "TA0001",
+                "name": "Initial Access",
+                "techniques": [
+                  {
+                    "id": "T1566.002",
+                    "name": "Spearphishing Link"
+                  }
+                ]
+              }
+            },
+            {
+              "tactic": {
+                "id": "TA0006",
+                "name": "Credential Access",
+                "techniques": [
+                  {
+                    "id": "T1056.004",
+                    "name": "Web Portal Capture"
+                  }
+                ]
+              }
+            }
+          ],
+          "time": "-5d",
+          "sensor": {
+            "type": "endpoint",
+            "source": "Sophos Endpoint"
+          }
+        },
+        "assignee": {
+          "name": "Sophos MDR Team"
+        },
+        "overview": "Targeted phishing email impersonating Microsoft 365 login sent to HR department. User clicked link but Sophos Web Protection blocked the credential harvesting page. MDR confirmed no credentials were compromised. Sender domain added to block list.",
+        "detectionCount": 2,
+        "escalated": false
+      },
+      {
+        "type": "investigation",
+        "name": "(SRV-DC01) | Suspicious Scheduled Task \u2014 Persistence Attempt",
+        "managedBy": "mtr",
+        "createdAt": "-8d",
+        "createdBy": {
+          "name": "Sophos MDR Team"
+        },
+        "updatedAt": "-7d",
+        "status": "closed",
+        "initialDetection": {
+          "severity": 7,
+          "type": "Threat",
+          "detectionRule": "WIN-PER-SCHTASK-ENCODED-COMMAND-1",
+          "mitreAttacks": [
+            {
+              "tactic": {
+                "id": "TA0003",
+                "name": "Persistence",
+                "techniques": [
+                  {
+                    "id": "T1053.005",
+                    "name": "Scheduled Task"
+                  }
+                ]
+              }
+            },
+            {
+              "tactic": {
+                "id": "TA0002",
+                "name": "Execution",
+                "techniques": [
+                  {
+                    "id": "T1059.001",
+                    "name": "PowerShell"
+                  }
+                ]
+              }
+            }
+          ],
+          "time": "-8d",
+          "sensor": {
+            "type": "endpoint",
+            "source": "Sophos Endpoint"
+          }
+        },
+        "assignee": {
+          "name": "Sophos MDR Team"
+        },
+        "overview": "Base64-encoded PowerShell scheduled task created on domain controller SRV-DC01. MDR identified this as a persistence mechanism from a previous compromise attempt. Task was removed, system scanned clean. Root cause traced to exposed RDP port \u2014 remediation guidance provided.",
+        "detectionCount": 4,
+        "escalated": true
+      },
+      {
+        "type": "investigation",
+        "name": "(LAPTOP-EXEC01) | Suspicious Data Staging \u2014 Exfiltration Prevented",
+        "managedBy": "mtr",
+        "createdAt": "-12d",
+        "createdBy": {
+          "name": "Sophos MDR Team"
+        },
+        "updatedAt": "-11d",
+        "status": "closed",
+        "initialDetection": {
+          "severity": 8,
+          "type": "Threat",
+          "detectionRule": "WIN-EXF-ARCHIVE-SENSITIVE-DATA-STAGING-1",
+          "mitreAttacks": [
+            {
+              "tactic": {
+                "id": "TA0009",
+                "name": "Collection",
+                "techniques": [
+                  {
+                    "id": "T1560.001",
+                    "name": "Archive via Utility"
+                  }
+                ]
+              }
+            },
+            {
+              "tactic": {
+                "id": "TA0010",
+                "name": "Exfiltration",
+                "techniques": [
+                  {
+                    "id": "T1567.002",
+                    "name": "Exfiltration to Cloud Storage"
+                  }
+                ]
+              }
+            }
+          ],
+          "time": "-12d",
+          "sensor": {
+            "type": "endpoint",
+            "source": "Sophos Endpoint"
+          }
+        },
+        "assignee": {
+          "name": "Sophos MDR Team"
+        },
+        "overview": "MDR detected bulk archiving of financial documents on executive laptop LAPTOP-EXEC01, with attempted upload to personal cloud storage. Upload was blocked by DLP policy. Investigation confirmed the activity was from a compromised account \u2014 password reset enforced, MFA enrollment required.",
+        "detectionCount": 8,
+        "escalated": true
       }
     ]
   },
