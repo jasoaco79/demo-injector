@@ -334,27 +334,50 @@ const server = createServer(async (req, res) => {
     return;
   }
 
-  // ─── Auth: Login endpoint ──────────────────────────────────────────
-  if (req.method === 'POST' && req.url === '/api/login') {
+  // ─── Auth: Login endpoint (handles both JSON and form-encoded) ─────
+  if (req.method === 'POST' && (req.url === '/api/login' || req.url.startsWith('/api/login?'))) {
     let body = '';
     req.on('data', (chunk) => { body += chunk; });
     req.on('end', () => {
+      let passcode = null;
+      const contentType = req.headers['content-type'] || '';
       try {
-        const { passcode } = JSON.parse(body);
-        if (passcode === getPasscode()) {
-          const token = createSession(req.socket.remoteAddress);
-          setSessionCookie(res, token, req);
-          console.log(`🔓 Login successful from ${req.socket.remoteAddress}`);
+        if (contentType.includes('application/json')) {
+          passcode = JSON.parse(body).passcode;
+        } else {
+          // form-encoded fallback
+          passcode = new URLSearchParams(body).get('passcode');
+        }
+      } catch (err) {
+        console.log(`🔒 Login parse error: ${err.message}`);
+      }
+
+      console.log(`🔑 Login attempt: received="${passcode}" expected="${getPasscode()}" match=${passcode === getPasscode()} content-type="${contentType}"`);
+
+      if (passcode && passcode === getPasscode()) {
+        const token = createSession(req.socket.remoteAddress);
+        setSessionCookie(res, token, req);
+        console.log(`🔓 Login successful from ${req.socket.remoteAddress}`);
+
+        // If it was a form POST (not JSON), redirect to home
+        if (!contentType.includes('application/json')) {
+          const next = new URLSearchParams(req.url.split('?')[1] || '').get('next') || '/';
+          res.writeHead(302, { 'Location': next });
+          res.end();
+        } else {
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ ok: true }));
+        }
+      } else {
+        console.log(`🔒 Failed login attempt from ${req.socket.remoteAddress}`);
+        if (!contentType.includes('application/json')) {
+          // Form POST — redirect back to login with error
+          res.writeHead(302, { 'Location': '/login.html?error=1' });
+          res.end();
         } else {
-          console.log(`🔒 Failed login attempt from ${req.socket.remoteAddress}`);
           res.writeHead(401, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ ok: false, error: 'Invalid passcode.' }));
         }
-      } catch (err) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ ok: false, error: 'Bad request.' }));
       }
     });
     return;
@@ -953,7 +976,13 @@ Use your knowledge to make educated estimates. If you don't know something, make
       res.end('Not found');
       return;
     }
-    res.writeHead(200, { 'Content-Type': mimeType });
+    const headers = { 'Content-Type': mimeType };
+    // Prevent caching on HTML pages so updates are always picked up
+    if (ext === '.html') {
+      headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
+      headers['Pragma'] = 'no-cache';
+    }
+    res.writeHead(200, headers);
     res.end(data);
   });
 });

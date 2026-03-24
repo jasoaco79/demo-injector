@@ -244,14 +244,14 @@
         <p>Internal tool for Sophos Sales Engineers</p>
       </div>
 
-      <form class="card-body" id="loginForm" autocomplete="off">
+      <form class="card-body" id="loginForm" method="POST" action="/api/login" autocomplete="off">
         <div class="err" id="errBox">Invalid passcode. Please try again.</div>
 
         <div class="field">
           <label for="passcode">Passcode</label>
           <div class="input-wrap">
             <span class="icon">🔒</span>
-            <input type="password" id="passcode" placeholder="Enter passcode" autofocus required>
+            <input type="password" id="passcode" name="passcode" placeholder="Enter passcode" autofocus required>
             <button type="button" class="toggle-vis" id="toggleVis" title="Show/hide passcode">👁️</button>
           </div>
         </div>
@@ -270,12 +270,18 @@
   </div>
 
   <script>
-    const form = document.getElementById('loginForm');
     const input = document.getElementById('passcode');
     const err = document.getElementById('errBox');
     const card = document.getElementById('card');
-    const btn = document.getElementById('loginBtn');
     const toggle = document.getElementById('toggleVis');
+
+    // Show error if redirected back after failed attempt
+    if (new URLSearchParams(location.search).has('error')) {
+      err.classList.add('show');
+      card.classList.add('shake');
+      setTimeout(() => card.classList.remove('shake'), 400);
+      input.classList.add('error');
+    }
 
     // Toggle password visibility
     toggle.addEventListener('click', () => {
@@ -284,48 +290,11 @@
       toggle.textContent = isPassword ? '🙈' : '👁️';
     });
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      err.classList.remove('show');
-      input.classList.remove('error');
-      btn.disabled = true;
-      btn.textContent = 'Signing in…';
-
-      try {
-        const resp = await fetch('/api/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ passcode: input.value }),
-        });
-        const data = await resp.json();
-
-        if (data.ok) {
-          btn.textContent = '✅ Welcome!';
-          // Redirect to the page they were trying to access, or home
-          const next = new URLSearchParams(location.search).get('next') || '/';
-          setTimeout(() => { window.location.href = next; }, 300);
-        } else {
-          err.textContent = data.error || 'Invalid passcode. Please try again.';
-          err.classList.add('show');
-          input.classList.add('error');
-          card.classList.add('shake');
-          setTimeout(() => card.classList.remove('shake'), 400);
-          input.select();
-          btn.disabled = false;
-          btn.textContent = 'Sign In';
-        }
-      } catch (ex) {
-        err.textContent = 'Connection error. Please try again.';
-        err.classList.add('show');
-        btn.disabled = false;
-        btn.textContent = 'Sign In';
-      }
-    });
-
-    // Enter key auto-submits
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') form.dispatchEvent(new Event('submit'));
-    });
+    // Pass ?next= through to the form action so login redirects correctly
+    const next = new URLSearchParams(location.search).get('next');
+    if (next) {
+      document.getElementById('loginForm').action = '/api/login?next=' + encodeURIComponent(next);
+    }
   </script>
 </body>
 </html>
