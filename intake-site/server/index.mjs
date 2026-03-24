@@ -79,12 +79,14 @@ function isAuthenticated(req) {
   return token && sessions.has(token);
 }
 
-function setSessionCookie(res, token) {
-  res.setHeader('Set-Cookie', `sophos_demo_session=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=86400`);
+function setSessionCookie(res, token, req) {
+  const secure = (req?.headers['x-forwarded-proto'] === 'https') ? '; Secure' : '';
+  res.setHeader('Set-Cookie', `sophos_demo_session=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=86400${secure}`);
 }
 
-function clearSessionCookie(res) {
-  res.setHeader('Set-Cookie', `sophos_demo_session=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`);
+function clearSessionCookie(res, req) {
+  const secure = (req?.headers['x-forwarded-proto'] === 'https') ? '; Secure' : '';
+  res.setHeader('Set-Cookie', `sophos_demo_session=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${secure}`);
 }
 
 // Public paths that don't require auth
@@ -336,7 +338,7 @@ const server = createServer(async (req, res) => {
         const { passcode } = JSON.parse(body);
         if (passcode === getPasscode()) {
           const token = createSession(req.socket.remoteAddress);
-          setSessionCookie(res, token);
+          setSessionCookie(res, token, req);
           console.log(`🔓 Login successful from ${req.socket.remoteAddress}`);
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ ok: true }));
@@ -357,7 +359,7 @@ const server = createServer(async (req, res) => {
   if (req.method === 'POST' && req.url === '/api/logout') {
     const token = getSessionToken(req);
     if (token) sessions.delete(token);
-    clearSessionCookie(res);
+    clearSessionCookie(res, req);
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ ok: true }));
     return;
