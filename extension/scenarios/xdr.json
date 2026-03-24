@@ -200,7 +200,7 @@
           "malwareName": "Cobalt Strike Beacon",
           "cloudCreatedAt": "-3h",
           "rootCauseDT": "-3h",
-          "status": "IN_PROGRESS",
+          "status": "COMPLETED",
           "priority": "HIGH",
           "id": "auto",
           "caseType": "SYSTEM_GENERATED",

@@ -1125,24 +1125,36 @@
       }
     }
 
-    // Pre-fetch interception: if URL is for a fake case, return synthetic data
-    // without hitting the real API (which would 404 for our fake case IDs)
-    if (activeScenario && url.includes('/cases/v1/cases/')) {
-      const caseIdMatch = url.match(/\/cases\/v1\/cases\/([\w-]+)/);
-      if (caseIdMatch) {
-        const fakeCaseId = caseIdMatch[1];
-        const fakeCase = activeScenario.cases?.items?.find(c => c.id === fakeCaseId);
-        if (fakeCase) {
-          // This is a request for our fake case — synthesize a response without calling the real API
-          const syntheticData = modifyResponse(url, method.toUpperCase(), {});
-          const syntheticResp = new Response(JSON.stringify(syntheticData), {
-            status: 200,
-            statusText: 'OK',
-            headers: { 'Content-Type': 'application/json' },
-          });
-          Object.defineProperty(syntheticResp, 'url', { value: url });
-          return syntheticResp;
+    // Pre-fetch interception: if URL is for a fake case or STAC graph,
+    // return synthetic data without hitting the real API (which would 404)
+    if (activeScenario) {
+      let shouldSynthesize = false;
+
+      // Regular cases
+      if (url.includes('/cases/v1/cases/')) {
+        const caseIdMatch = url.match(/\/cases\/v1\/cases\/([\w-]+)/);
+        if (caseIdMatch) {
+          const fakeCase = activeScenario.cases?.items?.find(c => c.id === caseIdMatch[1]);
+          if (fakeCase) shouldSynthesize = true;
         }
+      }
+
+      // STAC threat graph endpoints
+      if (url.includes('/api/stac/')) {
+        if (activeScenario.threatGraphs?.stacCases || activeScenario.detections?.items?.length) {
+          shouldSynthesize = true;
+        }
+      }
+
+      if (shouldSynthesize) {
+        const syntheticData = modifyResponse(url, method.toUpperCase(), {});
+        const syntheticResp = new Response(JSON.stringify(syntheticData), {
+          status: 200,
+          statusText: 'OK',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        Object.defineProperty(syntheticResp, 'url', { value: url });
+        return syntheticResp;
       }
     }
 

@@ -254,7 +254,7 @@
           "malwareName": "Troj/Ransom-GKL",
           "cloudCreatedAt": "-3m",
           "rootCauseDT": "-5m",
-          "status": "IN_PROGRESS",
+          "status": "COMPLETED",
           "priority": "HIGH",
           "id": "auto",
           "caseType": "SYSTEM_GENERATED",
