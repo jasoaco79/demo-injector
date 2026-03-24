@@ -1355,8 +1355,16 @@
   // the widget data pipeline, so we inject content into the DOM after render.
 
   let widgetOverridesApplied = {};
+  let lastWidgetPath = '';
+  let widgetPollInterval = null;
 
   function injectDashboardWidgets() {
+    // Reset overrides when URL changes (navigated away and back)
+    const currentPath = window.location.pathname;
+    if (currentPath !== lastWidgetPath) {
+      widgetOverridesApplied = {};
+      lastWidgetPath = currentPath;
+    }
     if (!demoState.enabled || !activeScenario) return;
 
     const path = window.location.pathname;
@@ -1581,14 +1589,19 @@
     document.addEventListener('DOMContentLoaded', startDomObserver);
   }
 
-  // Reset domOverrideApplied on SPA navigation
+  // Reset DOM overrides on SPA navigation + poll for dashboard widgets
   let lastPathname = window.location.pathname;
   setInterval(() => {
     if (window.location.pathname !== lastPathname) {
       lastPathname = window.location.pathname;
       domOverrideApplied = false;
+      widgetOverridesApplied = {};
     }
-  }, 500);
+    // Re-check dashboard widgets (they may re-render after SPA navigation)
+    if (demoState.enabled && activeScenario) {
+      injectDashboardWidgets();
+    }
+  }, 1000);
 
 
   // ─── Floating Demo Badge (#10) ─────────────────────────────────────
