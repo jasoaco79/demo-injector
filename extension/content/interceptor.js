@@ -239,6 +239,181 @@
   }
 
 
+  // ─── Threat Graph Generator ─────────────────────────────────────────
+
+  function generateThreatGraph(scenario, customerName) {
+    const dets = scenario.detections?.items || [];
+    const nodes = [];
+    const edges = [];
+    let nodeId = 1;
+
+    // Build process tree from detections
+    for (const det of dets) {
+      const hostname = det.device?.hostname || det.rawData?.meta_hostname || 'UNKNOWN';
+      const process = det.rawData?.path?.split('\\').pop() || det.rawData?.cmdline?.split(' ')[0]?.split('\\').pop() || 'unknown.exe';
+      const parent = det.rawData?.parent_name || 'explorer.exe';
+      const ip = det.rawData?.meta_ip_address || '192.168.1.1';
+      const user = det.rawData?.meta_username || 'SYSTEM';
+      const cmdline = det.rawData?.cmdline || process;
+
+      // Parent process node
+      const parentId = 'n' + nodeId++;
+      nodes.push({
+        id: parentId,
+        type: 'process',
+        name: parent,
+        hostname,
+        properties: { name: parent, path: 'C:\\Windows\\System32\\' + parent, user, hostname, ip },
+        decoration: { type: 'clean', label: 'Clean' },
+      });
+
+      // Child process node (the suspicious one)
+      const childId = 'n' + nodeId++;
+      const isMalicious = (det.risk || det.severity || 0) >= 7;
+      nodes.push({
+        id: childId,
+        type: 'process',
+        name: process,
+        hostname,
+        properties: {
+          name: process,
+          path: det.rawData?.path || process,
+          cmdline,
+          user,
+          hostname,
+          ip,
+          sha256: det.rawData?.sha256 || uuid(),
+          pid: det.rawData?.pid || Math.floor(Math.random() * 20000),
+        },
+        decoration: {
+          type: isMalicious ? 'malicious' : 'suspicious',
+          label: isMalicious ? 'Malicious' : 'Suspicious',
+          reputation: det.intelixFileReputation?.label || (isMalicious ? 'Known Malicious' : 'Suspicious'),
+          reputationScore: det.intelixFileReputation?.score || (isMalicious ? 100 : 60),
+        },
+        mitreAttacks: det.mitreAttacks || [],
+        detectionRule: det.classificationRule || '',
+      });
+
+      // Edge: parent spawned child
+      edges.push({ source: parentId, target: childId, type: 'spawned' });
+
+      // Add network connection if there's a C2 or external IP in the cmdline
+      const c2Match = cmdline.match(/(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/);
+      if (c2Match && !c2Match[1].startsWith('192.168.') && !c2Match[1].startsWith('10.')) {
+        const netId = 'n' + nodeId++;
+        nodes.push({
+          id: netId,
+          type: 'network',
+          name: c2Match[1],
+          properties: { ip: c2Match[1], port: 443, direction: 'outbound' },
+          decoration: { type: 'malicious', label: 'C2 Server' },
+        });
+        edges.push({ source: childId, target: netId, type: 'connected_to' });
+      }
+
+      // Add file node if there's a written/dropped file
+      if (det.rawData?.path && det.rawData.path.includes('\\Users\\')) {
+        const fileId = 'n' + nodeId++;
+        nodes.push({
+          id: fileId,
+          type: 'file',
+          name: det.rawData.path.split('\\').pop(),
+          properties: { path: det.rawData.path, sha256: det.rawData?.sha256 || uuid() },
+          decoration: { type: isMalicious ? 'malicious' : 'suspicious', label: isMalicious ? 'Malicious File' : 'Suspicious File' },
+        });
+        edges.push({ source: childId, target: fileId, type: 'created' });
+      }
+    }
+
+    return {
+      nodes,
+      edges,
+      rootCause: nodes.find(n => n.decoration?.type === 'malicious')?.id || nodes[1]?.id || 'n2',
+      summary: {
+        totalProcesses: nodes.filter(n => n.type === 'process').length,
+        maliciousProcesses: nodes.filter(n => n.decoration?.type === 'malicious').length,
+        suspiciousProcesses: nodes.filter(n => n.decoration?.type === 'suspicious').length,
+        networkConnections: nodes.filter(n => n.type === 'network').length,
+        files: nodes.filter(n => n.type === 'file').length,
+      },
+    };
+  }
+
+  function generateThreatArtifacts(scenario) {
+    const dets = scenario.detections?.items || [];
+    const artifacts = [];
+
+    for (const det of dets) {
+      // Process artifact
+      artifacts.push({
+        type: 'process',
+        name: det.rawData?.path?.split('\\').pop() || 'unknown.exe',
+        path: det.rawData?.path || '',
+        sha256: det.rawData?.sha256 || uuid(),
+        cmdline: det.rawData?.cmdline || '',
+        hostname: det.device?.hostname || det.rawData?.meta_hostname || '',
+        reputation: det.intelixFileReputation?.label || 'Unknown',
+        reputationScore: det.intelixFileReputation?.score || 0,
+      });
+
+      // File artifact if path is in user directory
+      if (det.rawData?.path?.includes('\\Users\\') || det.rawData?.path?.includes('\\Temp\\')) {
+        artifacts.push({
+          type: 'file',
+          name: det.rawData.path.split('\\').pop(),
+          path: det.rawData.path,
+          sha256: det.rawData?.sha256 || uuid(),
+          size: Math.floor(Math.random() * 500000) + 10000,
+          hostname: det.device?.hostname || '',
+        });
+      }
+    }
+
+    return { items: artifacts, total: artifacts.length };
+  }
+
+
+  // ─── Device Detail Generator ──────────────────────────────────────
+
+  function generateDeviceDetail(hostname, scenario) {
+    const cn = demoState.customerName || scenario.customer?.name || 'Demo Customer';
+    const domain = cn.toUpperCase().replace(/\s/g, '');
+    const det = scenario.detections?.items?.find(d => 
+      (d.device?.hostname || d.rawData?.meta_hostname) === hostname
+    );
+
+    return {
+      id: det?.device?.id || uuid(),
+      hostname,
+      type: 'computer',
+      health: { overall: det ? 'suspicious' : 'good', threats: { status: det ? 'bad' : 'good' }, services: { status: 'good' } },
+      os: {
+        name: det?.rawData?.meta_os_name || 'Microsoft Windows 11 Enterprise',
+        platform: det?.rawData?.meta_os_platform || 'windows',
+        isServer: hostname.startsWith('SRV-'),
+        majorVersion: 10,
+        build: 26200,
+      },
+      ipv4Addresses: [det?.rawData?.meta_ip_address || '192.168.1.' + Math.floor(Math.random() * 254)],
+      macAddresses: [det?.rawData?.meta_mac_address || 'AA:BB:CC:DD:EE:' + Math.floor(Math.random() * 99).toString().padStart(2, '0')],
+      associatedPerson: { viaLogin: domain + '\\' + (det?.rawData?.meta_username || 'user') },
+      tamperProtection: { enabled: true, password: '********' },
+      group: { name: hostname.split('-')[1]?.slice(0, 3) || 'Default' },
+      lastSeenAt: new Date(Date.now() - Math.floor(Math.random() * 3600000)).toISOString(),
+      lastActivity: new Date(Date.now() - Math.floor(Math.random() * 3600000)).toISOString(),
+      encryption: { status: 'encrypted', volumes: [{ name: 'C:', status: 'encrypted' }] },
+      lockdown: { status: 'not_installed' },
+      cloud: { provider: null },
+      assignedProducts: [
+        { code: 'endpointProtection', version: '2026.1.3.2', status: 'installed' },
+        { code: 'intercept_x', version: '2026.1.3.2', status: 'installed' },
+        { code: 'xdr_sensor', version: '4.2.1', status: 'installed' },
+      ],
+    };
+  }
+
+
   // ─── Response Modification ─────────────────────────────────────────
 
   function modifyResponse(url, method, data) {
@@ -444,6 +619,11 @@
         interceptedCount++;
         return s.threatGraphs.graph;
       }
+      // Auto-generate a threat graph from detections
+      if (s.detections?.items?.length) {
+        interceptedCount++;
+        return generateThreatGraph(s, cn);
+      }
       return data;
     }
 
@@ -452,6 +632,20 @@
       if (s.threatGraphs?.artifacts) {
         interceptedCount++;
         return s.threatGraphs.artifacts;
+      }
+      // Auto-generate artifacts from detections
+      if (s.detections?.items?.length) {
+        interceptedCount++;
+        return generateThreatArtifacts(s);
+      }
+      return data;
+    }
+
+    // ── Threat Graphs: STAC Case Detail (/api/stac/rootcause/{id}) ──
+    if (url.match(/\/api\/stac\/rootcause\/[\w-]+$/) && !url.includes('/graph') && !url.includes('/artifacts')) {
+      if (s.threatGraphs?.stacCaseDetail) {
+        interceptedCount++;
+        return s.threatGraphs.stacCaseDetail;
       }
       return data;
     }
@@ -535,7 +729,6 @@
         url.match(/\/endpoint\/v\d+\/endpoints/) ||
         url.match(/\/endpoints\/v\d+\/endpoints/)) {
       if (s.endpointReport?.overrideTotal && data.items) {
-        const cn = demoState.customerName || s.customer?.name || 'Demo Customer';
         data.items = generateEndpoints(Math.min(50, s.endpointReport.overrideTotal), cn);
         data.total = s.endpointReport.overrideTotal;
         if (data.filtered !== undefined) data.filtered = s.endpointReport.overrideTotal;
@@ -546,6 +739,46 @@
         interceptedCount++;
       }
       return data;
+    }
+
+    // ── Device Detail (various patterns: /endpoints/{id}, /computers/{id}) ──
+    if (url.match(/\/endpoint[s]?\/[\w-]{20,}$/) || 
+        url.match(/\/computer[s]?\/[\w-]{20,}$/) ||
+        url.match(/\/devices\/[\w-]{20,}$/)) {
+      // If this is a device that matches one of our detection hostnames, return enriched detail
+      if (s.detections?.items?.length && data.hostname) {
+        const det = s.detections.items.find(d => 
+          (d.device?.hostname || d.rawData?.meta_hostname) === data.hostname
+        );
+        if (det) {
+          // Merge our fake data with the real response
+          Object.assign(data, generateDeviceDetail(data.hostname, s));
+          interceptedCount++;
+        }
+      }
+      return data;
+    }
+
+    // ── Any response with device/endpoint list items — catch wide ──
+    // If a response has .items[] with .hostname or .name fields and looks like a device list,
+    // and we have endpoint overrides, inject our fake devices
+    if (s.endpointReport?.overrideTotal && data.items && Array.isArray(data.items) && data.items.length > 0) {
+      const firstItem = data.items[0];
+      const looksLikeDeviceList = firstItem.hostname || 
+        (firstItem.name && firstItem.health_status) || 
+        (firstItem.name && firstItem.last_activity && firstItem.last_user);
+      
+      if (looksLikeDeviceList) {
+        data.items = generateEndpoints(Math.min(50, s.endpointReport.overrideTotal), cn);
+        data.total = s.endpointReport.overrideTotal;
+        if (data.filtered !== undefined) data.filtered = s.endpointReport.overrideTotal;
+        if (data.pages) {
+          data.pages.items = s.endpointReport.overrideTotal;
+          data.pages.total = Math.ceil(s.endpointReport.overrideTotal / (data.pages.size || 50));
+        }
+        interceptedCount++;
+        return data;
+      }
     }
 
     // ── Endpoint Report ──
