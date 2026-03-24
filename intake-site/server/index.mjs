@@ -266,9 +266,10 @@ const server = createServer(async (req, res) => {
   });
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`\n🎯 Sophos Demo Scenario Builder`);
-  console.log(`   http://localhost:${PORT}`);
+  console.log(`   Local:     http://localhost:${PORT}`);
+  console.log(`   Tailscale: http://100.86.227.112:${PORT}`);
   console.log(`   Auth: ✅ Pi OAuth (auto-refresh)`);
   console.log(`   Model: claude-sonnet-4`);
   console.log(`   Schema: ✅ loaded\n`);

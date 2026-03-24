@@ -28,10 +28,7 @@
     {
       "matches": [
         "https://central.sophos.com/*",
-        "https://*.api-upe.p.hmr.sophos.com/*",
-        "https://api.central.sophos.com/*",
-        "https://api-*.central.sophos.com/*",
-        "https://*.prod.hydra.sophos.com/*"
+        "https://*.sophos.com/*"
       ],
       "js": ["content/interceptor.js"],
       "run_at": "document_start",
