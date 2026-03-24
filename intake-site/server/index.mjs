@@ -598,7 +598,7 @@ Use your knowledge to make educated estimates. If you don't know something, make
   });
 });
 
-server.listen(PORT, '0.0.0.0', () => {
+server.listen(PORT, '::', () => {
   const provider = getLLM();
   console.log(`\n🎯 Sophos Demo Scenario Builder`);
   console.log(`   Local:     http://localhost:${PORT}`);
