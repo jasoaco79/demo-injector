@@ -363,9 +363,13 @@ function debounce(fn, ms) {
 
 // Refresh intercepted count
 setInterval(() => {
-  chrome.runtime.sendMessage({ type: 'GET_STATE' }, (state) => {
-    if (state?.interceptedCount) {
-      interceptedText.textContent = `${state.interceptedCount} intercepted`;
-    }
-  });
+  try {
+    if (!chrome.runtime?.id) return;
+    chrome.runtime.sendMessage({ type: 'GET_STATE' }, (state) => {
+      if (chrome.runtime.lastError) return;
+      if (state?.interceptedCount) {
+        interceptedText.textContent = `${state.interceptedCount} intercepted`;
+      }
+    });
+  } catch {}
 }, 3000);

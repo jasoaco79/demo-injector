@@ -106,11 +106,15 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       const scenarioData = await getActiveScenarioData(msg.state);
       const stateWithScenario = { ...msg.state, scenarioData };
 
-      // Push to all Sophos Central tabs
-      const tabs = await chrome.tabs.query({ url: 'https://central.sophos.com/*' });
-      for (const tab of tabs) {
-        chrome.tabs.sendMessage(tab.id, { type: 'STATE_UPDATED', state: stateWithScenario }).catch(() => {});
-      }
+      // Push to all Sophos Central tabs (ignore errors from stale contexts)
+      try {
+        const tabs = await chrome.tabs.query({ url: 'https://central.sophos.com/*' });
+        for (const tab of tabs) {
+          try {
+            await chrome.tabs.sendMessage(tab.id, { type: 'STATE_UPDATED', state: stateWithScenario });
+          } catch {}
+        }
+      } catch {}
       sendResponse({ ok: true });
     })();
     return true;

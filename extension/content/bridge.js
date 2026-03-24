@@ -7,34 +7,37 @@
 (function() {
   'use strict';
 
-  // Guard against invalidated extension context (after reload/update)
+  let contextDead = false;
+
   function isContextValid() {
+    if (contextDead) return false;
     try {
       return !!chrome.runtime?.id;
     } catch {
+      contextDead = true;
       return false;
     }
   }
 
   function safeSendMessage(msg, callback) {
-    if (!isContextValid()) {
-      console.warn('[Sophos Demo] Extension context invalidated — reload this tab (Ctrl+Shift+R)');
-      return;
-    }
+    if (!isContextValid()) return;
     try {
-      chrome.runtime.sendMessage(msg, callback);
-    } catch (e) {
-      if (e.message?.includes('Extension context invalidated')) {
-        console.warn('[Sophos Demo] Extension was reloaded — please refresh this tab (Ctrl+Shift+R)');
-      }
+      chrome.runtime.sendMessage(msg, (resp) => {
+        if (chrome.runtime.lastError) {
+          // Context died between check and send
+          contextDead = true;
+          return;
+        }
+        if (callback) callback(resp);
+      });
+    } catch {
+      contextDead = true;
     }
   }
 
   const STATE_ELEMENT_ID = '__sophos_demo_state__';
 
-  // Push state to MAIN world
   function pushState(state) {
-    // Method 1: Hidden DOM element
     let el = document.getElementById(STATE_ELEMENT_ID);
     if (!el) {
       el = document.createElement('div');
@@ -43,8 +46,6 @@
       document.documentElement.appendChild(el);
     }
     el.textContent = JSON.stringify(state);
-
-    // Method 2: Custom event (more reliable for live updates)
     window.dispatchEvent(new CustomEvent('__sophos_demo_state_update__', { detail: state }));
   }
 
@@ -56,23 +57,27 @@
   // Listen for state updates from background
   try {
     chrome.runtime.onMessage.addListener((msg) => {
+      if (contextDead) return;
+      if (!isContextValid()) return;
       if (msg.type === 'STATE_UPDATED') {
         pushState(msg.state);
       }
     });
-  } catch (e) {
-    // Extension context already invalidated on load
+  } catch {
+    contextDead = true;
   }
 
   // Listen for intercepted count from MAIN world
-  window.addEventListener('message', (e) => {
-    if (e.data?.type === '__sophos_demo_intercepted_count__') {
-      safeSendMessage({ 
-        type: 'INCREMENT_INTERCEPTED', 
-        count: e.data.count 
-      });
+  function onMessage(e) {
+    if (contextDead) {
+      window.removeEventListener('message', onMessage);
+      return;
     }
-  });
+    if (e.data?.type === '__sophos_demo_intercepted_count__') {
+      safeSendMessage({ type: 'INCREMENT_INTERCEPTED', count: e.data.count });
+    }
+  }
+  window.addEventListener('message', onMessage);
 
   console.log('[Sophos Demo] 🔗 Bridge loaded');
 })();
