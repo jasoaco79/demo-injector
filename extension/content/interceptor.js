@@ -879,6 +879,56 @@
       return data;
     }
 
+    // ── Mobile/Device Summary (dashboard donut chart) ──
+    if (url.includes('/cloud-ui-rs/mobile-admin/reports/summary')) {
+      if (s.endpointReport?.overrideTotal) {
+        const total = s.endpointReport.overrideTotal;
+        data.totalDevices = total;
+        data.totalDevicesPerPlatform = {
+          android: Math.floor(total * 0.05),
+          macos: Math.floor(total * 0.15),
+          chrome: 0,
+          windowsphone: 0,
+          windowsdesktop: Math.floor(total * 0.75),
+          ios: Math.floor(total * 0.05),
+          unknown: 0,
+        };
+        data.managedDevicesPerPlatform = { ...data.totalDevicesPerPlatform };
+        data.totalDevicesPerHealthStatus = {
+          green_by_admin: 0,
+          green_by_compliance: Math.floor(total * 0.92),
+          yellow_by_admin: 0,
+          yellow_by_compliance: Math.floor(total * 0.05),
+          red_by_admin: 0,
+          red_by_compliance: Math.floor(total * 0.02),
+          unknown: Math.floor(total * 0.01),
+        };
+        // Adjust for attack scenarios
+        if (s.healthScore?.override && s.healthScore.override < 85) {
+          data.totalDevicesPerHealthStatus.red_by_compliance = Math.floor(total * 0.05);
+          data.totalDevicesPerHealthStatus.yellow_by_compliance = Math.floor(total * 0.08);
+          data.totalDevicesPerHealthStatus.green_by_compliance = Math.floor(total * 0.86);
+        }
+        interceptedCount++;
+      }
+      return data;
+    }
+
+    // ── Web Statistics (dashboard web control widget) ──
+    if (url.includes('/api/reports/web-statistics')) {
+      if (s.endpointReport?.overrideTotal) {
+        const total = s.endpointReport.overrideTotal;
+        data.summary = {
+          proceeded: { total: Math.floor(total * 12.5) },
+          warned: { total: Math.floor(total * 0.3) },
+          virus: { total: s.alerts?.summaryDelta?.high || 0 },
+          policy: { total: Math.floor(total * 0.8) },
+        };
+        interceptedCount++;
+      }
+      return data;
+    }
+
     // ── Sessions (tenant name in contexts) ──
     if (url.includes('/api/sessions/current') && method === 'GET') {
       interceptedCount++;
@@ -1102,6 +1152,84 @@
   setInterval(() => {
     window.postMessage({ type: '__sophos_demo_intercepted_count__', count: interceptedCount }, '*');
   }, 2000);
+
+
+  // ─── DOM Observer for Device List Override ─────────────────────────
+  // The Devices page loads via a micro-frontend that bypasses fetch/XHR.
+  // We observe the DOM and override the table + count elements when they appear.
+
+  let domObserver = null;
+  let domOverrideApplied = false;
+
+  function startDomObserver() {
+    if (domObserver) return;
+
+    domObserver = new MutationObserver(() => {
+      if (!demoState.enabled || !activeScenario) return;
+
+      const path = window.location.pathname;
+      const isDevicePage = path.includes('/devices/computers') || path.includes('/devices/servers');
+      if (!isDevicePage) {
+        domOverrideApplied = false;
+        return;
+      }
+      if (domOverrideApplied) return;
+
+      const s = activeScenario;
+      if (!s.endpointReport?.overrideTotal) return;
+
+      // Look for total count indicators and override them
+      // Sophos Central typically shows "X computers" or "X items" in a summary bar
+      const countElements = document.querySelectorAll('[class*="count"], [class*="total"], [class*="summary"], [data-testid*="count"], [data-testid*="total"]');
+      for (const el of countElements) {
+        const text = el.textContent.trim();
+        // Match patterns like "20 computers", "20 items", "Showing 20"
+        const match = text.match(/^(\d+)\s*(computer|server|endpoint|device|item)/i);
+        if (match) {
+          const isServer = path.includes('/servers');
+          const newCount = isServer ? (demoState.serverCount || s.customer?.serverCount || 186) : s.endpointReport.overrideTotal;
+          el.textContent = text.replace(/^\d+/, newCount.toLocaleString());
+          console.log(`[Sophos Demo] 🖥️ DOM override: "${match[0]}" → "${newCount} ${match[2]}"`);
+          domOverrideApplied = true;
+        }
+      }
+
+      // Also look for pagination info
+      const pagElements = document.querySelectorAll('[class*="pagination"], [class*="paging"], [class*="page-info"]');
+      for (const el of pagElements) {
+        const text = el.textContent;
+        const match = text.match(/of\s+(\d+)/);
+        if (match) {
+          const isServer = path.includes('/servers');
+          const newCount = isServer ? (demoState.serverCount || 186) : s.endpointReport.overrideTotal;
+          el.textContent = text.replace(/of\s+\d+/, 'of ' + newCount.toLocaleString());
+          domOverrideApplied = true;
+        }
+      }
+    });
+
+    domObserver.observe(document.body || document.documentElement, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    });
+  }
+
+  // Start observer when DOM is ready
+  if (document.body) {
+    startDomObserver();
+  } else {
+    document.addEventListener('DOMContentLoaded', startDomObserver);
+  }
+
+  // Reset domOverrideApplied on SPA navigation
+  let lastPathname = window.location.pathname;
+  setInterval(() => {
+    if (window.location.pathname !== lastPathname) {
+      lastPathname = window.location.pathname;
+      domOverrideApplied = false;
+    }
+  }, 500);
 
 
   console.log('[Sophos Demo] 🎯 Interceptor loaded (JSON scenario engine). Waiting for activation...');

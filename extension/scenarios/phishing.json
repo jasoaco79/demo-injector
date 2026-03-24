@@ -69,11 +69,98 @@
   },
   "cases": {
     "mode": "prepend",
-    "items": []
+    "items": [
+      {
+        "type": "investigation",
+        "name": "Targeted Phishing Campaign — {{customerName}}",
+        "managedBy": "self",
+        "createdAt": "-8m",
+        "createdBy": { "name": "Auto-generated" },
+        "updatedAt": "-5m",
+        "status": "investigating",
+        "initialDetection": {
+          "severity": 7,
+          "type": "Threat",
+          "detectionRule": "EMAIL-PHISH-CREDENTIAL-HARVEST-1",
+          "mitreAttacks": [
+            { "tactic": { "id": "TA0001", "name": "Initial Access", "techniques": [{ "id": "T1566.002", "name": "Spearphishing Link" }] } },
+            { "tactic": { "id": "TA0006", "name": "Credential Access", "techniques": [{ "id": "T1556", "name": "Modify Authentication Process" }] } }
+          ],
+          "time": "-8m",
+          "sensor": { "type": "email", "source": "Sophos Email" }
+        },
+        "assignee": { "name": "SOC Analyst" },
+        "overview": "Targeted phishing campaign detected: 47 credential harvesting emails from secure-login-verify[.]com. 47 blocked at gateway, 12 quarantined post-delivery, 1 user click blocked by endpoint web protection. No credentials compromised.",
+        "detectionCount": 3,
+        "escalated": false
+      }
+    ]
   },
   "detections": {
     "mode": "prepend",
-    "items": []
+    "items": [
+      {
+        "detectionCreatedAt": "-8m",
+        "connectorGeneratedAt": "-8m",
+        "connector": { "id": "SophosEmailSensor", "type": "email", "vendor": "Sophos", "version": "Email Gateway 3.8" },
+        "device": { "type": "email_gateway", "hostname": "SMTP-GW01" },
+        "rawData": {
+          "meta_hostname": "SMTP-GW01",
+          "meta_ip_address": "10.0.1.5",
+          "sender": "no-reply@secure-login-verify.com",
+          "recipient_count": "47",
+          "subject": "Action Required: Verify Your Account Immediately",
+          "urls_detected": "https://secure-login-verify.com/portal/login.php"
+        },
+        "risk": 7,
+        "category": "Threat",
+        "classificationRule": "EMAIL-PHISH-CREDENTIAL-HARVEST-1",
+        "ruleDescription": "Bulk credential harvesting phishing campaign detected — 47 emails with malicious URLs from same sender domain",
+        "mitreAttacks": [
+          { "tactic": { "id": "TA0001", "name": "Initial Access", "techniques": [{ "id": "T1566.002", "name": "Spearphishing Link" }] } }
+        ],
+        "attackType": "Phishing",
+        "severity": 7,
+        "detectionAttack": { "name": "Credential Harvesting Campaign" },
+        "detectionLicenses": ["Email"],
+        "geolocation": {},
+        "intelixFileReputation": {},
+        "detectionType": "Threat",
+        "suppressed": false,
+        "caseDescription": "Bulk phishing campaign blocked"
+      },
+      {
+        "detectionCreatedAt": "-6m",
+        "connectorGeneratedAt": "-6m",
+        "connector": { "id": "SophosSensorID", "type": "endpoint", "vendor": "Sophos", "version": "SED Driver 4.2.1" },
+        "device": { "type": "computer", "hostname": "DESKTOP-HR007" },
+        "rawData": {
+          "meta_hostname": "DESKTOP-HR007",
+          "meta_ip_address": "192.168.1.107",
+          "meta_os_name": "Microsoft Windows 11 Enterprise",
+          "meta_username": "sarah.chen",
+          "cmdline": "msedge.exe --navigate https://secure-login-verify.com/portal/login.php?uid=sarah.chen",
+          "path": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+          "parent_name": "outlook.exe"
+        },
+        "risk": 5,
+        "category": "Threat",
+        "classificationRule": "WEB-PHISH-URL-BLOCK-1",
+        "ruleDescription": "User clicked phishing URL in email — blocked by Sophos Web Protection at endpoint",
+        "mitreAttacks": [
+          { "tactic": { "id": "TA0001", "name": "Initial Access", "techniques": [{ "id": "T1566.002", "name": "Spearphishing Link" }] } }
+        ],
+        "attackType": "Phishing",
+        "severity": 5,
+        "detectionAttack": { "name": "Credential Harvesting Campaign" },
+        "detectionLicenses": ["XDR"],
+        "geolocation": {},
+        "intelixFileReputation": {},
+        "detectionType": "Threat",
+        "suppressed": false,
+        "caseDescription": "Phishing URL click blocked at endpoint"
+      }
+    ]
   },
   "billing": {
     "overrideName": "{{customerName}}",
