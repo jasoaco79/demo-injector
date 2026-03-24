@@ -1,0 +1,2339 @@
+{
+  "GET https://central.sophos.com/api/user/preferences": {
+    "body": {
+      "last_seen_whats_new": "2026-03-16T21:36:00Z",
+      "fwcm-group-states": "[null]",
+      "last.seen.whats.new": "2019-04-16T21:36:00Z",
+      "ui_theme": "undefined",
+      "cwifiXSubscriptionLastNotifiedTime": "2026-03-20T19:50:54.619Z",
+      "language": "en-US",
+      "meganav_exp": "true",
+      "registeredApList": "[{\"sn\":\"P21001P2WXWQ77B\",\"name\":\"Acosta_Wrigleyville\"},{\"sn\":\"P21001MK8TTC8AB\",\"name\":\"GBR Acostalab Wrigleyville\"},{\"sn\":\"P21001P2WXWQ77B\",\"name\":\"MEC Acostalab Wrigleyville\"}]"
+    },
+    "size": 470,
+    "query": ""
+  },
+  "GET https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/users/current": {
+    "body": {
+      "locked": true,
+      "customer_id": "6b332900-0239-0407-88cf-f3e0d10ff6c4",
+      "email": "jason.acosta@sophos.com",
+      "first_name": "Jason",
+      "last_name": "Acosta",
+      "company_name": "Sophos",
+      "alias": "Sophos Ltd",
+      "external_id": null,
+      "station_permissions": null,
+      "hero_report_enabled": null,
+      "activated": true,
+      "name": "Jason Acosta",
+      "id": "57a94c6cc663190f702ae44d",
+      "type": "customer",
+      "language": "en",
+      "roles": [
+        {
+          "id": "73757065-7261-646d-696e-5b302d39612d",
+          "name": "SuperAdmin",
+          "accountType": "customer",
+          "defaultMembership": "self",
+          "permissions": {
+            "managed_risk_configuration": "write",
+            "reverse_proxy": "write",
+            "stac": "write",
+            "policies": "write",
+            "nta_reporting": "write",
+            "managed_risk_scanners": "write",
+            "xgfirewall": "write",
+            "wifix_config": "write",
+            "alerts": "write",
+            "optix": "write",
+            "computers_isolation": "none",
+            "web_profiles": "write",
+            "license_widget": "none",
+            "tenant_service_principals_management": "write",
+            "wifi": "write",
+            "dashboard": "write",
+            "endpoint_server_tag_management": "write",
+            "computer_unisolate_device": "write",
+            "account_management": "write",
+            "managed_risk_scans": "write",
+            "nta_registration": "write",
+            "web_control": "write",
+            "cswitch_backup": "write",
+            "xdr_actions": "write",
+            "xg_email": "write",
+            "credential": "write",
+            "report_management": "write",
+            "ztna_registration": "write",
+            "ztna_tenant_directory": "write",
+            "swgaas_hub": "write",
+            "directory": "write",
+            "nta_transformer": "write",
+            "firewall": "none",
+            "managed_risk_credentials": "write",
+            "psa_integration_health": "none",
+            "live_terminal_session_log_download": "none",
+            "self_profile": "write",
+            "mobile": "write",
+            "ztna_transformer": "write",
+            "swgaas_config": "write",
+            "servers_isolation": "none",
+            "azure": "write",
+            "policy_mgmt": "write",
+            "nta_config": "write",
+            "telemetry": "write",
+            "cnf_config": "write",
+            "servers": "write",
+            "data_loss_prevention": "write",
+            "workspace_protection_reporting": "write",
+            "live_terminal_session_log": "none",
+            "malware_sample_submission": "write",
+            "utm": "write",
+            "cns_runtime_detection": "write",
+            "support_mail": "write",
+            "computer_disable_tamper_protection": "write",
+            "backup_m365_rubrik": "write",
+            "events": "write",
+            "wifix_monitoring": "write",
+            "live_terminal_server_launch": "write",
+            "livediscover_endpoint": "write",
+            "endpoint_protection": "write",
+            "swaas_config": "write",
+            "users_and_groups": "write",
+            "server_disable_tamper_protection": "write",
+            "federation_settings": "write",
+            "encryption_product_assignment": "write",
+            "workspace_protection_tenant_directory": "write",
+            "workspace_protection_config": "write",
+            "server_unisolate_device": "write",
+            "optix_abac": "write",
+            "cswitch_monitoring": "write",
+            "alerts_widget": "read",
+            "cswitch_config": "write",
+            "response_actions": "write",
+            "cswitch_alerts": "write",
+            "psa_integration": "none",
+            "ztna_hub": "write",
+            "web_gateway": "write",
+            "managed_risk_report_history": "read",
+            "workspace_protection_hub": "write",
+            "file_encryption": "none",
+            "computers": "write",
+            "computers_product_assignment": "write",
+            "account_information": "read",
+            "ztna_product_assignment": "write",
+            "integration": "write",
+            "ztna_config": "write",
+            "data_protection": "write",
+            "self_service": "write",
+            "livediscover_server": "write",
+            "taegis_itdr": "read",
+            "role_admin": "write",
+            "live_terminal_server_edit_settings": "write",
+            "phish_threat": "write",
+            "endpoint_computer_tag_management": "write",
+            "uem_product_assignment": "write",
+            "servers_product_assignment": "write",
+            "logs_reports": "read",
+            "wifix_alerts": "write",
+            "live_terminal_endpoint_edit_settings": "write",
+            "directory_configuration": "write",
+            "domain_management": "write",
+            "livediscover_query": "none",
+            "account_management_mdr_preferences": "write",
+            "live_terminal_endpoint_launch": "write",
+            "cfr": "write",
+            "ztna_reporting": "write"
+          },
+          "preferences": {
+            "policy_management": true,
+            "logs_and_reports": true,
+            "policy_assignment": true
+          },
+          "principalType": "user"
+        }
+      ]
+    },
+    "size": 3601,
+    "query": ""
+  },
+  "GET https://central.sophos.com/api/billing/account": {
+    "body": {
+      "billingContact": {
+        "firstName": "jason",
+        "lastName": "clark",
+        "address": {
+          "zipCode": "OX14 3YP",
+          "countryIsoCode": "GB",
+          "city": null,
+          "state": null,
+          "line2": null,
+          "line1": null
+        },
+        "phone": "(817) 366-0465",
+        "mobile": null,
+        "fax": null,
+        "email": "jason.clark@sophos.com"
+      },
+      "name": "Sophos",
+      "alias": "Sophos Ltd",
+      "uuid": "b6339200-2093-4070-88fc-3f0e1df06f4c",
+      "syncCanRemoveLicenses": true
+    },
+    "size": 360,
+    "query": ""
+  },
+  "GET https://central.sophos.com/api/branding": {
+    "body": null,
+    "size": 4,
+    "query": ""
+  },
+  "GET https://central.sophos.com/api/branding/host": {
+    "body": "https://central-prod-co-branding.s3.amazonaws.com",
+    "size": 51,
+    "query": ""
+  },
+  "GET https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/license/usage": {
+    "body": {
+      "total": 9,
+      "filtered": 9,
+      "items": [
+        {
+          "customerName": "Sophos Ltd",
+          "customerId": "6b332900-0239-0407-88cf-f3e0d10ff6c4",
+          "licenseId": "LN9895284774",
+          "partnerManaged": null,
+          "licenseCode": "ap6_420e_sup",
+          "licenseType": "FULL",
+          "codeLimit": 5,
+          "limit": 5,
+          "usage": 5,
+          "starts": 1747958400000,
+          "expires": 1811030399999,
+          "customerMspLicensed": false,
+          "nearExpiration": false,
+          "expired": false,
+          "valid": true,
+          "overUsage": false,
+          "accountBillingStatus": "active",
+          "features": {
+            "f_ap6_420e_sup": 5
+          },
+          "status": "licensed",
+          "lineItemId": "YG6Q-6GQ9-6K7H-PJFF",
+          "licenseUsage": {
+            "licenseCode": "ap6_420e_sup",
+            "quota": 5,
+            "usage": 5,
+            "experimentalUsage": {},
+            "sampledAt": 1774301172671,
+            "features": {
+              "f_ap6_420e_sup": 5
+            },
+            "licenses": [
+              {
+                "license_code": "ap6_420e_sup",
+                "entities": 5,
+                "type": "FULL",
+                "id": "LN9895284774",
+                "starts": 1747958400000,
+                "expires": 1811030399999,
+                "suspended": false,
+                "meta": {
+                  "line_item_id": "YG6Q-6GQ9-6K7H-PJFF"
+                },
+                "expiring": false,
+                "trial": false,
+                "msp": false,
+                "valid": true,
+                "expired": false
+              }
+            ],
+            "details": [],
+            "status": "licensed"
+          },
+          "license": {
+            "license_code": "ap6_420e_sup",
+            "entities": 5,
+            "type": "FULL",
+            "id": "LN9895284774",
+            "starts": 1747958400000,
+            "expires": 1811030399999,
+            "suspended": false,
+            "meta": {
+              "line_item_id": "YG6Q-6GQ9-6K7H-PJFF"
+            },
+            "expiring": false,
+            "trial": false,
+            "msp": false,
+            "valid": true,
+            "expired": false
+          },
+          "syncCanRemoveLicenses": null,
+          "collectedAt": 1774301172671,
+          "billingType": null
+        },
+        {
+          "customerName": "Sophos Ltd",
+          "customerId": "6b332900-0239-0407-88cf-f3e0d10ff6c4",
+          "licenseId": "L0010918099",
+          "partnerManaged": null,
+          "licenseCode": "central_firewall_reporting",
+          "licenseType": "TRIAL",
+          "codeLimit": 100,
+          "limit": 100,
+          "usage": 2,
+          "starts": 1588896000000,
+          "expires": 1778198399999,
+          "customerMspLicensed": false,
+          "nearExpiration": false,
+          "expired": false,
+          "valid": true,
+          "overUsage": false,
+          "accountBillingStatus": "active",
+          "features": {
+            "f_central_firewall_reporting_base_reports": 2
+          },
+          "status": "trial",
+          "lineItemId": "2e39-e8b7-054a-b647-09cf-a334-da9a-1ca5",
+          "licenseUsage": {
+            "licenseCode": "central_firewall_reporting",
+            "quota": 100,
+            "usage": 2,
+            "experimentalUsage": {},
+            "sampledAt": 1774301172671,
+            "features": {
+              "f_central_firewall_reporting_base_reports": 2
+            },
+            "licenses": [
+              {
+                "license_code": "central_firewall_reporting",
+                "entities": 100,
+                "type": "TRIAL",
+                "id": "L0010918099",
+                "starts": 1588896000000,
+                "expires": 1778198399999,
+                "suspended": false,
+                "meta": {
+                  "licenseSalesforceId": "a3b3Z000001T9KdQAK",
+                  "line_item_id": "2e39-e8b7-054a-b647-09cf-a334-da9a-1ca5"
+                },
+                "expiring": false,
+                "trial": true,
+                "msp": false,
+                "valid": true,
+                "expired": false
+              }
+            ],
+            "details": [],
+            "status": "trial"
+          },
+          "license": {
+            "license_code": "central_firewall_reporting",
+            "entities": 100,
+            "type": "TRIAL",
+            "id": "L0010918099",
+            "starts": 1588896000000,
+            "expires": 1778198399999,
+            "suspended": false,
+            "meta": {
+              "licenseSalesforceId": "a3b3Z000001T9KdQAK",
+              "line_item_id": "2e39-e8b7-054a-b647-09cf-a334-da9a-1ca5"
+            },
+            "expiring": false,
+            "trial": true,
+            "msp": false,
+            "valid": true,
+            "expired": false
+          },
+          "syncCanRemoveLicenses": null,
+          "collectedAt": 1774301172671,
+          "billingType": null
+        },
+        {
+          "customerName": "Sophos Ltd",
+          "customerId": "6b332900-0239-0407-88cf-f3e0d10ff6c4",
+          "licenseId": "L0010918099",
+          "partnerManaged": null,
+          "licenseCode": "central_phishthreat_standard",
+          "licenseType": "TRIAL",
+          "codeLimit": 100,
+          "limit": 100,
+          "usage": 0,
+          "starts": 1588896000000,
+          "expires": 1778198399999,
+          "customerMspLicensed": false,
+          "nearExpiration": false,
+          "expired": false,
+          "valid": true,
+          "overUsage": false,
+          "accountBillingStatus": "active",
+          "features": {},
+          "status": "trial",
+          "lineItemId": "af23-280b-7f9b-fc35-53e6-1b72-e574-d325",
+          "licenseUsage": {
+            "licenseCode": "central_phishthreat_standard",
+            "quota": 100,
+            "usage": 0,
+            "experimentalUsage": {},
+            "sampledAt": 1774301172671,
+            "features": {},
+            "licenses": [
+              {
+                "license_code": "central_phishthreat_standard",
+                "entities": 100,
+                "type": "TRIAL",
+                "id": "L0010918099",
+                "starts": 1588896000000,
+                "expires": 1778198399999,
+                "suspended": false,
+                "meta": {
+                  "licenseSalesforceId": "a3b3Z000001T9KdQAK",
+                  "line_item_id": "af23-280b-7f9b-fc35-53e6-1b72-e574-d325"
+                },
+                "expiring": false,
+                "trial": true,
+                "msp": false,
+                "valid": true,
+                "expired": false
+              }
+            ],
+            "details": [],
+            "status": "trial"
+          },
+          "license": {
+            "license_code": "central_phishthreat_standard",
+            "entities": 100,
+            "type": "TRIAL",
+            "id": "L0010918099",
+            "starts": 1588896000000,
+            "expires": 1778198399999,
+            "suspended": false,
+            "meta": {
+              "licenseSalesforceId": "a3b3Z000001T9KdQAK",
+              "line_item_id": "af23-280b-7f9b-fc35-53e6-1b72-e574-d325"
+            },
+            "expiring": false,
+            "trial": true,
+            "msp": false,
+            "valid": true,
+            "expired": false
+          },
+          "syncCanRemoveLicenses": null,
+          "collectedAt": 1774301172671,
+          "billingType": null
+        },
+        {
+          "customerName": "Sophos Ltd",
+          "customerId": "6b332900-0239-0407-88cf-f3e0d10ff6c4",
+          "licenseId": "LN201881937",
+          "partnerManaged": null,
+          "licenseCode": "cs210_24fp",
+          "licenseType": "FULL",
+          "codeLimit": 1,
+          "limit": 1,
+          "usage": 1,
+          "starts": 1728604800000,
+          "expires": 1778198399999,
+          "customerMspLicensed": false,
+          "nearExpiration": false,
+          "expired": false,
+          "valid": true,
+          "overUsage": false,
+          "accountBillingStatus": "active",
+          "features": {
+            "f_cswitch_std": 1
+          },
+          "status": "licensed",
+          "lineItemId": "W9LM-LPKT-KMRW-HNQR",
+          "licenseUsage": {
+            "licenseCode": "cs210_24fp",
+            "quota": 1,
+            "usage": 1,
+            "experimentalUsage": {},
+            "sampledAt": 1774301172671,
+            "features": {
+              "f_cswitch_std": 1
+            },
+            "licenses": [
+              {
+                "license_code": "cs210_24fp",
+                "entities": 1,
+                "type": "FULL",
+                "id": "LN201881937",
+                "starts": 1728604800000,
+                "expires": 1778198399999,
+                "suspended": false,
+                "meta": {
+                  "line_item_id": "W9LM-LPKT-KMRW-HNQR"
+                },
+                "expiring": false,
+                "trial": false,
+                "msp": false,
+                "valid": true,
+                "expired": false
+              }
+            ],
+            "details": [],
+            "status": "licensed"
+          },
+          "license": {
+            "license_code": "cs210_24fp",
+            "entities": 1,
+            "type": "FULL",
+            "id": "LN201881937",
+            "starts": 1728604800000,
+            "expires": 1778198399999,
+            "suspended": false,
+            "meta": {
+              "line_item_id": "W9LM-LPKT-KMRW-HNQR"
+            },
+            "expiring": false,
+            "trial": false,
+            "msp": false,
+            "valid": true,
+            "expired": false
+          },
+          "syncCanRemoveLicenses": null,
+          "collectedAt": 1774301172671,
+          "billingType": null
+        },
+        {
+          "customerName": "Sophos Ltd",
+          "customerId": "6b332900-0239-0407-88cf-f3e0d10ff6c4",
+          "licenseId": "L0010918099",
+          "partnerManaged": null,
+          "licenseCode": "ep_x_ultimate",
+          "licenseType": "TRIAL",
+          "codeLimit": 100,
+          "limit": 100,
+          "usage": 3,
+          "starts": 1588896000000,
+          "expires": 1778198399999,
+          "customerMspLicensed": false,
+          "nearExpiration": false,
+          "expired": false,
+          "valid": true,
+          "overUsage": false,
+          "accountBillingStatus": "active",
+          "features": {
+            "f_ep_file_submission_l3": 3,
+            "f_ep_forensic_snapshot": 3,
+            "f_ep_stac": 3,
+            "f_ep_hbt_xg": 3,
+            "f_ep_ntp_xg": 3,
+            "f_ep_devctl": 3,
+            "f_ep_xpd": 3,
+            "f_ep_efw": 3,
+            "f_ep_hbt_adv": 3,
+            "f_ep_ntp_adv": 3,
+            "f_ep_livequery": 3,
+            "f_ep_av": 3,
+            "f_ep_isolation": 3,
+            "f_ep_on_demand_rca": 3,
+            "f_endpoint_updating": 3,
+            "f_ep_ml": 3,
+            "f_ep_scheduledquery": 3
+          },
+          "status": "trial",
+          "lineItemId": "1a58-7794-e730-9478-c9d2-09b1-7115-ac02",
+          "licenseUsage": {
+            "licenseCode": "ep_x_ultimate",
+            "quota": 100,
+            "usage": 3,
+            "experimentalUsage": {},
+            "sampledAt": 1774301172671,
+            "features": {
+              "f_ep_file_submission_l3": 3,
+              "f_ep_forensic_snapshot": 3,
+              "f_ep_stac": 3,
+              "f_ep_hbt_xg": 3,
+              "f_ep_ntp_xg": 3,
+              "f_ep_devctl": 3,
+              "f_ep_xpd": 3,
+              "f_ep_efw": 3,
+              "f_ep_hbt_adv": 3,
+              "f_ep_ntp_adv": 3,
+              "f_ep_livequery": 3,
+              "f_ep_av": 3,
+              "f_ep_isolation": 3,
+              "f_ep_on_demand_rca": 3,
+              "f_endpoint_updating": 3,
+              "f_ep_ml": 3,
+              "f_ep_scheduledquery": 3
+            },
+            "licenses": [
+              {
+                "license_code": "ep_x_ultimate",
+                "entities": 100,
+                "type": "TRIAL",
+                "id": "L0010918099",
+                "starts": 1588896000000,
+                "expires": 1778198399999,
+                "suspended": false,
+                "meta": {
+                  "licenseSalesforceId": "a3b3Z000001T9KdQAK",
+                  "ep_update": {
+                    "expiryDate": "2026-05-07T00:00:00.000Z",
+                    "pass": "g5yovmb4na",
+                    "user": "S14294WL0X",
+                    "url": "http://dci.sophosupd.com/cloudupdate",
+                    "startDate": "2020-05-08T00:00:00.000Z"
+                  },
+                  "line_item_id": "1a58-7794-e730-9478-c9d2-09b1-7115-ac02"
+                },
+                "expiring": false,
+                "trial": true,
+                "msp": false,
+                "valid": true,
+                "expired": false
+              }
+            ],
+            "details": [],
+            "status": "trial"
+          },
+          "license": {
+            "license_code": "ep_x_ultimate",
+            "entities": 100,
+            "type": "TRIAL",
+            "id": "L0010918099",
+            "starts": 1588896000000,
+            "expires": 1778198399999,
+            "suspended": false,
+            "meta": {
+              "licenseSalesforceId": "a3b3Z000001T9KdQAK",
+              "ep_update": {
+                "expiryDate": "2026-05-07T00:00:00.000Z",
+                "pass": "g5yovmb4na",
+                "user": "S14294WL0X",
+                "url": "http://dci.sophosupd.com/cloudupdate",
+                "startDate": "2020-05-08T00:00:00.000Z"
+              },
+              "line_item_id": "1a58-7794-e730-9478-c9d2-09b1-7115-ac02"
+            },
+            "expiring": false,
+            "trial": true,
+            "msp": false,
+            "valid": true,
+            "expired": false
+          },
+          "syncCanRemoveLicenses": null,
+          "collectedAt": 1774301172671,
+          "billingType": null
+        },
+        {
+          "customerName": "Sophos Ltd",
+          "customerId": "6b332900-0239-0407-88cf-f3e0d10ff6c4",
+          "licenseId": "L0010918099",
+          "partnerManaged": null,
+          "licenseCode": "smsec",
+          "licenseType": "TRIAL",
+          "codeLimit": 100,
+          "limit": 100,
+          "usage": 0,
+          "starts": 1588896000000,
+          "expires": 1778198399999,
+          "customerMspLicensed": false,
+          "nearExpiration": false,
+          "expired": false,
+          "valid": true,
+          "overUsage": false,
+          "accountBillingStatus": "active",
+          "features": {},
+          "status": "trial",
+          "lineItemId": "5fe6-03c7-1111-41c7-b685-5619-196d-e895",
+          "licenseUsage": {
+            "licenseCode": "smsec",
+            "quota": 100,
+            "usage": 0,
+            "experimentalUsage": {},
+            "sampledAt": 1774301172671,
+            "features": {},
+            "licenses": [
+              {
+                "license_code": "smsec",
+                "entities": 100,
+                "type": "TRIAL",
+                "id": "L0010918099",
+                "starts": 1588896000000,
+                "expires": 1778198399999,
+                "suspended": false,
+                "meta": {
+                  "licenseSalesforceId": "a3b3Z000001T9KdQAK",
+                  "line_item_id": "5fe6-03c7-1111-41c7-b685-5619-196d-e895"
+                },
+                "expiring": false,
+                "trial": true,
+                "msp": false,
+                "valid": true,
+                "expired": false
+              }
+            ],
+            "details": [],
+            "status": "trial"
+          },
+          "license": {
+            "license_code": "smsec",
+            "entities": 100,
+            "type": "TRIAL",
+            "id": "L0010918099",
+            "starts": 1588896000000,
+            "expires": 1778198399999,
+            "suspended": false,
+            "meta": {
+              "licenseSalesforceId": "a3b3Z000001T9KdQAK",
+              "line_item_id": "5fe6-03c7-1111-41c7-b685-5619-196d-e895"
+            },
+            "expiring": false,
+            "trial": true,
+            "msp": false,
+            "valid": true,
+            "expired": false
+          },
+          "syncCanRemoveLicenses": null,
+          "collectedAt": 1774301172671,
+          "billingType": null
+        },
+        {
+          "customerName": "Sophos Ltd",
+          "customerId": "6b332900-0239-0407-88cf-f3e0d10ff6c4",
+          "licenseId": "L0010918099",
+          "partnerManaged": null,
+          "licenseCode": "srv_x_ultimate",
+          "licenseType": "TRIAL",
+          "codeLimit": 100,
+          "limit": 100,
+          "usage": 0,
+          "starts": 1588896000000,
+          "expires": 1778198399999,
+          "customerMspLicensed": false,
+          "nearExpiration": false,
+          "expired": false,
+          "valid": true,
+          "overUsage": false,
+          "accountBillingStatus": "active",
+          "features": {},
+          "status": "trial",
+          "lineItemId": "1321-321e-92e1-f835-75a7-cc15-27e6-872a",
+          "licenseUsage": {
+            "licenseCode": "srv_x_ultimate",
+            "quota": 100,
+            "usage": 0,
+            "experimentalUsage": {},
+            "sampledAt": 1774301172671,
+            "features": {},
+            "licenses": [
+              {
+                "license_code": "srv_x_ultimate",
+                "entities": 100,
+                "type": "TRIAL",
+                "id": "L0010918099",
+                "starts": 1588896000000,
+                "expires": 1778198399999,
+                "suspended": false,
+                "meta": {
+                  "licenseSalesforceId": "a3b3Z000001T9KdQAK",
+                  "ep_update": {
+                    "expiryDate": "2026-05-07T00:00:00.000Z",
+                    "pass": "iybhpbrb9y",
+                    "user": "S6IJD76EHX",
+                    "url": "http://dci.sophosupd.com/cloudupdate",
+                    "startDate": "2020-05-08T00:00:00.000Z"
+                  },
+                  "line_item_id": "1321-321e-92e1-f835-75a7-cc15-27e6-872a"
+                },
+                "expiring": false,
+                "trial": true,
+                "msp": false,
+                "valid": true,
+                "expired": false
+              }
+            ],
+            "details": [],
+            "status": "trial"
+          },
+          "license": {
+            "license_code": "srv_x_ultimate",
+            "entities": 100,
+            "type": "TRIAL",
+            "id": "L0010918099",
+            "starts": 1588896000000,
+            "expires": 1778198399999,
+            "suspended": false,
+            "meta": {
+              "licenseSalesforceId": "a3b3Z000001T9KdQAK",
+              "ep_update": {
+                "expiryDate": "2026-05-07T00:00:00.000Z",
+                "pass": "iybhpbrb9y",
+                "user": "S6IJD76EHX",
+                "url": "http://dci.sophosupd.com/cloudupdate",
+                "startDate": "2020-05-08T00:00:00.000Z"
+              },
+              "line_item_id": "1321-321e-92e1-f835-75a7-cc15-27e6-872a"
+            },
+            "expiring": false,
+            "trial": true,
+            "msp": false,
+            "valid": true,
+            "expired": false
+          },
+          "syncCanRemoveLicenses": null,
+          "collectedAt": 1774301172671,
+          "billingType": null
+        },
+        {
+          "customerName": "Sophos Ltd",
+          "customerId": "6b332900-0239-0407-88cf-f3e0d10ff6c4",
+          "licenseId": "L0012519478",
+          "partnerManaged": null,
+          "licenseCode": "xdr_30",
+          "licenseType": "TRIAL",
+          "codeLimit": 100,
+          "limit": 100,
+          "usage": 0,
+          "starts": 1623801600000,
+          "expires": 1781567999999,
+          "customerMspLicensed": false,
+          "nearExpiration": false,
+          "expired": false,
+          "valid": true,
+          "overUsage": false,
+          "accountBillingStatus": "active",
+          "features": {},
+          "status": "trial",
+          "lineItemId": "fef2-a5cb-881c-5b3e-70d6-0619-1b73-4989",
+          "licenseUsage": {
+            "licenseCode": "xdr_30",
+            "quota": 100,
+            "usage": 0,
+            "experimentalUsage": {},
+            "sampledAt": 1774301172671,
+            "features": {},
+            "licenses": [
+              {
+                "license_code": "xdr_30",
+                "entities": 100,
+                "type": "TRIAL",
+                "id": "L0012519478",
+                "starts": 1623801600000,
+                "expires": 1781567999999,
+                "suspended": false,
+                "meta": {
+                  "licenseSalesforceId": "a3b3Z000001XE3fQAG",
+                  "line_item_id": "fef2-a5cb-881c-5b3e-70d6-0619-1b73-4989"
+                },
+                "expiring": false,
+                "trial": true,
+                "msp": false,
+                "valid": true,
+                "expired": false
+              }
+            ],
+            "details": [],
+            "status": "trial"
+          },
+          "license": {
+            "license_code": "xdr_30",
+            "entities": 100,
+            "type": "TRIAL",
+            "id": "L0012519478",
+            "starts": 1623801600000,
+            "expires": 1781567999999,
+            "suspended": false,
+            "meta": {
+              "licenseSalesforceId": "a3b3Z000001XE3fQAG",
+              "line_item_id": "fef2-a5cb-881c-5b3e-70d6-0619-1b73-4989"
+            },
+            "expiring": false,
+            "trial": true,
+            "msp": false,
+            "valid": true,
+            "expired": false
+          },
+          "syncCanRemoveLicenses": null,
+          "collectedAt": 1774301172671,
+          "billingType": null
+        },
+        {
+          "customerName": "Sophos Ltd",
+          "customerId": "6b332900-0239-0407-88cf-f3e0d10ff6c4",
+          "licenseId": "L0010918099",
+          "partnerManaged": null,
+          "licenseCode": "xg_email_adv",
+          "licenseType": "TRIAL",
+          "codeLimit": 100,
+          "limit": 100,
+          "usage": 1,
+          "starts": 1588896000000,
+          "expires": 1778198399999,
+          "customerMspLicensed": false,
+          "nearExpiration": false,
+          "expired": false,
+          "valid": true,
+          "overUsage": false,
+          "accountBillingStatus": "active",
+          "features": {
+            "f_xgemail_spf": 1,
+            "f_xgemail_dkim": 1,
+            "f_xgemail_toc_url_protect": 1,
+            "f_xgemail_smart_banner": 1,
+            "f_xgemail_mailflow": 1,
+            "f_xgemail_ad_sync": 1,
+            "f_xgemail_sandbox": 1,
+            "f_xgemail_av": 1,
+            "f_xgemail": 1,
+            "f_xgemail_user_policy": 1,
+            "f_xgemail_content_filter": 1,
+            "f_xgemail_dmarc": 1,
+            "f_xgemail_smime": 1,
+            "f_xgemail_anti_phish": 1,
+            "f_xgemail_o365_da": 1,
+            "f_xgemail_ssp": 1,
+            "f_xgemail_impersonation": 1,
+            "f_xgemail_antispam": 1,
+            "f_xgemail_eminbox": 1,
+            "f_xgemail_quarantine": 1
+          },
+          "status": "trial",
+          "lineItemId": "0851-ea15-8f56-06d5-ccda-c107-0e8e-b34d",
+          "licenseUsage": {
+            "licenseCode": "xg_email_adv",
+            "quota": 100,
+            "usage": 1,
+            "experimentalUsage": {},
+            "sampledAt": 1774301172671,
+            "features": {
+              "f_xgemail_spf": 1,
+              "f_xgemail_dkim": 1,
+              "f_xgemail_toc_url_protect": 1,
+              "f_xgemail_smart_banner": 1,
+              "f_xgemail_mailflow": 1,
+              "f_xgemail_ad_sync": 1,
+              "f_xgemail_sandbox": 1,
+              "f_xgemail_av": 1,
+              "f_xgemail": 1,
+              "f_xgemail_user_policy": 1,
+              "f_xgemail_content_filter": 1,
+              "f_xgemail_dmarc": 1,
+              "f_xgemail_smime": 1,
+              "f_xgemail_anti_phish": 1,
+              "f_xgemail_o365_da": 1,
+              "f_xgemail_ssp": 1,
+              "f_xgemail_impersonation": 1,
+              "f_xgemail_antispam": 1,
+              "f_xgemail_eminbox": 1,
+              "f_xgemail_quarantine": 1
+            },
+            "licenses": [
+              {
+                "license_code": "xg_email_adv",
+                "entities": 100,
+                "type": "TRIAL",
+                "id": "L0010918099",
+                "starts": 1588896000000,
+                "expires": 1778198399999,
+                "suspended": false,
+                "meta": {
+                  "licenseSalesforceId": "a3b3Z000001T9KdQAK",
+                  "line_item_id": "0851-ea15-8f56-06d5-ccda-c107-0e8e-b34d"
+                },
+                "expiring": false,
+                "trial": true,
+                "msp": false,
+                "valid": true,
+                "expired": false
+              }
+            ],
+            "details": [],
+            "status": "trial"
+          },
+          "license": {
+            "license_code": "xg_email_adv",
+            "entities": 100,
+            "type": "TRIAL",
+            "id": "L0010918099",
+            "starts": 1588896000000,
+            "expires": 1778198399999,
+            "suspended": false,
+            "meta": {
+              "licenseSalesforceId": "a3b3Z000001T9KdQAK",
+              "line_item_id": "0851-ea15-8f56-06d5-ccda-c107-0e8e-b34d"
+            },
+            "expiring": false,
+            "trial": true,
+            "msp": false,
+            "valid": true,
+            "expired": false
+          },
+          "syncCanRemoveLicenses": null,
+          "collectedAt": 1774301172671,
+          "billingType": null
+        }
+      ]
+    },
+    "size": 14741,
+    "query": ""
+  },
+  "GET https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/eap/enrolled": {
+    "body": [
+      {
+        "auditableInfo": {
+          "content": "ENDPOINT",
+          "localizationKey": null,
+          "parameters": null,
+          "bundle": null
+        },
+        "applies_to_platforms": [
+          "windows",
+          "posix"
+        ],
+        "applies_to_os_names": [],
+        "min_supported_os_version": "",
+        "policy_types": [
+          "CORE",
+          "HMPA",
+          "ALC",
+          "SAV",
+          "NTP",
+          "MCS"
+        ],
+        "opening_date_time": "2019-10-22T00:00:00.000Z",
+        "withdraw_allowed": true,
+        "endpoint_products": [],
+        "enrolled": true,
+        "applies_to_endpoint_types": [
+          "server"
+        ],
+        "id": "NEW_SERVER_FEATURES",
+        "target": "ENDPOINT",
+        "status": "OPEN"
+      },
+      {
+        "auditableInfo": {
+          "content": "ENDPOINT",
+          "localizationKey": null,
+          "parameters": null,
+          "bundle": null
+        },
+        "applies_to_platforms": [
+          "mac"
+        ],
+        "applies_to_os_names": [],
+        "policy_types": [
+          "ALC"
+        ],
+        "opening_date_time": "2021-09-17T00:00:00.000Z",
+        "withdraw_allowed": true,
+        "endpoint_products": [],
+        "enrolled": true,
+        "applies_to_endpoint_types": [
+          "computer"
+        ],
+        "id": "MAC_ENDPOINT_FEATURES",
+        "target": "ENDPOINT",
+        "status": "OPEN"
+      },
+      {
+        "auditableInfo": {
+          "content": "CUSTOMER",
+          "localizationKey": null,
+          "parameters": null,
+          "bundle": null
+        },
+        "applies_to_platforms": [],
+        "applies_to_os_names": [],
+        "policy_types": [],
+        "opening_date_time": "2024-05-30T00:00:00.000Z",
+        "withdraw_allowed": true,
+        "endpoint_products": [],
+        "enrolled": true,
+        "applies_to_endpoint_types": [],
+        "id": "AI_FEATURES",
+        "target": "CUSTOMER",
+        "status": "OPEN"
+      },
+      {
+        "auditableInfo": {
+          "content": "ENDPOINT",
+          "localizationKey": null,
+          "parameters": null,
+          "bundle": null
+        },
+        "applies_to_platforms": [
+          "windows"
+        ],
+        "applies_to_os_names": [
+          "WIN11",
+          "WIN7",
+          "WIN8",
+          "WIN10",
+          "WIN81"
+        ],
+        "policy_types": [
+          "CORE",
+          "HMPA",
+          "ALC",
+          "SAV",
+          "NTP",
+          "MCS"
+        ],
+        "opening_date_time": "2019-10-22T00:00:00.000Z",
+        "withdraw_allowed": true,
+        "endpoint_products": [],
+        "enrolled": true,
+        "applies_to_endpoint_types": [
+          "computer"
+        ],
+        "id": "NEW_ENDPOINT_FEATURES",
+        "target": "ENDPOINT",
+        "status": "OPEN"
+      }
+    ],
+    "size": 1678,
+    "query": ""
+  },
+  "GET https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/features": {
+    "body": [
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_integrations",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_ntp_adv",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_ntp",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ai_assistant",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_paused_updates",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_edr",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_hbt_xg",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_dlp",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_liveterminal",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_av",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ews",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_blocklisting",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_virt_srv_av",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_livequery",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_dmarc",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_web",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_eminbox",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_o365_da",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_ntp_xg",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_anti_phish",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ms_graph_security",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_on_demand_rca",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_tp_av",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_forensic_snapshot",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_devctl_block",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_content_filter_v2",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_efw",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_toc_url_protect",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_smart_banner",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_liveterminal",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2027-05-22",
+        "license_code": "ap6_420e_sup",
+        "feature_code": "f_ap6_420e_sup",
+        "license_type": "FULL",
+        "valid": true,
+        "license_id": "682f9aded16ccc6cd5b017d5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_av",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_tp_firewall",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_data_retention_90",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_forensic_snapshot",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_enhanced_api_limit",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_lockdown",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_content_filter",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_smime",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_livequery",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_xdr",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_tp_cloud_saas",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_web",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_dlp",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_tp_email",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_ml",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_tp_network",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_xpd",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_tp_backup",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_scheduledquery",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_appctl",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-06-15",
+        "license_code": "xdr_30",
+        "feature_code": "f_data_retention_30",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "60c9f3aa1a0bb80e52f6d2aa",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_virt_ep_av",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_file_submission_l3",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_impersonation",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_phish_threat",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "smsec",
+        "feature_code": "f_uav",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b4",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "central_phishthreat_standard",
+        "feature_code": "f_phish_training",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "616d7722cbda9b0e7f9ade3a",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_fim",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "central_firewall_reporting",
+        "feature_code": "f_central_firewall_reporting_base_reports",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6583e3cf73acdeb2120",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_isolation",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_hbt",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_paused_updates",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_blocklisting",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_scheduledquery",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_quarantine",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_create_policies",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_scheduledquery_api",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_spf",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ai_core",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_encryption",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_xpd",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_antispam",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "smsec",
+        "feature_code": "f_smsec",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b4",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_multi_product_query",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_sandbox",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_devctl",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_ml",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_ad_sync",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_file_submission_l3",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_endpoint_updating",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_isolation",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_hbt_adv",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_stac",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_stac",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_dkim",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_hbt",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_tp_iam",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_appctl",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_on_demand_rca",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_mtd",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "cs210_24fp",
+        "feature_code": "f_cswitch_std",
+        "license_type": "FULL",
+        "valid": true,
+        "license_id": "6709606a26fa9f78f6c9c3e4",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_edr",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_threat_analysis_center",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_create_policies",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "srv_x_ultimate",
+        "feature_code": "f_srv_efw",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a1",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_devctl",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "smsec",
+        "feature_code": "f_mob_xdr",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b4",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "smsec",
+        "feature_code": "f_ad_sync",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b4",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_xdr",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_ssp",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_ep_av",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_mailflow",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "xg_email_adv",
+        "feature_code": "f_xgemail_user_policy",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc7ffdb06493aa70573b5",
+        "virtual": false
+      },
+      {
+        "expired": false,
+        "expires_on": "2026-05-07",
+        "license_code": "ep_x_ultimate",
+        "feature_code": "f_xdr",
+        "license_type": "TRIAL",
+        "valid": true,
+        "license_id": "607dc6c1dc147935f95540a0",
+        "virtual": false
+      }
+    ],
+    "size": 21514,
+    "query": ""
+  },
+  "GET https://central.sophos.com/api/branding/separator": {
+    "body": "-customerlogo-",
+    "size": 16,
+    "query": ""
+  },
+  "GET https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/swg/v1/config/licensing/disabled": {
+    "body": {
+      "result": false
+    },
+    "size": 16,
+    "query": ""
+  },
+  "GET https://central.sophos.com/api/v1/firewalls/maintenance": {
+    "body": {
+      "endDate": "",
+      "startDate": "",
+      "enabled": false
+    },
+    "size": 45,
+    "query": ""
+  },
+  "GET https://dzr-api-amzn-us-west-2-fa88.api-upe.p.hmr.sophos.com/api/extended_support/notifications": {
+    "body": {
+      "unlicensed": [
+        {
+          "count": 1,
+          "endpointType": "computer",
+          "endpoint_type": "computer",
+          "id": "win_7",
+          "majorOsVersion": 6,
+          "major_os_version": 6,
+          "minorOsVersion": 1,
+          "minor_os_version": 1,
+          "platform": "windows"
+        }
+      ],
+      "unsupported": []
+    },
+    "size": 212,
+    "query": ""
+  },
+  "POST https://central.sophos.com/api/sessions/current": {
+    "body": {
+      "ttl": 10800,
+      "isEndOfLife": false
+    },
+    "size": 33,
+    "query": ""
+  },
+  "GET https://api.central.sophos.com/firewall-licensing/v1/firewall-features": {
+    "body": {
+      "items": [],
+      "pages": {
+        "current": 1,
+        "total": 0,
+        "items": 0,
+        "size": 0,
+        "maxSize": 500
+      }
+    },
+    "size": 77,
+    "query": "page=1&pageSize=100&pageTotal=true&sort=endDate:desc&licenseModel=term,usage&expiryBetween=2026-01-23,2026-04-23"
+  },
+  "GET https://api.central.sophos.com/firewall-licensing/v1/firewall-transfers/pending-transfer-in": {
+    "body": {
+      "items": [],
+      "pages": {
+        "current": 1,
+        "total": 0,
+        "items": 0,
+        "size": 1,
+        "maxSize": 500
+      }
+    },
+    "size": 77,
+    "query": "page=1&pageSize=1&pageTotal=true"
+  },
+  "GET https://api-us01.central.sophos.com/ews-query/v1/attacks": {
+    "body": {
+      "items": []
+    },
+    "size": 12,
+    "query": ""
+  },
+  "GET https://central.sophos.com/api/customer/settings": {
+    "body": {
+      "language": "en",
+      "mfa_required": "all_users"
+    },
+    "size": 44,
+    "query": ""
+  },
+  "GET https://central.sophos.com/api/v1/roles/73757065-7261-646d-696e-5b302d39612d": {
+    "body": {
+      "createdAt": null,
+      "description": "SuperAdmin",
+      "id": "73757065-7261-646d-696e-5b302d39612d",
+      "name": "SuperAdmin",
+      "permissionSets": [
+        "computer_disable_tamper_protection",
+        "optix_product_management",
+        "nta_product_admin",
+        "credential_management",
+        "events_readonly",
+        "managed_risk_product_admin",
+        "live_terminal_server_launch",
+        "live_terminal_server_edit_settings",
+        "file_analysis_admin",
+        "live_terminal_endpoint_launch",
+        "ztna_product_admin",
+        "email_gateway_product_admin",
+        "secure_webservice_admin",
+        "wireless_product_admin",
+        "computer_unisolate_device",
+        "credential_management_advanced",
+        "auto_remove_servers_admin",
+        "cnf_product_admin",
+        "tag_metadata_management",
+        "backup_m365_rubrik_admin",
+        "encryption_product_admin",
+        "web_gateway_product_admin",
+        "xdr_actions_management",
+        "server_disable_tamper_protection",
+        "account_health_check_admin",
+        "download_token_management",
+        "policy_mgmt_admin",
+        "rtd_profile_management",
+        "live_terminal_endpoint_edit_settings",
+        "federation_management",
+        "central_superadmin",
+        "server_product_admin",
+        "integration_management",
+        "mdr_preferences_management",
+        "workspace_protection_product_admin",
+        "cswitch_product_admin",
+        "web_profile_management",
+        "xdr_search_management",
+        "itdr_product_admin",
+        "auto_remove_computers_admin",
+        "phish_threat_product_admin",
+        "mobile_product_admin",
+        "alerts_admin",
+        "detections_admin",
+        "logs_reports_readonly",
+        "server_unisolate_device",
+        "detection_rules_admin",
+        "case_management_admin",
+        "alert_settings_admin",
+        "firewall_product_admin",
+        "endpoint_product_admin"
+      ],
+      "principalType": "user",
+      "type": "predefined",
+      "updatedAt": null
+    },
+    "size": 1524,
+    "query": ""
+  }
+}

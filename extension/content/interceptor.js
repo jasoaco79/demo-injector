@@ -527,6 +527,27 @@
       return data;
     }
 
+    // ── Endpoint/Computer List (various API patterns) ──
+    // The devices page may use different endpoints depending on the micro-frontend version
+    if (url.match(/\/api\/endpoint-data\//) || 
+        url.match(/\/api\/endpoints[/?]/) || 
+        url.match(/\/api\/computers[/?]/) ||
+        url.match(/\/endpoint\/v\d+\/endpoints/) ||
+        url.match(/\/endpoints\/v\d+\/endpoints/)) {
+      if (s.endpointReport?.overrideTotal && data.items) {
+        const cn = demoState.customerName || s.customer?.name || 'Demo Customer';
+        data.items = generateEndpoints(Math.min(50, s.endpointReport.overrideTotal), cn);
+        data.total = s.endpointReport.overrideTotal;
+        if (data.filtered !== undefined) data.filtered = s.endpointReport.overrideTotal;
+        if (data.pages) {
+          data.pages.items = s.endpointReport.overrideTotal;
+          data.pages.total = Math.ceil(s.endpointReport.overrideTotal / (data.pages.size || 50));
+        }
+        interceptedCount++;
+      }
+      return data;
+    }
+
     // ── Endpoint Report ──
     if (url.includes('/api/reports/endpoints')) {
       if (s.endpointReport) {
@@ -629,6 +650,12 @@
     if (url.includes('/api/sessions/current') && method === 'GET') {
       interceptedCount++;
       return data;
+    }
+
+    // ── Catch-all: log unhandled Sophos API calls for debugging ──
+    if (url.includes('sophos.com') && !url.includes('/manage/') && !url.includes('assets/')) {
+      const shortUrl = url.replace(/https:\/\/[^/]+/, '').split('?')[0].slice(0, 80);
+      console.log(`[Sophos Demo] 🔍 Unhandled: ${method} ${shortUrl} (${JSON.stringify(data).length} bytes)`);
     }
 
     return data;
