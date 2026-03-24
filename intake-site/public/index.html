@@ -9,11 +9,11 @@
   <style>
     /* ── Sophos Brand Palette ── */
     :root {
-      --sophos-navy: #003366;
-      --sophos-navy-deep: #00264d;
-      --sophos-blue: #006dcc;
-      --sophos-blue-light: #e6f0fa;
-      --sophos-blue-hover: #005bb5;
+      --sophos-navy: #001a47;
+      --sophos-navy-deep: #001233;
+      --sophos-blue: #2006f7;
+      --sophos-blue-light: #eeecfe;
+      --sophos-blue-hover: #1a05cc;
       --sophos-orange: #e87722;
       --sophos-red: #d43f3f;
       --sophos-green: #1a8754;
@@ -63,25 +63,9 @@
       align-items: center;
       gap: 10px;
     }
-    .topbar-logo svg {
-      height: 22px;
-      fill: white;
-    }
-    .topbar-logo .shield {
-      width: 26px;
+    .topbar-logo img {
       height: 26px;
-      background: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .topbar-logo .shield svg { height: 14px; fill: var(--sophos-navy); }
-    .topbar-text {
-      color: var(--text-on-dark);
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
+      filter: brightness(0) invert(1);
     }
     .topbar-sep {
       width: 1px;
@@ -423,10 +407,7 @@
   <!-- Sophos-style top bar -->
   <header class="topbar">
     <div class="topbar-logo">
-      <div class="shield">
-        <svg viewBox="0 0 24 24"><path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z"/></svg>
-      </div>
-      <span class="topbar-text">SOPHOS</span>
+      <img src="/sophos-logo.svg" alt="Sophos">
     </div>
     <div class="topbar-sep"></div>
     <span class="topbar-subtitle">Demo Scenario Builder</span>
