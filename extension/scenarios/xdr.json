@@ -166,6 +166,55 @@
       }
     ]
   },
+  "caseDetail": {
+    "extraActivities": [
+      {
+        "userName": "Sophos Endpoint",
+        "action": "Adaptive Attack Protection activated on DESKTOP-MKT003 — enhanced monitoring enabled.",
+        "category": "caseActivity",
+        "createdAt": "-3h"
+      },
+      {
+        "userName": "Sophos Endpoint",
+        "action": "Lateral movement detected: SMB connection from DESKTOP-MKT003 (192.168.1.103) to SRV-DC01 (192.168.1.10) using admin$ share.",
+        "category": "caseActivity",
+        "createdAt": "-2h"
+      },
+      {
+        "userName": "Sophos Endpoint",
+        "action": "Outbound data transfer blocked: SRV-DB02 attempted 2.4GB upload to external IP 45.33.49.12 on port 443.",
+        "category": "caseActivity",
+        "createdAt": "-1h"
+      }
+    ]
+  },
+  "threatGraphs": {
+    "stacCases": {
+      "summary": { "closed": 0, "inprogress": 1, "total": 1, "new": 0 },
+      "items": [
+        {
+          "endpointType": "computer",
+          "endpointName": "DESKTOP-MKT003",
+          "username": "{{customerDomain}}\\mike.jones",
+          "rootCauseName": "msedge.exe",
+          "malwareName": "Cobalt Strike Beacon",
+          "cloudCreatedAt": "-3h",
+          "rootCauseDT": "-3h",
+          "status": "IN_PROGRESS",
+          "priority": "HIGH",
+          "id": "auto",
+          "caseType": "SYSTEM_GENERATED",
+          "suspectProcessCount": 8,
+          "numberOfBusinessFiles": "0",
+          "isBehavioral": true,
+          "hasProcessBeacon": true
+        }
+      ],
+      "total": 1,
+      "filtered": 1,
+      "nextKey": null
+    }
+  },
   "billing": {
     "overrideName": "{{customerName}}",
     "overrideAlias": "{{customerName}}"

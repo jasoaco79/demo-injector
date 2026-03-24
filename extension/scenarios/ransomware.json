@@ -220,6 +220,55 @@
       }
     ]
   },
+  "caseDetail": {
+    "extraActivities": [
+      {
+        "userName": "Sophos Endpoint",
+        "action": "CryptoGuard blocked ransomware encryption on DESKTOP-FIN042. 47 files protected.",
+        "category": "caseActivity",
+        "createdAt": "-2m"
+      },
+      {
+        "userName": "Sophos Endpoint",
+        "action": "Tamper Protection blocked attempt to disable real-time scanning on DESKTOP-FIN042.",
+        "category": "caseActivity",
+        "createdAt": "-2m"
+      },
+      {
+        "userName": "Sophos Endpoint",
+        "action": "Malicious file quarantined: C:\\Users\\sarah.chen\\Downloads\\invoice_march2026.exe (SHA256: deadbeef...)",
+        "category": "caseActivity",
+        "createdAt": "-3m"
+      }
+    ]
+  },
+  "threatGraphs": {
+    "stacCases": {
+      "summary": { "closed": 0, "inprogress": 1, "total": 1, "new": 0 },
+      "items": [
+        {
+          "endpointType": "computer",
+          "endpointName": "DESKTOP-FIN042",
+          "username": "{{customerDomain}}\\sarah.chen",
+          "rootCauseName": "invoice_march2026.exe",
+          "malwareName": "Troj/Ransom-GKL",
+          "cloudCreatedAt": "-3m",
+          "rootCauseDT": "-5m",
+          "status": "IN_PROGRESS",
+          "priority": "HIGH",
+          "id": "auto",
+          "caseType": "SYSTEM_GENERATED",
+          "suspectProcessCount": 4,
+          "numberOfBusinessFiles": "47",
+          "isBehavioral": false,
+          "hasProcessBeacon": false
+        }
+      ],
+      "total": 1,
+      "filtered": 1,
+      "nextKey": null
+    }
+  },
   "billing": {
     "overrideName": "{{customerName}}",
     "overrideAlias": "{{customerName}}"

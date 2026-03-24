@@ -186,6 +186,8 @@ function buildUserPrompt(form) {
   prompt += `- Use relative timestamps (-3m, -2h, etc.) so data looks fresh\n`;
   prompt += `- Use "auto" for all UUID/ID fields\n`;
   prompt += `- Make alert descriptions compelling — the SE reads them aloud during the demo\n`;
+  prompt += `- Include caseDetail.extraActivities with 3-5 timeline entries showing the investigation/response story\n`;
+  prompt += `- Include threatGraphs.stacCases with a matching threat graph entry\n`;
 
   if (form.scenarioType === 'mdr' || form.mdrResponse === 'yes') {
     prompt += `- Set cases managedBy to "mtr" and assignee to "Sophos MDR Team"\n`;

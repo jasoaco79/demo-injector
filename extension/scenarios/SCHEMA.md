@@ -173,6 +173,90 @@ Controls `/detections/queries/.../results` response.
 }
 ```
 
+### caseDetail
+Controls case detail sub-pages when an SE clicks into a case.
+
+- `activities`: Override for `/cases/v1/cases/{id}/activities` — case timeline
+- `extraActivities`: Array of additional activity items to append (auto-generates base activities from case data)
+- `mitreSummary`: Override for `/cases/v1/cases/{id}/mitre-attack-summary`
+- `impactedEntities`: Override for `/cases/v1/cases/{id}/impacted-entities`
+- `notebook`: Override for `/cases/v1/cases/{id}/notebook/sections`
+- `responseActions`: Override for `/xdr-actions/v1/actions`
+- `actionRuns`: Override for `/xdr-actions/v1/actions/runs`
+
+**Activity Object Shape:**
+```json
+{
+  "userName": "Sophos MDR Team",
+  "action": "Device DESKTOP-FIN042 isolated from network",
+  "category": "caseActivity",
+  "createdAt": "-2m"
+}
+```
+
+**Impacted Entities Shape:**
+```json
+{
+  "items": [
+    {
+      "id": "auto",
+      "name": "DESKTOP-FIN042",
+      "type": "device",
+      "detections": [
+        { "id": "auto", "detectionRule": "WIN-IMP-PRC-SHADOWCOPY-SELECT-DELETE-RESIZE-1" }
+      ]
+    },
+    {
+      "id": "auto",
+      "name": "192.168.1.42",
+      "type": "ip_address",
+      "detections": []
+    }
+  ],
+  "pages": { "current": 1, "size": 50, "total": 1, "items": 2 }
+}
+```
+
+**Note:** If `caseDetail` sections are omitted, the interceptor auto-generates:
+- Activities from case creation info + MDR actions (if `managedBy: "mtr"`)
+- MITRE summary from case's `initialDetection.mitreAttacks`
+- Impacted entities from detection device hostnames and IPs
+
+### threatGraphs
+Controls Threat Analysis Center → Threat Graphs pages.
+
+- `stacCases`: Override for `/api/stac/cases` — threat graph case list
+- `stacCaseDetail`: Override for `/api/stac/cases/{id}` — single threat graph case
+- `graph`: Override for `/api/stac/rootcause/{id}/graph` — the visual kill chain data
+- `artifacts`: Override for `/api/stac/rootcause/{id}/artifacts`
+
+**STAC Case Shape:**
+```json
+{
+  "summary": { "closed": 0, "inprogress": 1, "total": 1, "new": 0 },
+  "items": [
+    {
+      "endpointId": "auto",
+      "endpointType": "computer",
+      "endpointName": "DESKTOP-FIN042",
+      "username": "{{customerDomain}}\\sarah.chen",
+      "rootCauseName": "invoice_march2026.exe",
+      "malwareName": "Troj/Ransom-GKL",
+      "cloudCreatedAt": "-3m",
+      "rootCauseDT": "-5m",
+      "status": "NEW",
+      "priority": "HIGH",
+      "id": "auto",
+      "caseType": "SYSTEM_GENERATED",
+      "suspectProcessCount": 4
+    }
+  ],
+  "total": 1,
+  "filtered": 1,
+  "nextKey": null
+}
+```
+
 ### billing
 Controls `/api/billing/account` response.
 ```json

@@ -292,8 +292,115 @@
       return data;
     }
 
-    // ── Cases (/cases/v1/cases) ──
-    if (url.includes('/cases/v1/cases')) {
+    // ── Case Detail: Activities (/cases/v1/cases/{id}/activities) ──
+    if (url.match(/\/cases\/v1\/cases\/[\w-]+\/activities/)) {
+      const caseId = url.match(/\/cases\/v1\/cases\/([\w-]+)\//)?.[1];
+      const fakeCase = s.cases?.items?.find(c => c.id === caseId);
+      if (fakeCase && s.caseDetail?.activities) {
+        interceptedCount++;
+        return s.caseDetail.activities;
+      }
+      // For fake cases, return synthetic activities if no explicit ones provided
+      if (fakeCase) {
+        interceptedCount++;
+        const activities = [
+          { userName: fakeCase.createdBy?.name || 'Auto-generated', action: `Created XdrCase - ${fakeCase.name}`, category: 'caseActivity', createdAt: fakeCase.createdAt },
+        ];
+        if (fakeCase.managedBy === 'mtr') {
+          activities.push(
+            { userName: 'Sophos MDR Team', action: 'Case escalated to MDR for investigation', category: 'caseActivity', createdAt: fakeCase.createdAt },
+            { userName: 'Sophos MDR Team', action: 'MDR analyst assigned — active investigation in progress', category: 'caseActivity', createdAt: fakeCase.updatedAt || fakeCase.createdAt },
+          );
+        }
+        if (s.caseDetail?.extraActivities) {
+          activities.push(...s.caseDetail.extraActivities);
+        }
+        return { items: activities, pages: { current: 1, size: 10, total: 1, items: activities.length } };
+      }
+      return data;
+    }
+
+    // ── Case Detail: MITRE Summary (/cases/v1/cases/{id}/mitre-attack-summary) ──
+    if (url.match(/\/cases\/v1\/cases\/[\w-]+\/mitre-attack-summary/)) {
+      const caseId = url.match(/\/cases\/v1\/cases\/([\w-]+)\//)?.[1];
+      const fakeCase = s.cases?.items?.find(c => c.id === caseId);
+      if (fakeCase && s.caseDetail?.mitreSummary) {
+        interceptedCount++;
+        return s.caseDetail.mitreSummary;
+      }
+      // Auto-generate from case's initialDetection MITRE data
+      if (fakeCase?.initialDetection?.mitreAttacks) {
+        interceptedCount++;
+        return { tactics: fakeCase.initialDetection.mitreAttacks.map(m => m.tactic) };
+      }
+      return data;
+    }
+
+    // ── Case Detail: Impacted Entities (/cases/v1/cases/{id}/impacted-entities) ──
+    if (url.match(/\/cases\/v1\/cases\/[\w-]+\/impacted-entities/)) {
+      const caseId = url.match(/\/cases\/v1\/cases\/([\w-]+)\//)?.[1];
+      const fakeCase = s.cases?.items?.find(c => c.id === caseId);
+      if (fakeCase && s.caseDetail?.impactedEntities) {
+        interceptedCount++;
+        return s.caseDetail.impactedEntities;
+      }
+      // Auto-generate from detections
+      if (fakeCase && s.detections?.items?.length) {
+        const entities = [];
+        const seenHosts = new Set();
+        for (const det of s.detections.items) {
+          const hostname = det.device?.hostname || det.rawData?.meta_hostname;
+          if (hostname && !seenHosts.has(hostname)) {
+            seenHosts.add(hostname);
+            entities.push({
+              id: det.device?.id || uuid(),
+              name: hostname,
+              type: 'device',
+              detections: s.detections.items
+                .filter(d => (d.device?.hostname || d.rawData?.meta_hostname) === hostname)
+                .map(d => ({ id: d.id || uuid(), detectionRule: d.classificationRule })),
+            });
+          }
+          const ip = det.rawData?.meta_ip_address;
+          if (ip && !seenHosts.has(ip)) {
+            seenHosts.add(ip);
+            entities.push({ id: uuid(), name: ip, type: 'ip_address', detections: [] });
+          }
+        }
+        interceptedCount++;
+        return { items: entities, pages: { current: 1, size: 50, total: 1, items: entities.length } };
+      }
+      return data;
+    }
+
+    // ── Case Detail: Notebook Sections (/cases/v1/cases/{id}/notebook/sections) ──
+    if (url.match(/\/cases\/v1\/cases\/[\w-]+\/notebook/)) {
+      const caseId = url.match(/\/cases\/v1\/cases\/([\w-]+)\//)?.[1];
+      const fakeCase = s.cases?.items?.find(c => c.id === caseId);
+      if (fakeCase && s.caseDetail?.notebook) {
+        interceptedCount++;
+        return s.caseDetail.notebook;
+      }
+      if (fakeCase) {
+        interceptedCount++;
+        return { items: [], pages: { current: 1, size: 10, total: 0, items: 0 } };
+      }
+      return data;
+    }
+
+    // ── Case Detail: Single Case (/cases/v1/cases/{id}) ──
+    if (url.match(/\/cases\/v1\/cases\/[\w-]+$/) || url.match(/\/cases\/v1\/cases\/[\w-]+\?/)) {
+      const caseId = url.match(/\/cases\/v1\/cases\/([\w-]+)/)?.[1];
+      const fakeCase = s.cases?.items?.find(c => c.id === caseId);
+      if (fakeCase) {
+        interceptedCount++;
+        return fakeCase;
+      }
+      return data;
+    }
+
+    // ── Cases List (/cases/v1/cases) ──
+    if (url.match(/\/cases\/v1\/cases(\?|$)/) && !url.match(/\/cases\/v1\/cases\/[\w-]/)) {
       if (s.cases) {
         if (s.cases.mode === 'override') {
           interceptedCount++;
@@ -309,6 +416,60 @@
           }
           interceptedCount++;
         }
+      }
+      return data;
+    }
+
+    // ── Threat Graphs: STAC Cases List (/api/stac/cases) ──
+    if (url.match(/\/api\/stac\/cases(\?|$)/) && !url.match(/\/api\/stac\/cases\/[\w-]/)) {
+      if (s.threatGraphs?.stacCases) {
+        interceptedCount++;
+        return s.threatGraphs.stacCases;
+      }
+      return data;
+    }
+
+    // ── Threat Graphs: Single STAC Case (/api/stac/cases/{id}) ──
+    if (url.match(/\/api\/stac\/cases\/[\w-]+$/)) {
+      if (s.threatGraphs?.stacCaseDetail) {
+        interceptedCount++;
+        return s.threatGraphs.stacCaseDetail;
+      }
+      return data;
+    }
+
+    // ── Threat Graphs: Root Cause Graph (/api/stac/rootcause/{id}/graph) ──
+    if (url.includes('/api/stac/rootcause/') && url.includes('/graph')) {
+      if (s.threatGraphs?.graph) {
+        interceptedCount++;
+        return s.threatGraphs.graph;
+      }
+      return data;
+    }
+
+    // ── Threat Graphs: Artifacts (/api/stac/rootcause/{id}/artifacts) ──
+    if (url.includes('/api/stac/rootcause/') && url.includes('/artifacts')) {
+      if (s.threatGraphs?.artifacts) {
+        interceptedCount++;
+        return s.threatGraphs.artifacts;
+      }
+      return data;
+    }
+
+    // ── XDR Actions (/xdr-actions/v1/actions) ──
+    if (url.includes('/xdr-actions/v1/actions') && !url.includes('/runs') && !url.includes('/categories')) {
+      if (s.caseDetail?.responseActions) {
+        interceptedCount++;
+        return s.caseDetail.responseActions;
+      }
+      return data;
+    }
+
+    // ── XDR Action Runs (/xdr-actions/v1/actions/runs) ──
+    if (url.includes('/xdr-actions/v1/actions/runs')) {
+      if (s.caseDetail?.actionRuns) {
+        interceptedCount++;
+        return s.caseDetail.actionRuns;
       }
       return data;
     }
