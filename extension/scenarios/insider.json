@@ -1,0 +1,301 @@
+{
+  "id": "insider-default",
+  "name": "Insider Threat",
+  "description": "Disgruntled employee in IT exfiltrating sensitive data via personal cloud storage. USB activity, large file transfers, and off-hours access detected by XDR.",
+  "version": 1,
+  "createdAt": "2026-03-23T00:00:00Z",
+  "customer": {
+    "name": "Contoso Healthcare",
+    "industry": "healthcare",
+    "endpointCount": 2500,
+    "serverCount": 186
+  },
+  "alerts": {
+    "mode": "prepend",
+    "items": [
+      {
+        "product": "endpoint",
+        "threat": null,
+        "threat_cleanable": null,
+        "created_at": "-45m",
+        "severity": "high",
+        "actionable": true,
+        "category": "runtime_detections",
+        "when": "-45m",
+        "allowedActions": ["ACKNOWLEDGE"],
+        "location": "DESKTOP-IT003",
+        "type": "Event::Endpoint::CoreDetection::DataExfiltration",
+        "source": null,
+        "data": { "created_at": "-45m", "endpoint_type": "computer", "endpoint_platform": "windows" },
+        "description": "Large data transfer detected: 3.2GB uploaded to personal Dropbox from DESKTOP-IT003 (user: kevin.harris) during off-hours (2:15 AM). Files include customer database exports and financial reports.",
+        "info": "Anomalous transfer volume — 47x normal upload activity for this user"
+      },
+      {
+        "product": "endpoint",
+        "threat": null,
+        "threat_cleanable": null,
+        "created_at": "-2h",
+        "severity": "high",
+        "actionable": true,
+        "category": "runtime_detections",
+        "when": "-2h",
+        "allowedActions": ["ACKNOWLEDGE"],
+        "location": "DESKTOP-IT003",
+        "type": "Event::Endpoint::DeviceControl::USBViolation",
+        "source": null,
+        "data": { "created_at": "-2h", "endpoint_type": "computer", "endpoint_platform": "windows" },
+        "description": "Unauthorized USB device connected to DESKTOP-IT003 at 1:30 AM. Device: SanDisk Ultra 256GB (VID:0781 PID:5583). 2.1GB copied to USB including 'customer_master_list.xlsx' and 'revenue_projections_2026.pptx'.",
+        "info": "USB device not in approved device list — data loss prevention alert"
+      },
+      {
+        "product": "endpoint",
+        "threat": null,
+        "threat_cleanable": null,
+        "created_at": "-3h",
+        "severity": "medium",
+        "actionable": true,
+        "category": "runtime_detections",
+        "when": "-3h",
+        "allowedActions": ["ACKNOWLEDGE"],
+        "location": "SRV-DB01",
+        "type": "Event::Endpoint::CoreDetection::SuspiciousQuery",
+        "source": null,
+        "data": { "created_at": "-3h", "endpoint_type": "server", "endpoint_platform": "windows" },
+        "description": "Unusual database query from IT administrator kevin.harris: SELECT * FROM customers exported 48,230 rows to CSV at 12:45 AM. This user normally runs operational queries only.",
+        "info": "Behavioral anomaly — first bulk data export from this user account"
+      },
+      {
+        "product": "endpoint",
+        "threat": null,
+        "threat_cleanable": null,
+        "created_at": "-4h",
+        "severity": "medium",
+        "actionable": false,
+        "category": "policy",
+        "when": "-4h",
+        "allowedActions": ["ACKNOWLEDGE"],
+        "location": "DESKTOP-IT003",
+        "type": "Event::Endpoint::CoreDetection::OffHoursAccess",
+        "source": null,
+        "data": { "created_at": "-4h", "endpoint_type": "computer", "endpoint_platform": "windows" },
+        "description": "Off-hours VPN login detected: kevin.harris connected via VPN at 11:47 PM from unusual IP (residential ISP, 73.22.148.91). User's normal hours: 8 AM - 6 PM.",
+        "info": "Third off-hours access this week — escalating pattern"
+      }
+    ],
+    "summaryDelta": { "high": 2, "medium": 2, "low": 0 }
+  },
+  "cases": {
+    "mode": "prepend",
+    "items": [
+      {
+        "type": "investigation",
+        "name": "Insider Threat — Data Exfiltration by IT Administrator",
+        "managedBy": "self",
+        "createdAt": "-3h",
+        "createdBy": { "name": "Auto-generated" },
+        "updatedAt": "-30m",
+        "status": "investigating",
+        "initialDetection": {
+          "severity": 8,
+          "type": "Threat",
+          "detectionRule": "USER-BHV-DATA-EXFIL-CLOUD-1",
+          "mitreAttacks": [
+            { "tactic": { "id": "TA0009", "name": "Collection", "techniques": [{ "id": "T1560.001", "name": "Archive Collected Data" }, { "id": "T1119", "name": "Automated Collection" }] } },
+            { "tactic": { "id": "TA0010", "name": "Exfiltration", "techniques": [{ "id": "T1567.002", "name": "Exfiltration to Cloud Storage" }, { "id": "T1052.001", "name": "Exfiltration over USB" }] } },
+            { "tactic": { "id": "TA0007", "name": "Discovery", "techniques": [{ "id": "T1083", "name": "File and Directory Discovery" }] } }
+          ],
+          "time": "-3h",
+          "sensor": { "type": "endpoint", "source": "Sophos Endpoint" }
+        },
+        "assignee": { "name": "SOC Analyst" },
+        "overview": "IT administrator kevin.harris exhibiting data exfiltration behavior over the past 3 hours:\n\n1. 11:47 PM — Off-hours VPN connection from residential IP\n2. 12:45 AM — Bulk database export (48,230 customer records → CSV)\n3. 1:30 AM — 2.1GB copied to unauthorized USB device\n4. 2:15 AM — 3.2GB uploaded to personal Dropbox account\n\nThis is the third off-hours access event this week. Pattern suggests intentional data theft. Files include customer PII, financial projections, and revenue data.\n\nRecommended: Suspend VPN access immediately, preserve forensic evidence, engage HR and Legal.",
+        "detectionCount": 8,
+        "escalated": true
+      }
+    ]
+  },
+  "detections": {
+    "mode": "prepend",
+    "items": [
+      {
+        "detectionCreatedAt": "-3h",
+        "connectorGeneratedAt": "-3h",
+        "connector": { "id": "SophosSensorID", "type": "endpoint", "vendor": "Sophos", "version": "SED Driver 4.2.1" },
+        "device": { "type": "computer", "hostname": "DESKTOP-IT003" },
+        "rawData": {
+          "meta_hostname": "DESKTOP-IT003",
+          "meta_ip_address": "192.168.1.33",
+          "meta_os_name": "Microsoft Windows 11 Enterprise",
+          "meta_username": "kevin.harris",
+          "cmdline": "sqlcmd.exe -S SRV-DB01 -Q \"SELECT * FROM customers\" -o \"C:\\Users\\kevin.harris\\Documents\\customer_export.csv\" -s\",\" -W",
+          "path": "C:\\Program Files\\Microsoft SQL Server\\Client SDK\\ODBC\\170\\Tools\\Binn\\SQLCMD.EXE",
+          "parent_name": "cmd.exe"
+        },
+        "risk": 7,
+        "category": "Threat",
+        "classificationRule": "USER-BHV-DATA-EXFIL-BULK-QUERY-1",
+        "ruleDescription": "IT user executed bulk database export of customer records during off-hours — behavioral anomaly",
+        "mitreAttacks": [
+          { "tactic": { "id": "TA0009", "name": "Collection", "techniques": [{ "id": "T1119", "name": "Automated Collection" }] } }
+        ],
+        "attackType": "Insider Threat",
+        "severity": 7,
+        "detectionAttack": { "name": "Data Exfiltration" },
+        "detectionLicenses": ["XDR"],
+        "geolocation": {},
+        "intelixFileReputation": {},
+        "detectionType": "Behavioral",
+        "suppressed": false,
+        "caseDescription": "Bulk database export — 48,230 customer records"
+      },
+      {
+        "detectionCreatedAt": "-45m",
+        "connectorGeneratedAt": "-45m",
+        "connector": { "id": "SophosSensorID", "type": "endpoint", "vendor": "Sophos", "version": "SED Driver 4.2.1" },
+        "device": { "type": "computer", "hostname": "DESKTOP-IT003" },
+        "rawData": {
+          "meta_hostname": "DESKTOP-IT003",
+          "meta_ip_address": "192.168.1.33",
+          "meta_os_name": "Microsoft Windows 11 Enterprise",
+          "meta_username": "kevin.harris",
+          "cmdline": "chrome.exe --upload https://www.dropbox.com/upload -- \"C:\\Users\\kevin.harris\\Documents\\customer_export.csv\" \"C:\\Users\\kevin.harris\\Documents\\revenue_projections_2026.pptx\"",
+          "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+          "parent_name": "explorer.exe"
+        },
+        "risk": 8,
+        "category": "Threat",
+        "classificationRule": "USER-BHV-DATA-EXFIL-CLOUD-UPLOAD-1",
+        "ruleDescription": "Large file upload to personal cloud storage (Dropbox) containing sensitive corporate data",
+        "mitreAttacks": [
+          { "tactic": { "id": "TA0010", "name": "Exfiltration", "techniques": [{ "id": "T1567.002", "name": "Exfiltration to Cloud Storage" }] } }
+        ],
+        "attackType": "Insider Threat",
+        "severity": 8,
+        "detectionAttack": { "name": "Data Exfiltration" },
+        "detectionLicenses": ["XDR"],
+        "geolocation": {},
+        "intelixFileReputation": {},
+        "detectionType": "Behavioral",
+        "suppressed": false,
+        "caseDescription": "3.2GB upload to personal Dropbox"
+      }
+    ]
+  },
+  "caseDetail": {
+    "extraActivities": [
+      {
+        "userName": "Sophos XDR",
+        "action": "Behavioral anomaly: kevin.harris initiated off-hours VPN session from residential IP 73.22.148.91. Third occurrence this week.",
+        "category": "caseActivity",
+        "createdAt": "-4h"
+      },
+      {
+        "userName": "Sophos XDR",
+        "action": "Database query anomaly: kevin.harris exported 48,230 rows from customers table. First bulk export from this user account.",
+        "category": "caseActivity",
+        "createdAt": "-3h"
+      },
+      {
+        "userName": "Sophos XDR",
+        "action": "USB device control alert: Unauthorized SanDisk Ultra 256GB connected. 2.1GB copied including customer_master_list.xlsx.",
+        "category": "caseActivity",
+        "createdAt": "-2h"
+      },
+      {
+        "userName": "Sophos XDR",
+        "action": "Cloud exfiltration: 3.2GB uploaded to personal Dropbox. Upload volume is 47x this user's normal pattern.",
+        "category": "caseActivity",
+        "createdAt": "-45m"
+      }
+    ]
+  },
+  "billing": {
+    "overrideName": "{{customerName}}",
+    "overrideAlias": "{{customerName}}"
+  },
+  "user": {
+    "overrideCompany": "{{customerName}}",
+    "overrideAlias": "{{customerName}}"
+  },
+  "healthScore": {
+    "override": 91
+  },
+  "auditLogs": {
+    "mode": "prepend",
+    "items": [
+      {
+        "timestamp": "-4h",
+        "type": "system_event",
+        "category": "vpn",
+        "action": "Off-hours VPN login",
+        "actor": "kevin.harris",
+        "actorType": "user",
+        "target": "VPN Gateway",
+        "targetType": "service",
+        "result": "success",
+        "description": "Off-hours VPN login: kevin.harris connected at 11:47 PM from IP 73.22.148.91 (residential ISP). Normal hours: 8 AM - 6 PM."
+      },
+      {
+        "timestamp": "-2h",
+        "type": "system_event",
+        "category": "endpoint",
+        "action": "Unauthorized USB device",
+        "actor": "Sophos Device Control",
+        "actorType": "system",
+        "target": "DESKTOP-IT003",
+        "targetType": "endpoint",
+        "result": "logged",
+        "description": "Unauthorized USB device SanDisk Ultra 256GB (VID:0781) connected to DESKTOP-IT003. 2.1GB data transfer logged. Device not in approved list."
+      },
+      {
+        "timestamp": "-45m",
+        "type": "system_event",
+        "category": "dlp",
+        "action": "Cloud upload alert",
+        "actor": "Sophos Web Control",
+        "actorType": "system",
+        "target": "DESKTOP-IT003",
+        "targetType": "endpoint",
+        "result": "logged",
+        "description": "3.2GB uploaded to dropbox.com from DESKTOP-IT003 by kevin.harris. Content includes: customer_export.csv, revenue_projections_2026.pptx, hr_salary_data.xlsx."
+      }
+    ]
+  },
+  "liveDiscover": {
+    "queryResults": {
+      "id": "auto",
+      "status": "completed",
+      "query": "SELECT u.username, f.path, f.size, f.mtime, f.action FROM file_events f JOIN logged_in_users u ON f.uid = u.uid WHERE u.username = 'kevin.harris' AND f.action IN ('CREATED', 'MODIFIED') AND f.size > 1000000 ORDER BY f.mtime DESC",
+      "queryName": "Insider Threat — Large File Activity by User",
+      "startedAt": "-20m",
+      "completedAt": "-19m",
+      "endpointsQueried": 8,
+      "endpointsResponded": 8,
+      "totalResults": 5,
+      "columns": [
+        { "name": "username", "type": "TEXT" },
+        { "name": "path", "type": "TEXT" },
+        { "name": "size_mb", "type": "REAL" },
+        { "name": "action", "type": "TEXT" },
+        { "name": "endpoint_hostname", "type": "TEXT" }
+      ],
+      "rows": [
+        ["kevin.harris", "C:\\Users\\kevin.harris\\Documents\\customer_export.csv", 847.2, "CREATED", "DESKTOP-IT003"],
+        ["kevin.harris", "C:\\Users\\kevin.harris\\Documents\\revenue_projections_2026.pptx", 124.5, "MODIFIED", "DESKTOP-IT003"],
+        ["kevin.harris", "C:\\Users\\kevin.harris\\Documents\\hr_salary_data.xlsx", 56.8, "CREATED", "DESKTOP-IT003"],
+        ["kevin.harris", "C:\\Users\\kevin.harris\\Documents\\customer_master_list.xlsx", 312.1, "CREATED", "DESKTOP-IT003"],
+        ["kevin.harris", "E:\\backup\\full_export.zip", 2148.0, "CREATED", "DESKTOP-IT003"]
+      ]
+    }
+  },
+  "endpointReport": {
+    "overrideTotal": "{{endpointCount}}",
+    "overrideSummary": {
+      "total": "{{endpointCount}}",
+      "active": "{{endpointCount * 0.91}}",
+      "unprotected": 0,
+      "inactive": "{{endpointCount * 0.03}}",
+      "dormant": "{{endpointCount * 0.06}}"
+    }
+  }
+}
