@@ -1,4 +1,4 @@
-# Sophos Central Demo Mode
+# Sophos Central Demo Injector
 
 A Chrome extension that injects realistic demo data into the **live Sophos Central UI**. Real product, fake data — every pixel is authentic. Built for Sophos Sales Engineers who need compelling, customer-specific demos without maintaining separate demo environments.
 
