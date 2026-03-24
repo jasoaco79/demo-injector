@@ -527,8 +527,9 @@
 
     // ── Case Detail: Impacted Entities (/cases/v1/cases/{id}/impacted-entities) ──
     if (url.match(/\/cases\/v1\/cases\/[\w-]+\/impacted-entities/)) {
-      const caseId = url.match(/\/cases\/v1\/cases\/([\w-]+)\//)?.[1];
-      const fakeCase = s.cases?.items?.find(c => c.id === caseId);
+      const matchedCaseId = url.match(/\/cases\/v1\/cases\/([\w-]+)\//)?.[1];
+      const fakeCase = s.cases?.items?.find(c => c.id === matchedCaseId);
+      console.log('[Sophos Demo] Impacted entities request:', { matchedCaseId, found: !!fakeCase, caseIds: s.cases?.items?.map(c => c.id) });
       if (fakeCase && s.caseDetail?.impactedEntities) {
         interceptedCount++;
         return s.caseDetail.impactedEntities;
@@ -586,6 +587,18 @@
         return fakeCase;
       }
       return data;
+    }
+
+    // ── Case Detail: Catch-all for any sub-endpoint on a fake case ──
+    // Prevents React crashes from 404s when the real API doesn't know our fake case ID
+    if (url.match(/\/cases\/v1\/cases\/[\w-]+\/.+/)) {
+      const matchedCaseId = url.match(/\/cases\/v1\/cases\/([\w-]+)\//)?.[1];
+      const fakeCase = s.cases?.items?.find(c => c.id === matchedCaseId);
+      if (fakeCase) {
+        console.log('[Sophos Demo] Catch-all case sub-endpoint:', url);
+        interceptedCount++;
+        return { items: [], pages: { current: 1, size: 10, total: 0, items: 0 } };
+      }
     }
 
     // ── Cases List (/cases/v1/cases) ──
