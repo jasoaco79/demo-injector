@@ -1329,6 +1329,225 @@
   });
 
 
+  // ─── Recording Mode (#10) ────────────────────────────────────────
+  // Tracks which pages the SE visits, how long they spend, and in what order
+
+  const demoRecording = {
+    enabled: false,
+    startTime: null,
+    pages: [],        // { url, title, enteredAt, duration }
+    currentPage: null,
+  };
+
+  function startRecording() {
+    if (demoRecording.enabled) return;
+    demoRecording.enabled = true;
+    demoRecording.startTime = Date.now();
+    demoRecording.pages = [];
+    demoRecording.currentPage = {
+      url: location.pathname,
+      title: document.title,
+      enteredAt: Date.now(),
+    };
+    console.log('[Sophos Demo] 🎬 Recording started');
+  }
+
+  function recordPageChange() {
+    if (!demoRecording.enabled) return;
+    const now = Date.now();
+    if (demoRecording.currentPage) {
+      demoRecording.currentPage.duration = now - demoRecording.currentPage.enteredAt;
+      demoRecording.pages.push({ ...demoRecording.currentPage });
+    }
+    demoRecording.currentPage = {
+      url: location.pathname,
+      title: document.title,
+      enteredAt: now,
+    };
+  }
+
+  function stopRecording() {
+    if (!demoRecording.enabled) return;
+    recordPageChange(); // flush current page
+    demoRecording.enabled = false;
+    const totalMs = Date.now() - demoRecording.startTime;
+    const summary = {
+      totalDuration: totalMs,
+      totalDurationFormatted: formatMs(totalMs),
+      pagesVisited: demoRecording.pages.length,
+      pages: demoRecording.pages.map(p => ({
+        ...p,
+        durationFormatted: formatMs(p.duration),
+        enteredAtFormatted: new Date(p.enteredAt).toLocaleTimeString(),
+      })),
+      scenario: activeScenario?.name || demoState.scenario,
+      customer: demoState.customerName,
+      interceptedCount,
+      timestamp: new Date().toISOString(),
+    };
+    console.log('[Sophos Demo] 🎬 Recording stopped:', summary);
+    return summary;
+  }
+
+  function formatMs(ms) {
+    const s = Math.round(ms / 1000);
+    return s < 60 ? `${s}s` : `${Math.floor(s / 60)}m ${s % 60}s`;
+  }
+
+  // Track SPA navigation via URL changes
+  let lastUrl = location.href;
+  const urlObserver = new MutationObserver(() => {
+    if (location.href !== lastUrl) {
+      lastUrl = location.href;
+      recordPageChange();
+    }
+  });
+  urlObserver.observe(document.documentElement, { subtree: true, childList: true });
+
+  // Auto-start recording when demo mode is enabled
+  window.addEventListener('__sophos_demo_state_update__', () => {
+    if (demoState.enabled && !demoRecording.enabled) startRecording();
+    if (!demoState.enabled && demoRecording.enabled) {
+      const summary = stopRecording();
+      // Store the recording in sessionStorage for the popup to access
+      if (summary) {
+        try { sessionStorage.setItem('__sophos_demo_recording__', JSON.stringify(summary)); } catch {}
+      }
+    }
+  });
+
+
+  // ─── "What If" Mode (#13) ──────────────────────────────────────────
+  // Allows injecting alerts on-demand via a keyboard shortcut or message
+
+  const WHAT_IF_TEMPLATES = {
+    ransomware: {
+      severity: 'high',
+      category: 'runtime_detections',
+      type: 'Event::Endpoint::CoreDetection::CryptoGuard',
+      description: '🚨 LIVE: CryptoGuard blocked ransomware encryption on {{host}}. {{count}} files protected.',
+    },
+    phishing: {
+      severity: 'high',
+      category: 'policy',
+      type: 'Event::Email::ThreatBlocked',
+      description: '🚨 LIVE: Phishing email blocked — credential harvesting link detected from {{sender}}',
+    },
+    lateral: {
+      severity: 'high',
+      category: 'runtime_detections',
+      type: 'Event::Endpoint::SuspiciousActivity',
+      description: '🚨 LIVE: Lateral movement detected — {{host}} accessing {{target}} via SMB with stolen credentials',
+    },
+    exfiltration: {
+      severity: 'high',
+      category: 'runtime_detections',
+      type: 'Event::Endpoint::DataExfiltration',
+      description: '🚨 LIVE: Data exfiltration attempt blocked — {{size}} upload to external IP from {{host}}',
+    },
+    isolation: {
+      severity: 'medium',
+      category: 'policy',
+      type: 'Event::Endpoint::DeviceIsolated',
+      description: '🔒 LIVE: {{host}} automatically isolated from network — threat containment in progress',
+    },
+  };
+
+  function injectWhatIf(templateName) {
+    if (!demoState.enabled || !activeScenario) return;
+
+    const template = WHAT_IF_TEMPLATES[templateName];
+    if (!template) {
+      console.warn(`[Sophos Demo] Unknown what-if template: ${templateName}`);
+      return;
+    }
+
+    // Generate realistic placeholders
+    const hosts = activeScenario.detections?.items?.map(d => d.device?.hostname).filter(Boolean) || ['DESKTOP-WKS001'];
+    const host = hosts[Math.floor(Math.random() * hosts.length)];
+    const target = 'SRV-DC01';
+    const sender = 'secure-update@' + (demoState.customerName || 'company').toLowerCase().replace(/\s+/g, '') + '-verify.com';
+
+    const alert = {
+      id: uuid(),
+      javaUUID: uuid(),
+      event_service_event_id: uuid(),
+      customer_id: uuid(),
+      severity: template.severity,
+      category: template.category,
+      type: template.type,
+      product: 'endpoint',
+      created_at: new Date().toISOString(),
+      when: new Date().toISOString(),
+      location: host,
+      description: template.description
+        .replace('{{host}}', host)
+        .replace('{{target}}', target)
+        .replace('{{sender}}', sender)
+        .replace('{{count}}', Math.floor(Math.random() * 200 + 50))
+        .replace('{{size}}', `${(Math.random() * 3 + 0.5).toFixed(1)}GB`),
+      data: {
+        endpoint_type: 'computer',
+        endpoint_platform: 'windows',
+        endpoint_id: uuid(),
+      },
+      allowedActions: ['ACKNOWLEDGE'],
+      actionable: true,
+    };
+
+    // Inject into active scenario
+    if (!activeScenario.alerts) activeScenario.alerts = { items: [], summaryDelta: { high: 0, medium: 0, low: 0 } };
+    if (!activeScenario.alerts.items) activeScenario.alerts.items = [];
+    activeScenario.alerts.items.unshift(alert);
+    if (activeScenario.alerts.summaryDelta) {
+      activeScenario.alerts.summaryDelta[alert.severity] = (activeScenario.alerts.summaryDelta[alert.severity] || 0) + 1;
+    }
+
+    console.log(`[Sophos Demo] ⚡ What-If injected: ${templateName} — ${alert.description.slice(0, 80)}`);
+
+    // Flash the badge
+    if (badgeElement) {
+      badgeElement.style.background = '#dc2626';
+      setTimeout(() => { if (badgeElement) badgeElement.style.background = '#003366'; }, 3000);
+    }
+
+    return alert;
+  }
+
+  // Keyboard shortcuts: Ctrl+Shift+1 through 5 for what-if events
+  document.addEventListener('keydown', (e) => {
+    if (!e.ctrlKey || !e.shiftKey || !demoState.enabled) return;
+    const templates = ['ransomware', 'phishing', 'lateral', 'exfiltration', 'isolation'];
+    const idx = parseInt(e.key) - 1;
+    if (idx >= 0 && idx < templates.length) {
+      e.preventDefault();
+      injectWhatIf(templates[idx]);
+    }
+  });
+
+  // Also listen for messages from the popup/bridge
+  window.addEventListener('message', (e) => {
+    if (e.data?.type === '__sophos_demo_whatif__') {
+      injectWhatIf(e.data.template);
+    }
+    if (e.data?.type === '__sophos_demo_get_recording__') {
+      const summary = demoRecording.enabled ? stopRecording() : null;
+      window.postMessage({ type: '__sophos_demo_recording_data__', summary }, '*');
+    }
+  });
+
+  // Expose for console usage
+  window.__sophosDemo = {
+    whatIf: injectWhatIf,
+    startRecording,
+    stopRecording,
+    getRecording: () => ({ ...demoRecording, pages: [...demoRecording.pages] }),
+    templates: Object.keys(WHAT_IF_TEMPLATES),
+  };
+
+
   console.log('[Sophos Demo] 🎯 Interceptor loaded (JSON scenario engine). Waiting for activation...');
+  console.log('[Sophos Demo] 💡 What-If shortcuts: Ctrl+Shift+1 (ransomware), 2 (phishing), 3 (lateral), 4 (exfiltration), 5 (isolation)');
+  console.log('[Sophos Demo] 💡 Console: window.__sophosDemo.whatIf("ransomware"), .stopRecording(), .templates');
 
 })();

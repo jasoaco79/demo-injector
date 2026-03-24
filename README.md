@@ -15,6 +15,12 @@ A Chrome extension that injects realistic demo data into the **live Sophos Centr
 - [AI Scenario Generator](#ai-scenario-generator)
 - [Industry Presets](#industry-presets)
 - [AI Demo Script Generator](#ai-demo-script-generator)
+- [Scenario Library](#scenario-library)
+- [Competitive Battle Cards](#competitive-battle-cards)
+- [Post-Demo Follow-Up](#post-demo-follow-up)
+- [Prospect Enrichment](#prospect-enrichment)
+- [What-If Mode](#what-if-mode)
+- [Demo Recording](#demo-recording)
 - [Floating Demo Badge](#floating-demo-badge)
 - [Timed Events](#timed-events)
 - [Scenario Validator](#scenario-validator)
@@ -506,6 +512,92 @@ A markdown document with:
 The script references specific data from your scenario — alert names, hostnames, MITRE techniques, health scores — so it matches exactly what the prospect will see during the demo.
 
 **Tip:** Click the button again to toggle the script panel open/closed. If you generate a new scenario, the script resets and you can generate a fresh one.
+
+---
+
+## Scenario Library
+
+Browse all built-in scenarios at **`/scenarios.html`** (linked from the top bar). Each scenario shows:
+
+- **Stats at a glance** — alert count, case count, detection count, health score
+- **Tags** — MDR, EMAIL, TIMED, CLEAN badges for quick filtering
+- **Three actions per scenario:**
+  - **⚡ Make It Mine** — instantly clone with your customer's name, industry, and endpoint count. No AI needed, no API key required. Downloads a ready-to-use JSON file.
+  - **💾 Download** — grab the raw scenario JSON as-is
+  - **🔀 Remix** — opens the AI generator pre-loaded with this scenario for deeper customization (new threat actor, new industry, etc.)
+
+---
+
+## Competitive Battle Cards
+
+After generating a scenario, click **⚔️ Battle Card** to generate a competitive battle card vs the selected competitor. The AI creates:
+
+1. **Competitor Overview** — product and market position
+2. **Where Sophos Wins** — 5-7 specific differentiators
+3. **Where They Compete** — honest areas of competitor strength
+4. **Common Objections & Responses** — "If they say X, you say Y" pairs
+5. **Killer Questions** — questions that expose competitor weaknesses
+6. **Pricing Positioning** — how to frame the conversation
+
+The battle card is contextualized to the specific scenario you're demoing — not generic marketing material.
+
+---
+
+## Post-Demo Follow-Up
+
+Click **📧 Follow-Up** after generating a scenario to create a professional follow-up email. Includes:
+
+- A subject line specific to what was shown
+- Scenario-specific highlights with data points from the demo
+- Clear next steps (POC, technical deep dive, pricing)
+- Suggested Sophos resources to attach
+
+Tone is consultative, not salesy. Under 300 words — the prospect can read it in 60 seconds.
+
+---
+
+## Prospect Enrichment
+
+Click **🔍 Enrich** next to the company name field to auto-research the prospect. The AI returns:
+
+- Industry classification, estimated employee/endpoint/server counts
+- Compliance frameworks (HIPAA, PCI-DSS, SOX, etc.)
+- Recent public breaches (if any)
+- Industry-specific risks and suggested threat actors
+- Recommended scenario type and demo angle
+
+Auto-fills the form fields (industry, endpoint count, server count, scenario type, story description) so the SE can generate in fewer clicks.
+
+---
+
+## What-If Mode
+
+During a live demo, inject alerts on the fly using keyboard shortcuts:
+
+| Shortcut | Alert Type | Description |
+|---|---|---|
+| `Ctrl+Shift+1` | Ransomware | CryptoGuard blocks encryption |
+| `Ctrl+Shift+2` | Phishing | Credential harvesting link blocked |
+| `Ctrl+Shift+3` | Lateral Movement | SMB access with stolen credentials |
+| `Ctrl+Shift+4` | Exfiltration | Data upload to external IP blocked |
+| `Ctrl+Shift+5` | Isolation | Device automatically isolated |
+
+Alerts appear instantly in the intercepted data, using hostnames from the active scenario. The demo badge flashes red when an event is injected.
+
+**Console access:** `window.__sophosDemo.whatIf("ransomware")` for programmatic injection.
+
+---
+
+## Demo Recording
+
+The extension automatically records your demo session when demo mode is enabled:
+
+- **Pages visited** — URL, title, time entered
+- **Time per page** — how long you spent on each view
+- **Total duration** — formatted as minutes/seconds
+- **Intercept count** — how many API responses were modified
+
+Recording starts when you toggle demo mode ON and stops when you toggle OFF. The summary is stored in `sessionStorage` for the popup to display.
 
 ---
 
@@ -1034,10 +1126,6 @@ Publish as an unlisted extension. Share the direct install link. Auto-updates wh
 
 ## Roadmap
 
-### Planned
-- [ ] Scenario library — shared repository of scenarios by industry/use case
-- [ ] Scenario "remix" — take an existing scenario and tweak for a new customer
-
 ### Ideas
 - [ ] Sophos Firewall dashboard integration
 - [ ] Partner dashboard override (for MSP demos)
@@ -1048,6 +1136,17 @@ Publish as an unlisted extension. Share the direct install link. Auto-updates wh
 - [ ] Scenario sharing via URL (base64-encoded JSON in query string)
 
 ### Completed
+- [x] **Scenario Library** (`/scenarios.html`) — browsable grid of all built-in scenarios with stats, tags, "Make It Mine" instant cloning, and AI remix
+- [x] **Scenario Remix** — AI rewrites an existing scenario for a new customer/industry/threat actor
+- [x] **Competitive Battle Cards** — AI-generated battle card vs any competitor, contextualized to the demo scenario
+- [x] **Post-Demo Follow-Up** — AI-generated follow-up email with scenario-specific highlights and next steps
+- [x] **Prospect Enrichment** — AI-powered company research auto-fills the intake form (industry, size, compliance, demo angle)
+- [x] **Live Preview** — visual preview of alerts and cases the SE will see before downloading
+- [x] **Demo Recording** — tracks pages visited, time spent, and intercept count during live demos
+- [x] **What-If Mode** — inject live alerts mid-demo via Ctrl+Shift+1-5 (ransomware, phishing, lateral, exfiltration, isolation)
+- [x] **Chrome Sync** — syncs custom scenarios and preferences across Chrome devices
+- [x] **Demo History** — persists the last 50 completed demo sessions in the extension
+- [x] **URL Import** — import scenarios from base64/JSON data URLs
 - [x] 9 built-in scenarios (ransomware, phishing, XDR, MDR, insider, BEC, supply chain, zero-day, healthy)
 - [x] JSON-driven scenario architecture with import/export
 - [x] AI Scenario Generator with Claude Sonnet 4
@@ -1074,10 +1173,12 @@ sophos-demo/
 │   ├── manifest.json             Manifest V3 config
 │   ├── content/
 │   │   ├── interceptor.js        Core: fetch/XHR override, interception rules,
-│   │   │                         demo badge, timed events (~1,300 lines)
+│   │   │                         demo badge, timed events, recording,
+│   │   │                         what-if mode (~1,550 lines)
 │   │   └── bridge.js             State relay: ISOLATED → MAIN world
 │   ├── background/
-│   │   └── service-worker.js     State management + scenario loading
+│   │   └── service-worker.js     State management, scenario loading,
+│   │                              Chrome sync, demo history
 │   ├── popup/
 │   │   ├── popup.html            Scenario picker UI
 │   │   └── popup.js              Toggle, import/export, settings
@@ -1095,11 +1196,15 @@ sophos-demo/
 │   └── icons/                    Extension icons (16/48/128px) + Sophos logo
 │
 ├── intake-site/                  AI Scenario Generator
-│   ├── server/index.mjs          Node.js server + Pi SDK backend
-│   │                             APIs: /api/generate, /api/presets/{industry},
-│   │                             /api/demo-script
+│   ├── server/
+│   │   ├── index.mjs             Node.js server — APIs: /api/generate,
+│   │   │                         /api/presets, /api/demo-script, /api/scenarios,
+│   │   │                         /api/make-mine, /api/remix, /api/battle-card,
+│   │   │                         /api/post-demo-report, /api/enrich-prospect
+│   │   └── llm.mjs              Multi-LLM provider (Pi SDK, Anthropic, OpenAI, local)
 │   ├── public/
-│   │   ├── index.html            Intake form + industry presets + demo script UI
+│   │   ├── index.html            Intake form + enrichment + preview + battle card
+│   │   ├── scenarios.html        Scenario library browser
 │   │   └── sophos-logo.svg       Official Sophos logo
 │   └── package.json
 │

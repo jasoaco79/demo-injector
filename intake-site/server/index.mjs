@@ -13,7 +13,7 @@
  */
 
 import { createServer } from 'http';
-import { readFile, readFileSync } from 'fs';
+import { readFile, readFileSync, readdirSync } from 'fs';
 import { join, extname } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -81,6 +81,48 @@ Use real threat names and MITRE techniques:
 **Lateral Movement:** SMB (T1021.002), RDP (T1021.001), Pass the Hash (T1550.002), WinRM (T1021.006)
 **Exfiltration:** C2 Channel (T1041), Web Service (T1567), Encrypted Channel (T1573)
 **Impact:** Data Encrypted (T1486), Inhibit Recovery (T1490), Data Destruction (T1485)`;
+
+const BATTLE_CARD_SYSTEM_PROMPT = `You are a Sophos competitive intelligence analyst. Generate a battle card for an SE going up against a specific competitor.
+
+Output a markdown document with:
+1. **COMPETITOR OVERVIEW** — 2-3 sentences on their product and market position
+2. **WHERE SOPHOS WINS** — 5-7 specific differentiators with one-liner explanations
+3. **WHERE THEY COMPETE** — 2-3 areas where the competitor is strong (be honest)
+4. **COMMON OBJECTIONS & RESPONSES** — 5-8 "If they say X, you say Y" pairs. Make responses specific and data-driven, not generic marketing.
+5. **KILLER QUESTIONS** — 3-5 questions the SE should ask the prospect that expose competitor weaknesses
+6. **PRICING POSITIONING** — How to frame Sophos pricing vs the competitor
+
+Be specific, honest, and practical. SEs can smell marketing BS. Use real product differences, not buzzwords.
+Reference the specific scenario being demoed so responses are contextual.`;
+
+const POST_DEMO_REPORT_SYSTEM_PROMPT = `You are a Sophos SE assistant. Generate a professional follow-up email after a demo.
+
+Output a well-formatted email with:
+1. **Subject line** — specific to what was shown, not generic
+2. **Opening** — reference the specific scenario and what impressed the prospect
+3. **Key highlights** — 3-5 bullet points of what was demonstrated, with specific data points from the scenario
+4. **Next steps** — clear call to action (POC, technical deep dive, pricing discussion)
+5. **Attached resources** — suggest relevant Sophos materials to send
+
+Tone: professional but warm. First-person from the SE. Not salesy — consultative.
+Keep it under 300 words. The prospect should be able to read it in 60 seconds.`;
+
+const REMIX_SYSTEM_PROMPT = `You are a Sophos Central demo scenario generator. You are REMIXING an existing scenario for a new customer.
+
+You will receive:
+1. The original scenario JSON
+2. What needs to change (new customer, industry, threat actor, etc.)
+
+Your job: modify the scenario to match the new requirements while keeping the overall structure and quality intact.
+
+## CRITICAL RULES
+1. Output ONLY valid JSON. No markdown, no code fences, no explanation.
+2. Keep all fields that don't need to change.
+3. Update hostnames, usernames, departments, and file paths to match the new industry.
+4. Update MITRE techniques if the threat actor changed.
+5. Keep template variables: {{customerName}}, {{endpointCount}}, etc.
+6. Keep relative timestamps (-3m, -2h, etc.)
+7. Keep "auto" for UUID/ID fields.`;
 
 const DEMO_SCRIPT_SYSTEM_PROMPT = `You are a Sophos SE demo coach. Generate a step-by-step demo talk track for a Sophos Central demo.
 
@@ -280,6 +322,257 @@ const server = createServer(async (req, res) => {
         res.end(JSON.stringify({ ok: true, scenario }));
       } catch (err) {
         console.error('❌ Generation error:', err.message);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // API: Scenario library — list all built-in scenarios (#1)
+  if (req.method === 'GET' && req.url === '/api/scenarios') {
+    const scenariosDir = join(__dirname, '../../extension/scenarios');
+    try {
+      const files = readdirSync(scenariosDir).filter(f => f.endsWith('.json'));
+      const scenarios = files.map(f => {
+        const data = JSON.parse(readFileSync(join(scenariosDir, f), 'utf8'));
+        return {
+          id: data.id || f.replace('.json', ''),
+          name: data.name || f.replace('.json', ''),
+          description: data.description || '',
+          filename: f,
+          customer: data.customer || {},
+          alertCount: data.alerts?.items?.length || 0,
+          caseCount: data.cases?.items?.length || 0,
+          detectionCount: data.detections?.items?.length || 0,
+          healthScore: data.healthScore?.override ?? null,
+          scenarioType: data.id?.replace('-default', '') || 'custom',
+          hasMDR: data.cases?.items?.some(c => c.managedBy === 'mtr') || false,
+          hasEmail: !!data.emailHistory?.messages?.length,
+          hasTimedEvents: !!data.timedEvents?.length,
+        };
+      });
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(scenarios));
+    } catch (err) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: err.message }));
+    }
+    return;
+  }
+
+  // API: Get a single scenario by ID (#1)
+  if (req.method === 'GET' && req.url.startsWith('/api/scenarios/')) {
+    const id = req.url.split('/api/scenarios/')[1];
+    const scenariosDir = join(__dirname, '../../extension/scenarios');
+    try {
+      // Try exact match, then without -default suffix, then with -default suffix
+      let filePath = join(scenariosDir, `${id}.json`);
+      try { readFileSync(filePath); } catch {
+        // IDs are like "ransomware-default" but files are "ransomware.json"
+        const stripped = id.replace(/-default$/, '');
+        try {
+          filePath = join(scenariosDir, `${stripped}.json`);
+          readFileSync(filePath);
+        } catch {
+          filePath = join(scenariosDir, `${id}-default.json`);
+        }
+      }
+      const data = readFileSync(filePath, 'utf8');
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(data);
+    } catch (err) {
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Scenario not found' }));
+    }
+    return;
+  }
+
+  // API: "Make It Mine" — clone a built-in scenario with new customer details (#2)
+  if (req.method === 'POST' && req.url === '/api/make-mine') {
+    let body = '';
+    req.on('data', (chunk) => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const { scenarioId, customerName, industry, endpointCount, serverCount } = JSON.parse(body);
+        const scenariosDir = join(__dirname, '../../extension/scenarios');
+
+        // Load the base scenario (IDs are "ransomware-default", files are "ransomware.json")
+        let filePath = join(scenariosDir, `${scenarioId}.json`);
+        try { readFileSync(filePath); } catch {
+          const stripped = scenarioId.replace(/-default$/, '');
+          try {
+            filePath = join(scenariosDir, `${stripped}.json`);
+            readFileSync(filePath);
+          } catch {
+            filePath = join(scenariosDir, `${scenarioId}-default.json`);
+          }
+        }
+        const scenario = JSON.parse(readFileSync(filePath, 'utf8'));
+
+        // Override customer details
+        scenario.id = `custom-${scenarioId}-${Date.now()}`;
+        scenario.customer = {
+          ...scenario.customer,
+          name: customerName || scenario.customer?.name,
+          industry: industry || scenario.customer?.industry,
+          endpointCount: endpointCount || scenario.customer?.endpointCount,
+          serverCount: serverCount || scenario.customer?.serverCount,
+        };
+        scenario.createdAt = new Date().toISOString();
+        scenario.name = `${scenario.name} — ${customerName || 'Custom'}`;
+
+        console.log(`🔄 Make It Mine: ${scenario.name}`);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, scenario }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // API: Battle card generation (#6)
+  if (req.method === 'POST' && req.url === '/api/battle-card') {
+    let body = '';
+    req.on('data', (chunk) => { body += chunk; });
+    req.on('end', async () => {
+      try {
+        const { scenario, competitor } = JSON.parse(body);
+        const comp = competitor || scenario.competitor || 'the incumbent solution';
+        console.log(`⚔️ Generating battle card: Sophos vs ${comp}`);
+
+        const responseText = await generate(
+          BATTLE_CARD_SYSTEM_PROMPT,
+          `Generate a competitive battle card for Sophos vs ${comp}.\n\nThe SE is demoing this scenario:\n${JSON.stringify(scenario, null, 2)}\n\nFocus the battle card on the products and capabilities shown in this specific demo.`
+        );
+
+        console.log(`✅ Battle card generated (${responseText.length} chars)`);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, battleCard: responseText }));
+      } catch (err) {
+        console.error('❌ Battle card error:', err.message);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // API: Post-demo follow-up report (#7)
+  if (req.method === 'POST' && req.url === '/api/post-demo-report') {
+    let body = '';
+    req.on('data', (chunk) => { body += chunk; });
+    req.on('end', async () => {
+      try {
+        const { scenario, prospectName, prospectEmail, notes } = JSON.parse(body);
+        console.log(`📧 Generating post-demo report for: ${prospectName || scenario.customer?.name}`);
+
+        let userPrompt = `Generate a follow-up email after demoing Sophos Central.\n\n`;
+        userPrompt += `## Scenario Shown\n${JSON.stringify(scenario, null, 2)}\n\n`;
+        if (prospectName) userPrompt += `## Prospect\nName: ${prospectName}\n`;
+        if (prospectEmail) userPrompt += `Email: ${prospectEmail}\n`;
+        if (notes) userPrompt += `\n## SE Notes\n${notes}\n`;
+
+        const responseText = await generate(POST_DEMO_REPORT_SYSTEM_PROMPT, userPrompt);
+
+        console.log(`✅ Post-demo report generated (${responseText.length} chars)`);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, report: responseText }));
+      } catch (err) {
+        console.error('❌ Post-demo report error:', err.message);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // API: Remix scenario (#8)
+  if (req.method === 'POST' && req.url === '/api/remix') {
+    let body = '';
+    req.on('data', (chunk) => { body += chunk; });
+    req.on('end', async () => {
+      try {
+        const { scenario, changes } = JSON.parse(body);
+        console.log(`🔀 Remixing scenario: ${scenario.name || scenario.id}`);
+
+        let userPrompt = `Remix this existing scenario:\n\n${JSON.stringify(scenario, null, 2)}\n\n`;
+        userPrompt += `## Changes Requested\n`;
+        if (changes.customerName) userPrompt += `- New customer: ${changes.customerName}\n`;
+        if (changes.industry) userPrompt += `- New industry: ${changes.industry}\n`;
+        if (changes.threatActor) userPrompt += `- New threat actor: ${changes.threatActor}\n`;
+        if (changes.entryPoint) userPrompt += `- New entry point: ${changes.entryPoint}\n`;
+        if (changes.notes) userPrompt += `- Additional notes: ${changes.notes}\n`;
+        userPrompt += `\nKeep the overall structure but update all industry-specific details (hostnames, departments, users, compliance references, file paths).`;
+
+        const responseText = await generate(REMIX_SYSTEM_PROMPT, userPrompt);
+
+        let json = responseText.trim();
+        if (json.startsWith('```')) {
+          json = json.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '');
+        }
+        const remixed = JSON.parse(json);
+        remixed.id = `remix-${Date.now()}`;
+        remixed.createdAt = new Date().toISOString();
+
+        console.log(`✅ Remixed: ${remixed.name || remixed.id}`);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, scenario: remixed }));
+      } catch (err) {
+        console.error('❌ Remix error:', err.message);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+    });
+    return;
+  }
+
+  // API: Prospect enrichment (#12)
+  if (req.method === 'POST' && req.url === '/api/enrich-prospect') {
+    let body = '';
+    req.on('data', (chunk) => { body += chunk; });
+    req.on('end', async () => {
+      try {
+        const { domain, companyName } = JSON.parse(body);
+        console.log(`🔍 Enriching prospect: ${companyName || domain}`);
+
+        const responseText = await generate(
+          `You are a prospect research assistant. Given a company name or domain, provide structured intelligence for a cybersecurity sales demo.
+
+Output ONLY valid JSON with this exact structure:
+{
+  "companyName": "Full legal name",
+  "industry": "one of: healthcare, finance, manufacturing, education, retail, government, legal, technology, energy, construction, nonprofit",
+  "estimatedEmployees": 5000,
+  "estimatedEndpoints": 6000,
+  "estimatedServers": 400,
+  "headquarters": "City, State",
+  "compliance": ["HIPAA", "SOX"],
+  "recentBreaches": ["2024: description of any public breach"],
+  "techStack": ["Known security vendors they use"],
+  "keyRisks": ["Industry-specific risks"],
+  "suggestedScenario": "ransomware|phishing|xdr|mdr|insider|bec|supply-chain|zero-day",
+  "suggestedThreatActors": ["Relevant threat actors for this industry"],
+  "demoAngle": "One paragraph on how to position the demo"
+}
+
+Use your knowledge to make educated estimates. If you don't know something, make a reasonable guess based on industry and size. Never output null — always provide a value.`,
+          `Research this company for a Sophos Central demo:\n${companyName ? `Company: ${companyName}\n` : ''}${domain ? `Domain: ${domain}\n` : ''}\n\nProvide the structured intelligence JSON.`
+        );
+
+        let json = responseText.trim();
+        if (json.startsWith('```')) {
+          json = json.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '');
+        }
+        const enrichment = JSON.parse(json);
+
+        console.log(`✅ Enriched: ${enrichment.companyName} (${enrichment.industry}, ~${enrichment.estimatedEndpoints} endpoints)`);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, enrichment }));
+      } catch (err) {
+        console.error('❌ Enrichment error:', err.message);
         res.writeHead(500, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ ok: false, error: err.message }));
       }

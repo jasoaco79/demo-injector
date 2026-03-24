@@ -203,12 +203,152 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     })();
     return true;
   }
+
+  // SAVE_DEMO_HISTORY (#5) — record a completed demo session
+  if (msg.type === 'SAVE_DEMO_HISTORY') {
+    (async () => {
+      const stored = await chrome.storage.local.get('demoHistory');
+      const history = stored.demoHistory || [];
+      history.unshift({
+        ...msg.entry,
+        timestamp: new Date().toISOString(),
+      });
+      // Keep last 50 entries
+      if (history.length > 50) history.length = 50;
+      await chrome.storage.local.set({ demoHistory: history });
+      sendResponse({ ok: true });
+    })();
+    return true;
+  }
+
+  // GET_DEMO_HISTORY — retrieve past demo sessions
+  if (msg.type === 'GET_DEMO_HISTORY') {
+    (async () => {
+      const stored = await chrome.storage.local.get('demoHistory');
+      sendResponse({ history: stored.demoHistory || [] });
+    })();
+    return true;
+  }
+
+  // IMPORT_VIA_URL (#4) — import scenario from a data URL or base64
+  if (msg.type === 'IMPORT_VIA_URL') {
+    (async () => {
+      try {
+        let scenario;
+        if (msg.data.startsWith('{')) {
+          scenario = JSON.parse(msg.data);
+        } else {
+          // base64 encoded
+          scenario = JSON.parse(atob(msg.data));
+        }
+        if (!scenario.id) scenario.id = 'import-' + Date.now();
+
+        const stored = await chrome.storage.local.get('customScenarios');
+        const customs = stored.customScenarios || {};
+        customs[scenario.id] = scenario;
+        await chrome.storage.local.set({ customScenarios: customs });
+        scenarioCache[scenario.id] = scenario;
+
+        sendResponse({ ok: true, id: scenario.id, name: scenario.name });
+      } catch (err) {
+        sendResponse({ ok: false, error: err.message });
+      }
+    })();
+    return true;
+  }
+});
+
+
+// ─── Chrome Sync (#9) ────────────────────────────────────────────────
+// Sync custom scenarios across devices using chrome.storage.sync
+// Note: sync storage has a 100KB total limit, so we only sync metadata
+// and the most recent 5 custom scenarios (if they fit under 8KB each)
+
+async function syncToCloud() {
+  try {
+    const stored = await chrome.storage.local.get(['customScenarios', 'demoState']);
+    const customs = stored.customScenarios || {};
+
+    // Sync preferences
+    await chrome.storage.sync.set({
+      syncedPrefs: {
+        customerName: stored.demoState?.customerName,
+        endpointCount: stored.demoState?.endpointCount,
+        serverCount: stored.demoState?.serverCount,
+        lastScenario: stored.demoState?.scenario,
+      }
+    });
+
+    // Sync up to 5 most recent custom scenarios (trimmed to fit sync limits)
+    const entries = Object.entries(customs).slice(0, 5);
+    const trimmed = {};
+    for (const [key, val] of entries) {
+      trimmed[key] = {
+        id: val.id,
+        name: val.name,
+        description: val.description,
+        customer: val.customer,
+        _full: JSON.stringify(val).length < 8000 ? val : null,
+      };
+    }
+    await chrome.storage.sync.set({ syncedScenarios: trimmed });
+    console.log('[Sophos Demo] ☁️ Synced to cloud:', entries.length, 'scenarios');
+  } catch (err) {
+    console.warn('[Sophos Demo] Sync failed:', err.message);
+  }
+}
+
+async function syncFromCloud() {
+  try {
+    const synced = await chrome.storage.sync.get(['syncedPrefs', 'syncedScenarios']);
+    if (!synced.syncedPrefs && !synced.syncedScenarios) return;
+
+    const local = await chrome.storage.local.get('demoState');
+    if (!local.demoState && synced.syncedPrefs) {
+      await chrome.storage.local.set({
+        demoState: { ...DEFAULT_STATE, ...synced.syncedPrefs, enabled: false }
+      });
+      console.log('[Sophos Demo] ☁️ Restored preferences from cloud');
+    }
+
+    if (synced.syncedScenarios) {
+      const stored = await chrome.storage.local.get('customScenarios');
+      const customs = stored.customScenarios || {};
+      let added = 0;
+      for (const [key, val] of Object.entries(synced.syncedScenarios)) {
+        if (!customs[key] && val._full) {
+          customs[key] = val._full;
+          scenarioCache[key] = val._full;
+          added++;
+        }
+      }
+      if (added > 0) {
+        await chrome.storage.local.set({ customScenarios: customs });
+        console.log('[Sophos Demo] ☁️ Restored', added, 'scenarios from cloud');
+      }
+    }
+  } catch (err) {
+    console.warn('[Sophos Demo] Cloud restore failed:', err.message);
+  }
+}
+
+// Sync on startup
+syncFromCloud();
+
+// Sync to cloud when state changes (debounced 5s)
+let syncTimer = null;
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area === 'local' && (changes.demoState || changes.customScenarios)) {
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(syncToCloud, 5000);
+  }
 });
 
 
 // ─── Badge ───────────────────────────────────────────────────────────
 
-chrome.storage.onChanged.addListener((changes) => {
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== 'local') return;
   if (changes.demoState) {
     const state = changes.demoState.newValue;
     if (state?.enabled) {

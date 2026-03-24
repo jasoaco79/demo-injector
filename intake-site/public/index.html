@@ -412,6 +412,7 @@
     <div class="topbar-sep"></div>
     <span class="topbar-subtitle">Demo Scenario Builder</span>
     <div class="topbar-right">
+      <a href="/scenarios.html" style="color:rgba(255,255,255,0.7); text-decoration:none; font-size:13px; transition:color 0.15s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">📚 Library</a>
       <span class="topbar-badge" id="providerBadge" title="Loading…">⏳ CHECKING LLM…</span>
       <span class="topbar-badge">INTERNAL TOOL</span>
     </div>
@@ -435,7 +436,7 @@
         <div class="section-body">
           <div class="field-grid-2">
             <div class="field">
-              <label for="customerName">Company Name</label>
+              <label for="customerName">Company Name <button type="button" id="enrichBtn" style="float:right; background:none; border:1px solid var(--border); border-radius:3px; font-size:11px; cursor:pointer; padding:1px 8px; color:var(--sophos-blue);" title="Auto-fill from company name using AI">🔍 Enrich</button></label>
               <input type="text" id="customerName" placeholder="Mercy Hospital" required>
             </div>
             <div class="field">
@@ -658,11 +659,24 @@
         <div class="result-btns">
           <button class="btn-sm" id="copyBtn">📋 Copy JSON</button>
           <button class="btn-sm" id="scriptBtn">📝 Demo Script</button>
+          <button class="btn-sm" id="battleBtn">⚔️ Battle Card</button>
+          <button class="btn-sm" id="reportBtn">📧 Follow-Up</button>
           <button class="btn-sm primary" id="dlBtn">💾 Download .json</button>
         </div>
       </div>
 
       <div class="stats" id="statRow"></div>
+
+      <!-- Live Preview (#3) -->
+      <div id="previewPanel" style="margin-bottom: 12px;">
+        <div class="section" style="margin-bottom: 0;">
+          <div class="section-head" style="cursor:pointer;" onclick="document.getElementById('previewBody').style.display = document.getElementById('previewBody').style.display === 'none' ? 'block' : 'none'">
+            <div class="icon">👁️</div>
+            <h2>Live Preview — What the SE Will See</h2>
+          </div>
+          <div class="section-body" id="previewBody" style="display:none; padding: 0;"></div>
+        </div>
+      </div>
 
       <div class="json-wrap">
         <div class="json-head">
@@ -683,6 +697,34 @@
         </div>
         <div class="json-wrap" style="background:#fff; border: 1px solid var(--border);">
           <div class="json-body" style="max-height: 600px;"><pre id="scriptOut" style="color: var(--text); white-space: pre-wrap; font-family: 'Source Sans 3', sans-serif; font-size: 14px; line-height: 1.7;"></pre></div>
+        </div>
+      </div>
+
+      <!-- Battle Card Panel -->
+      <div id="battlePanel" style="display:none; margin-top: 12px;">
+        <div class="result-bar">
+          <div class="result-title">⚔️ Competitive Battle Card</div>
+          <div class="result-btns">
+            <button class="btn-sm" id="copyBattle">📋 Copy</button>
+            <button class="btn-sm primary" id="dlBattle">💾 Download .md</button>
+          </div>
+        </div>
+        <div class="json-wrap" style="background:#fff; border: 1px solid var(--border);">
+          <div class="json-body" style="max-height: 600px;"><pre id="battleOut" style="color: var(--text); white-space: pre-wrap; font-family: 'Source Sans 3', sans-serif; font-size: 14px; line-height: 1.7;"></pre></div>
+        </div>
+      </div>
+
+      <!-- Post-Demo Report Panel -->
+      <div id="reportPanel" style="display:none; margin-top: 12px;">
+        <div class="result-bar">
+          <div class="result-title">📧 Follow-Up Email</div>
+          <div class="result-btns">
+            <button class="btn-sm" id="copyReport">📋 Copy</button>
+            <button class="btn-sm primary" id="dlReport">💾 Download .md</button>
+          </div>
+        </div>
+        <div class="json-wrap" style="background:#fff; border: 1px solid var(--border);">
+          <div class="json-body" style="max-height: 600px;"><pre id="reportOut" style="color: var(--text); white-space: pre-wrap; font-family: 'Source Sans 3', sans-serif; font-size: 14px; line-height: 1.7;"></pre></div>
         </div>
       </div>
     </div>
@@ -816,9 +858,69 @@
       document.getElementById('fname').textContent = (s.id || 'scenario') + '.json';
       document.getElementById('fsize').textContent = (json.length / 1024).toFixed(1) + ' KB';
 
+      // Render live preview (#3)
+      renderPreview(s);
+
       const panel = document.getElementById('resultPanel');
       panel.classList.add('show');
       panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function renderPreview(s) {
+      const preview = document.getElementById('previewBody');
+      const alerts = s.alerts?.items || [];
+      const cases = s.cases?.items || [];
+      const cn = s.customer?.name || '{{customerName}}';
+
+      let html = '<div style="padding: 16px;">';
+
+      // Alerts preview
+      if (alerts.length) {
+        html += '<div style="margin-bottom: 16px;">';
+        html += '<div style="font-size:12px; font-weight:600; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px;">Alerts Page</div>';
+        alerts.forEach(a => {
+          const sevColor = a.severity === 'high' ? 'var(--sophos-red)' : a.severity === 'medium' ? 'var(--sophos-orange)' : '#6b7280';
+          const desc = (a.description || '').replace(/\{\{customerName\}\}/g, cn).replace(/\{\{customerDomain\}\}/g, cn.toLowerCase().replace(/\s+/g, '') + '.com');
+          html += `<div style="padding:10px 12px; border-left:3px solid ${sevColor}; background:#fafbfc; margin-bottom:4px; border-radius:0 4px 4px 0;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:10px; font-weight:700; color:${sevColor}; text-transform:uppercase;">${a.severity || 'medium'}</span>
+              <span style="font-size:10px; color:var(--text-muted);">${a.location || ''}</span>
+            </div>
+            <div style="font-size:13px; margin-top:2px;">${desc}</div>
+          </div>`;
+        });
+        html += '</div>';
+      }
+
+      // Cases preview
+      if (cases.length) {
+        html += '<div style="margin-bottom: 16px;">';
+        html += '<div style="font-size:12px; font-weight:600; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px;">Cases Page</div>';
+        cases.forEach(c => {
+          const name = (c.name || '').replace(/\{\{customerName\}\}/g, cn);
+          const mdrBadge = c.managedBy === 'mtr' ? '<span style="background:#dbeafe; color:#1e40af; font-size:9px; font-weight:700; padding:1px 6px; border-radius:3px; margin-left:6px;">MDR</span>' : '';
+          const mitre = c.initialDetection?.mitreAttacks?.map(m => m.tactic?.name || m.id).join(' → ') || '';
+          html += `<div style="padding:10px 12px; background:#fafbfc; margin-bottom:4px; border-radius:4px; border:1px solid #eee;">
+            <div style="font-size:14px; font-weight:600;">${name}${mdrBadge}</div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">
+              Status: <strong>${c.status || 'investigating'}</strong>
+              ${c.detectionCount ? ` · ${c.detectionCount} detections` : ''}
+              ${mitre ? ` · MITRE: ${mitre}` : ''}
+            </div>
+          </div>`;
+        });
+        html += '</div>';
+      }
+
+      // Timed events notice
+      if (s.timedEvents?.length) {
+        html += `<div style="padding:8px 12px; background:#ede9fe; border-radius:4px; font-size:12px; color:#5b21b6;">
+          ⏰ ${s.timedEvents.length} timed event(s) will fire during the demo (${s.timedEvents.map(t => t.delaySeconds + 's').join(', ')})
+        </div>`;
+      }
+
+      html += '</div>';
+      preview.innerHTML = html;
     }
 
     /* ── Industry Presets ── */
@@ -947,14 +1049,201 @@
       URL.revokeObjectURL(a.href);
     });
 
-    /* ── Reset script when new scenario is generated ── */
+    /* ── Reset all panels when new scenario is generated ── */
     const _origShowResult = showResult;
     showResult = function(s) {
       generatedScript = null;
+      generatedBattle = null;
+      generatedReport = null;
       scriptPanel.style.display = 'none';
       scriptOut.textContent = '';
+      document.getElementById('battlePanel').style.display = 'none';
+      document.getElementById('battleOut').textContent = '';
+      document.getElementById('reportPanel').style.display = 'none';
+      document.getElementById('reportOut').textContent = '';
       _origShowResult(s);
     };
+
+    /* ── Battle Card Generation (#6) ── */
+    const battleBtn = document.getElementById('battleBtn');
+    const battlePanel = document.getElementById('battlePanel');
+    const battleOut = document.getElementById('battleOut');
+    let generatedBattle = null;
+
+    battleBtn.addEventListener('click', async () => {
+      if (!generated) return;
+      if (generatedBattle) {
+        battlePanel.style.display = battlePanel.style.display === 'none' ? 'block' : 'none';
+        return;
+      }
+
+      const competitor = document.getElementById('competitor').value;
+      if (!competitor) {
+        alert('Select a competitor in the Demo Focus section first.');
+        return;
+      }
+
+      battleBtn.disabled = true;
+      battleBtn.textContent = '⏳ Generating…';
+      battlePanel.style.display = 'block';
+      battleOut.textContent = `Generating battle card vs ${competitor}… (takes 10-15 seconds)`;
+
+      try {
+        const resp = await fetch('/api/battle-card', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ scenario: generated, competitor }),
+        });
+        const data = await resp.json();
+        if (!data.ok) throw new Error(data.error);
+        generatedBattle = data.battleCard;
+        battleOut.textContent = generatedBattle;
+        battlePanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (ex) {
+        battleOut.textContent = '❌ Error: ' + ex.message;
+      } finally {
+        battleBtn.disabled = false;
+        battleBtn.textContent = '⚔️ Battle Card';
+      }
+    });
+
+    document.getElementById('copyBattle').addEventListener('click', () => {
+      if (!generatedBattle) return;
+      navigator.clipboard.writeText(generatedBattle);
+      const b = document.getElementById('copyBattle');
+      b.textContent = '✅ Copied!'; setTimeout(() => b.textContent = '📋 Copy', 2000);
+    });
+
+    document.getElementById('dlBattle').addEventListener('click', () => {
+      if (!generatedBattle) return;
+      const comp = document.getElementById('competitor').value || 'competitor';
+      const blob = new Blob([generatedBattle], { type: 'text/markdown' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `battle-card-vs-${comp.toLowerCase().replace(/\s+/g, '-')}.md`;
+      a.click(); URL.revokeObjectURL(a.href);
+    });
+
+    /* ── Post-Demo Follow-Up Report (#7) ── */
+    const reportBtn = document.getElementById('reportBtn');
+    const reportPanel = document.getElementById('reportPanel');
+    const reportOut = document.getElementById('reportOut');
+    let generatedReport = null;
+
+    reportBtn.addEventListener('click', async () => {
+      if (!generated) return;
+      if (generatedReport) {
+        reportPanel.style.display = reportPanel.style.display === 'none' ? 'block' : 'none';
+        return;
+      }
+
+      reportBtn.disabled = true;
+      reportBtn.textContent = '⏳ Generating…';
+      reportPanel.style.display = 'block';
+      reportOut.textContent = 'Generating follow-up email… (takes 10-15 seconds)';
+
+      try {
+        const resp = await fetch('/api/post-demo-report', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            scenario: generated,
+            prospectName: document.getElementById('customerName').value,
+          }),
+        });
+        const data = await resp.json();
+        if (!data.ok) throw new Error(data.error);
+        generatedReport = data.report;
+        reportOut.textContent = generatedReport;
+        reportPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (ex) {
+        reportOut.textContent = '❌ Error: ' + ex.message;
+      } finally {
+        reportBtn.disabled = false;
+        reportBtn.textContent = '📧 Follow-Up';
+      }
+    });
+
+    document.getElementById('copyReport').addEventListener('click', () => {
+      if (!generatedReport) return;
+      navigator.clipboard.writeText(generatedReport);
+      const b = document.getElementById('copyReport');
+      b.textContent = '✅ Copied!'; setTimeout(() => b.textContent = '📋 Copy', 2000);
+    });
+
+    document.getElementById('dlReport').addEventListener('click', () => {
+      if (!generatedReport) return;
+      const name = (generated?.customer?.name || 'prospect').replace(/\s+/g, '-').toLowerCase();
+      const blob = new Blob([generatedReport], { type: 'text/markdown' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `follow-up-${name}.md`;
+      a.click(); URL.revokeObjectURL(a.href);
+    });
+
+    /* ── Prospect Enrichment (#12) ── */
+    document.getElementById('enrichBtn').addEventListener('click', async () => {
+      const name = document.getElementById('customerName').value;
+      if (!name) { alert('Enter a company name first'); return; }
+
+      const btn = document.getElementById('enrichBtn');
+      btn.disabled = true;
+      btn.textContent = '⏳ Enriching…';
+
+      try {
+        const resp = await fetch('/api/enrich-prospect', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ companyName: name }),
+        });
+        const data = await resp.json();
+        if (!data.ok) throw new Error(data.error);
+
+        const e = data.enrichment;
+        // Auto-fill form fields
+        if (e.industry) {
+          const sel = document.getElementById('industry');
+          for (const opt of sel.options) {
+            if (opt.value === e.industry) { sel.value = e.industry; sel.dispatchEvent(new Event('change')); break; }
+          }
+        }
+        if (e.estimatedEndpoints) document.getElementById('endpointCount').value = e.estimatedEndpoints;
+        if (e.estimatedServers) document.getElementById('serverCount').value = e.estimatedServers;
+        if (e.suggestedScenario) {
+          const card = document.querySelector(`.sc-card[data-val="${e.suggestedScenario}"]`);
+          if (card) card.click();
+        }
+
+        // Show enrichment summary
+        const hint = document.getElementById('enrichHint') || (() => {
+          const d = document.createElement('div');
+          d.id = 'enrichHint';
+          d.className = 'hint';
+          d.style.marginTop = '8px';
+          document.getElementById('customerName').parentElement.appendChild(d);
+          return d;
+        })();
+        const parts = [];
+        if (e.headquarters) parts.push(e.headquarters);
+        if (e.estimatedEmployees) parts.push(`~${e.estimatedEmployees.toLocaleString()} employees`);
+        if (e.compliance?.length) parts.push(e.compliance.join(', '));
+        if (e.demoAngle) parts.push(`<br><em>${e.demoAngle}</em>`);
+        hint.innerHTML = `🔍 ${parts.join(' · ')}`;
+        hint.style.display = 'block';
+
+        // Fill story with demo angle if empty
+        const story = document.getElementById('storyDescription');
+        if (!story.value && e.demoAngle) {
+          story.value = e.demoAngle;
+        }
+
+      } catch (ex) {
+        alert('Enrichment failed: ' + ex.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '🔍 Enrich';
+      }
+    });
   </script>
 
 </body>
