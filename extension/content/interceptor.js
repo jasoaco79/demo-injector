@@ -1298,6 +1298,9 @@
     domObserver = new MutationObserver(() => {
       if (!demoState.enabled || !activeScenario) return;
 
+      // Dashboard widget injection (TAC Dashboard, Device Exposure)
+      injectDashboardWidgets();
+
       const path = window.location.pathname;
       const isDevicePage = path.includes('/devices/computers') || path.includes('/devices/servers');
       if (!isDevicePage) {
@@ -1344,6 +1347,231 @@
       subtree: true,
       characterData: true,
     });
+  }
+
+  // ─── Dashboard Widget DOM Injection ────────────────────────────────
+  // The TAC Dashboard and Device Exposure pages use v2 widgets that load
+  // data through the dashboard-manager micro-frontend. We can't intercept
+  // the widget data pipeline, so we inject content into the DOM after render.
+
+  let widgetOverridesApplied = {};
+
+  function injectDashboardWidgets() {
+    if (!demoState.enabled || !activeScenario) return;
+
+    const path = window.location.pathname;
+    const isTACDashboard = path.includes('dashboard_v2/tac') || (path.includes('threat-analysis-center') && path.includes('dashboard'));
+    const isDeviceExposure = path.includes('device-exposure');
+    if (!isTACDashboard && !isDeviceExposure) {
+      widgetOverridesApplied = {};
+      return;
+    }
+
+    const s = activeScenario;
+    const cn = demoState.customerName || s.customer?.name || 'Demo Customer';
+
+    // Find all widget containers with "No data available"
+    const widgets = document.querySelectorAll('.react-widget-container');
+    for (const widget of widgets) {
+      const titleEl = widget.querySelector('[data-testid="sophosTitle"]');
+      if (!titleEl) continue;
+      const title = titleEl.textContent.trim();
+
+      // Skip if already overridden
+      if (widgetOverridesApplied[title]) continue;
+
+      const noDataEl = widget.querySelector('.no-data');
+      if (!noDataEl) continue;
+
+      // Find the content container (parent of no-data)
+      const contentArea = noDataEl.parentElement;
+      if (!contentArea) continue;
+
+      const cases = s.cases?.items || [];
+      const alerts = s.alerts?.items || [];
+      const detections = s.detections?.items || [];
+      const endpointCount = demoState.endpointCount || s.customer?.endpointCount || 2500;
+
+      let injectedHTML = null;
+
+      // ── TAC Dashboard Widgets ──
+      if (title === 'Total cases') {
+        const highCount = cases.filter(c => c.initialDetection?.severity >= 7).length;
+        const medCount = cases.filter(c => c.initialDetection?.severity >= 4 && c.initialDetection?.severity < 7).length;
+        const lowCount = cases.length - highCount - medCount;
+        injectedHTML = buildDonutWidget([
+          { label: 'High', value: highCount, color: '#d43f3f' },
+          { label: 'Medium', value: medCount, color: '#e87722' },
+          { label: 'Low', value: lowCount, color: '#d4a017' },
+        ], cases.length);
+      }
+
+      else if (title === 'Total cases count') {
+        const statusCounts = {};
+        for (const c of cases) {
+          const status = c.status || 'new';
+          statusCounts[status] = (statusCounts[status] || 0) + 1;
+        }
+        const bars = Object.entries(statusCounts).map(([label, value]) => ({
+          label: label.charAt(0).toUpperCase() + label.slice(1),
+          value,
+          color: label === 'containment' ? '#d43f3f' : label === 'investigating' ? '#e87722' : label === 'resolved' ? '#1a8754' : label === 'closed' ? '#7e8da0' : '#2006f7',
+        }));
+        injectedHTML = buildBarWidget(bars, 'Cases by Status');
+      }
+
+      else if (title === 'Recent cases') {
+        injectedHTML = buildTableWidget(
+          ['Case Name', 'Severity', 'Status', 'Created'],
+          cases.slice(0, 5).map(c => [
+            (c.name || '').replace(/\{\{customerName\}\}/g, cn).substring(0, 50),
+            c.initialDetection?.severity >= 7 ? '🔴 High' : c.initialDetection?.severity >= 4 ? '🟡 Medium' : '🟢 Low',
+            (c.status || 'new').charAt(0).toUpperCase() + (c.status || 'new').slice(1),
+            c.createdAt ? formatRelativeTime(c.createdAt) : '—',
+          ])
+        );
+      }
+
+      else if (title.includes('Total detections') || title.includes('detections')) {
+        const highDets = detections.filter(d => (d.severity || d.classificationSeverity) >= 7).length;
+        const medDets = detections.filter(d => { const sev = d.severity || d.classificationSeverity || 0; return sev >= 4 && sev < 7; }).length;
+        const lowDets = detections.length - highDets - medDets;
+        injectedHTML = buildDonutWidget([
+          { label: 'High', value: highDets || detections.length, color: '#d43f3f' },
+          { label: 'Medium', value: medDets, color: '#e87722' },
+          { label: 'Low', value: lowDets, color: '#d4a017' },
+        ], detections.length);
+      }
+
+      // ── Device Exposure Widgets ──
+      else if (title.includes('Days since last OS update')) {
+        const over30 = Math.floor(endpointCount * 0.12);
+        const over90 = Math.floor(endpointCount * 0.05);
+        const over180 = Math.floor(endpointCount * 0.02);
+        const over365 = Math.floor(endpointCount * 0.01);
+        injectedHTML = buildDonutWidget([
+          { label: 'Over 30 days', value: over30, color: '#d4a017' },
+          { label: 'Over 90 days', value: over90, color: '#e87722' },
+          { label: 'Over 180 days', value: over180, color: '#d45a22' },
+          { label: 'Over 365 days', value: over365, color: '#d43f3f' },
+        ], over30 + over90 + over180 + over365);
+      }
+
+      else if (title.includes('OS updates') && title.includes('Breakdown')) {
+        injectedHTML = buildBarWidget([
+          { label: 'Windows 11', value: Math.floor(endpointCount * 0.45), color: '#2006f7' },
+          { label: 'Windows 10', value: Math.floor(endpointCount * 0.35), color: '#4a7cf7' },
+          { label: 'macOS', value: Math.floor(endpointCount * 0.12), color: '#7e8da0' },
+          { label: 'Windows Server', value: Math.floor(endpointCount * 0.06), color: '#1a8754' },
+          { label: 'Linux', value: Math.floor(endpointCount * 0.02), color: '#d4a017' },
+        ], 'Devices by OS');
+      }
+
+      else if (title.includes('Top devices') || title.includes('last update')) {
+        const hostnames = s.detections?.items?.map(d => d.device?.hostname).filter(Boolean) || ['DESKTOP-FIN042', 'SRV-FS01', 'LAPTOP-MKT007'];
+        injectedHTML = buildTableWidget(
+          ['Device', 'OS', 'Last Update', 'Days Overdue'],
+          hostnames.slice(0, 5).map((h, i) => [
+            h,
+            i % 3 === 0 ? 'Windows 11' : i % 3 === 1 ? 'Windows 10' : 'Windows Server 2022',
+            Math.floor(45 + Math.random() * 300) + ' days ago',
+            String(Math.floor(15 + Math.random() * 200)),
+          ])
+        );
+      }
+
+      // Generic fallback for any other "No data" widget
+      else {
+        continue; // Don't inject into unknown widgets
+      }
+
+      if (injectedHTML) {
+        contentArea.innerHTML = injectedHTML;
+        widgetOverridesApplied[title] = true;
+        interceptedCount++;
+        console.log('[Sophos Demo] 📊 Dashboard widget injected:', title);
+      }
+    }
+  }
+
+  function formatRelativeTime(ts) {
+    if (typeof ts === 'string' && ts.match(/^-\d+(m|h|d)$/)) {
+      return ts.replace('-', '').replace('m', ' min ago').replace('h', ' hours ago').replace('d', ' days ago');
+    }
+    try {
+      const diff = Date.now() - new Date(ts).getTime();
+      if (diff < 3600000) return Math.floor(diff / 60000) + ' min ago';
+      if (diff < 86400000) return Math.floor(diff / 3600000) + ' hours ago';
+      return Math.floor(diff / 86400000) + ' days ago';
+    } catch { return '—'; }
+  }
+
+  function buildDonutWidget(segments, total) {
+    const size = 140;
+    const cx = size / 2, cy = size / 2, r = 50, strokeWidth = 20;
+    const circumference = 2 * Math.PI * r;
+    let offset = 0;
+
+    const arcs = segments.filter(s => s.value > 0).map(seg => {
+      const pct = total > 0 ? seg.value / total : 0;
+      const dash = pct * circumference;
+      const gap = circumference - dash;
+      const arc = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${seg.color}" stroke-width="${strokeWidth}" stroke-dasharray="${dash} ${gap}" stroke-dashoffset="${-offset}" transform="rotate(-90 ${cx} ${cy})" />`;
+      offset += dash;
+      return arc;
+    });
+
+    const legend = segments.map(s =>
+      `<div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#4a5b6e;">
+        <span style="width:10px;height:10px;border-radius:50%;background:${s.color};flex-shrink:0;"></span>
+        <span style="font-weight:600;color:#1c2b3a;">${s.value}</span> ${s.label}
+      </div>`
+    ).join('');
+
+    return `<div style="display:flex;align-items:center;justify-content:center;gap:32px;padding:16px;">
+      <div style="position:relative;">
+        <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+          <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#e8ebef" stroke-width="${strokeWidth}" />
+          ${arcs.join('')}
+        </svg>
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;">
+          <div style="font-size:24px;font-weight:700;color:#1c2b3a;">${total}</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;">${legend}</div>
+    </div>`;
+  }
+
+  function buildBarWidget(bars, subtitle) {
+    const maxVal = Math.max(...bars.map(b => b.value), 1);
+    const barRows = bars.map(b =>
+      `<div style="display:flex;align-items:center;gap:10px;font-size:13px;">
+        <span style="width:100px;text-align:right;color:#4a5b6e;flex-shrink:0;">${b.label}</span>
+        <div style="flex:1;height:22px;background:#f0f2f5;border-radius:4px;overflow:hidden;">
+          <div style="width:${(b.value / maxVal * 100).toFixed(1)}%;height:100%;background:${b.color};border-radius:4px;min-width:2px;"></div>
+        </div>
+        <span style="width:40px;font-weight:600;color:#1c2b3a;">${b.value}</span>
+      </div>`
+    ).join('');
+
+    return `<div style="padding:16px;">
+      ${subtitle ? `<div style="font-size:12px;color:#7e8da0;margin-bottom:12px;">${subtitle}</div>` : ''}
+      <div style="display:flex;flex-direction:column;gap:8px;">${barRows}</div>
+    </div>`;
+  }
+
+  function buildTableWidget(headers, rows) {
+    const headerCells = headers.map(h => `<th style="text-align:left;padding:8px 12px;font-size:12px;font-weight:600;color:#7e8da0;text-transform:uppercase;letter-spacing:0.04em;border-bottom:1px solid #e8ebef;">${h}</th>`).join('');
+    const bodyRows = rows.map(row =>
+      `<tr>${row.map(cell => `<td style="padding:8px 12px;font-size:13px;color:#1c2b3a;border-bottom:1px solid #f0f2f5;">${cell}</td>`).join('')}</tr>`
+    ).join('');
+
+    return `<div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;">
+        <thead><tr>${headerCells}</tr></thead>
+        <tbody>${bodyRows}</tbody>
+      </table>
+    </div>`;
   }
 
   // Start observer when DOM is ready
