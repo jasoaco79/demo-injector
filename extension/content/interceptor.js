@@ -1089,11 +1089,13 @@
       
       if (!isReadPost) {
         console.log(`[Sophos Demo] 🛡️ Blocked ${method} ${url.split('?')[0].slice(-60)}`);
-        return new Response(JSON.stringify({ success: true, id: uuid() }), {
+        const blockedResp = new Response(JSON.stringify({ success: true, id: uuid() }), {
           status: 200,
           statusText: 'OK',
           headers: { 'Content-Type': 'application/json' },
         });
+        Object.defineProperty(blockedResp, 'url', { value: url });
+        return blockedResp;
       }
     }
 
@@ -1105,8 +1107,37 @@
         return response;
       }
 
+      // Only clone/modify responses for URLs we actually intercept
+      // This prevents corrupting unrelated API responses
+      const shouldIntercept = url.includes('/alerts') ||
+        url.includes('/cases/') ||
+        url.includes('/detections') ||
+        url.includes('/stac/') ||
+        url.includes('/xdr-actions/') ||
+        url.includes('/billing/account') ||
+        url.includes('/users/current') ||
+        url.includes('/endpoint') ||
+        url.includes('/account-health') ||
+        url.includes('/email') ||
+        url.includes('/ews-query') ||
+        url.includes('/reports/') ||
+        url.includes('/sessions/current') ||
+        url.includes('/audit') ||
+        url.includes('/live-discover') ||
+        url.includes('/xdr-query') ||
+        url.includes('/osquery') ||
+        url.includes('/servers') ||
+        url.includes('/user-devices') ||
+        url.includes('/mobile-admin') ||
+        url.includes('/web-statistics');
+
+      if (!shouldIntercept) {
+        return response;
+      }
+
       const cloned = response.clone();
       let text = await cloned.text();
+      let originalText = text;
 
       text = globalReplace(text);
 
@@ -1114,14 +1145,24 @@
       try { data = JSON.parse(text); } catch { return response; }
 
       const modified = modifyResponse(url, method.toUpperCase(), data);
-
       const modifiedText = JSON.stringify(modified);
-      return new Response(modifiedText, {
+
+      // If nothing was modified, return the original response to preserve all properties
+      if (modifiedText === originalText && text === originalText) {
+        return response;
+      }
+
+      // Build new response preserving all original properties
+      const newResp = new Response(modifiedText, {
         status: response.status,
         statusText: response.statusText,
         headers: response.headers,
       });
+      // Preserve response URL (new Response() drops it)
+      Object.defineProperty(newResp, 'url', { value: response.url });
+      return newResp;
     } catch (err) {
+      console.error('[Sophos Demo] Fetch error:', err);
       return originalFetch.apply(this, args);
     }
   };
