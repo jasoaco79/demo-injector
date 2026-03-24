@@ -432,7 +432,33 @@
     }
   }
 
+  // URLs we actually have interceptors for — skip everything else
+  function shouldInterceptUrl(url) {
+    return url.includes('/alerts') ||
+      url.includes('/cases/') ||
+      url.includes('/detections') ||
+      url.includes('/stac/') ||
+      url.includes('/xdr-actions/') ||
+      url.includes('/billing/account') ||
+      url.includes('/users/current') ||
+      url.includes('/endpoint') ||
+      url.includes('/account-health') ||
+      url.includes('/email') ||
+      url.includes('/ews-query') ||
+      url.includes('/reports/') ||
+      url.includes('/sessions/current') ||
+      url.includes('/audit') ||
+      url.includes('/live-discover') ||
+      url.includes('/xdr-query') ||
+      url.includes('/osquery') ||
+      url.includes('/servers') ||
+      url.includes('/user-devices') ||
+      url.includes('/mobile-admin') ||
+      url.includes('/web-statistics');
+  }
+
   function _modifyResponse(url, method, data) {
+    if (data == null) return data;
     const s = activeScenario;
     const cn = demoState.customerName || s.customer?.name || 'Demo Customer';
 
@@ -1107,31 +1133,7 @@
         return response;
       }
 
-      // Only clone/modify responses for URLs we actually intercept
-      // This prevents corrupting unrelated API responses
-      const shouldIntercept = url.includes('/alerts') ||
-        url.includes('/cases/') ||
-        url.includes('/detections') ||
-        url.includes('/stac/') ||
-        url.includes('/xdr-actions/') ||
-        url.includes('/billing/account') ||
-        url.includes('/users/current') ||
-        url.includes('/endpoint') ||
-        url.includes('/account-health') ||
-        url.includes('/email') ||
-        url.includes('/ews-query') ||
-        url.includes('/reports/') ||
-        url.includes('/sessions/current') ||
-        url.includes('/audit') ||
-        url.includes('/live-discover') ||
-        url.includes('/xdr-query') ||
-        url.includes('/osquery') ||
-        url.includes('/servers') ||
-        url.includes('/user-devices') ||
-        url.includes('/mobile-admin') ||
-        url.includes('/web-statistics');
-
-      if (!shouldIntercept) {
+      if (!shouldInterceptUrl(url)) {
         return response;
       }
 
@@ -1183,9 +1185,18 @@
       const original = super.response;
       if (!demoState.enabled || !this._demoUrl) return original;
       if (!this._demoUrl.includes('sophos.com') && !this._demoUrl.includes('sophosapis.com')) return original;
+      if (!shouldInterceptUrl(this._demoUrl)) {
+        // Log unhandled for debugging, but don't touch the response
+        try {
+          const size = typeof original === 'string' ? original.length : JSON.stringify(original)?.length || 0;
+          console.log(`[Sophos Demo] 🔍 Unhandled: ${this._demoMethod} ${this._demoUrl.replace(/https?:\/\/[^/]+/, '').split('?')[0]} (${size} bytes)`);
+        } catch {}
+        return original;
+      }
 
       try {
         const text = typeof original === 'string' ? original : JSON.stringify(original);
+        if (!text) return original;
         const replaced = globalReplace(text);
         let data;
         try { data = JSON.parse(replaced); } catch { return original; }
@@ -1200,8 +1211,10 @@
       const original = super.responseText;
       if (!demoState.enabled || !this._demoUrl) return original;
       if (!this._demoUrl.includes('sophos.com') && !this._demoUrl.includes('sophosapis.com')) return original;
+      if (!shouldInterceptUrl(this._demoUrl)) return original;
 
       try {
+        if (!original) return original;
         const replaced = globalReplace(original);
         let data;
         try { data = JSON.parse(replaced); } catch { return original; }
