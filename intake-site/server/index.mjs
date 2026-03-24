@@ -100,7 +100,6 @@ function isPublicPath(url) {
 // ─── Load Schema + Examples ──────────────────────────────────────────
 const SCHEMA_MD = readFileSync(join(__dirname, '../../extension/scenarios/SCHEMA.md'), 'utf8');
 const RANSOMWARE_EXAMPLE = readFileSync(join(__dirname, '../../extension/scenarios/ransomware.json'), 'utf8');
-const XDR_EXAMPLE = readFileSync(join(__dirname, '../../extension/scenarios/xdr.json'), 'utf8');
 
 // ─── System Prompts ──────────────────────────────────────────────────
 const SCENARIO_SYSTEM_PROMPT = `You are a Sophos Central demo scenario generator for Sales Engineers.
@@ -124,11 +123,8 @@ Your job: take demo requirements from an SE and produce a valid scenario JSON fi
 
 ${SCHEMA_MD}
 
-## EXAMPLE: RANSOMWARE SCENARIO
+## EXAMPLE SCENARIO (use this as a structural reference)
 ${RANSOMWARE_EXAMPLE}
-
-## EXAMPLE: XDR INVESTIGATION SCENARIO
-${XDR_EXAMPLE}
 
 ## INDUSTRY-SPECIFIC GUIDANCE
 
@@ -568,7 +564,73 @@ const server = createServer(async (req, res) => {
     return;
   }
 
-  // API: Generate scenario
+  // API: Generate scenario (streaming with progress via SSE)
+  if (req.method === 'POST' && req.url === '/api/generate-stream') {
+    let body = '';
+    req.on('data', (chunk) => { body += chunk; });
+    req.on('end', async () => {
+      try {
+        const formData = JSON.parse(body);
+        console.log(`🎯 Streaming scenario: ${formData.scenarioType} for "${formData.customerName}" (${formData.industry})`);
+
+        const userPrompt = buildUserPrompt(formData);
+
+        // SSE headers
+        res.writeHead(200, {
+          'Content-Type': 'text/event-stream',
+          'Cache-Control': 'no-cache',
+          'Connection': 'keep-alive',
+          'Access-Control-Allow-Origin': req.headers.origin || '*',
+          'Access-Control-Allow-Credentials': 'true',
+        });
+
+        res.write(`data: ${JSON.stringify({ type: 'progress', status: 'Generating scenario with AI…', pct: 5 })}\n\n`);
+
+        let fullText = '';
+        let chunkCount = 0;
+        for await (const chunk of generateStream(SCENARIO_SYSTEM_PROMPT, userPrompt)) {
+          fullText += chunk;
+          chunkCount++;
+          // Estimate progress based on expected output size (~8000-15000 chars)
+          const estPct = Math.min(90, Math.floor(5 + (fullText.length / 12000) * 85));
+          if (chunkCount % 5 === 0) {
+            res.write(`data: ${JSON.stringify({ type: 'progress', status: 'Writing scenario JSON…', pct: estPct, chars: fullText.length })}\n\n`);
+          }
+        }
+
+        res.write(`data: ${JSON.stringify({ type: 'progress', status: 'Parsing and validating…', pct: 92 })}\n\n`);
+
+        // Extract JSON from response
+        let json = fullText.trim();
+        if (json.startsWith('```')) {
+          json = json.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '');
+        }
+
+        const scenario = JSON.parse(json);
+        if (!scenario.id) scenario.id = 'custom-' + Date.now();
+        if (!scenario.version) scenario.version = 1;
+        if (!scenario.createdAt) scenario.createdAt = new Date().toISOString();
+
+        res.write(`data: ${JSON.stringify({ type: 'progress', status: 'Scenario ready!', pct: 100 })}\n\n`);
+        res.write(`data: ${JSON.stringify({ type: 'done', scenario })}\n\n`);
+        res.end();
+
+        console.log(`✅ Streamed: ${scenario.name || scenario.id} (${scenario.alerts?.items?.length || 0} alerts, ${scenario.cases?.items?.length || 0} cases, ${fullText.length} chars)`);
+      } catch (err) {
+        console.error('❌ Stream generation error:', err.message);
+        if (!res.headersSent) {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ ok: false, error: err.message }));
+        } else {
+          res.write(`data: ${JSON.stringify({ type: 'error', error: err.message })}\n\n`);
+          res.end();
+        }
+      }
+    });
+    return;
+  }
+
+  // API: Generate scenario (non-streaming fallback)
   if (req.method === 'POST' && req.url === '/api/generate') {
     let body = '';
     req.on('data', (chunk) => { body += chunk; });
