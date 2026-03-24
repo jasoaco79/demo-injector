@@ -1,0 +1,114 @@
+{
+  "id": "supply-chain-default",
+  "name": "Supply Chain Attack",
+  "description": "Compromised software update from a trusted vendor deploys backdoor across multiple endpoints. Sophos detects anomalous behavior from the legitimate application.",
+  "version": 1,
+  "createdAt": "2026-03-23T00:00:00Z",
+  "customer": { "name": "Contoso Healthcare", "industry": "healthcare", "endpointCount": 2500, "serverCount": 186 },
+  "alerts": {
+    "mode": "prepend",
+    "items": [
+      {
+        "product": "endpoint", "threat": "Backdoor/Agent-BJQ", "threat_cleanable": false,
+        "created_at": "-2h", "severity": "high", "actionable": true, "category": "runtime_detections",
+        "when": "-2h", "allowedActions": ["ACKNOWLEDGE"], "location": "Multiple (23 endpoints)",
+        "type": "Event::Endpoint::CoreDetection::SuspiciousActivity",
+        "source": null, "data": { "created_at": "-2h", "endpoint_type": "computer", "endpoint_platform": "windows" },
+        "description": "Supply chain compromise detected: Trusted vendor application 'HealthSync Pro v4.2.1' update package contains embedded backdoor. 23 endpoints received the malicious update. Sophos blocked execution on all devices.",
+        "info": "Vendor: MedTech Solutions. Update distributed via legitimate update channel."
+      },
+      {
+        "product": "endpoint", "threat": null, "threat_cleanable": null,
+        "created_at": "-90m", "severity": "high", "actionable": true, "category": "runtime_detections",
+        "when": "-90m", "allowedActions": ["ACKNOWLEDGE"], "location": "SRV-APP02",
+        "type": "Event::Endpoint::CoreDetection::SuspiciousActivity",
+        "source": null, "data": { "created_at": "-90m", "endpoint_type": "server", "endpoint_platform": "windows" },
+        "description": "Anomalous behavior from HealthSync Pro on SRV-APP02: legitimate process spawning PowerShell with encoded commands. Adaptive Attack Protection activated — enhanced monitoring enabled.",
+        "info": "HealthSync Pro has never spawned PowerShell in the past 90 days"
+      },
+      {
+        "product": "endpoint", "threat": "Troj/Agent-BJQ", "threat_cleanable": true,
+        "created_at": "-60m", "severity": "medium", "actionable": true, "category": "malware",
+        "when": "-60m", "allowedActions": ["CLEAN", "ACKNOWLEDGE"], "location": "DESKTOP-RX003",
+        "type": "Event::Endpoint::Threat::Detected",
+        "source": null, "data": { "created_at": "-60m", "endpoint_type": "computer", "endpoint_platform": "windows" },
+        "description": "Backdoor component extracted from HealthSync Pro update on DESKTOP-RX003. File: C:\\Program Files\\HealthSync\\update_helper.dll (signed with revoked certificate). Quarantined.",
+        "info": "DLL sideloading via legitimate application — signed with stolen certificate"
+      }
+    ],
+    "summaryDelta": { "high": 2, "medium": 1, "low": 0 }
+  },
+  "cases": {
+    "mode": "prepend",
+    "items": [{
+      "type": "investigation",
+      "name": "Supply Chain Compromise — HealthSync Pro (23 endpoints affected)",
+      "managedBy": "self", "createdAt": "-2h", "createdBy": { "name": "Auto-generated" }, "updatedAt": "-30m", "status": "investigating",
+      "initialDetection": {
+        "severity": 9, "type": "Threat", "detectionRule": "WIN-EXE-SUPPLY-CHAIN-ANOMALY-1",
+        "mitreAttacks": [
+          { "tactic": { "id": "TA0001", "name": "Initial Access", "techniques": [{ "id": "T1195.002", "name": "Compromise Software Supply Chain" }] } },
+          { "tactic": { "id": "TA0002", "name": "Execution", "techniques": [{ "id": "T1059.001", "name": "PowerShell" }] } },
+          { "tactic": { "id": "TA0003", "name": "Persistence", "techniques": [{ "id": "T1574.002", "name": "DLL Side-Loading" }] } },
+          { "tactic": { "id": "TA0005", "name": "Defense Evasion", "techniques": [{ "id": "T1553.002", "name": "Code Signing" }] } }
+        ],
+        "time": "-2h", "sensor": { "type": "endpoint", "source": "Sophos Endpoint" }
+      },
+      "assignee": { "name": "SOC Analyst" },
+      "overview": "Supply chain attack via compromised vendor update:\n\n• Vendor: MedTech Solutions (HealthSync Pro)\n• Malicious update: v4.2.1 distributed at 10:15 PM via legitimate update server\n• 23 endpoints received the update\n• Backdoor component (update_helper.dll) signed with revoked certificate\n• Sophos detected anomalous PowerShell spawning from the trusted application\n• All 23 endpoints protected — backdoor blocked before execution\n\nRecommended: Contact vendor, block update server at firewall, roll back to v4.1.9.",
+      "detectionCount": 23, "escalated": true
+    }]
+  },
+  "detections": {
+    "mode": "prepend",
+    "items": [
+      {
+        "detectionCreatedAt": "-2h", "connectorGeneratedAt": "-2h",
+        "connector": { "id": "SophosSensorID", "type": "endpoint", "vendor": "Sophos", "version": "SED Driver 4.2.1" },
+        "device": { "type": "server", "hostname": "SRV-APP02" },
+        "rawData": {
+          "meta_hostname": "SRV-APP02", "meta_ip_address": "192.168.1.202", "meta_os_name": "Microsoft Windows Server 2022",
+          "meta_username": "SYSTEM",
+          "cmdline": "\"C:\\Program Files\\HealthSync\\HealthSyncPro.exe\" /update /silent",
+          "path": "C:\\Program Files\\HealthSync\\HealthSyncPro.exe", "parent_name": "services.exe"
+        },
+        "risk": 9, "category": "Threat", "classificationRule": "WIN-EXE-SUPPLY-CHAIN-ANOMALY-1",
+        "ruleDescription": "Trusted application spawned suspicious child process — potential supply chain compromise",
+        "mitreAttacks": [{ "tactic": { "id": "TA0001", "name": "Initial Access", "techniques": [{ "id": "T1195.002", "name": "Compromise Software Supply Chain" }] } }],
+        "attackType": "Supply Chain", "severity": 9,
+        "detectionAttack": { "name": "Supply Chain Compromise" }, "detectionLicenses": ["XDR"],
+        "geolocation": {}, "intelixFileReputation": { "score": 85, "label": "Suspicious" },
+        "detectionType": "Threat", "suppressed": false, "caseDescription": "Compromised vendor update"
+      }
+    ]
+  },
+  "billing": { "overrideName": "{{customerName}}", "overrideAlias": "{{customerName}}" },
+  "user": { "overrideCompany": "{{customerName}}", "overrideAlias": "{{customerName}}" },
+  "healthScore": { "override": 82 },
+  "auditLogs": {
+    "mode": "prepend",
+    "items": [
+      { "timestamp": "-90m", "type": "admin_action", "category": "firewall", "action": "Vendor update server blocked", "actor": "SOC Analyst", "actorType": "admin", "target": "update.healthsync.medtechsolutions.com", "targetType": "network", "result": "success", "description": "Blocked outbound traffic to HealthSync update server pending vendor investigation." },
+      { "timestamp": "-60m", "type": "admin_action", "category": "endpoint", "action": "Application rollback initiated", "actor": "SOC Analyst", "actorType": "admin", "target": "23 endpoints", "targetType": "endpoint", "result": "success", "description": "HealthSync Pro rolled back from v4.2.1 to v4.1.9 across all 23 affected endpoints." },
+      { "timestamp": "-30m", "type": "system_event", "category": "endpoint", "action": "Threat cleanup", "actor": "Sophos Endpoint", "actorType": "system", "target": "23 endpoints", "targetType": "endpoint", "result": "success", "description": "Malicious component update_helper.dll quarantined on all 23 endpoints. No persistence mechanisms found." }
+    ]
+  },
+  "liveDiscover": {
+    "queryResults": {
+      "id": "auto", "status": "completed",
+      "query": "SELECT name, path, sha256, signer FROM programs WHERE name LIKE '%HealthSync%' OR path LIKE '%HealthSync%'",
+      "queryName": "Supply Chain — HealthSync Installation Audit",
+      "startedAt": "-1h", "completedAt": "-1h", "endpointsQueried": 50, "endpointsResponded": 48, "totalResults": 3,
+      "columns": [ { "name": "name", "type": "TEXT" }, { "name": "version", "type": "TEXT" }, { "name": "signer", "type": "TEXT" }, { "name": "endpoint_hostname", "type": "TEXT" } ],
+      "rows": [
+        ["HealthSync Pro", "4.2.1 (COMPROMISED)", "MedTech Solutions (REVOKED CERT)", "SRV-APP02"],
+        ["HealthSync Pro", "4.2.1 (COMPROMISED)", "MedTech Solutions (REVOKED CERT)", "DESKTOP-RX003"],
+        ["HealthSync Pro", "4.1.9 (CLEAN)", "MedTech Solutions (VALID)", "DESKTOP-NRS012"]
+      ]
+    }
+  },
+  "endpointReport": {
+    "overrideTotal": "{{endpointCount}}",
+    "overrideSummary": { "total": "{{endpointCount}}", "active": "{{endpointCount * 0.89}}", "unprotected": 0, "inactive": "{{endpointCount * 0.04}}", "dormant": "{{endpointCount * 0.07}}" }
+  }
+}

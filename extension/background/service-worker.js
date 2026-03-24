@@ -8,7 +8,7 @@
  */
 
 // ─── Built-in Scenario Registry ──────────────────────────────────────
-const BUILTIN_SCENARIOS = ['ransomware', 'healthy', 'phishing', 'xdr'];
+const BUILTIN_SCENARIOS = ['ransomware', 'mdr', 'phishing', 'xdr', 'insider', 'supply-chain', 'bec', 'zero-day', 'healthy'];
 
 // Cache of loaded scenario data
 let scenarioCache = {};

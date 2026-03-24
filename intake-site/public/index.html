@@ -656,6 +656,7 @@
         <div class="result-title">✅ Scenario Ready</div>
         <div class="result-btns">
           <button class="btn-sm" id="copyBtn">📋 Copy JSON</button>
+          <button class="btn-sm" id="scriptBtn">📝 Demo Script</button>
           <button class="btn-sm primary" id="dlBtn">💾 Download .json</button>
         </div>
       </div>
@@ -668,6 +669,20 @@
           <span id="fsize"></span>
         </div>
         <div class="json-body"><pre id="jsonOut"></pre></div>
+      </div>
+
+      <!-- Demo Script Panel -->
+      <div id="scriptPanel" style="display:none; margin-top: 12px;">
+        <div class="result-bar">
+          <div class="result-title">📝 Demo Talk Track</div>
+          <div class="result-btns">
+            <button class="btn-sm" id="copyScript">📋 Copy</button>
+            <button class="btn-sm primary" id="dlScript">💾 Download .md</button>
+          </div>
+        </div>
+        <div class="json-wrap" style="background:#fff; border: 1px solid var(--border);">
+          <div class="json-body" style="max-height: 600px;"><pre id="scriptOut" style="color: var(--text); white-space: pre-wrap; font-family: 'Source Sans 3', sans-serif; font-size: 14px; line-height: 1.7;"></pre></div>
+        </div>
       </div>
     </div>
   </div>
@@ -776,6 +791,51 @@
       panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
+    /* ── Industry Presets ── */
+    const industrySelect = document.getElementById('industry');
+    const deptInput = document.getElementById('department');
+
+    // Preset hints shown below the industry dropdown
+    const presetHint = document.createElement('div');
+    presetHint.className = 'hint';
+    presetHint.style.display = 'none';
+    industrySelect.parentElement.appendChild(presetHint);
+
+    industrySelect.addEventListener('change', async () => {
+      const industry = industrySelect.value;
+      if (!industry || industry === 'other') {
+        presetHint.style.display = 'none';
+        return;
+      }
+
+      try {
+        const resp = await fetch(`/api/presets/${industry}`);
+        if (!resp.ok) return;
+        const preset = await resp.json();
+        if (!preset || !preset.hostnames) return;
+
+        // Store preset globally for scenario generation enrichment
+        window._currentPreset = preset;
+
+        // Auto-fill department if empty
+        if (!deptInput.value && preset.departments?.length) {
+          deptInput.value = preset.departments[0];
+        }
+
+        // Show preset summary as a hint
+        const complianceTag = preset.compliance ? `<strong>${preset.compliance}</strong> · ` : '';
+        const hostSample = preset.hostnames.slice(0, 3).join(', ');
+        presetHint.innerHTML = `${complianceTag}Hostnames: ${hostSample}… · ${preset.dataTypes}`;
+        presetHint.style.display = 'block';
+
+      } catch (e) {
+        console.warn('Preset fetch failed:', e);
+      }
+    });
+
+    // Fire on load if industry already selected
+    if (industrySelect.value) industrySelect.dispatchEvent(new Event('change'));
+
     /* ── Copy / Download ── */
     document.getElementById('copyBtn').addEventListener('click', () => {
       if (!generated) return;
@@ -794,6 +854,77 @@
       a.click();
       URL.revokeObjectURL(a.href);
     });
+
+    /* ── Demo Script Generation ── */
+    const scriptBtn = document.getElementById('scriptBtn');
+    const scriptPanel = document.getElementById('scriptPanel');
+    const scriptOut = document.getElementById('scriptOut');
+    let generatedScript = null;
+
+    scriptBtn.addEventListener('click', async () => {
+      if (!generated) return;
+
+      // If already generated, just toggle visibility
+      if (generatedScript) {
+        scriptPanel.style.display = scriptPanel.style.display === 'none' ? 'block' : 'none';
+        return;
+      }
+
+      // Show loading state
+      scriptBtn.disabled = true;
+      scriptBtn.textContent = '⏳ Generating…';
+      scriptPanel.style.display = 'block';
+      scriptOut.textContent = 'Generating demo talk track… (takes 10-15 seconds)';
+
+      try {
+        const resp = await fetch('/api/demo-script', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ scenario: generated }),
+        });
+        const data = await resp.json();
+        if (!data.ok) throw new Error(data.error || 'Script generation failed');
+
+        generatedScript = data.script;
+        scriptOut.textContent = generatedScript;
+        scriptPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (ex) {
+        scriptOut.textContent = '❌ Error: ' + ex.message;
+      } finally {
+        scriptBtn.disabled = false;
+        scriptBtn.textContent = '📝 Demo Script';
+      }
+    });
+
+    // Copy demo script
+    document.getElementById('copyScript').addEventListener('click', () => {
+      if (!generatedScript) return;
+      navigator.clipboard.writeText(generatedScript);
+      const b = document.getElementById('copyScript');
+      b.textContent = '✅ Copied!';
+      setTimeout(() => b.textContent = '📋 Copy', 2000);
+    });
+
+    // Download demo script as .md
+    document.getElementById('dlScript').addEventListener('click', () => {
+      if (!generatedScript) return;
+      const name = (generated?.customer?.name || generated?.id || 'demo').replace(/\s+/g, '-').toLowerCase();
+      const blob = new Blob([generatedScript], { type: 'text/markdown' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `demo-script-${name}.md`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+
+    /* ── Reset script when new scenario is generated ── */
+    const _origShowResult = showResult;
+    showResult = function(s) {
+      generatedScript = null;
+      scriptPanel.style.display = 'none';
+      scriptOut.textContent = '';
+      _origShowResult(s);
+    };
   </script>
 
 </body>

@@ -232,6 +232,81 @@ const server = createServer(async (req, res) => {
     return;
   }
 
+  // API: Industry presets (#2)
+  if (req.method === 'GET' && req.url.startsWith('/api/presets/')) {
+    const industry = req.url.split('/api/presets/')[1];
+    const presets = {
+      healthcare: { hostnames: ['HIS-SRV', 'PACS-WKS', 'RX-STATION', 'EHR-DB', 'NURSING-WKS', 'LAB-PC', 'RADIOLOGY-WKS', 'BILLING-WS'], departments: ['Radiology', 'Nursing', 'Billing', 'Pharmacy', 'IT', 'Administration', 'Lab'], users: ['sarah.chen', 'dr.patel', 'nurse.williams', 'admin.garcia', 'rx.johnson'], compliance: 'HIPAA', dataTypes: 'patient records, PHI, medical imaging' },
+      finance: { hostnames: ['TRADE-WKS', 'ATM-SRV', 'SWIFT-GW', 'RISK-DB', 'COMPLY-WKS', 'TREASURY-PC', 'AUDIT-WKS'], departments: ['Trading', 'Treasury', 'Compliance', 'Risk', 'IT', 'Operations'], users: ['trader.smith', 'cfo.martinez', 'risk.analyst', 'auditor.jones'], compliance: 'PCI-DSS, SOX', dataTypes: 'financial transactions, customer PII, trading data' },
+      manufacturing: { hostnames: ['HMI-STATION', 'PLC-GW', 'MES-SRV', 'SCADA-WKS', 'ERP-DB', 'QC-STATION', 'ENGR-WKS'], departments: ['Production', 'Engineering', 'Quality', 'IT', 'Maintenance', 'Supply Chain'], users: ['eng.kumar', 'ops.wilson', 'maint.brown', 'qa.davis'], compliance: 'IEC 62443, NIST', dataTypes: 'production data, SCADA systems, trade secrets' },
+      education: { hostnames: ['LAB-PC', 'ADMIN-WKS', 'SIS-SRV', 'LMS-DB', 'LIBRARY-WKS', 'RESEARCH-WKS'], departments: ['IT Services', 'Administration', 'Research', 'Library', 'Student Affairs'], users: ['prof.anderson', 'admin.taylor', 'student.kim', 'it.harris'], compliance: 'FERPA', dataTypes: 'student records, research data, financial aid' },
+      retail: { hostnames: ['POS-TERM', 'ECOM-SRV', 'INV-WKS', 'WMS-DB', 'STORE-MGR', 'LOYALTY-SRV'], departments: ['Point of Sale', 'E-Commerce', 'Inventory', 'IT', 'Marketing'], users: ['store.mgr', 'ecom.admin', 'inv.specialist'], compliance: 'PCI-DSS', dataTypes: 'customer payment data, loyalty information, inventory' },
+      government: { hostnames: ['SECURE-WKS', 'AGENCY-SRV', 'CAC-TERM', 'RECORDS-DB', 'PORTAL-SRV'], departments: ['IT Security', 'Records', 'Public Affairs', 'Legal', 'Administration'], users: ['analyst.doe', 'admin.smith', 'dir.johnson'], compliance: 'FISMA, FedRAMP', dataTypes: 'citizen PII, classified documents, case files' },
+      legal: { hostnames: ['ATTY-WKS', 'DOC-SRV', 'CASE-MGR', 'EDISCOVERY-DB', 'BILLING-WKS'], departments: ['Litigation', 'Corporate', 'Compliance', 'IT', 'Billing'], users: ['atty.williams', 'paralegal.jones', 'partner.chen'], compliance: 'attorney-client privilege', dataTypes: 'case files, client communications, billing records' },
+    };
+    const preset = presets[industry] || {};
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(preset));
+    return;
+  }
+
+  // API: Generate demo script (#3)
+  if (req.method === 'POST' && req.url === '/api/demo-script') {
+    let body = '';
+    req.on('data', (chunk) => { body += chunk; });
+    req.on('end', async () => {
+      try {
+        const { scenario } = JSON.parse(body);
+        console.log(`📝 Generating demo script for: ${scenario.name || scenario.id}`);
+
+        const model = modelRegistry.find('anthropic', 'claude-sonnet-4-20250514');
+        if (!model) throw new Error('Model not found');
+
+        const loader = new DefaultResourceLoader({
+          systemPromptOverride: () => `You are a Sophos SE demo coach. Generate a step-by-step demo talk track for a Sophos Central demo.
+
+Output a markdown document with:
+1. A 1-paragraph OPENING HOOK (what to say to set the scene)
+2. Step-by-step WALKTHROUGH: each step has a PAGE to navigate to, WHAT TO SHOW, and WHAT TO SAY (exact words in quotes)
+3. Key TALKING POINTS to hit at each step
+4. OBJECTION HANDLERS for common prospect questions
+5. A CLOSING statement
+
+Make the talk track natural and conversational — not robotic. The SE should sound like they're telling a story, not reading a script.
+Keep it practical — 15-20 minutes total demo time.
+Reference specific data from the scenario (alert names, hostnames, MITRE techniques, health scores).`,
+        });
+        await loader.reload();
+
+        const { session } = await createAgentSession({
+          model, thinkingLevel: 'off', authStorage, modelRegistry,
+          tools: [], sessionManager: SessionManager.inMemory(),
+          settingsManager: SettingsManager.inMemory({ compaction: { enabled: false } }),
+          resourceLoader: loader,
+        });
+
+        let responseText = '';
+        session.subscribe((event) => {
+          if (event.type === 'message_update' && event.assistantMessageEvent.type === 'text_delta') {
+            responseText += event.assistantMessageEvent.delta;
+          }
+        });
+
+        await session.prompt(`Generate a demo talk track for this scenario:\n\n${JSON.stringify(scenario, null, 2)}`);
+        session.dispose();
+
+        console.log(`✅ Demo script generated (${responseText.length} chars)`);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, script: responseText }));
+      } catch (err) {
+        console.error('❌ Demo script error:', err.message);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: false, error: err.message }));
+      }
+    });
+    return;
+  }
+
   // API: Generate scenario
   if (req.method === 'POST' && req.url === '/api/generate') {
     let body = '';

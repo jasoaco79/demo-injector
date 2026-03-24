@@ -1232,6 +1232,103 @@
   }, 500);
 
 
+  // ─── Floating Demo Badge (#10) ─────────────────────────────────────
+  // Shows a small indicator so the SE always knows demo mode is active
+
+  let badgeElement = null;
+
+  function updateBadge() {
+    if (demoState.enabled && activeScenario) {
+      if (!badgeElement) {
+        badgeElement = document.createElement('div');
+        badgeElement.id = '__sophos_demo_badge__';
+        Object.assign(badgeElement.style, {
+          position: 'fixed', bottom: '12px', right: '12px', zIndex: '999999',
+          background: '#003366', color: 'white', padding: '6px 14px',
+          borderRadius: '20px', fontSize: '12px', fontFamily: 'system-ui, sans-serif',
+          fontWeight: '500', boxShadow: '0 2px 12px rgba(0,0,0,0.25)',
+          cursor: 'pointer', userSelect: 'none', transition: 'opacity 0.2s',
+          display: 'flex', alignItems: 'center', gap: '8px',
+        });
+        badgeElement.addEventListener('click', () => {
+          badgeElement.style.opacity = badgeElement.style.opacity === '0.15' ? '1' : '0.15';
+        });
+        (document.body || document.documentElement).appendChild(badgeElement);
+      }
+      const scenarioName = activeScenario.name || demoState.scenario || 'Demo';
+      const cn = demoState.customerName || 'Demo';
+      badgeElement.innerHTML = `<span style="opacity:0.7">🎯</span> <span>${scenarioName}</span> <span style="opacity:0.5">|</span> <span>${cn}</span> <span style="opacity:0.5">|</span> <span style="color:#4ade80">${interceptedCount} intercepted</span>`;
+      badgeElement.style.display = 'flex';
+    } else if (badgeElement) {
+      badgeElement.style.display = 'none';
+    }
+  }
+
+  // Update badge every 3 seconds
+  setInterval(updateBadge, 3000);
+
+
+  // ─── Timed Events (#6) ────────────────────────────────────────────
+  // Injects new alerts/detections at scheduled times during the demo
+  // for dramatic "something just happened!" moments
+
+  let timedEventsStarted = false;
+
+  function startTimedEvents() {
+    if (timedEventsStarted || !activeScenario?.timedEvents) return;
+    timedEventsStarted = true;
+
+    for (const event of activeScenario.timedEvents) {
+      const delayMs = (event.delaySeconds || 30) * 1000;
+
+      setTimeout(() => {
+        if (!demoState.enabled) return;
+
+        // Inject the event by modifying the active scenario
+        if (event.alert && activeScenario.alerts?.items) {
+          // Resolve timestamps to NOW for the timed event
+          const alert = { ...event.alert };
+          alert.created_at = new Date().toISOString();
+          alert.when = new Date().toISOString();
+          if (!alert.javaUUID) alert.javaUUID = uuid();
+          if (!alert.id) alert.id = uuid();
+          if (!alert.event_service_event_id) alert.event_service_event_id = uuid();
+          if (!alert.customer_id) alert.customer_id = uuid();
+          if (alert.data && !alert.data.endpoint_id) alert.data.endpoint_id = uuid();
+
+          activeScenario.alerts.items.unshift(alert);
+
+          // Update summary counts
+          if (activeScenario.alerts.summaryDelta) {
+            const sev = alert.severity || 'medium';
+            activeScenario.alerts.summaryDelta[sev] = (activeScenario.alerts.summaryDelta[sev] || 0) + 1;
+          }
+
+          console.log(`[Sophos Demo] ⏰ Timed event fired: ${alert.description?.slice(0, 80)}`);
+          
+          // Flash the badge
+          if (badgeElement) {
+            badgeElement.style.background = '#dc2626';
+            setTimeout(() => { if (badgeElement) badgeElement.style.background = '#003366'; }, 3000);
+          }
+        }
+      }, delayMs);
+    }
+
+    console.log(`[Sophos Demo] ⏰ ${activeScenario.timedEvents.length} timed event(s) scheduled`);
+  }
+
+  // Start timed events when scenario loads
+  window.addEventListener('__sophos_demo_state_update__', () => {
+    if (demoState.enabled && activeScenario?.timedEvents && !timedEventsStarted) {
+      startTimedEvents();
+    }
+    if (!demoState.enabled) {
+      timedEventsStarted = false;
+    }
+  });
+
+
   console.log('[Sophos Demo] 🎯 Interceptor loaded (JSON scenario engine). Waiting for activation...');
 
 })();

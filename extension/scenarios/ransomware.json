@@ -359,6 +359,44 @@
       ]
     }
   },
+  "timedEvents": [
+    {
+      "delaySeconds": 45,
+      "alert": {
+        "product": "endpoint",
+        "threat": "Troj/Ransom-GKL",
+        "threat_cleanable": false,
+        "severity": "high",
+        "actionable": true,
+        "category": "runtime_detections",
+        "allowedActions": ["ACKNOWLEDGE"],
+        "location": "LAPTOP-MKT007",
+        "type": "Event::Endpoint::CoreDetection::CryptoGuard",
+        "source": null,
+        "data": { "endpoint_type": "computer", "endpoint_platform": "windows" },
+        "description": "🚨 NEW: CryptoGuard blocked ransomware spreading to LAPTOP-MKT007 (user: mike.jones). Lateral movement from DESKTOP-FIN042 detected. Second endpoint targeted — attack is expanding.",
+        "info": "Ransomware attempting to spread via network shares"
+      }
+    },
+    {
+      "delaySeconds": 90,
+      "alert": {
+        "product": "endpoint",
+        "threat": null,
+        "threat_cleanable": null,
+        "severity": "high",
+        "actionable": false,
+        "category": "policy",
+        "allowedActions": ["ACKNOWLEDGE"],
+        "location": "DESKTOP-FIN042",
+        "type": "Event::Endpoint::DeviceIsolated",
+        "source": null,
+        "data": { "endpoint_type": "computer", "endpoint_platform": "windows" },
+        "description": "🔒 DESKTOP-FIN042 automatically isolated from network by Sophos. Ransomware containment in progress. All network connections terminated.",
+        "info": "Automatic isolation triggered — threat contained"
+      }
+    }
+  ],
   "endpointReport": {
     "overrideTotal": "{{endpointCount}}",
     "overrideSummary": {

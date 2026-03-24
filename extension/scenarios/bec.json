@@ -1,0 +1,110 @@
+{
+  "id": "bec-default",
+  "name": "Business Email Compromise",
+  "description": "CEO impersonation attack targeting CFO with urgent wire transfer request. Sophos Email detects impersonation, endpoint blocks credential harvesting page.",
+  "version": 1,
+  "createdAt": "2026-03-23T00:00:00Z",
+  "customer": { "name": "Contoso Healthcare", "industry": "healthcare", "endpointCount": 2500, "serverCount": 186 },
+  "alerts": {
+    "mode": "prepend",
+    "items": [
+      {
+        "product": "xgemail", "threat": "BEC/Impersonation", "threat_cleanable": false,
+        "created_at": "-20m", "severity": "high", "actionable": true, "category": "malware",
+        "when": "-20m", "allowedActions": ["ACKNOWLEDGE"], "location": "SMTP Gateway",
+        "type": "Event::Email::ImpersonationDetected", "source": null,
+        "data": { "created_at": "-20m", "endpoint_type": "email" },
+        "description": "CEO impersonation detected: Email from 'Robert Chen <r.chen@contoso-healthcare.org>' (spoofed domain) to CFO jennifer.martinez@{{customerDomain}}. Subject: 'URGENT: Wire Transfer Required Today — Confidential'. Sophos Email flagged display name impersonation.",
+        "info": "VIP impersonation — sender domain contoso-healthcare.org is not owned by {{customerName}}"
+      },
+      {
+        "product": "xgemail", "threat": null, "threat_cleanable": null,
+        "created_at": "-15m", "severity": "high", "actionable": true, "category": "malware",
+        "when": "-15m", "allowedActions": ["ACKNOWLEDGE"], "location": "SMTP Gateway",
+        "type": "Event::Email::PhishingDetected", "source": null,
+        "data": { "created_at": "-15m", "endpoint_type": "email" },
+        "description": "Follow-up BEC email detected: 'Robert Chen' sent second email with malicious link disguised as DocuSign document: 'Wire_Authorization_Form.pdf'. URL leads to credential harvesting page mimicking {{customerName}} SSO portal.",
+        "info": "Malicious URL: hxxps://contoso-healthcare-auth[.]com/sso/login"
+      },
+      {
+        "product": "endpoint", "threat": null, "threat_cleanable": null,
+        "created_at": "-10m", "severity": "medium", "actionable": false, "category": "runtime_detections",
+        "when": "-10m", "allowedActions": ["ACKNOWLEDGE"], "location": "DESKTOP-EXEC01",
+        "type": "Event::Endpoint::CoreDetection::SuspiciousUrl", "source": null,
+        "data": { "created_at": "-10m", "endpoint_type": "computer", "endpoint_platform": "windows" },
+        "description": "CFO jennifer.martinez clicked link in BEC email on DESKTOP-EXEC01. Sophos Web Protection blocked navigation to credential harvesting page contoso-healthcare-auth[.]com. No credentials entered.",
+        "info": "Endpoint web filtering prevented credential theft"
+      }
+    ],
+    "summaryDelta": { "high": 2, "medium": 1, "low": 0 }
+  },
+  "cases": {
+    "mode": "prepend",
+    "items": [{
+      "type": "investigation", "name": "Business Email Compromise — CEO Impersonation Targeting CFO",
+      "managedBy": "self", "createdAt": "-20m", "createdBy": { "name": "Auto-generated" }, "updatedAt": "-5m", "status": "investigating",
+      "initialDetection": {
+        "severity": 8, "type": "Threat", "detectionRule": "EMAIL-BEC-VIP-IMPERSONATION-1",
+        "mitreAttacks": [
+          { "tactic": { "id": "TA0001", "name": "Initial Access", "techniques": [{ "id": "T1566.002", "name": "Spearphishing Link" }] } },
+          { "tactic": { "id": "TA0006", "name": "Credential Access", "techniques": [{ "id": "T1556", "name": "Modify Authentication Process" }] } },
+          { "tactic": { "id": "TA0040", "name": "Impact", "techniques": [{ "id": "T1657", "name": "Financial Theft" }] } }
+        ],
+        "time": "-20m", "sensor": { "type": "email", "source": "Sophos Email" }
+      },
+      "assignee": { "name": "SOC Analyst" },
+      "overview": "Business Email Compromise targeting CFO jennifer.martinez:\n\n1. Attacker registered lookalike domain: contoso-healthcare.org\n2. Sent email impersonating CEO Robert Chen requesting urgent $425,000 wire transfer\n3. Follow-up email contained link to fake DocuSign document → credential harvesting page\n4. CFO clicked the link but Sophos Web Protection blocked the page\n\nSophos Email detected: display name impersonation, lookalike domain, malicious URL\nSophos Endpoint: blocked credential harvesting page before any data was entered\n\nNo financial loss. No credentials compromised. Recommend: alert CFO, block lookalike domain at DNS level, enable MFA on financial systems.",
+      "detectionCount": 4, "escalated": true
+    }]
+  },
+  "detections": {
+    "mode": "prepend",
+    "items": [{
+      "detectionCreatedAt": "-20m", "connectorGeneratedAt": "-20m",
+      "connector": { "id": "SophosEmailSensor", "type": "email", "vendor": "Sophos", "version": "Email Gateway 3.8" },
+      "device": { "type": "email_gateway", "hostname": "SMTP-GW01" },
+      "rawData": {
+        "meta_hostname": "SMTP-GW01", "meta_ip_address": "10.0.1.5",
+        "sender": "r.chen@contoso-healthcare.org", "recipient": "jennifer.martinez@{{customerDomain}}",
+        "subject": "URGENT: Wire Transfer Required Today — Confidential",
+        "display_name_match": "Robert Chen (CEO)", "domain_similarity": "0.92"
+      },
+      "risk": 8, "category": "Threat", "classificationRule": "EMAIL-BEC-VIP-IMPERSONATION-1",
+      "ruleDescription": "VIP display name impersonation from lookalike domain — business email compromise",
+      "mitreAttacks": [{ "tactic": { "id": "TA0001", "name": "Initial Access", "techniques": [{ "id": "T1566.002", "name": "Spearphishing Link" }] } }],
+      "attackType": "BEC", "severity": 8, "detectionAttack": { "name": "Business Email Compromise" },
+      "detectionLicenses": ["Email"], "geolocation": {}, "intelixFileReputation": {},
+      "detectionType": "Threat", "suppressed": false, "caseDescription": "CEO impersonation targeting CFO"
+    }]
+  },
+  "billing": { "overrideName": "{{customerName}}", "overrideAlias": "{{customerName}}" },
+  "user": { "overrideCompany": "{{customerName}}", "overrideAlias": "{{customerName}}" },
+  "healthScore": { "override": 93 },
+  "emailHistory": {
+    "messages": {
+      "items": [
+        { "timestamp": "-20m", "direction": "INBOUND", "from": "r.chen@contoso-healthcare.org", "to": "jennifer.martinez@{{customerDomain}}", "subject": "URGENT: Wire Transfer Required Today — Confidential", "status": "DELIVERED", "reason": null, "size": 12400, "attachments": 0, "urls": [], "scanResults": { "spamScore": 45, "phishingScore": 78, "malwareDetected": false, "impersonation": true, "impersonatedUser": "Robert Chen (CEO)", "domainSimilarity": 0.92 }, "postDeliveryAction": "FLAGGED", "postDeliveryReason": "VIP impersonation detected post-delivery" },
+        { "timestamp": "-15m", "direction": "INBOUND", "from": "r.chen@contoso-healthcare.org", "to": "jennifer.martinez@{{customerDomain}}", "subject": "RE: URGENT: Wire Transfer — Authorization Form Attached", "status": "BLOCKED", "reason": "MALICIOUS_URL", "size": 15200, "attachments": 0, "urls": ["https://contoso-healthcare-auth.com/sso/login"], "scanResults": { "spamScore": 52, "phishingScore": 99, "malwareDetected": false, "impersonation": true, "sandboxResult": "MALICIOUS" } }
+      ],
+      "total": 2, "filtered": 2, "pages": { "current": 1, "size": 20, "total": 1, "items": 2 }
+    }
+  },
+  "emailStats": {
+    "override": [
+      { "name": "POTENTIAL_THREATS", "value": 2 }, { "name": "INBOUND_MAILS_SCANNED", "value": 847 },
+      { "name": "IMPERSONATION", "value": 2 }, { "name": "MALICIOUS_URL", "value": 1 },
+      { "name": "SPAM", "value": 34 }, { "name": "LEGITIMATE", "value": 810 }
+    ]
+  },
+  "auditLogs": {
+    "mode": "prepend",
+    "items": [
+      { "timestamp": "-15m", "type": "system_event", "category": "email", "action": "BEC email blocked", "actor": "Sophos Email", "actorType": "system", "target": "SMTP Gateway", "targetType": "service", "result": "blocked", "description": "Second BEC email blocked: malicious URL detected in impersonation email from r.chen@contoso-healthcare.org to CFO." },
+      { "timestamp": "-10m", "type": "system_event", "category": "endpoint", "action": "Credential harvesting blocked", "actor": "Sophos Web Protection", "actorType": "system", "target": "DESKTOP-EXEC01", "targetType": "endpoint", "result": "blocked", "description": "CFO clicked phishing link — Sophos Web Protection blocked credential harvesting page contoso-healthcare-auth[.]com. No credentials entered." }
+    ]
+  },
+  "endpointReport": {
+    "overrideTotal": "{{endpointCount}}",
+    "overrideSummary": { "total": "{{endpointCount}}", "active": "{{endpointCount * 0.93}}", "unprotected": 0, "inactive": "{{endpointCount * 0.02}}", "dormant": "{{endpointCount * 0.05}}" }
+  }
+}
