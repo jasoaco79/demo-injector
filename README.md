@@ -13,6 +13,11 @@ A Chrome extension that injects realistic demo data into the **live Sophos Centr
 - [Built-in Scenarios](#built-in-scenarios)
 - [Custom Scenarios](#custom-scenarios)
 - [AI Scenario Generator](#ai-scenario-generator)
+- [Industry Presets](#industry-presets)
+- [AI Demo Script Generator](#ai-demo-script-generator)
+- [Floating Demo Badge](#floating-demo-badge)
+- [Timed Events](#timed-events)
+- [Scenario Validator](#scenario-validator)
 - [Demo Walkthroughs](#demo-walkthroughs)
 - [Best Practice Tips](#best-practice-tips)
 - [What Gets Overridden](#what-gets-overridden)
@@ -42,6 +47,16 @@ Clicking into a case shows MITRE ATT&CK tactics (TA0002, TA0005, TA0040), impact
 The real Sophos Central dashboard showing actual alert counts and health summary.
 
 ![Dashboard before demo mode](screenshots/dashboard-original.png)
+
+### Extension Popup — Scenario Picker
+The popup UI with scenario selection, customer name, endpoint/server counts, and the on/off toggle.
+
+![Extension popup scenario picker](screenshots/popup-scenario.png)
+
+### Chrome Extensions Page
+Extension loaded in developer mode showing version and permissions.
+
+![Chrome extensions page](screenshots/extensions-page.png)
 
 ### AI Scenario Builder
 The intake website where SEs fill out prospect details and generate custom scenarios with AI. Uses official Sophos branding.
@@ -110,7 +125,7 @@ The extension also includes a **DOM observer** for pages that load data through 
 
 | File | Role |
 |------|------|
-| `interceptor.js` | **The core.** Runs in the page's JavaScript context. Overrides `fetch()` and `XHR`. Contains all interception rules and data generators. |
+| `interceptor.js` | **The core.** Runs in the page's JavaScript context. Overrides `fetch()` and `XHR`. Contains all interception rules, data generators, floating demo badge, and timed events. (~1,300 lines) |
 | `bridge.js` | **The messenger.** Runs in the extension's isolated world. Relays settings from the popup to the interceptor via DOM events. |
 | `service-worker.js` | **The brain.** Manages state in `chrome.storage`. Loads scenario JSON files. Handles import/export. Shows the ON badge. |
 | `popup.html/js` | **The UI.** The popup you see when clicking the extension icon. Scenario picker, customer name input, toggle switch. |
@@ -182,6 +197,7 @@ When you pull new code:
 - Cases page shows an active investigation with MITRE mapping
 - Threat Graphs shows a process tree with the malware kill chain
 - Audit logs show device isolation and cleanup actions
+- A floating demo badge appears in the bottom-right corner showing the active scenario, customer name, and interception count
 - All "Isolate Device" / "Clean" / "Delete" buttons return fake success
 
 **When you're done:**
@@ -191,6 +207,8 @@ When you pull new code:
 ---
 
 ## Built-in Scenarios
+
+The extension ships with **9 built-in scenarios** covering all major demo use cases:
 
 ### 🔴 Ransomware Attack
 **Story:** CryptoLocker ransomware was delivered via phishing email. Sarah Chen in Finance downloaded `invoice_march2026.exe`. CryptoGuard blocked the encryption attempt. Shadow copies were targeted. Tamper Protection stopped the malware from disabling real-time scanning.
@@ -260,6 +278,105 @@ When you pull new code:
 
 ---
 
+### 🛡️ MDR Response
+**Story:** Sophos MDR detected a ransomware attack at 2am, isolated affected hosts within 8 minutes, and delivered a full incident report by morning. The customer slept through the entire thing.
+
+**Best for:** Showing the value of managed detection and response, 24/7 coverage, SLA-level response times, and the "sleep through the night" pitch.
+
+**What you'll see:**
+- 5 alerts across multiple hosts
+- 1 MDR-managed case (`managedBy: "mtr"`) with Sophos MDR Team as assignee
+- 3 detections with command-line telemetry
+- Case timeline showing MDR team actions: triage, isolation, investigation, containment
+- Audit logs with MDR-initiated device isolations and credential resets
+- Health score: 76
+
+**Demo talking points:**
+- "While you were asleep, our MDR team detected this at 2:07 AM"
+- "8 minutes from detection to host isolation — that's our SLA"
+- "Look at this timeline — every action the MDR team took is documented"
+- "By 6 AM they had a full report ready for your security team"
+
+---
+
+### 👤 Insider Threat
+**Story:** Disgruntled employee in IT exfiltrating sensitive data via personal cloud storage. USB activity, large file transfers, and off-hours access detected by XDR.
+
+**Best for:** Showing data loss prevention, user behavior analytics, XDR correlation of non-malware threats.
+
+**What you'll see:**
+- 4 alerts (USB device, cloud upload, off-hours access, large file transfer)
+- 1 investigation case with insider threat indicators
+- 2 detections showing data movement patterns
+- Audit logs: account activity, access patterns
+- Health score: 91 (high — no malware, just policy violations)
+
+**Demo talking points:**
+- "No malware here — this is a trusted employee going rogue"
+- "XDR correlates the USB activity with the cloud upload — it's one story"
+- "Off-hours access from a machine that normally isn't used at 11 PM"
+- "This is why endpoint protection alone isn't enough — you need XDR visibility"
+
+---
+
+### 📧 Business Email Compromise (BEC)
+**Story:** CEO impersonation attack targeting CFO with urgent wire transfer request. Sophos Email detects impersonation, endpoint blocks credential harvesting page.
+
+**Best for:** Showing Sophos Email's impersonation detection, VIP protection, and email + endpoint integration against social engineering.
+
+**What you'll see:**
+- 3 alerts (email impersonation + endpoint web block)
+- 1 investigation case linking the email and endpoint detections
+- 1 detection with email header analysis
+- Email history showing the impersonation chain
+- Health score: 93
+
+**Demo talking points:**
+- "The attacker spoofed the CEO's name — but look at the sending domain"
+- "Sophos Email's impersonation engine flagged this immediately"
+- "Even the credential harvesting page on the endpoint was blocked"
+- "BEC causes more financial damage than ransomware — this is why email security matters"
+
+---
+
+### 🔗 Supply Chain Attack
+**Story:** Compromised software update from a trusted vendor deploys backdoor across multiple endpoints. Sophos detects anomalous behavior from the legitimate application.
+
+**Best for:** Showing behavioral detection, zero-trust, detection of attacks from trusted software sources.
+
+**What you'll see:**
+- 3 alerts across multiple hosts (anomalous behavior from trusted app)
+- 1 investigation case with supply chain indicators
+- 1 detection with behavioral analysis data
+- Health score: 82
+
+**Demo talking points:**
+- "This came from a legitimate vendor update — your firewall would never catch this"
+- "Sophos detected the anomalous behavior: a PDF viewer shouldn't be spawning PowerShell"
+- "Behavioral analysis caught what signatures couldn't — this was a zero-day supply chain compromise"
+- "SolarWinds, MOVEit, 3CX — this is the attack pattern that keeps CISOs up at night"
+
+---
+
+### 🧪 Zero-Day Exploit
+**Story:** Previously unknown vulnerability exploited in the wild. Sophos detects the exploit via behavioral analysis and deep learning — no signature existed yet.
+
+**Best for:** Showing the value of AI/ML detection, behavioral analysis, and protection against unknown threats.
+
+**What you'll see:**
+- 3 alerts with behavioral and deep learning detections
+- 1 investigation case with exploit analysis
+- 2 detections with exploit telemetry
+- Health score: 85
+
+**Demo talking points:**
+- "There was no signature for this — it was discovered today"
+- "Our deep learning model detected the exploit behavior in real-time"
+- "This is why you need behavioral detection, not just signature matching"
+- "By the time the vendor patches this, our customers have been protected for hours"
+
+---
+
 ### 🟢 Healthy Environment
 **Story:** A well-managed environment with zero alerts, high compliance, and all endpoints protected. Shows what a mature Sophos deployment looks like day-to-day.
 
@@ -306,7 +423,7 @@ When you pull new code:
 
 ## AI Scenario Generator
 
-The **Scenario Builder** is a web-based tool that uses AI (Claude via Pi SDK) to generate custom scenario JSON from a simple intake form.
+The **Scenario Builder** is a web-based tool that uses AI (Claude Sonnet 4 via Pi SDK) to generate custom scenario JSON from a simple intake form.
 
 ### Setup
 ```bash
@@ -324,7 +441,7 @@ Opens at `http://localhost:3847`
 4. **Custom Story** — Describe your demo in plain English: *"LockBit came in through phishing to billing. MDR detected it at 2am, isolated hosts, had a report by morning."*
 5. **Demo Focus** — Which products to highlight, talking points, competitor you're up against
 6. Click **Generate Scenario** (~15 seconds)
-7. Preview the result → **Download .json** → Import into extension
+7. Preview the result (summary stats + full JSON) → **Download .json** → Import into extension
 
 ### What the AI Generates
 - Realistic alerts with industry-specific hostnames (HIS-SRV for healthcare, POS-TERM for retail)
@@ -332,9 +449,10 @@ Opens at `http://localhost:3847`
 - Case with investigation timeline
 - Detections with realistic command lines and file paths
 - Threat graph data
+- Case detail with extra activities (MDR actions if applicable)
 - Audit logs matching the story
 - Live Discover query results
-- Email history (for phishing scenarios)
+- Email history (for phishing/BEC scenarios)
 - Appropriate health score
 
 ### Tips for Better Scenarios
@@ -345,17 +463,164 @@ Opens at `http://localhost:3847`
 
 ---
 
+## Industry Presets
+
+When you select an industry in the AI Scenario Generator, the form automatically loads **industry-specific presets** via the `/api/presets/{industry}` endpoint. This provides contextual enrichment:
+
+| Industry | Compliance | Sample Hostnames | Data at Risk |
+|----------|-----------|------------------|--------------|
+| Healthcare | HIPAA | HIS-SRV, PACS-WKS, RX-STATION, EHR-DB | Patient records, PHI, medical imaging |
+| Financial Services | PCI-DSS, SOX | TRADE-WKS, ATM-SRV, SWIFT-GW, RISK-DB | Financial transactions, customer PII, trading data |
+| Manufacturing | IEC 62443, NIST | HMI-STATION, PLC-GW, MES-SRV, SCADA-WKS | Production data, SCADA systems, trade secrets |
+| Education | FERPA | LAB-PC, ADMIN-WKS, SIS-SRV, LMS-DB | Student records, research data, financial aid |
+| Retail | PCI-DSS | POS-TERM, ECOM-SRV, INV-WKS, WMS-DB | Customer payment data, loyalty info, inventory |
+| Government | FISMA, FedRAMP | SECURE-WKS, AGENCY-SRV, CAC-TERM | Citizen PII, classified documents, case files |
+| Legal | Attorney-client privilege | ATTY-WKS, DOC-SRV, CASE-MGR | Case files, client communications, billing records |
+
+**What happens automatically:**
+- **Department field** auto-fills with the most relevant department for that industry
+- **Hint text** appears below the industry dropdown showing compliance framework, sample hostnames, and data types
+- The preset data enriches the AI generation prompt, so hostnames and user accounts match the selected industry
+
+---
+
+## AI Demo Script Generator
+
+After generating a scenario, click **📝 Demo Script** to generate a complete **talk track** for your demo. The script is generated by Claude Sonnet 4 and tailored to the specific scenario data.
+
+### What You Get
+
+A markdown document with:
+1. **Opening Hook** — A one-paragraph scene-setter to start the demo
+2. **Step-by-Step Walkthrough** — Each step includes:
+   - Which **page** to navigate to in Sophos Central
+   - **What to show** (specific UI elements, data points)
+   - **What to say** (exact words in quotes — natural and conversational)
+3. **Talking Points** — Key messages to hit at each step
+4. **Objection Handlers** — Responses to common prospect questions
+5. **Closing Statement** — How to wrap up the demo
+
+### How to Use
+
+1. Generate a scenario first (via the Generate Scenario button)
+2. Click **📝 Demo Script** in the result panel
+3. Wait ~10-15 seconds for generation
+4. Review the talk track in the styled panel
+5. **📋 Copy** to clipboard or **💾 Download .md** for offline use
+
+The script references specific data from your scenario — alert names, hostnames, MITRE techniques, health scores — so it matches exactly what the prospect will see during the demo.
+
+**Tip:** Click the button again to toggle the script panel open/closed. If you generate a new scenario, the script resets and you can generate a fresh one.
+
+---
+
+## Floating Demo Badge
+
+When demo mode is active, a small **floating badge** appears in the bottom-right corner of the Sophos Central page:
+
+```
+🎯 Ransomware Attack | Mercy Hospital | 47 intercepted
+```
+
+The badge shows:
+- **Scenario name** — which scenario is loaded
+- **Customer name** — the company name from popup settings
+- **Intercept count** — how many API responses have been modified (updates every 3 seconds)
+
+**Click the badge** to toggle it between full opacity and nearly invisible (15% opacity) — useful when screen-sharing with a prospect. The badge is only visible to the SE (it's rendered in the browser, not in any screenshot API).
+
+**Important:** The badge is there to remind *you* that demo mode is on. During a real demo, either:
+- Click it to make it nearly invisible before sharing your screen
+- Or position it behind the taskbar / outside the visible area
+
+---
+
+## Timed Events
+
+Scenarios can include **timed events** — alerts or detections that fire at scheduled times during the demo for dramatic "something just happened!" moments.
+
+### How It Works
+
+Add a `timedEvents` array to your scenario JSON:
+
+```json
+{
+  "timedEvents": [
+    {
+      "delaySeconds": 60,
+      "alert": {
+        "severity": "high",
+        "description": "CryptoGuard: Ransomware encryption blocked on DESKTOP-FIN042",
+        "created_at": "now",
+        "category": "malware",
+        "type": "Event::Endpoint::Threat::CryptoGuard",
+        "data": {
+          "endpoint_type": "computer",
+          "endpoint_hostname": "DESKTOP-FIN042"
+        }
+      }
+    }
+  ]
+}
+```
+
+- `delaySeconds` — How long after demo mode activates before the event fires (default: 30)
+- When the event fires, the alert is injected into the active scenario's alert list
+- The **demo badge flashes red** for 3 seconds to catch the SE's attention
+- Summary counts update automatically (so refreshing the alerts page shows the new alert)
+- Console logs `[Sophos Demo] ⏰ Timed event fired: ...`
+
+### Demo Tip
+
+Set a timed event for 60-90 seconds. Start your demo on the Dashboard, talk through the health score, then navigate to Alerts — the new alert appears "live" while the prospect is watching. Very impressive.
+
+---
+
+## Scenario Validator
+
+A Node.js script that validates scenario JSON files against the expected schema:
+
+```bash
+# Validate all scenarios
+node scripts/validate-scenario.mjs --all
+
+# Validate a specific file
+node scripts/validate-scenario.mjs extension/scenarios/ransomware.json
+```
+
+### What It Checks
+
+- **Required fields:** `id`, `name`, `description`, customer block
+- **Alert validation:** severity values (high/medium/low), required fields per alert
+- **Case validation:** status values, managedBy values, MITRE tactic IDs
+- **Detection validation:** required fields, rawData structure
+- **MITRE ATT&CK IDs:** validates against the real tactic ID list (TA0001–TA0043)
+- **Template variables:** checks that `{{...}}` placeholders are valid
+- **Cross-references:** alert/case/detection counts match summary deltas
+
+Output includes ❌ errors (must fix) and ⚠️ warnings (should fix):
+
+```
+Validating 9 scenario(s)...
+✅ ransomware.json — 0 error(s), 0 warning(s)
+✅ phishing.json — 0 error(s), 0 warning(s)
+...
+✅ All scenarios valid
+```
+
+---
+
 ## Demo Walkthroughs
 
 ### MDR Demo (20 minutes)
 
-**Setup:** Use the XDR scenario or generate a custom MDR scenario with `managedBy: "mtr"`.
+**Setup:** Use the MDR Response scenario or generate a custom MDR scenario.
 
-1. **Dashboard** (2 min) — "Here's what the customer sees when they log in. Notice the health score dropped to 84 — something happened."
-2. **Alerts** (3 min) — "Three high-severity alerts across different hosts. This looks like a coordinated attack."
-3. **Cases** (5 min) — "The MDR team already has a case open. Let me click in..." → Show MITRE mapping, impacted entities, detection count.
+1. **Dashboard** (2 min) — "Here's what the customer sees when they log in. Notice the health score dropped to 76 — something happened overnight."
+2. **Alerts** (3 min) — "Five alerts across multiple hosts. This looks like a coordinated attack."
+3. **Cases** (5 min) — "The MDR team already has a case open. Let me click in..." → Show MITRE mapping, impacted entities, detection count. Point out `managedBy: Sophos MDR Team`.
 4. **Case History** (3 min) — "Look at the timeline — MDR responded within 8 minutes. They isolated the affected hosts and are actively investigating."
-5. **Detections** (3 min) — "Here's the raw telemetry. You can see the browser exploit, the lateral movement, the data staging."
+5. **Detections** (3 min) — "Here's the raw telemetry. You can see the command lines, the process trees, the lateral movement."
 6. **Live Discover** (2 min) — "And if we need to hunt further, we can query every endpoint in real-time." → Show pre-populated query results.
 7. **Audit Logs** (2 min) — "Here's the full audit trail — device isolations, credential resets, firewall rules. Everything is documented."
 
@@ -376,7 +641,7 @@ Opens at `http://localhost:3847`
 
 ### Email Security Demo (15 minutes)
 
-**Setup:** Use the Phishing scenario.
+**Setup:** Use the Phishing or BEC scenario.
 
 1. **Dashboard** (2 min) — Show email stats widget. "1,284 emails scanned, 47 threats blocked."
 2. **Alerts** (3 min) — "A targeted phishing campaign hit 47 employees. Our gateway caught all but one."
@@ -387,15 +652,30 @@ Opens at `http://localhost:3847`
 
 ---
 
+### Advanced Threat Demo (20 minutes)
+
+**Setup:** Use the Supply Chain or Zero-Day scenario.
+
+1. **Dashboard** (2 min) — "Health score is 82 — something unusual is happening."
+2. **Alerts** (3 min) — "These alerts are different — they came from behavioral detection, not signatures."
+3. **Cases** (5 min) — Walk through the case. "This came from a trusted vendor update / a previously unknown exploit. No signature existed."
+4. **Detections** (5 min) — Show the behavioral analysis. "A PDF viewer spawning PowerShell. An update service opening network connections to unknown IPs."
+5. **XDR Correlation** (3 min) — "XDR connected these dots across multiple hosts — this isn't just one anomaly, it's a campaign."
+6. **Response** (2 min) — "One-click isolation. Block the C2 channel. Reset compromised credentials."
+
+---
+
 ## Best Practice Tips
 
 ### Before the Demo
 
 1. **Generate a custom scenario** with the prospect's company name, industry, and endpoint count. Generic demos don't impress.
-2. **Test it first.** Load the scenario, toggle on, click through the pages you plan to show. Make sure everything renders.
-3. **Know the story.** Each scenario tells a story. Practice narrating it: "At 2:39 AM, an employee in Billing received a phishing email..."
-4. **Close other Sophos Central tabs.** The extension injects into ALL sophos.com tabs. Having multiple tabs open can cause confusion.
-5. **Disable other extensions** that might interfere (ad blockers, privacy tools).
+2. **Generate a demo script** after the scenario. The AI-generated talk track gives you exact words to say at each step.
+3. **Test it first.** Load the scenario, toggle on, click through the pages you plan to show. Make sure everything renders.
+4. **Know the story.** Each scenario tells a story. Practice narrating it: "At 2:39 AM, an employee in Billing received a phishing email..."
+5. **Close other Sophos Central tabs.** The extension injects into ALL sophos.com tabs. Having multiple tabs open can cause confusion.
+6. **Disable other extensions** that might interfere (ad blockers, privacy tools).
+7. **Click the demo badge** to make it nearly invisible before sharing your screen.
 
 ### During the Demo
 
@@ -404,11 +684,13 @@ Opens at `http://localhost:3847`
 3. **Let the prospect drive.** "What would you want to see next?" If they ask to click something unexpected, it's fine — the extension handles most pages.
 4. **Don't demo the extension itself.** The prospect should think this is real data. Don't open the popup or mention "demo mode."
 5. **If something looks off,** keep moving. Not every page is intercepted. Pivot to another view.
+6. **Watch the demo badge** — the intercept count confirms the extension is working. If it's not incrementing, the page may need a refresh.
 
 ### After the Demo
 
 1. **Toggle off immediately.** Don't risk the prospect seeing the toggle.
 2. **Export the scenario** if the prospect wants a follow-up demo. You can reload it exactly as it was.
+3. **Save the demo script** for future reference or to share with the account team.
 
 ### Things That Look Especially Impressive
 
@@ -417,6 +699,7 @@ Opens at `http://localhost:3847`
 - **Live Discover query results** showing suspicious processes across endpoints
 - **The audit log** showing MDR team actions with timestamps
 - **Company name everywhere** — it's their name on every page
+- **A timed event firing** while the prospect is watching the alerts page
 
 ---
 
@@ -437,6 +720,8 @@ Opens at `http://localhost:3847`
 | **Health Score** | `/account-health-check/v1/scores`, `/v1/account-health-check` | Adjusted per scenario |
 | **Endpoint Count** | `/api/reports/endpoints`, `/api/user-devices`, `/api/servers` | Custom counts in reports and summaries |
 | **Device Summary** | `/cloud-ui-rs/mobile-admin/reports/summary` | Dashboard device count donuts |
+| **Device List** | Any API with `items[]` containing `hostname` + `health_status` + `last_activity` | Heuristic catch-all for device endpoints |
+| **Device Detail** | `/endpoints/{id}`, `/computers/{id}`, `/devices/{id}` | Full device object with OS, health, products |
 | **Web Stats** | `/api/reports/web-statistics` | Dashboard web control widget |
 | **Email Stats** | `/email/v1/statistics/dashboard/widget` | Email security dashboard numbers |
 | **Attacks** | `/ews-query/v1/attacks` | Active attack indicators |
@@ -450,17 +735,23 @@ Opens at `http://localhost:3847`
 
 ## Known Caveats
 
-### What Doesn't Work Yet
+### What's Been Fixed (Previously Known Issues)
 
-1. **Devices → Computers/Servers list page.** The device list is loaded by a micro-frontend through an API we haven't identified yet. The extension overrides count numbers on the dashboard and in reports, and attempts DOM-level overrides on the devices page, but the actual device table may still show your real devices. **Workaround:** During demos, show device counts on the Dashboard or Account Health page instead of the Devices list.
+These items were identified early in development and have since been addressed:
 
-2. **Dashboard widget charts.** The dashboard's visual widgets (donut charts, bar charts) get their data from APIs we intercept, but the specific widget rendering depends on the dashboard micro-frontend. Numbers should update; chart visuals may partially reflect real data. **Workaround:** Focus on the alert list, health score number, and endpoint count rather than chart visuals.
+1. **✅ Devices → Computers/Servers list page.** Fixed with a **heuristic catch-all interceptor** that detects any API response containing `items[]` with `hostname` + `health_status` + `last_activity` fields and replaces them with fake devices via `generateEndpoints()`. Also expanded URL pattern matching and added DOM-level overrides. The device list page now shows fake devices with industry-appropriate hostnames matching your scenario. **Note:** If a future Sophos Central update changes the device list API shape, the heuristic may miss it — fall back to showing device counts on the Dashboard.
 
-3. **Threat Graph deep visualization.** The threat graph interceptor auto-generates process tree data from detections, but the actual Sophos Central threat graph renderer expects a very specific data format. The graph may not render visually even though the data is intercepted. **Workaround:** Describe the process tree verbally while showing the detection details and MITRE mapping.
+2. **✅ Dashboard widget charts.** Fixed — analysis of the 45KB `dashboard-manager` configuration confirmed that dashboard widgets (`alerts_recent`, `xdr_recent_cases`, `ahc_health_summary`, `pov_mdr_case_summary`) fetch their data from APIs we already intercept (alerts, cases, health score, etc.). The dashboard renders correctly with demo data without needing separate widget interception.
 
-4. **Email message detail.** Clicking into a specific email message in the message trace may show incomplete data. The top-level message list and quarantine work. **Workaround:** Stay on the message list view — it shows sender, recipient, subject, status, and scan results.
+3. **✅ Threat Graph visualization.** Fixed with `generateThreatGraph()` which auto-builds process tree graph data from detection telemetry — creates parent→child→network(C2)→file nodes with edges, marks nodes as malicious/suspicious based on risk scores, and extracts C2 IPs from command lines. `generateThreatArtifacts()` builds the corresponding artifact list. Falls back to auto-generation when explicit graph data isn't in the scenario JSON. **Note:** The generated data format may not perfectly match every version of Sophos Central's threat graph renderer — if the visual doesn't render, the detection details and MITRE mapping still display correctly.
 
-5. **Some pages use micro-frontends** that load through mechanisms we can't intercept (not standard fetch/XHR). These pages may show real data even with demo mode on. The Dashboard, Alerts, Cases, Detections, and Account Health pages all work correctly.
+4. **✅ Email message detail.** Fixed — the extension now intercepts `/email/messages` (message search with BLOCKED/QUARANTINED/DELIVERED statuses and scan results), `/email/quarantine` (quarantine list with clawback support), and message detail/trace endpoints. The phishing and BEC scenarios include full email history with realistic sender/recipient data, subjects, and threat verdicts.
+
+### Remaining Limitations
+
+1. **Some pages use micro-frontends** that load through mechanisms we can't intercept (not standard fetch/XHR). These pages may show real data even with demo mode on. The vast majority of pages work correctly: Dashboard, Alerts, Cases, Case Detail, Detections, Threat Graphs, Account Health, Audit Logs, Live Discover, Email History, and Device lists.
+
+2. **Device list edge cases.** The heuristic catch-all works for most device list API patterns, but Sophos Central's micro-frontend architecture means some device views may load through non-standard mechanisms. If the device table shows real data, pivot to the Dashboard or Account Health page which always reflects demo data.
 
 ### What Could Theoretically Go Wrong
 
@@ -495,6 +786,11 @@ Opens at `http://localhost:3847`
 - If you see `[Sophos Demo] 🟢 ENABLED` but no data changes, the interceptor is running but the page hasn't refreshed
 - Try a hard refresh: `Ctrl+Shift+R`
 
+### Demo badge not showing
+- The badge appears after the first state update (when you toggle ON and reload)
+- Check the console for `[Sophos Demo]` messages — the interceptor must be running
+- The badge auto-hides when demo mode is off
+
 ### Tenant name changes but alerts don't show
 - Go to the **Alerts** page (`/manage/alerts`) directly — the dashboard may load alerts differently
 - Check that the scenario has alerts defined (the Healthy scenario has zero alerts by design)
@@ -512,6 +808,16 @@ Opens at `http://localhost:3847`
 - Make sure you've run `npm link @mariozechner/pi-coding-agent` in the intake-site folder
 - Make sure you have a valid Anthropic API key configured in Pi (`~/.pi/agent/auth.json`)
 - The generator uses Pi's OAuth tokens which auto-refresh — if you get auth errors, try running `pi` once to refresh your token
+
+### Demo Script generation fails
+- The scenario must be generated first (the 📝 button uses the generated scenario JSON)
+- If the server is overloaded, wait a few seconds and try again
+- Check the server console for `❌ Demo script error:` messages
+
+### Scenario validation fails
+- Run `node scripts/validate-scenario.mjs extension/scenarios/your-file.json` to see specific errors
+- Common issues: invalid MITRE tactic IDs, missing required fields, wrong severity values
+- Warnings are non-fatal but should be addressed for best results
 
 ### Performance is slow
 - The extension adds minimal overhead — it only intercepts JSON API responses
@@ -549,7 +855,8 @@ Every scenario is a JSON file with these sections:
   "auditLogs": { ... },
   "liveDiscover": { ... },
   "emailHistory": { ... },
-  "emailStats": { ... }
+  "emailStats": { ... },
+  "timedEvents": [ ... ]
 }
 ```
 
@@ -589,8 +896,19 @@ You don't have to fill in every section. The extension auto-generates:
 - **Impacted entities** — from detection device hostnames and IPs
 - **Threat graph** — from detection process/command-line data
 - **Threat artifacts** — from detection file paths and hashes
+- **Device detail** — full device object with OS, IP, MAC, assigned products, health
+- **Device list** — heuristic catch-all for any device-list-shaped API response
 
 For full schema documentation with every field explained, see **[`extension/scenarios/SCHEMA.md`](extension/scenarios/SCHEMA.md)**.
+
+### Validating Your Scenario
+
+After creating or editing a scenario, validate it:
+```bash
+node scripts/validate-scenario.mjs path/to/your-scenario.json
+```
+
+This catches common errors (bad MITRE IDs, missing fields, invalid severity values) before you load it into the extension.
 
 ---
 
@@ -627,6 +945,8 @@ For full schema documentation with every field explained, see **[`extension/scen
 │  │  4. Blocks dangerous writes → fake success            │   │
 │  │  5. DOM observer for micro-frontend pages             │   │
 │  │  6. Global text replacement (tenant name)             │   │
+│  │  7. Floating demo badge (click to toggle opacity)     │   │
+│  │  8. Timed events (delayed alert injection)            │   │
 │  └──────────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -650,30 +970,41 @@ The downside: MAIN world scripts can't access `chrome.*` APIs. That's why we nee
 6. bridge.js receives → dispatches CustomEvent to MAIN world
 7. interceptor.js receives → resolves templates → stores as activeScenario
 8. Next API call: interceptor checks URL → applies modifications → React renders fake data
+9. Demo badge updates every 3s with scenario name + intercept count
+10. Timed events fire at scheduled delays (if defined in scenario)
 ```
 
 ### AI Scenario Generator Architecture
 
 ```
-┌───────────────────────────────┐
-│  Intake Website (:3847)       │
-│                               │
-│  Frontend (index.html)        │
-│  - Intake form                │
-│  - Preview + download         │
-│                               │
-│  Backend (index.mjs)          │
-│  - Pi SDK (OAuth auth)        │
-│  - createAgentSession()       │
-│  - Claude Sonnet 4 generates  │
-│    scenario JSON              │
-│  - System prompt includes:    │
-│    - Full SCHEMA.md           │
-│    - 2 example scenarios      │
-│    - Industry guidance        │
-│    - MITRE ATT&CK reference   │
-│    - Threat actor database    │
-└───────────────────────────────┘
+┌─────────────────────────────────────────────┐
+│  Intake Website (:3847)                     │
+│                                             │
+│  Frontend (index.html)                      │
+│  - Intake form                              │
+│  - Industry presets (auto-enrichment)       │
+│  - Preview + download                       │
+│  - Demo script generator + viewer           │
+│                                             │
+│  Backend (server/index.mjs)                 │
+│  - Pi SDK (OAuth auth)                      │
+│  - createAgentSession()                     │
+│                                             │
+│  API Endpoints:                             │
+│  ├─ POST /api/generate                      │
+│  │  Claude Sonnet 4 generates scenario JSON │
+│  │  System prompt: SCHEMA.md + 2 examples   │
+│  │  + industry guidance + MITRE reference   │
+│  │  + threat actor database                 │
+│  │                                          │
+│  ├─ GET /api/presets/{industry}             │
+│  │  Returns hostnames, departments, users,  │
+│  │  compliance framework, data types        │
+│  │                                          │
+│  └─ POST /api/demo-script                   │
+│     Claude Sonnet 4 generates talk track    │
+│     from scenario JSON. Returns markdown.   │
+└─────────────────────────────────────────────┘
 ```
 
 The intake site uses **Pi SDK's `AuthStorage`** for OAuth token management. Pi handles token refresh automatically — no raw API keys needed. Each scenario generation creates a lightweight in-memory `AgentSession`, sends one prompt, collects the response, and disposes the session.
@@ -709,13 +1040,8 @@ Publish as an unlisted extension. Share the direct install link. Auto-updates wh
 ## Roadmap
 
 ### Planned
-- [ ] Identify and intercept the exact Devices list page API (waiting on API documentation)
-- [ ] Dashboard widget chart visual overrides
-- [ ] Threat graph renderer compatibility (match exact Sophos data format)
-- [ ] Device detail page interception
 - [ ] Scenario library — shared repository of scenarios by industry/use case
 - [ ] Scenario "remix" — take an existing scenario and tweak for a new customer
-- [ ] Timed events — "alert fires 30 seconds into the demo" for live drama
 
 ### Ideas
 - [ ] Sophos Firewall dashboard integration
@@ -723,6 +1049,25 @@ Publish as an unlisted extension. Share the direct install link. Auto-updates wh
 - [ ] Multi-tenant scenario (show multiple customer tenants)
 - [ ] Automatic scenario generation from prospect's real environment data
 - [ ] Browser extension for Firefox
+- [ ] Streaming demo script generation (show text as it generates)
+- [ ] Scenario sharing via URL (base64-encoded JSON in query string)
+
+### Completed
+- [x] 9 built-in scenarios (ransomware, phishing, XDR, MDR, insider, BEC, supply chain, zero-day, healthy)
+- [x] JSON-driven scenario architecture with import/export
+- [x] AI Scenario Generator with Claude Sonnet 4
+- [x] Industry presets with compliance frameworks and contextual data
+- [x] AI Demo Script Generator (talk track from scenario)
+- [x] Floating demo badge with intercept counter
+- [x] Timed events for live demo drama
+- [x] Scenario JSON validator
+- [x] Device list heuristic catch-all interceptor + `generateEndpoints()`
+- [x] Device detail page interception + `generateDeviceDetail()`
+- [x] Dashboard widget interception (widgets use already-intercepted APIs)
+- [x] Threat graph auto-generation from detection telemetry (`generateThreatGraph()` + `generateThreatArtifacts()`)
+- [x] Email message history + quarantine interceptors (message search, quarantine, message detail/trace)
+- [x] Case detail + activities + MITRE + entities auto-generation
+- [x] Audit logs + Live Discover interceptors
 
 ---
 
@@ -733,7 +1078,8 @@ sophos-demo/
 ├── extension/                    Chrome extension
 │   ├── manifest.json             Manifest V3 config
 │   ├── content/
-│   │   ├── interceptor.js        Core: fetch/XHR override + all interception rules (1200+ lines)
+│   │   ├── interceptor.js        Core: fetch/XHR override, interception rules,
+│   │   │                         demo badge, timed events (~1,300 lines)
 │   │   └── bridge.js             State relay: ISOLATED → MAIN world
 │   ├── background/
 │   │   └── service-worker.js     State management + scenario loading
@@ -745,15 +1091,25 @@ sophos-demo/
 │   │   ├── ransomware.json       Built-in: CryptoLocker attack
 │   │   ├── phishing.json         Built-in: Email phishing campaign
 │   │   ├── xdr.json              Built-in: Multi-stage XDR investigation
+│   │   ├── mdr.json              Built-in: MDR overnight response
+│   │   ├── insider.json          Built-in: Insider threat / data exfiltration
+│   │   ├── bec.json              Built-in: Business email compromise
+│   │   ├── supply-chain.json     Built-in: Supply chain attack
+│   │   ├── zero-day.json         Built-in: Zero-day exploit detection
 │   │   └── healthy.json          Built-in: Clean environment
-│   └── icons/                    Extension icons (16/48/128px)
+│   └── icons/                    Extension icons (16/48/128px) + Sophos logo
 │
 ├── intake-site/                  AI Scenario Generator
 │   ├── server/index.mjs          Node.js server + Pi SDK backend
-│   ├── public/index.html         Intake form frontend
+│   │                             APIs: /api/generate, /api/presets/{industry},
+│   │                             /api/demo-script
+│   ├── public/
+│   │   ├── index.html            Intake form + industry presets + demo script UI
+│   │   └── sophos-logo.svg       Official Sophos logo
 │   └── package.json
 │
 ├── scripts/                      Development utilities
+│   ├── validate-scenario.mjs     Schema validator for scenario JSON files
 │   ├── discover-apis.mjs         Initial API discovery via CDP
 │   ├── capture-full-responses.mjs Full response body capture
 │   ├── deep-capture-auto.mjs     Automated multi-page capture
@@ -764,6 +1120,15 @@ sophos-demo/
 │   ├── full-responses.json       Complete API response bodies
 │   ├── deep-capture-full.json    Case detail + threat graph captures
 │   └── *.png                     Page screenshots
+│
+├── screenshots/                  README screenshots
+│   ├── cases-list-demo.png       Cases page with demo mode active
+│   ├── case-detail.png           Case detail with MITRE mapping
+│   ├── dashboard-original.png    Original dashboard for comparison
+│   ├── popup-scenario.png        Extension popup UI
+│   ├── extensions-page.png       Chrome extensions management page
+│   ├── intake-form.png           AI scenario builder form
+│   └── intake-full.png           Full intake form with all sections
 │
 ├── README.md                     This file
 ├── GAMEPLAN.md                   Original build plan + architecture decisions
