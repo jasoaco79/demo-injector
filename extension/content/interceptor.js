@@ -1125,6 +1125,27 @@
       }
     }
 
+    // Pre-fetch interception: if URL is for a fake case, return synthetic data
+    // without hitting the real API (which would 404 for our fake case IDs)
+    if (activeScenario && url.includes('/cases/v1/cases/')) {
+      const caseIdMatch = url.match(/\/cases\/v1\/cases\/([\w-]+)/);
+      if (caseIdMatch) {
+        const fakeCaseId = caseIdMatch[1];
+        const fakeCase = activeScenario.cases?.items?.find(c => c.id === fakeCaseId);
+        if (fakeCase) {
+          // This is a request for our fake case — synthesize a response without calling the real API
+          const syntheticData = modifyResponse(url, method.toUpperCase(), {});
+          const syntheticResp = new Response(JSON.stringify(syntheticData), {
+            status: 200,
+            statusText: 'OK',
+            headers: { 'Content-Type': 'application/json' },
+          });
+          Object.defineProperty(syntheticResp, 'url', { value: url });
+          return syntheticResp;
+        }
+      }
+    }
+
     try {
       const response = await originalFetch.apply(this, args);
 
@@ -1181,12 +1202,36 @@
       return super.open(method, url, ...rest);
     }
 
+    // Check if this XHR is for a fake case and synthesize response if needed
+    _getFakeCaseResponse() {
+      if (!demoState.enabled || !activeScenario || !this._demoUrl) return null;
+      if (!this._demoUrl.includes('/cases/v1/cases/')) return null;
+      const match = this._demoUrl.match(/\/cases\/v1\/cases\/([\w-]+)/);
+      if (!match) return null;
+      const fakeCase = activeScenario.cases?.items?.find(c => c.id === match[1]);
+      if (!fakeCase) return null;
+      // This is our fake case — synthesize response
+      const syntheticData = modifyResponse(this._demoUrl, this._demoMethod || 'GET', {});
+      return JSON.stringify(syntheticData);
+    }
+
+    get status() {
+      // If this is a fake case request that got 404'd, pretend it's 200
+      const realStatus = super.status;
+      if (realStatus === 404 && this._getFakeCaseResponse() !== null) return 200;
+      return realStatus;
+    }
+
     get response() {
       const original = super.response;
       if (!demoState.enabled || !this._demoUrl) return original;
       if (!this._demoUrl.includes('sophos.com') && !this._demoUrl.includes('sophosapis.com')) return original;
+
+      // Pre-empt: if this is a fake case request (real API returned 404), return synthetic data
+      const fakeCaseResp = this._getFakeCaseResponse();
+      if (fakeCaseResp !== null && (super.status === 404 || super.status === 0)) return fakeCaseResp;
+
       if (!shouldInterceptUrl(this._demoUrl)) {
-        // Log unhandled for debugging, but don't touch the response
         try {
           const size = typeof original === 'string' ? original.length : JSON.stringify(original)?.length || 0;
           console.log(`[Sophos Demo] 🔍 Unhandled: ${this._demoMethod} ${this._demoUrl.replace(/https?:\/\/[^/]+/, '').split('?')[0]} (${size} bytes)`);
@@ -1211,6 +1256,11 @@
       const original = super.responseText;
       if (!demoState.enabled || !this._demoUrl) return original;
       if (!this._demoUrl.includes('sophos.com') && !this._demoUrl.includes('sophosapis.com')) return original;
+
+      // Pre-empt: if this is a fake case request, return synthetic data
+      const fakeCaseResp = this._getFakeCaseResponse();
+      if (fakeCaseResp !== null && (super.status === 404 || super.status === 0)) return fakeCaseResp;
+
       if (!shouldInterceptUrl(this._demoUrl)) return original;
 
       try {
