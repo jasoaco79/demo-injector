@@ -1132,10 +1132,10 @@ Publish as an unlisted extension. Share the direct install link. Auto-updates wh
 - [ ] Multi-tenant scenario (show multiple customer tenants)
 - [ ] Automatic scenario generation from prospect's real environment data
 - [ ] Browser extension for Firefox
-- [ ] Streaming demo script generation (show text as it generates)
-- [ ] Scenario sharing via URL (base64-encoded JSON in query string)
 
 ### Completed
+- [x] **Streaming Generation** — Demo Script, Battle Card, and Follow-Up stream word-by-word via SSE (no more staring at "Generating…")
+- [x] **Scenario Sharing via URL** — 🔗 Share button creates a link with the scenario encoded in the URL. Recipient opens it, scenario auto-imports.
 - [x] **Scenario Library** (`/scenarios.html`) — browsable grid of all built-in scenarios with stats, tags, "Make It Mine" instant cloning, and AI remix
 - [x] **Scenario Remix** — AI rewrites an existing scenario for a new customer/industry/threat actor
 - [x] **Competitive Battle Cards** — AI-generated battle card vs any competitor, contextualized to the demo scenario
