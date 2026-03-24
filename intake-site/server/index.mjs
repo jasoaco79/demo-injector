@@ -48,7 +48,7 @@ function saveSettings(data) {
 }
 
 // ─── Auth ────────────────────────────────────────────────────────────
-const DEFAULT_PASSCODE = 'SophosSE2026!';
+const DEFAULT_PASSCODE = 'Sophos2026!';
 const sessions = new Map(); // token → { created, ip }
 
 function getPasscode() {
