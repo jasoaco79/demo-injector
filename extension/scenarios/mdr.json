@@ -1012,8 +1012,8 @@
   "threatGraphs": {
     "stacCases": {
       "summary": {
-        "closed": 0,
-        "inprogress": 1,
+        "closed": 1,
+        "inprogress": 0,
         "total": 1,
         "new": 0
       },
@@ -1026,7 +1026,7 @@
           "malwareName": "Cobalt Strike / Ransomware",
           "cloudCreatedAt": "-7h",
           "rootCauseDT": "-8h",
-          "status": "COMPLETED",
+          "status": "closed",
           "priority": "HIGH",
           "id": "auto",
           "caseType": "SYSTEM_GENERATED",

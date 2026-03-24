@@ -22,7 +22,10 @@
         "actionable": true,
         "category": "malware",
         "when": "-3m",
-        "allowedActions": ["CLEAN", "ACKNOWLEDGE"],
+        "allowedActions": [
+          "CLEAN",
+          "ACKNOWLEDGE"
+        ],
         "location": "DESKTOP-FIN042",
         "type": "Event::Endpoint::Threat::CleanupFailed::KillFailed",
         "source": null,
@@ -43,7 +46,9 @@
         "actionable": true,
         "category": "runtime_detections",
         "when": "-2m",
-        "allowedActions": ["ACKNOWLEDGE"],
+        "allowedActions": [
+          "ACKNOWLEDGE"
+        ],
         "location": "DESKTOP-FIN042",
         "type": "Event::Endpoint::CoreDetection::CryptoGuard",
         "source": null,
@@ -64,7 +69,9 @@
         "actionable": false,
         "category": "policy",
         "when": "-2m",
-        "allowedActions": ["ACKNOWLEDGE"],
+        "allowedActions": [
+          "ACKNOWLEDGE"
+        ],
         "location": "DESKTOP-FIN042",
         "type": "Event::Endpoint::SavDisabled",
         "source": null,
@@ -85,7 +92,10 @@
         "actionable": true,
         "category": "malware",
         "when": "-5m",
-        "allowedActions": ["CLEAN", "ACKNOWLEDGE"],
+        "allowedActions": [
+          "CLEAN",
+          "ACKNOWLEDGE"
+        ],
         "location": "DESKTOP-FIN042",
         "type": "Event::Endpoint::Threat::Detected",
         "source": null,
@@ -98,17 +108,23 @@
         "info": "Malware cleaned successfully: 'Mal/Generic-S'"
       }
     ],
-    "summaryDelta": { "high": 3, "medium": 1, "low": 0 }
+    "summaryDelta": {
+      "high": 3,
+      "medium": 1,
+      "low": 0
+    }
   },
   "cases": {
     "mode": "prepend",
     "items": [
       {
         "type": "investigation",
-        "name": "(DESKTOP-FIN042) | Ransomware Attack — {{customerName}}",
+        "name": "(DESKTOP-FIN042) | Ransomware Attack \u2014 {{customerName}}",
         "managedBy": "self",
         "createdAt": "-3m",
-        "createdBy": { "name": "Auto-generated" },
+        "createdBy": {
+          "name": "Auto-generated"
+        },
         "updatedAt": "-1m",
         "status": "investigating",
         "initialDetection": {
@@ -120,7 +136,12 @@
               "tactic": {
                 "id": "TA0002",
                 "name": "Execution",
-                "techniques": [{ "id": "T1059.001", "name": "PowerShell" }]
+                "techniques": [
+                  {
+                    "id": "T1059.001",
+                    "name": "PowerShell"
+                  }
+                ]
               }
             },
             {
@@ -128,8 +149,14 @@
                 "id": "TA0040",
                 "name": "Impact",
                 "techniques": [
-                  { "id": "T1486", "name": "Data Encrypted for Impact" },
-                  { "id": "T1490", "name": "Inhibit System Recovery" }
+                  {
+                    "id": "T1486",
+                    "name": "Data Encrypted for Impact"
+                  },
+                  {
+                    "id": "T1490",
+                    "name": "Inhibit System Recovery"
+                  }
                 ]
               }
             },
@@ -137,14 +164,24 @@
               "tactic": {
                 "id": "TA0005",
                 "name": "Defense Evasion",
-                "techniques": [{ "id": "T1562.001", "name": "Disable or Modify Tools" }]
+                "techniques": [
+                  {
+                    "id": "T1562.001",
+                    "name": "Disable or Modify Tools"
+                  }
+                ]
               }
             }
           ],
           "time": "-3m",
-          "sensor": { "type": "endpoint", "source": "Sophos Endpoint" }
+          "sensor": {
+            "type": "endpoint",
+            "source": "Sophos Endpoint"
+          }
         },
-        "assignee": { "name": "SOC Analyst" },
+        "assignee": {
+          "name": "SOC Analyst"
+        },
         "overview": "Active ransomware attack detected on DESKTOP-FIN042. CryptoGuard blocked encryption. Shadow copy deletion attempted. Lateral movement to 3 additional hosts detected.",
         "detectionCount": 24,
         "escalated": true
@@ -157,8 +194,16 @@
       {
         "detectionCreatedAt": "-3m",
         "connectorGeneratedAt": "-3m",
-        "connector": { "id": "SophosSensorID", "type": "endpoint", "vendor": "Sophos", "version": "SED Driver 4.2.1" },
-        "device": { "type": "computer", "hostname": "DESKTOP-FIN042" },
+        "connector": {
+          "id": "SophosSensorID",
+          "type": "endpoint",
+          "vendor": "Sophos",
+          "version": "SED Driver 4.2.1"
+        },
+        "device": {
+          "type": "computer",
+          "hostname": "DESKTOP-FIN042"
+        },
         "rawData": {
           "meta_hostname": "DESKTOP-FIN042",
           "meta_ip_address": "192.168.1.42",
@@ -172,25 +217,51 @@
         "risk": 9,
         "category": "Threat",
         "classificationRule": "WIN-IMP-PRC-SHADOWCOPY-SELECT-DELETE-RESIZE-1",
-        "ruleDescription": "Shadow copy deletion detected — common ransomware precursor",
+        "ruleDescription": "Shadow copy deletion detected \u2014 common ransomware precursor",
         "mitreAttacks": [
-          { "tactic": { "id": "TA0040", "name": "Impact", "techniques": [{ "id": "T1490", "name": "Inhibit System Recovery" }] } }
+          {
+            "tactic": {
+              "id": "TA0040",
+              "name": "Impact",
+              "techniques": [
+                {
+                  "id": "T1490",
+                  "name": "Inhibit System Recovery"
+                }
+              ]
+            }
+          }
         ],
         "attackType": "Ransomware",
         "severity": 9,
-        "detectionAttack": { "name": "Ransomware Kill Chain" },
-        "detectionLicenses": ["XDR"],
+        "detectionAttack": {
+          "name": "Ransomware Kill Chain"
+        },
+        "detectionLicenses": [
+          "XDR"
+        ],
         "geolocation": {},
-        "intelixFileReputation": { "score": 100, "label": "Known Malicious" },
+        "intelixFileReputation": {
+          "score": 100,
+          "label": "Known Malicious"
+        },
         "detectionType": "Threat",
         "suppressed": false,
-        "caseDescription": "Active ransomware attack — shadow copy deletion"
+        "caseDescription": "Active ransomware attack \u2014 shadow copy deletion"
       },
       {
         "detectionCreatedAt": "-5m",
         "connectorGeneratedAt": "-5m",
-        "connector": { "id": "SophosSensorID", "type": "endpoint", "vendor": "Sophos", "version": "SED Driver 4.2.1" },
-        "device": { "type": "computer", "hostname": "DESKTOP-FIN042" },
+        "connector": {
+          "id": "SophosSensorID",
+          "type": "endpoint",
+          "vendor": "Sophos",
+          "version": "SED Driver 4.2.1"
+        },
+        "device": {
+          "type": "computer",
+          "hostname": "DESKTOP-FIN042"
+        },
         "rawData": {
           "meta_hostname": "DESKTOP-FIN042",
           "meta_ip_address": "192.168.1.42",
@@ -206,14 +277,32 @@
         "classificationRule": "WIN-PROT-VDL-MALWARE-ATK-RANSOM-1",
         "ruleDescription": "Ransomware executable detected via deep learning",
         "mitreAttacks": [
-          { "tactic": { "id": "TA0002", "name": "Execution", "techniques": [{ "id": "T1204.002", "name": "Malicious File" }] } }
+          {
+            "tactic": {
+              "id": "TA0002",
+              "name": "Execution",
+              "techniques": [
+                {
+                  "id": "T1204.002",
+                  "name": "Malicious File"
+                }
+              ]
+            }
+          }
         ],
         "attackType": "Ransomware",
         "severity": 8,
-        "detectionAttack": { "name": "Ransomware Kill Chain" },
-        "detectionLicenses": ["XDR"],
+        "detectionAttack": {
+          "name": "Ransomware Kill Chain"
+        },
+        "detectionLicenses": [
+          "XDR"
+        ],
         "geolocation": {},
-        "intelixFileReputation": { "score": 100, "label": "Known Malicious" },
+        "intelixFileReputation": {
+          "score": 100,
+          "label": "Known Malicious"
+        },
         "detectionType": "Threat",
         "suppressed": false,
         "caseDescription": "Ransomware binary executed from phishing email"
@@ -244,7 +333,12 @@
   },
   "threatGraphs": {
     "stacCases": {
-      "summary": { "closed": 0, "inprogress": 1, "total": 1, "new": 0 },
+      "summary": {
+        "closed": 1,
+        "inprogress": 0,
+        "total": 1,
+        "new": 0
+      },
       "items": [
         {
           "endpointType": "computer",
@@ -254,7 +348,7 @@
           "malwareName": "Troj/Ransom-GKL",
           "cloudCreatedAt": "-3m",
           "rootCauseDT": "-5m",
-          "status": "COMPLETED",
+          "status": "closed",
           "priority": "HIGH",
           "id": "auto",
           "caseType": "SYSTEM_GENERATED",
@@ -338,24 +432,63 @@
       "id": "auto",
       "status": "completed",
       "query": "SELECT pid, name, path, cmdline, parent FROM processes WHERE name LIKE '%powershell%' OR cmdline LIKE '%vssadmin%' OR cmdline LIKE '%shadow%'",
-      "queryName": "Ransomware Indicator Hunt — Shadow Copy & PowerShell",
+      "queryName": "Ransomware Indicator Hunt \u2014 Shadow Copy & PowerShell",
       "startedAt": "-2m",
       "completedAt": "-1m",
       "endpointsQueried": 12,
       "endpointsResponded": 12,
       "totalResults": 4,
       "columns": [
-        { "name": "pid", "type": "INTEGER" },
-        { "name": "name", "type": "TEXT" },
-        { "name": "path", "type": "TEXT" },
-        { "name": "cmdline", "type": "TEXT" },
-        { "name": "endpoint_hostname", "type": "TEXT" }
+        {
+          "name": "pid",
+          "type": "INTEGER"
+        },
+        {
+          "name": "name",
+          "type": "TEXT"
+        },
+        {
+          "name": "path",
+          "type": "TEXT"
+        },
+        {
+          "name": "cmdline",
+          "type": "TEXT"
+        },
+        {
+          "name": "endpoint_hostname",
+          "type": "TEXT"
+        }
       ],
       "rows": [
-        [12028, "powershell.exe", "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "powershell.exe -ExecutionPolicy Bypass -C \"vssadmin delete shadows /all /quiet\"", "DESKTOP-FIN042"],
-        [8844, "powershell.exe", "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "powershell.exe -ep bypass -file C:\\Users\\sarah.chen\\AppData\\Local\\Temp\\encrypt.ps1", "DESKTOP-FIN042"],
-        [9412, "invoice_march2026.exe", "C:\\Users\\sarah.chen\\Downloads\\invoice_march2026.exe", "invoice_march2026.exe --encrypt --target=C:\\Users", "DESKTOP-FIN042"],
-        [3104, "wmic.exe", "C:\\Windows\\System32\\wbem\\WMIC.exe", "wmic shadowcopy delete", "DESKTOP-FIN042"]
+        [
+          12028,
+          "powershell.exe",
+          "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+          "powershell.exe -ExecutionPolicy Bypass -C \"vssadmin delete shadows /all /quiet\"",
+          "DESKTOP-FIN042"
+        ],
+        [
+          8844,
+          "powershell.exe",
+          "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+          "powershell.exe -ep bypass -file C:\\Users\\sarah.chen\\AppData\\Local\\Temp\\encrypt.ps1",
+          "DESKTOP-FIN042"
+        ],
+        [
+          9412,
+          "invoice_march2026.exe",
+          "C:\\Users\\sarah.chen\\Downloads\\invoice_march2026.exe",
+          "invoice_march2026.exe --encrypt --target=C:\\Users",
+          "DESKTOP-FIN042"
+        ],
+        [
+          3104,
+          "wmic.exe",
+          "C:\\Windows\\System32\\wbem\\WMIC.exe",
+          "wmic shadowcopy delete",
+          "DESKTOP-FIN042"
+        ]
       ]
     }
   },
@@ -369,12 +502,17 @@
         "severity": "high",
         "actionable": true,
         "category": "runtime_detections",
-        "allowedActions": ["ACKNOWLEDGE"],
+        "allowedActions": [
+          "ACKNOWLEDGE"
+        ],
         "location": "LAPTOP-MKT007",
         "type": "Event::Endpoint::CoreDetection::CryptoGuard",
         "source": null,
-        "data": { "endpoint_type": "computer", "endpoint_platform": "windows" },
-        "description": "🚨 NEW: CryptoGuard blocked ransomware spreading to LAPTOP-MKT007 (user: mike.jones). Lateral movement from DESKTOP-FIN042 detected. Second endpoint targeted — attack is expanding.",
+        "data": {
+          "endpoint_type": "computer",
+          "endpoint_platform": "windows"
+        },
+        "description": "\ud83d\udea8 NEW: CryptoGuard blocked ransomware spreading to LAPTOP-MKT007 (user: mike.jones). Lateral movement from DESKTOP-FIN042 detected. Second endpoint targeted \u2014 attack is expanding.",
         "info": "Ransomware attempting to spread via network shares"
       }
     },
@@ -387,13 +525,18 @@
         "severity": "high",
         "actionable": false,
         "category": "policy",
-        "allowedActions": ["ACKNOWLEDGE"],
+        "allowedActions": [
+          "ACKNOWLEDGE"
+        ],
         "location": "DESKTOP-FIN042",
         "type": "Event::Endpoint::DeviceIsolated",
         "source": null,
-        "data": { "endpoint_type": "computer", "endpoint_platform": "windows" },
-        "description": "🔒 DESKTOP-FIN042 automatically isolated from network by Sophos. Ransomware containment in progress. All network connections terminated.",
-        "info": "Automatic isolation triggered — threat contained"
+        "data": {
+          "endpoint_type": "computer",
+          "endpoint_platform": "windows"
+        },
+        "description": "\ud83d\udd12 DESKTOP-FIN042 automatically isolated from network by Sophos. Ransomware containment in progress. All network connections terminated.",
+        "info": "Automatic isolation triggered \u2014 threat contained"
       }
     }
   ],

