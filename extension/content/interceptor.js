@@ -176,8 +176,14 @@
       for (const item of resolved.cases.items) {
         if (!item.id) item.id = caseId();
         if (!item.tenant?.id) item.tenant = { ...item.tenant, id: uuid() };
+        if (!item.severity) item.severity = item.initialDetection?.severity >= 7 ? 'high' : item.initialDetection?.severity >= 4 ? 'medium' : 'low';
+        if (!item.caseType) item.caseType = 'SYSTEM_GENERATED';
+        if (!item.source) item.source = item.managedBy === 'mtr' ? 'MDR' : 'XDR';
         if (item.initialDetection && !item.initialDetection.id) {
           item.initialDetection.id = detectionId();
+        }
+        if (item.initialDetection && !item.initialDetection.sensor) {
+          item.initialDetection.sensor = { type: 'endpoint', source: 'Sophos Endpoint' };
         }
       }
     }
@@ -418,7 +424,15 @@
 
   function modifyResponse(url, method, data) {
     if (!demoState.enabled || !activeScenario) return data;
+    try {
+      return _modifyResponse(url, method, data);
+    } catch (err) {
+      console.error('[Sophos Demo] ❌ Interceptor error for', url, err);
+      return data; // Fall back to real response on error
+    }
+  }
 
+  function _modifyResponse(url, method, data) {
     const s = activeScenario;
     const cn = demoState.customerName || s.customer?.name || 'Demo Customer';
 
