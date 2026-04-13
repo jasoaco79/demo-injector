@@ -13,7 +13,9 @@ const scenarioDesc = document.getElementById('scenarioDesc');
 const statusDot = document.getElementById('statusDot');
 const statusText = document.getElementById('statusText');
 const interceptedText = document.getElementById('interceptedText');
-const reloadBtn = document.getElementById('reloadBtn');
+const previewBtn = document.getElementById('previewBtn');
+const launchPreludeBtn = document.getElementById('launchPreludeBtn');
+const launchDirectBtn = document.getElementById('launchDirectBtn');
 const importBtn = document.getElementById('importBtn');
 const exportBtn = document.getElementById('exportBtn');
 const fileBtn = document.getElementById('fileBtn');
@@ -127,7 +129,7 @@ function updateScenarioDesc() {
 
 
 // ─── State Management ────────────────────────────────────────────────
-function saveState() {
+function saveState(extra = {}) {
   const state = {
     enabled: toggle.checked,
     scenario: scenarioSelect.value,
@@ -135,7 +137,9 @@ function saveState() {
     endpointCount: parseInt(endpointCount.value) || 2500,
     serverCount: parseInt(serverCount.value) || 186,
     showBadge: showBadge.checked,
+    launchMode: 'direct',
     interceptedCount: 0,
+    ...extra,
   };
   chrome.runtime.sendMessage({ type: 'SET_STATE', state }, () => {
     updateUI(state);
@@ -156,6 +160,28 @@ async function init() {
     serverCount.value = state.serverCount || 186;
     showBadge.checked = state.showBadge !== false; // default true
     updateUI(state);
+  });
+}
+
+function openSophosCentral(preludeEnabled = false) {
+  saveState({ launchMode: preludeEnabled ? 'prelude' : 'direct' });
+  setTimeout(() => {
+    chrome.tabs.query({ url: 'https://central.sophos.com/*' }, (tabs) => {
+      if (tabs.length === 0) {
+        chrome.tabs.create({ url: 'https://central.sophos.com/manage/dashboard' });
+      } else {
+        for (const tab of tabs) {
+          chrome.tabs.reload(tab.id);
+        }
+      }
+    });
+  }, 200);
+}
+
+function openPreludePreview() {
+  saveState({ launchMode: 'preview' });
+  chrome.tabs.create({
+    url: chrome.runtime.getURL(`prelude/stage.html?scenario=${encodeURIComponent(scenarioSelect.value)}&mode=preview`)
   });
 }
 
@@ -190,20 +216,16 @@ customerName.addEventListener('input', debounce(saveState, 500));
 endpointCount.addEventListener('input', debounce(saveState, 500));
 serverCount.addEventListener('input', debounce(saveState, 500));
 
-// Reload Sophos Central tabs
-reloadBtn.addEventListener('click', () => {
-  saveState();
-  setTimeout(() => {
-    chrome.tabs.query({ url: 'https://central.sophos.com/*' }, (tabs) => {
-      if (tabs.length === 0) {
-        chrome.tabs.create({ url: 'https://central.sophos.com/manage/dashboard' });
-      } else {
-        for (const tab of tabs) {
-          chrome.tabs.reload(tab.id);
-        }
-      }
-    });
-  }, 200);
+previewBtn.addEventListener('click', () => {
+  openPreludePreview();
+});
+
+launchPreludeBtn.addEventListener('click', () => {
+  openSophosCentral(true);
+});
+
+launchDirectBtn.addEventListener('click', () => {
+  openSophosCentral(false);
 });
 
 

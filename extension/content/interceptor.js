@@ -20,6 +20,7 @@
     customerName: 'Contoso Healthcare',
     endpointCount: 2500,
     serverCount: 186,
+    launchMode: 'direct',
   };
 
   let activeScenario = null;  // Resolved scenario data (after template processing)

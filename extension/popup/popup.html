@@ -169,6 +169,36 @@
     }
     .btn-row .btn { flex: 1; }
 
+    .launch-grid {
+      display: grid;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .btn-subtle {
+      background: #f8fafc;
+      color: #1f2937;
+      border: 1px solid #dbe3ec;
+      text-align: left;
+      line-height: 1.3;
+      padding: 10px 12px;
+    }
+    .btn-subtle:hover { background: #eef4fb; border-color: #bfd2ea; }
+
+    .btn-title {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .btn-note {
+      display: block;
+      font-size: 10px;
+      font-weight: 500;
+      color: #6b7280;
+    }
+
     /* Import area */
     .import-area {
       display: none;
@@ -320,7 +350,23 @@
       </label>
     </div>
 
-    <button class="btn btn-primary" id="reloadBtn">🔄 Apply & Reload Sophos Central</button>
+    <div class="section">
+      <div class="section-label">Launch</div>
+      <div class="launch-grid">
+        <button class="btn btn-secondary" id="previewBtn">
+          <span class="btn-title">Preview Intro</span>
+          <span class="btn-note">Open the Prelude / Stage experience only</span>
+        </button>
+        <button class="btn btn-primary" id="launchPreludeBtn">
+          <span class="btn-title">Open Sophos Central + Prelude</span>
+          <span class="btn-note">Run the Stage intro, then transition into the injected demo</span>
+        </button>
+        <button class="btn btn-subtle" id="launchDirectBtn">
+          <span class="btn-title">Open Sophos Central Only</span>
+          <span class="btn-note">Skip the Prelude and load the injected demo scenario directly</span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <div class="status-bar">

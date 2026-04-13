@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sophos Demo Prelude</title>
+  <style>
+    :root {
+      --navy: #001a47;
+      --blue: #2006f7;
+      --bg: #f4f5f7;
+      --card: #ffffff;
+      --text: #1c2b3a;
+      --muted: #5f6f82;
+      --border: #d8dce3;
+      --red: #d43f3f;
+      --green: #1a8754;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #eef2f7 0%, #f8fafc 100%);
+      color: var(--text);
+    }
+    .topbar {
+      background: var(--navy);
+      color: white;
+      padding: 16px 22px;
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px 18px 60px;
+    }
+    .hero, .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 8px 30px rgba(0,30,80,.06);
+    }
+    .hero {
+      padding: 28px;
+      margin-bottom: 18px;
+    }
+    .eyebrow {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #e8ecff;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    h1 { margin: 0 0 8px; font-size: 32px; }
+    .sub { color: var(--muted); font-size: 16px; line-height: 1.55; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1.3fr .9fr;
+      gap: 18px;
+    }
+    .card { padding: 20px; }
+    h2 { margin: 0 0 12px; font-size: 18px; }
+    .slides { display: grid; gap: 12px; }
+    .slide {
+      border-left: 4px solid var(--blue);
+      background: #fafbff;
+      padding: 12px 14px;
+      border-radius: 0 8px 8px 0;
+    }
+    .slide-title { font-weight: 700; margin-bottom: 4px; }
+    .muted { color: var(--muted); }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 12px;
+    }
+    video {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #000;
+      margin-bottom: 12px;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px;
+      flex-wrap: wrap;
+    }
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 12px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .primary { background: var(--blue); color: #fff; }
+    .secondary { background: #eef2f7; color: var(--text); }
+    .info-list { margin: 0; padding-left: 18px; }
+    .info-list li { margin: 8px 0; }
+    @media (max-width: 760px) {
+      .grid { grid-template-columns: 1fr; }
+      h1 { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">Sophos Demo Prelude</div>
+  <div class="wrap">
+    <div class="hero">
+      <div class="eyebrow" id="eyebrow">Threat Prelude</div>
+      <h1 id="title">Loading scenario…</h1>
+      <div class="sub" id="subtitle">Preparing the pre-demo experience.</div>
+      <div class="actions">
+        <button class="primary" id="continueBtn">Open Sophos Central Demo</button>
+        <button class="secondary" id="skipBtn">Skip Intro</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Attack Storyboard</h2>
+        <div id="videoWrap" style="display:none;">
+          <video id="video" controls playsinline></video>
+        </div>
+        <div class="slides" id="slides"></div>
+      </div>
+
+      <div class="card">
+        <h2>Expected Detections</h2>
+        <ul class="info-list" id="detections"></ul>
+        <h2 style="margin-top:18px;">MITRE Techniques</h2>
+        <div class="pill-row" id="mitre"></div>
+      </div>
+    </div>
+  </div>
+  <script src="prelude.js"></script>
+</body>
+</html>

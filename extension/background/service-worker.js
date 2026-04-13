@@ -66,6 +66,7 @@ const DEFAULT_STATE = {
   customerName: 'Contoso Healthcare',
   endpointCount: 2500,
   serverCount: 186,
+  launchMode: 'direct',
   interceptedCount: 0,
 };
 
@@ -280,6 +281,7 @@ async function syncToCloud() {
         endpointCount: stored.demoState?.endpointCount,
         serverCount: stored.demoState?.serverCount,
         lastScenario: stored.demoState?.scenario,
+        launchMode: stored.demoState?.launchMode,
       }
     });
 

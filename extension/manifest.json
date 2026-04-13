@@ -47,6 +47,10 @@
     {
       "resources": ["scenarios/*.json"],
       "matches": ["https://central.sophos.com/*"]
+    },
+    {
+      "resources": ["prelude/prelude.html", "prelude/prelude.js", "prelude/stage.html", "prelude/stage.js"],
+      "matches": ["<all_urls>"]
     }
   ],
   "icons": {
