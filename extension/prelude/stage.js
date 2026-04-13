@@ -51,10 +51,13 @@ function startTimer() {
 }
 
 const MILESTONES = {
-  'T1486': { icon: '🔥', label: 'FILES TARGETED FOR ENCRYPTION', color: '#ff6900', bg: 'rgba(255,105,0,0.10)' },
-  'T1490': { icon: '🧨', label: 'RECOVERY MECHANISMS TARGETED', color: '#ff4444', bg: 'rgba(255,68,68,0.10)' },
+  'T1003': { icon: '🔓', label: 'CREDENTIAL ACCESS ACHIEVED', color: '#ff4444', bg: 'rgba(255,68,68,0.10)' },
+  'T1053': { icon: '📌', label: 'PERSISTENCE ESTABLISHED', color: '#ffb300', bg: 'rgba(255,179,0,0.10)' },
   'T1059': { icon: '⚡', label: 'MALICIOUS CODE EXECUTION', color: '#00A8E0', bg: 'rgba(0,168,224,0.10)' },
-  'T1204': { icon: '📎', label: 'USER EXECUTED MALICIOUS FILE', color: '#00A8E0', bg: 'rgba(0,168,224,0.10)' }
+  'T1070': { icon: '⚠️', label: 'FORENSIC EVIDENCE TARGETED', color: '#ffb300', bg: 'rgba(255,179,0,0.10)' },
+  'T1204': { icon: '📎', label: 'USER EXECUTED MALICIOUS FILE', color: '#00A8E0', bg: 'rgba(0,168,224,0.10)' },
+  'T1486': { icon: '🔥', label: 'FILES TARGETED FOR ENCRYPTION', color: '#ff6900', bg: 'rgba(255,105,0,0.10)' },
+  'T1490': { icon: '🧨', label: 'RECOVERY MECHANISMS TARGETED', color: '#ff4444', bg: 'rgba(255,68,68,0.10)' }
 };
 
 function getMilestone(id) {
@@ -149,6 +152,18 @@ function renderFeed(scenario) {
 
 function renderBriefing(scenario) {
   const prelude = scenario.prelude || {};
+  const customerName = scenario.customer?.name || 'the customer';
+  const industry = scenario.customer?.industry || 'general';
+  const industryPoints = prelude.industryTalkingPoints?.[industry] || [];
+  const points = prelude.expectedDetections || [];
+  const presenterPoints = prelude.talkingPoints || [];
+  const milestoneItems = prelude.milestones || [];
+  const clickPath = prelude.clickPath || [
+    'Open the high-priority alert and frame why it matters immediately.',
+    'Move into the investigation/case view to show correlated context.',
+    'Show detections and threat activity to prove the chain, then close on response actions.'
+  ];
+
   document.getElementById('scenario-name').textContent = scenario.name || 'Scenario';
   document.getElementById('brief-eyebrow').textContent = prelude.threatFamily || 'Threat Briefing';
   document.getElementById('brief-title').textContent = prelude.title || scenario.name || 'Threat Briefing';
@@ -163,16 +178,28 @@ function renderBriefing(scenario) {
   `).join('');
 
   const proofPoints = document.getElementById('proof-points');
-  const points = prelude.expectedDetections || [];
-  proofPoints.innerHTML = points.map((p) => `<div class="impact-item">${escapeHtml(p)}</div>`).join('');
+  proofPoints.innerHTML = [...points, ...presenterPoints, ...industryPoints].map((p) => `<div class="impact-item">${escapeHtml(p)}</div>`).join('');
+
+  const milestoneGrid = document.getElementById('milestone-grid');
+  milestoneGrid.innerHTML = milestoneItems.map((m) => {
+    const meta = getMilestone(m.id) || { icon: '◆', label: m.label || 'Milestone', color: '#00A8E0' };
+    return `<div class="milestone-card">
+      <div class="milestone-top">
+        <span class="milestone-icon">${escapeHtml(meta.icon)}</span>
+        <span class="milestone-label" style="color:${meta.color}">${escapeHtml(m.label || meta.label)}</span>
+      </div>
+      <div class="milestone-tech">${escapeHtml(m.id || '')}</div>
+    </div>`;
+  }).join('');
 
   const mitrePills = document.getElementById('mitre-pills');
   mitrePills.innerHTML = (prelude.mitreTechniques || []).map((m) => `<div class="pill">${escapeHtml(m.id)} — ${escapeHtml(m.name)}</div>`).join('');
 
-  document.getElementById('transition-headline').textContent = `Show ${scenario.customer?.name || 'the customer'} how this appears in Central`;
-  document.getElementById('transition-copy').textContent = 'You now move from the threat narrative into operational proof: alerts, cases, detections, threat graphs, and response flow inside the injected Sophos Central experience.';
+  document.getElementById('transition-headline').textContent = `Show ${customerName} what this looks like in Sophos Central`;
+  document.getElementById('transition-copy').textContent = `You now move from the attack narrative into live operational proof for ${customerName}: the rendered alerts, case context, detections, threat storyline, and response path that appear directly inside the injected Sophos Central experience.`;
   document.getElementById('transition-line').textContent = prelude.transitionLine || 'Now let’s pivot into Sophos Central and show exactly how your team would see, investigate, and respond to this incident.';
   document.getElementById('expected-points').innerHTML = points.map((p) => `<div class="proof-item">${escapeHtml(p)}</div>`).join('');
+  document.getElementById('click-path').innerHTML = clickPath.map((p) => `<div class="proof-item">${escapeHtml(p)}</div>`).join('');
 }
 
 (async function init() {

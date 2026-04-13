@@ -31,10 +31,10 @@ const fileInput = document.getElementById('fileInput');
 // ─── Scenario Metadata ──────────────────────────────────────────────
 // Built-in scenario display config (icons, colors)
 const scenarioMeta = {
-  ransomware: { icon: '🔴', color: 'ransomware' },
-  healthy:    { icon: '🟢', color: 'healthy' },
-  phishing:   { icon: '🟠', color: 'phishing' },
-  xdr:        { icon: '🔵', color: 'xdr' },
+  ransomware: { color: 'ransomware' },
+  healthy:    { color: 'healthy' },
+  phishing:   { color: 'phishing' },
+  xdr:        { color: 'xdr' },
 };
 
 let allScenarios = [];  // { id, name, description, isCustom }
@@ -63,8 +63,7 @@ async function loadScenarios() {
         for (const s of resp.builtIn) {
           const opt = document.createElement('option');
           opt.value = s.id;
-          const meta = scenarioMeta[s.id] || { icon: '⚡' };
-          opt.textContent = `${meta.icon} ${s.name}`;
+          opt.textContent = s.name;
           group.appendChild(opt);
         }
         scenarioSelect.appendChild(group);
@@ -77,7 +76,7 @@ async function loadScenarios() {
         for (const s of resp.custom) {
           const opt = document.createElement('option');
           opt.value = s.id;
-          opt.textContent = `⚡ ${s.name}`;
+          opt.textContent = s.name;
           group.appendChild(opt);
         }
         scenarioSelect.appendChild(group);
@@ -166,6 +165,13 @@ async function init() {
 function openSophosCentral(preludeEnabled = false) {
   saveState({ launchMode: preludeEnabled ? 'prelude' : 'direct' });
   setTimeout(() => {
+    if (preludeEnabled) {
+      chrome.tabs.create({
+        url: chrome.runtime.getURL(`prelude/stage.html?scenario=${encodeURIComponent(scenarioSelect.value)}&mode=prelude`)
+      });
+      return;
+    }
+
     chrome.tabs.query({ url: 'https://central.sophos.com/*' }, (tabs) => {
       if (tabs.length === 0) {
         chrome.tabs.create({ url: 'https://central.sophos.com/manage/dashboard' });

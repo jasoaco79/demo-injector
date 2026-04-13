@@ -150,6 +150,18 @@
     .story-step p { color: var(--muted); line-height: 1.55; }
     .proof-list, .impact-list { display: grid; gap: 10px; }
     .proof-item, .impact-item { padding: 12px 14px; background: rgba(255,255,255,.03); border-radius: 10px; border: 1px solid rgba(255,255,255,.05); }
+    .milestone-grid { display: grid; gap: 10px; margin-top: 14px; }
+    .milestone-card {
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
+    }
+    .milestone-top { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+    .milestone-icon { font-size: 18px; }
+    .milestone-label { font-family: var(--font-display); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+    .milestone-tech { font-size: 12px; color: var(--muted); }
     .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
     .pill { border: 1px solid var(--border); border-radius: 999px; padding: 8px 12px; font-size: 12px; color: rgba(255,255,255,.85); background: rgba(255,255,255,0.03); }
     .split-wrap { position: absolute; top: 52px; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: 32% 68%; }
@@ -222,6 +234,8 @@
         <div class="proof-card">
           <div class="section-h">Why Sophos Wins This Moment</div>
           <div class="impact-list" id="proof-points"></div>
+          <div class="section-h" style="margin-top:18px;">Milestone Moments</div>
+          <div class="milestone-grid" id="milestone-grid"></div>
           <div class="section-h" style="margin-top:18px;">MITRE Techniques</div>
           <div class="pill-row" id="mitre-pills"></div>
         </div>
@@ -249,8 +263,12 @@
             <div class="subline" id="transition-copy"></div>
           </div>
           <div class="stage-card">
-            <div class="label">EXPECTED PROOF POINTS</div>
+            <div class="label">WHAT THE STAKEHOLDER SHOULD NOTICE</div>
             <div class="proof-list" id="expected-points"></div>
+          </div>
+          <div class="stage-card">
+            <div class="label">SUGGESTED CLICK PATH</div>
+            <div class="proof-list" id="click-path"></div>
           </div>
           <div class="stage-card">
             <div class="label">SE TRANSITION LINE</div>

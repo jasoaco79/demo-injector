@@ -10,6 +10,81 @@
     "endpointCount": 2500,
     "serverCount": 186
   },
+  "prelude": {
+    "enabled": true,
+    "title": "{{customerName}} — Live Attack Chain Prelude",
+    "subtitle": "A realistic multi-stage ransomware storyline built to show stakeholders exactly how a high-consequence attack unfolds, why it matters to {{customerName}}, and how Sophos surfaces the incident inside Central before impact becomes business reality.",
+    "threatFamily": "Live Attack Chain → Ransomware",
+    "type": "storyboard",
+    "videoUrl": "",
+    "posterUrl": "",
+    "ctaLabel": "Open Sophos Central Demo",
+    "autoLaunch": false,
+    "transitionLine": "Now let’s pivot into Sophos Central and show exactly what your team at {{customerName}} would see live: the alerts, case context, detections, threat graph, and response path that turn this story into action.",
+    "expectedDetections": [
+      "Malicious file execution detected on the initial endpoint",
+      "Shadow copy deletion behavior flagged as a ransomware precursor",
+      "CryptoGuard blocks encryption behavior before broad impact",
+      "Tamper Protection prevents the attacker from disabling defenses",
+      "A high-priority investigation appears with context your team can act on immediately"
+    ],
+    "mitreTechniques": [
+      { "id": "T1204.002", "name": "Malicious File" },
+      { "id": "T1059.001", "name": "PowerShell" },
+      { "id": "T1490", "name": "Inhibit System Recovery" },
+      { "id": "T1486", "name": "Data Encrypted for Impact" }
+    ],
+    "milestones": [
+      { "id": "T1204.002", "label": "Initial compromise" },
+      { "id": "T1490", "label": "Recovery mechanisms targeted" },
+      { "id": "T1486", "label": "Encryption attempt blocked" }
+    ],
+    "slides": [
+      {
+        "title": "Initial compromise at {{customerName}}",
+        "body": "A user opens a convincing business file and triggers a ransomware chain on DESKTOP-FIN042. What looks like a single bad click immediately becomes an enterprise risk event for {{customerName}}."
+      },
+      {
+        "title": "The attacker moves toward impact",
+        "body": "Before encryption starts, the attacker attempts to weaken recovery by deleting shadow copies, staging follow-on activity, and creating the conditions for business disruption, outage, and executive escalation."
+      },
+      {
+        "title": "Sophos changes the outcome",
+        "body": "Sophos detects the malicious file, correlates the behavior, blocks encryption, preserves defensive controls, and gives the team at {{customerName}} an investigation path they can use immediately inside Central."
+      }
+    ],
+    "talkingPoints": [
+      "This is not just malware — this is the beginning of a business interruption event for {{customerName}}.",
+      "The customer value is not only prevention, but clear operational visibility when seconds matter.",
+      "What we are about to show in Central is the difference between suspicious activity and actionable context.",
+      "For stakeholders, the story is simple: faster visibility, faster decisions, less business impact."
+    ],
+    "industryTalkingPoints": {
+      "healthcare": [
+        "For {{customerName}}, ransomware is not just an IT incident — it can become a patient safety and continuity event.",
+        "When clinical users lose access to systems, the cost is measured in delayed care, not just downtime."
+      ],
+      "financial_services": [
+        "For {{customerName}}, a compromise like this puts customer trust, transactional systems, and regulatory exposure on the line.",
+        "The ability to surface and investigate this immediately materially changes financial and reputational impact."
+      ],
+      "manufacturing": [
+        "For {{customerName}}, disruption here can move from IT systems into production schedules, shipping, and revenue impact.",
+        "Stopping the chain before impact is what protects operational continuity."
+      ]
+    },
+    "runbookSteps": [
+      "Open with business stakes, not telemetry.",
+      "Tell the attack story in three beats: compromise, movement toward impact, Sophos intervention.",
+      "Use the expected detections as the promise of what stakeholders are about to see in Central.",
+      "Then pivot directly into the injected Sophos Central experience to prove the storyline live."
+    ],
+    "clickPath": [
+      "Start on the alert view and show the critical ransomware-related signal that would immediately draw analyst attention at {{customerName}}.",
+      "Open the investigation or case context to show how Sophos connects the activity into a coherent incident, not just isolated alerts.",
+      "Move into detections and threat activity to prove the attack chain, then close on the response outcome and why the attack did not become a business crisis."
+    ]
+  },
   "alerts": {
     "mode": "prepend",
     "items": [
