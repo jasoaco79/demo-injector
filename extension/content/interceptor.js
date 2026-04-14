@@ -1642,7 +1642,8 @@
       }
       const scenarioName = activeScenario.name || demoState.scenario || 'Demo';
       const cn = demoState.customerName || 'Demo';
-      badgeElement.innerHTML = `<span style="opacity:0.7">🎯</span> <span>${scenarioName}</span> <span style="opacity:0.5">|</span> <span>${cn}</span> <span style="opacity:0.5">|</span> <span style="color:#4ade80">${interceptedCount} intercepted</span>`;
+      const badgeIcon = chrome.runtime.getURL('icons/icon128.svg');
+      badgeElement.innerHTML = `<img src="${badgeIcon}" alt="Sophos" style="width:14px;height:14px;display:block;flex:0 0 auto;" /> <span>${scenarioName}</span> <span style="opacity:0.5">|</span> <span>${cn}</span> <span style="opacity:0.5">|</span> <span style="color:#4ade80">${interceptedCount} intercepted</span>`;
       badgeElement.style.display = 'flex';
     } else if (badgeElement) {
       badgeElement.style.display = 'none';

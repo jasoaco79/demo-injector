@@ -27,8 +27,6 @@ async function launchCentral() {
 }
 
 let currentSlide = 0;
-let timerTick = null;
-let opStart = Date.now();
 
 function goToSlide(n) {
   currentSlide = Math.max(0, Math.min(2, n));
@@ -38,186 +36,160 @@ function goToSlide(n) {
   document.getElementById('nav-next').classList.toggle('disabled', currentSlide === 2);
 }
 
-function navigate(dir) { goToSlide(currentSlide + dir); }
-
-function startTimer() {
-  timerTick = setInterval(() => {
-    const s = Math.floor((Date.now() - opStart) / 1000);
-    const hh = String(Math.floor(s / 3600)).padStart(2, '0');
-    const mm = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
-    const ss = String(s % 60).padStart(2, '0');
-    document.getElementById('op-timer').textContent = `${hh}:${mm}:${ss}`;
-  }, 1000);
-}
-
-const MILESTONES = {
-  'T1003': { icon: '🔓', label: 'CREDENTIAL ACCESS ACHIEVED', color: '#ff4444', bg: 'rgba(255,68,68,0.10)' },
-  'T1053': { icon: '📌', label: 'PERSISTENCE ESTABLISHED', color: '#ffb300', bg: 'rgba(255,179,0,0.10)' },
-  'T1059': { icon: '⚡', label: 'MALICIOUS CODE EXECUTION', color: '#00A8E0', bg: 'rgba(0,168,224,0.10)' },
-  'T1070': { icon: '⚠️', label: 'FORENSIC EVIDENCE TARGETED', color: '#ffb300', bg: 'rgba(255,179,0,0.10)' },
-  'T1204': { icon: '📎', label: 'USER EXECUTED MALICIOUS FILE', color: '#00A8E0', bg: 'rgba(0,168,224,0.10)' },
-  'T1486': { icon: '🔥', label: 'FILES TARGETED FOR ENCRYPTION', color: '#ff6900', bg: 'rgba(255,105,0,0.10)' },
-  'T1490': { icon: '🧨', label: 'RECOVERY MECHANISMS TARGETED', color: '#ff4444', bg: 'rgba(255,68,68,0.10)' }
-};
-
-function getMilestone(id) {
-  if (!id) return null;
-  const root = id.split('.')[0];
-  return MILESTONES[root] || null;
+function navigate(dir) {
+  goToSlide(currentSlide + dir);
 }
 
 function escapeHtml(s) {
   return String(s || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' }[c]));
 }
 
-function buildAttackFeed(scenario) {
-  const steps = [];
-  const prelude = scenario.prelude || {};
-  const mitre = prelude.mitreTechniques || [];
-  const alerts = scenario.alerts?.items || [];
-  const detections = scenario.detections?.items || [];
-
-  if (prelude.slides?.length) {
-    prelude.slides.forEach((slide, idx) => {
-      const mt = mitre[idx] || mitre[0] || null;
-      steps.push({
-        type: 'slide',
-        title: slide.title,
-        body: slide.body,
-        technique: mt
-      });
-    });
-  }
-
-  detections.slice(0, 2).forEach((d) => {
-    const mt = d.mitreAttacks?.[0]?.tactic?.techniques?.[0] || null;
-    steps.push({
-      type: 'detection',
-      title: d.ruleDescription || d.caseDescription || d.attackType || 'Detection',
-      body: d.rawData?.cmdline || d.device?.hostname || '',
-      technique: mt
-    });
-  });
-
-  alerts.slice(0, 2).forEach((a) => {
-    steps.push({
-      type: 'alert',
-      title: a.description || a.type || 'Alert',
-      body: a.info || a.location || '',
-      technique: null
-    });
-  });
-
-  return steps.slice(0, 6);
+function renderTemplate(value, customerName) {
+  return String(value || '').replace(/\{\{\s*customerName\s*\}\}/g, customerName || 'the customer');
 }
 
-function renderFeed(scenario) {
-  const container = document.getElementById('feed-full');
-  const compact = document.getElementById('feed-compact');
-  const items = buildAttackFeed(scenario);
+function renderTimeline(scenario) {
   const prelude = scenario.prelude || {};
+  const customerName = scenario.customer?.name || 'the customer';
 
-  document.getElementById('feed-hero-title').textContent = prelude.title || scenario.name || 'Threat storyline';
-  document.getElementById('feed-hero-copy').textContent = prelude.subtitle || scenario.description || 'Threat context before the Sophos Central walkthrough.';
+  document.getElementById('feed-hero-title').textContent = renderTemplate(prelude.title || scenario.name || 'Threat storyline', customerName);
+  document.getElementById('feed-hero-copy').textContent = renderTemplate(prelude.subtitle || scenario.description || 'Threat context before the Sophos Central walkthrough.', customerName);
 
-  const feedHtml = items.map((item) => {
-    const m = getMilestone(item.technique?.id);
-    if (m) {
-      return `<div class="feed-impact" style="border-color:${m.color}; background:${m.bg}">
-        <span class="fi-icon">${m.icon}</span>
-        <div>
-          <div class="fi-label" style="color:${m.color}">${escapeHtml(m.label)}</div>
-          <div class="fi-tech">${escapeHtml(item.technique?.id || '')}${item.technique?.name ? ' — ' + escapeHtml(item.technique.name) : ''}</div>
-        </div>
-      </div>`;
+  const impactStrip = document.getElementById('impact-strip');
+  impactStrip.innerHTML = [
+    {
+      title: 'What’s at Stake',
+      body: `A single endpoint event can quickly become a broader business risk for ${customerName}.`
+    },
+    {
+      title: 'Business Risk',
+      body: 'If left unchecked, this kind of attack can escalate into disruption, downtime, and executive visibility.'
+    },
+    {
+      title: 'What Happens Next',
+      body: 'We’ll move from the story into Sophos Central to show how the team would see, investigate, and respond.'
     }
-    return `<div class="feed-item">
-      <div class="feed-chip chip-complete">COMPLETE</div>
-      <div class="feed-info">
-        <div class="feed-tactic">${escapeHtml(item.type)}</div>
-        <div class="feed-name">${escapeHtml(item.title)}</div>
-        <div class="feed-tech">${escapeHtml(item.body)}</div>
+  ].map((item) => `
+    <div class="impact-box">
+      <h3>${escapeHtml(item.title)}</h3>
+      <p>${escapeHtml(item.body)}</p>
+    </div>
+  `).join('');
+
+  const milestoneMap = new Map((prelude.milestones || []).map((m) => [m.id, m.label]));
+  const mitreItems = prelude.mitreTechniques || [];
+  const slideItems = prelude.slides || [];
+  const timeline = [
+    {
+      time: '08:14',
+      title: milestoneMap.get(mitreItems[0]?.id) || slideItems[0]?.title || `Initial compromise at ${customerName}`,
+      detail: slideItems[0]?.body || `A user opens a convincing business file and triggers a ransomware chain on DESKTOP-FIN042.`
+    },
+    {
+      time: '08:16',
+      title: 'Malicious file launches',
+      detail: 'The endpoint begins executing attacker-controlled code and the incident starts to unfold.'
+    },
+    {
+      time: '08:19',
+      title: milestoneMap.get(mitreItems[1]?.id) || 'Recovery mechanisms targeted',
+      detail: slideItems[1]?.body || 'Shadow copies are targeted and the conditions for business disruption begin to form.'
+    },
+    {
+      time: '08:22',
+      title: 'Encryption attempt begins',
+      detail: 'Behavior consistent with ransomware execution appears and the risk of broad impact becomes immediate.'
+    },
+    {
+      time: '08:24',
+      title: milestoneMap.get(mitreItems[3]?.id) || slideItems[2]?.title || 'Sophos changes the outcome',
+      detail: slideItems[2]?.body || `Sophos detects the malicious activity, blocks encryption behavior, and gives ${customerName} a response path inside Central.`
+    }
+  ];
+
+  const timelineList = document.getElementById('timeline-list');
+  timelineList.innerHTML = timeline.map((item) => `
+    <div class="timeline-step">
+      <div class="timeline-time">${escapeHtml(item.time || '')}</div>
+      <div class="timeline-marker"></div>
+      <div class="timeline-card">
+        <div class="timeline-title">${escapeHtml(renderTemplate(item.title || '', customerName))}</div>
+        <div class="timeline-detail">${escapeHtml(renderTemplate(item.detail || '', customerName))}</div>
       </div>
-    </div>`;
-  }).join('');
-
-  const hero = container.querySelector('.feed-hero')?.outerHTML || '';
-  container.innerHTML = hero + feedHtml;
-
-  compact.innerHTML = items.map((item) => `<div class="feed-item-sm">
-      <div class="feed-name-sm">${escapeHtml(item.title)}</div>
-      <div class="feed-tactic-sm">${escapeHtml(item.type)}</div>
-    </div>`).join('');
+    </div>
+  `).join('');
 }
 
 function renderBriefing(scenario) {
   const prelude = scenario.prelude || {};
-  const customerName = scenario.customer?.name || 'the customer';
   const industry = scenario.customer?.industry || 'general';
-  const industryPoints = prelude.industryTalkingPoints?.[industry] || [];
   const points = prelude.expectedDetections || [];
   const presenterPoints = prelude.talkingPoints || [];
-  const milestoneItems = prelude.milestones || [];
-  const clickPath = prelude.clickPath || [
-    'Open the high-priority alert and frame why it matters immediately.',
-    'Move into the investigation/case view to show correlated context.',
-    'Show detections and threat activity to prove the chain, then close on response actions.'
-  ];
+  const industryPoints = prelude.industryTalkingPoints?.[industry] || [];
+  const customerName = scenario.customer?.name || 'the customer';
 
   document.getElementById('scenario-name').textContent = scenario.name || 'Scenario';
-  document.getElementById('brief-eyebrow').textContent = prelude.threatFamily || 'Threat Briefing';
-  document.getElementById('brief-title').textContent = prelude.title || scenario.name || 'Threat Briefing';
-  document.getElementById('brief-subtitle').textContent = prelude.subtitle || scenario.description || '';
+  document.getElementById('brief-eyebrow').textContent = renderTemplate(prelude.threatFamily || 'Threat Briefing', customerName);
+  document.getElementById('brief-title').textContent = renderTemplate(prelude.title || scenario.name || 'Threat Briefing', customerName);
+  document.getElementById('brief-subtitle').textContent = renderTemplate(prelude.subtitle || scenario.description || '', customerName);
 
-  const storySteps = document.getElementById('story-steps');
-  storySteps.innerHTML = (prelude.slides || []).map((slide) => `
+  document.getElementById('story-steps').innerHTML = (prelude.slides || []).slice(0, 3).map((slide) => `
     <div class="story-step">
-      <h3>${escapeHtml(slide.title || '')}</h3>
-      <p>${escapeHtml(slide.body || '')}</p>
+      <h3>${escapeHtml(renderTemplate(slide.title || '', customerName))}</h3>
+      <p>${escapeHtml(renderTemplate(slide.body || '', customerName))}</p>
     </div>
   `).join('');
 
-  const proofPoints = document.getElementById('proof-points');
-  proofPoints.innerHTML = [...points, ...presenterPoints, ...industryPoints].map((p) => `<div class="impact-item">${escapeHtml(p)}</div>`).join('');
+  document.getElementById('proof-points').innerHTML = [...presenterPoints, ...industryPoints, ...points].slice(0, 4).map((p) => `
+    <div class="bullet">${escapeHtml(renderTemplate(p, customerName))}</div>
+  `).join('');
 
-  const milestoneGrid = document.getElementById('milestone-grid');
-  milestoneGrid.innerHTML = milestoneItems.map((m) => {
-    const meta = getMilestone(m.id) || { icon: '◆', label: m.label || 'Milestone', color: '#00A8E0' };
-    return `<div class="milestone-card">
-      <div class="milestone-top">
-        <span class="milestone-icon">${escapeHtml(meta.icon)}</span>
-        <span class="milestone-label" style="color:${meta.color}">${escapeHtml(m.label || meta.label)}</span>
-      </div>
-      <div class="milestone-tech">${escapeHtml(m.id || '')}</div>
-    </div>`;
-  }).join('');
+  document.getElementById('mitre-pills').innerHTML = (prelude.mitreTechniques || []).slice(0, 4).map((m) => `
+    <div class="pill"><strong>${escapeHtml(m.id)}</strong><br>${escapeHtml(m.name)}</div>
+  `).join('');
+}
 
-  const mitrePills = document.getElementById('mitre-pills');
-  mitrePills.innerHTML = (prelude.mitreTechniques || []).map((m) => `<div class="pill">${escapeHtml(m.id)} — ${escapeHtml(m.name)}</div>`).join('');
+function renderTransition(scenario) {
+  const prelude = scenario.prelude || {};
+  const customerName = scenario.customer?.name || 'the customer';
+  const points = prelude.expectedDetections || [];
+  const customerValue = [
+    `Faster clarity for ${customerName} when the incident begins to unfold.`,
+    'Clearer prioritization by turning scattered signals into a coherent incident story.',
+    'Quicker response decisions before technical impact becomes business impact.'
+  ];
 
-  document.getElementById('transition-headline').textContent = `Show ${customerName} what this looks like in Sophos Central`;
-  document.getElementById('transition-copy').textContent = `You now move from the attack narrative into live operational proof for ${customerName}: the rendered alerts, case context, detections, threat storyline, and response path that appear directly inside the injected Sophos Central experience.`;
-  document.getElementById('transition-line').textContent = prelude.transitionLine || 'Now let’s pivot into Sophos Central and show exactly how your team would see, investigate, and respond to this incident.';
-  document.getElementById('expected-points').innerHTML = points.map((p) => `<div class="proof-item">${escapeHtml(p)}</div>`).join('');
-  document.getElementById('click-path').innerHTML = clickPath.map((p) => `<div class="proof-item">${escapeHtml(p)}</div>`).join('');
+  document.getElementById('transition-headline').textContent = 'What your team would see in Sophos Central';
+  document.getElementById('transition-copy').textContent = 'This is where the incident becomes clear: the alert, the investigation context, the detections, and the response story your team would act on.';
+  document.getElementById('transition-line').textContent = renderTemplate(prelude.transitionLine || 'Now let’s move into Sophos Central and show how this incident becomes visible to your team in real time.', customerName);
+
+  document.getElementById('expected-points').innerHTML = points.slice(0, 4).map((p) => `
+    <div class="bullet">${escapeHtml(renderTemplate(p, customerName))}</div>
+  `).join('');
+
+  document.getElementById('customer-value').innerHTML = customerValue.map((p) => `
+    <div class="click-item">${escapeHtml(p)}</div>
+  `).join('');
 }
 
 (async function init() {
   const state = await getState();
   const scenario = state?.scenarioData || {};
   const mode = state?.launchMode || 'direct';
+
   if (mode === 'direct') {
     launchCentral();
     return;
   }
+
   if (!scenario?.prelude?.enabled) {
     launchCentral();
     return;
   }
 
-  renderFeed(scenario);
+  renderTimeline(scenario);
   renderBriefing(scenario);
-  startTimer();
+  renderTransition(scenario);
 
   document.getElementById('nav-prev').addEventListener('click', () => navigate(-1));
   document.getElementById('nav-next').addEventListener('click', () => navigate(1));

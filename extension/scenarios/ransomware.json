@@ -12,7 +12,7 @@
   },
   "prelude": {
     "enabled": true,
-    "title": "{{customerName}} — Live Attack Chain Prelude",
+    "title": "{{customerName}} — Live Attack Chain",
     "subtitle": "A realistic multi-stage ransomware storyline built to show stakeholders exactly how a high-consequence attack unfolds, why it matters to {{customerName}}, and how Sophos surfaces the incident inside Central before impact becomes business reality.",
     "threatFamily": "Live Attack Chain → Ransomware",
     "type": "storyboard",
@@ -20,7 +20,7 @@
     "posterUrl": "",
     "ctaLabel": "Open Sophos Central Demo",
     "autoLaunch": false,
-    "transitionLine": "Now let’s pivot into Sophos Central and show exactly what your team at {{customerName}} would see live: the alerts, case context, detections, threat graph, and response path that turn this story into action.",
+    "transitionLine": "Now let’s move into Sophos Central and show how this incident becomes visible to your team in real time.",
     "expectedDetections": [
       "Malicious file execution detected on the initial endpoint",
       "Shadow copy deletion behavior flagged as a ransomware precursor",
