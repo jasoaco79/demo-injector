@@ -17,8 +17,31 @@ const attack = canonical.attack || {};
 const narrative = canonical.narrative || {};
 const outcome = canonical.expectedOutcome || {};
 const identity = canonical.identity || {};
+const execution = canonical.execution || {};
 
 const isRansomware = (attack.attackType || '').toLowerCase() === 'ransomware';
+const executionTimeline = Array.isArray(execution.timeline) ? execution.timeline : [];
+
+function findExecutionEntry(phaseIdPart, techniqueId) {
+  return executionTimeline.find((e) =>
+    (phaseIdPart && String(e.phaseId || '').includes(phaseIdPart)) ||
+    (techniqueId && e.techniqueId === techniqueId)
+  ) || null;
+}
+
+const phaseDisable = findExecutionEntry('disable-defenses', 'T1562.001');
+const phaseShadow = findExecutionEntry('delete-shadow-copies', 'T1490');
+const phaseStage = findExecutionEntry('stage-ransom-note', 'T1486');
+const executionAware = executionTimeline.length > 0;
+
+function relTime(fallback, entry) {
+  if (!executionAware || !entry?.timestamp || !execution.startedAt) return fallback;
+  const start = new Date(execution.startedAt).getTime();
+  const ts = new Date(entry.timestamp).getTime();
+  if (!Number.isFinite(start) || !Number.isFinite(ts)) return fallback;
+  const mins = Math.max(1, Math.round((ts - start) / 60000));
+  return `-${mins}m`;
+}
 
 function severityNumber(level) {
   return level === 'critical' ? 9 : level === 'high' ? 8 : level === 'medium' ? 6 : 4;
@@ -58,11 +81,11 @@ function buildRansomwareAlerts() {
       product: 'endpoint',
       threat: 'Troj/Ransom-GKL',
       threat_cleanable: true,
-      created_at: '-5m',
+      created_at: relTime('-5m', phaseDisable),
       severity: 'medium',
       actionable: true,
       category: 'malware',
-      when: '-5m',
+      when: relTime('-5m', phaseDisable),
       allowedActions: ['CLEAN', 'ACKNOWLEDGE'],
       location: 'DESKTOP-FIN042',
       type: 'Event::Endpoint::Threat::Detected',
@@ -79,11 +102,11 @@ function buildRansomwareAlerts() {
       product: 'endpoint',
       threat: null,
       threat_cleanable: null,
-      created_at: '-4m',
+      created_at: relTime('-4m', phaseDisable),
       severity: 'high',
       actionable: false,
       category: 'policy',
-      when: '-4m',
+      when: relTime('-4m', phaseDisable),
       allowedActions: ['ACKNOWLEDGE'],
       location: 'DESKTOP-FIN042',
       type: 'Event::Endpoint::SavDisabled',
@@ -100,11 +123,11 @@ function buildRansomwareAlerts() {
       product: 'endpoint',
       threat: 'CryptoGuard',
       threat_cleanable: false,
-      created_at: '-3m',
+      created_at: relTime('-3m', phaseShadow),
       severity: 'high',
       actionable: true,
       category: 'runtime_detections',
-      when: '-3m',
+      when: relTime('-3m', phaseShadow),
       allowedActions: ['ACKNOWLEDGE'],
       location: 'DESKTOP-FIN042',
       type: 'Event::Endpoint::CoreDetection::CryptoGuard',
@@ -123,8 +146,8 @@ function buildRansomwareAlerts() {
 function buildRansomwareDetections() {
   return [
     {
-      detectionCreatedAt: '-3m',
-      connectorGeneratedAt: '-3m',
+      detectionCreatedAt: relTime('-3m', phaseShadow),
+      connectorGeneratedAt: relTime('-3m', phaseShadow),
       connector: {
         id: 'SophosSensorID',
         type: 'endpoint',
@@ -169,8 +192,8 @@ function buildRansomwareDetections() {
       caseDescription: 'Active ransomware attack — shadow copy deletion precursor'
     },
     {
-      detectionCreatedAt: '-5m',
-      connectorGeneratedAt: '-5m',
+      detectionCreatedAt: relTime('-5m', phaseDisable),
+      connectorGeneratedAt: relTime('-5m', phaseDisable),
       connector: {
         id: 'SophosSensorID',
         type: 'endpoint',
@@ -215,8 +238,8 @@ function buildRansomwareDetections() {
       caseDescription: 'Defense impairment activity consistent with ransomware staging'
     },
     {
-      detectionCreatedAt: '-2m',
-      connectorGeneratedAt: '-2m',
+      detectionCreatedAt: relTime('-2m', phaseStage),
+      connectorGeneratedAt: relTime('-2m', phaseStage),
       connector: {
         id: 'SophosSensorID',
         type: 'endpoint',
@@ -362,16 +385,16 @@ const extensionScenario = {
         type: 'investigation',
         name: `(DESKTOP-FIN042) | ${identity.name || 'Threat Investigation'} — {{customerName}}`,
         managedBy: 'self',
-        createdAt: '-3m',
+        createdAt: relTime('-3m', phaseShadow),
         createdBy: { name: 'Auto-generated' },
-        updatedAt: '-1m',
+        updatedAt: relTime('-1m', phaseStage || phaseShadow),
         status: 'investigating',
         initialDetection: {
           severity: 9,
           type: 'Threat',
           detectionRule: 'WIN-IMP-PRC-SHADOWCOPY-SELECT-DELETE-RESIZE-1',
           mitreAttacks: mapMitreAttacksForCase(),
-          time: '-3m',
+          time: relTime('-3m', phaseShadow),
           sensor: {
             type: 'endpoint',
             source: 'Sophos Endpoint'
@@ -438,19 +461,19 @@ const extensionScenario = {
         userName: 'Sophos Endpoint',
         action: 'CryptoGuard blocked ransomware precursor activity on DESKTOP-FIN042 before broad encryption impact occurred.',
         category: 'caseActivity',
-        createdAt: '-2m'
+        createdAt: relTime('-2m', phaseShadow)
       },
       {
         userName: 'Sophos Endpoint',
         action: 'Shadow copy targeting and recovery impairment behavior correlated into a single ransomware investigation.',
         category: 'caseActivity',
-        createdAt: '-2m'
+        createdAt: relTime('-2m', phaseShadow)
       },
       {
         userName: 'Sophos Endpoint',
         action: 'Ransom note staging artifacts detected under the demo path and attached to the investigation timeline.',
         category: 'caseActivity',
-        createdAt: '-3m'
+        createdAt: relTime('-3m', phaseStage)
       }
     ],
     mitreSummary: {
@@ -513,8 +536,8 @@ const extensionScenario = {
           username: '{{customerDomain}}\\sarah.chen',
           rootCauseName: 'invoice_march2026.exe',
           malwareName: 'Troj/Ransom-GKL',
-          cloudCreatedAt: '-3m',
-          rootCauseDT: '-5m',
+          cloudCreatedAt: relTime('-3m', phaseShadow),
+          rootCauseDT: relTime('-5m', phaseDisable),
           status: 'closed',
           priority: 'HIGH',
           id: 'auto',
@@ -594,7 +617,7 @@ const extensionScenario = {
     mode: 'prepend',
     items: [
       {
-        timestamp: '-1m',
+        timestamp: relTime('-1m', phaseStage || phaseShadow),
         type: 'admin_action',
         category: 'endpoint',
         action: 'Investigation escalated',
@@ -606,7 +629,7 @@ const extensionScenario = {
         description: 'Ransomware precursor activity on DESKTOP-FIN042 escalated for immediate analyst review.'
       },
       {
-        timestamp: '-2m',
+        timestamp: relTime('-2m', phaseShadow),
         type: 'system_event',
         category: 'endpoint',
         action: 'CryptoGuard precursor correlation',
@@ -618,7 +641,7 @@ const extensionScenario = {
         description: 'Sophos correlated service impairment, shadow copy targeting, and staged impact artifacts into a ransomware investigation.'
       },
       {
-        timestamp: '-3m',
+        timestamp: relTime('-3m', phaseDisable),
         type: 'system_event',
         category: 'endpoint',
         action: 'Tamper protection response',
