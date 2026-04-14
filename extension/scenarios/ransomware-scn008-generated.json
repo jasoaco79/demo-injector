@@ -1,9 +1,9 @@
 {
-  "id": "ransomware-canonical",
+  "id": "ransomware-scn008-generated",
   "name": "Ransomware Pre-Deployment Simulation",
   "description": "Simulate the four-phase ransomware pre-deployment sequence: disable backup services, narrate shadow copy deletion, stage a ransom note and encrypted file markers, then generate the Sophos XDR detection handoff. Designed to show how MDR interrupts a ransomware attack before any files are actually encrypted.",
   "version": 1,
-  "createdAt": "2026-04-14T03:16:06.262Z",
+  "createdAt": "2026-04-14T03:21:19.371Z",
   "customer": {
     "name": "Contoso Healthcare",
     "industry": "healthcare",
@@ -12,7 +12,7 @@
   },
   "prelude": {
     "enabled": true,
-    "title": "{{customerName}} — Live Attack Chain",
+    "title": "{{customerName}} — Live Attack Chain Prelude",
     "subtitle": "A realistic multi-stage ransomware storyline built to show stakeholders exactly how a high-consequence attack unfolds, why it matters to {{customerName}}, and how Sophos surfaces the incident inside Central before impact becomes business reality.",
     "threatFamily": "Live Attack Chain → Ransomware",
     "type": "storyboard",
@@ -20,7 +20,7 @@
     "posterUrl": "",
     "ctaLabel": "Open Sophos Central Demo",
     "autoLaunch": false,
-    "transitionLine": "Now let’s move into Sophos Central and show how this incident becomes visible to your team in real time.",
+    "transitionLine": "Now let’s pivot into Sophos Central and show exactly what your team at {{customerName}} would see live: the alerts, case context, detections, threat graph, and response path that turn this story into action.",
     "expectedDetections": [
       "VSS and WBEngine service disabled by non-system process",
       "vssadmin or wmic shadowcopy delete command execution",
@@ -29,6 +29,14 @@
       "High-confidence ransomware precursor — automatic MDR escalation"
     ],
     "mitreTechniques": [
+      {
+        "id": "T1204.002",
+        "name": "Malicious File"
+      },
+      {
+        "id": "T1059.001",
+        "name": "PowerShell"
+      },
       {
         "id": "T1562.001",
         "name": "Impair Defenses: Disable or Modify Tools"
@@ -48,8 +56,8 @@
     ],
     "milestones": [
       {
-        "id": "T1562.001",
-        "label": "Defenses impaired"
+        "id": "T1204.002",
+        "label": "Initial compromise"
       },
       {
         "id": "T1490",
@@ -57,7 +65,7 @@
       },
       {
         "id": "T1486",
-        "label": "Encryption attempt stopped before impact"
+        "label": "Encryption attempt blocked"
       }
     ],
     "slides": [
@@ -115,26 +123,27 @@
     "items": [
       {
         "product": "endpoint",
-        "threat": "Ransomware Precursor",
-        "threat_cleanable": false,
-        "created_at": "-3m",
-        "severity": "high",
+        "threat": "Troj/Ransom-GKL",
+        "threat_cleanable": true,
+        "created_at": "-5m",
+        "severity": "medium",
         "actionable": true,
-        "category": "runtime_detections",
-        "when": "-3m",
+        "category": "malware",
+        "when": "-5m",
         "allowedActions": [
+          "CLEAN",
           "ACKNOWLEDGE"
         ],
         "location": "DESKTOP-FIN042",
-        "type": "Event::Endpoint::CoreDetection::CryptoGuard",
+        "type": "Event::Endpoint::Threat::Detected",
         "source": null,
         "data": {
-          "created_at": "-3m",
+          "created_at": "-5m",
           "endpoint_type": "computer",
           "endpoint_platform": "windows"
         },
-        "description": "Ransomware precursor behavior detected on DESKTOP-FIN042. Shadow copy deletion and recovery impairment activity observed.",
-        "info": "High-confidence ransomware precursor detected"
+        "description": "Malware detected: 'Mal/Generic-S' at 'C:\\Users\\sarah.chen\\Downloads\\invoice_march2026.exe'",
+        "info": "Malware cleaned successfully: 'Mal/Generic-S'"
       },
       {
         "product": "endpoint",
@@ -156,13 +165,36 @@
           "endpoint_type": "computer",
           "endpoint_platform": "windows"
         },
-        "description": "Malicious process attempted to impair recovery and defensive services on DESKTOP-FIN042.",
+        "description": "Malicious process attempted to disable backup and recovery protections on DESKTOP-FIN042. Sophos blocked the attempt to impair defensive services.",
         "info": null
+      },
+      {
+        "product": "endpoint",
+        "threat": "CryptoGuard",
+        "threat_cleanable": false,
+        "created_at": "-3m",
+        "severity": "high",
+        "actionable": true,
+        "category": "runtime_detections",
+        "when": "-3m",
+        "allowedActions": [
+          "ACKNOWLEDGE"
+        ],
+        "location": "DESKTOP-FIN042",
+        "type": "Event::Endpoint::CoreDetection::CryptoGuard",
+        "source": null,
+        "data": {
+          "created_at": "-3m",
+          "endpoint_type": "computer",
+          "endpoint_platform": "windows"
+        },
+        "description": "CryptoGuard detected ransomware precursor behavior on DESKTOP-FIN042. Shadow copy deletion and recovery impairment activity observed before encryption impact.",
+        "info": "High-confidence ransomware precursor detected and escalated"
       }
     ],
     "summaryDelta": {
       "high": 2,
-      "medium": 0,
+      "medium": 1,
       "low": 0
     }
   },
@@ -186,45 +218,25 @@
           "mitreAttacks": [
             {
               "tactic": {
-                "id": "TA0000",
-                "name": "Mapped Technique",
+                "id": "TA0005",
+                "name": "Defense Evasion",
                 "techniques": [
                   {
                     "id": "T1562.001",
-                    "name": "Impair Defenses: Disable or Modify Tools"
+                    "name": "Disable or Modify Tools"
                   }
                 ]
               }
             },
             {
               "tactic": {
-                "id": "TA0000",
-                "name": "Mapped Technique",
+                "id": "TA0040",
+                "name": "Impact",
                 "techniques": [
                   {
                     "id": "T1490",
                     "name": "Inhibit System Recovery"
-                  }
-                ]
-              }
-            },
-            {
-              "tactic": {
-                "id": "TA0000",
-                "name": "Mapped Technique",
-                "techniques": [
-                  {
-                    "id": "T1489",
-                    "name": "Service Stop"
-                  }
-                ]
-              }
-            },
-            {
-              "tactic": {
-                "id": "TA0000",
-                "name": "Mapped Technique",
-                "techniques": [
+                  },
                   {
                     "id": "T1486",
                     "name": "Data Encrypted for Impact"
@@ -242,8 +254,8 @@
         "assignee": {
           "name": "SOC Analyst"
         },
-        "overview": "Sophos escalates and interrupts the ransomware chain before broad encryption impact occurs.",
-        "detectionCount": 5,
+        "overview": "Active ransomware attack detected on DESKTOP-FIN042. Sophos surfaced defense impairment, shadow copy targeting, and impact staging before broad encryption occurred.",
+        "detectionCount": 12,
         "escalated": true
       }
     ]
@@ -251,51 +263,6 @@
   "detections": {
     "mode": "prepend",
     "items": [
-      {
-        "detectionCreatedAt": "-2m",
-        "connectorGeneratedAt": "-2m",
-        "connector": {
-          "id": "SophosSensorID",
-          "type": "endpoint",
-          "vendor": "Sophos",
-          "version": "SED Driver 4.2.1"
-        },
-        "device": {
-          "type": "computer",
-          "hostname": "DESKTOP-FIN042"
-        },
-        "rawData": {
-          "meta_hostname": "DESKTOP-FIN042",
-          "meta_ip_address": "192.168.1.42",
-          "meta_os_name": "Microsoft Windows 11 Enterprise",
-          "meta_username": "sarah.chen",
-          "cmdline": "VSS and WBEngine service disabled by non-system process",
-          "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-          "parent_name": "invoice_march2026.exe",
-          "sha256": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
-        },
-        "risk": 9,
-        "category": "Threat",
-        "classificationRule": "CANONICAL-GENERATED-DETECTION",
-        "ruleDescription": "VSS and WBEngine service disabled by non-system process",
-        "mitreAttacks": [],
-        "attackType": "ransomware",
-        "severity": 9,
-        "detectionAttack": {
-          "name": "Ransomware Pre-Deployment Simulation"
-        },
-        "detectionLicenses": [
-          "XDR"
-        ],
-        "geolocation": {},
-        "intelixFileReputation": {
-          "score": 100,
-          "label": "Known Malicious"
-        },
-        "detectionType": "Threat",
-        "suppressed": false,
-        "caseDescription": "VSS and WBEngine service disabled by non-system process"
-      },
       {
         "detectionCreatedAt": "-3m",
         "connectorGeneratedAt": "-3m",
@@ -314,20 +281,33 @@
           "meta_ip_address": "192.168.1.42",
           "meta_os_name": "Microsoft Windows 11 Enterprise",
           "meta_username": "sarah.chen",
-          "cmdline": "vssadmin or wmic shadowcopy delete command execution",
+          "cmdline": "powershell.exe -ExecutionPolicy Bypass -C \"vssadmin delete shadows /all /quiet\"",
           "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
           "parent_name": "invoice_march2026.exe",
-          "sha256": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+          "sha256": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
         },
         "risk": 9,
         "category": "Threat",
-        "classificationRule": "CANONICAL-GENERATED-DETECTION",
-        "ruleDescription": "vssadmin or wmic shadowcopy delete command execution",
-        "mitreAttacks": [],
-        "attackType": "ransomware",
+        "classificationRule": "WIN-IMP-PRC-SHADOWCOPY-SELECT-DELETE-RESIZE-1",
+        "ruleDescription": "Shadow copy deletion detected — common ransomware precursor",
+        "mitreAttacks": [
+          {
+            "tactic": {
+              "id": "TA0040",
+              "name": "Impact",
+              "techniques": [
+                {
+                  "id": "T1490",
+                  "name": "Inhibit System Recovery"
+                }
+              ]
+            }
+          }
+        ],
+        "attackType": "Ransomware",
         "severity": 9,
         "detectionAttack": {
-          "name": "Ransomware Pre-Deployment Simulation"
+          "name": "Ransomware Kill Chain"
         },
         "detectionLicenses": [
           "XDR"
@@ -339,52 +319,7 @@
         },
         "detectionType": "Threat",
         "suppressed": false,
-        "caseDescription": "vssadmin or wmic shadowcopy delete command execution"
-      },
-      {
-        "detectionCreatedAt": "-4m",
-        "connectorGeneratedAt": "-4m",
-        "connector": {
-          "id": "SophosSensorID",
-          "type": "endpoint",
-          "vendor": "Sophos",
-          "version": "SED Driver 4.2.1"
-        },
-        "device": {
-          "type": "computer",
-          "hostname": "DESKTOP-FIN042"
-        },
-        "rawData": {
-          "meta_hostname": "DESKTOP-FIN042",
-          "meta_ip_address": "192.168.1.42",
-          "meta_os_name": "Microsoft Windows 11 Enterprise",
-          "meta_username": "sarah.chen",
-          "cmdline": "Ransom note file creation (README_RECOVER_FILES.txt pattern)",
-          "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-          "parent_name": "invoice_march2026.exe",
-          "sha256": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
-        },
-        "risk": 9,
-        "category": "Threat",
-        "classificationRule": "CANONICAL-GENERATED-DETECTION",
-        "ruleDescription": "Ransom note file creation (README_RECOVER_FILES.txt pattern)",
-        "mitreAttacks": [],
-        "attackType": "ransomware",
-        "severity": 9,
-        "detectionAttack": {
-          "name": "Ransomware Pre-Deployment Simulation"
-        },
-        "detectionLicenses": [
-          "XDR"
-        ],
-        "geolocation": {},
-        "intelixFileReputation": {
-          "score": 100,
-          "label": "Known Malicious"
-        },
-        "detectionType": "Threat",
-        "suppressed": false,
-        "caseDescription": "Ransom note file creation (README_RECOVER_FILES.txt pattern)"
+        "caseDescription": "Active ransomware attack — shadow copy deletion precursor"
       },
       {
         "detectionCreatedAt": "-5m",
@@ -404,32 +339,198 @@
           "meta_ip_address": "192.168.1.42",
           "meta_os_name": "Microsoft Windows 11 Enterprise",
           "meta_username": "sarah.chen",
-          "cmdline": "Mass file extension change to .encrypted",
-          "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+          "cmdline": "sc.exe config vss start= disabled && sc.exe config wbengine start= disabled",
+          "path": "C:\\Windows\\System32\\sc.exe",
           "parent_name": "invoice_march2026.exe",
-          "sha256": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+          "sha256": "11111111e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6"
         },
-        "risk": 9,
+        "risk": 8,
         "category": "Threat",
-        "classificationRule": "CANONICAL-GENERATED-DETECTION",
-        "ruleDescription": "Mass file extension change to .encrypted",
-        "mitreAttacks": [],
-        "attackType": "ransomware",
-        "severity": 9,
+        "classificationRule": "WIN-DEF-SVC-DISABLE-RANSOM-1",
+        "ruleDescription": "Backup and recovery service impairment detected",
+        "mitreAttacks": [
+          {
+            "tactic": {
+              "id": "TA0005",
+              "name": "Defense Evasion",
+              "techniques": [
+                {
+                  "id": "T1562.001",
+                  "name": "Disable or Modify Tools"
+                }
+              ]
+            }
+          }
+        ],
+        "attackType": "Ransomware",
+        "severity": 8,
         "detectionAttack": {
-          "name": "Ransomware Pre-Deployment Simulation"
+          "name": "Ransomware Kill Chain"
         },
         "detectionLicenses": [
           "XDR"
         ],
         "geolocation": {},
         "intelixFileReputation": {
-          "score": 100,
-          "label": "Known Malicious"
+          "score": 84,
+          "label": "Suspicious"
         },
         "detectionType": "Threat",
         "suppressed": false,
-        "caseDescription": "Mass file extension change to .encrypted"
+        "caseDescription": "Defense impairment activity consistent with ransomware staging"
+      },
+      {
+        "detectionCreatedAt": "-2m",
+        "connectorGeneratedAt": "-2m",
+        "connector": {
+          "id": "SophosSensorID",
+          "type": "endpoint",
+          "vendor": "Sophos",
+          "version": "SED Driver 4.2.1"
+        },
+        "device": {
+          "type": "computer",
+          "hostname": "DESKTOP-FIN042"
+        },
+        "rawData": {
+          "meta_hostname": "DESKTOP-FIN042",
+          "meta_ip_address": "192.168.1.42",
+          "meta_os_name": "Microsoft Windows 11 Enterprise",
+          "meta_username": "sarah.chen",
+          "cmdline": "powershell.exe -C \"New-Item README_RECOVER_FILES.txt; New-Item document_1.encrypted\"",
+          "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+          "parent_name": "invoice_march2026.exe",
+          "sha256": "22222222e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6"
+        },
+        "risk": 8,
+        "category": "Threat",
+        "classificationRule": "WIN-RANSOM-NOTE-STAGING-1",
+        "ruleDescription": "Ransom note and encrypted file marker staging detected",
+        "mitreAttacks": [
+          {
+            "tactic": {
+              "id": "TA0040",
+              "name": "Impact",
+              "techniques": [
+                {
+                  "id": "T1486",
+                  "name": "Data Encrypted for Impact"
+                }
+              ]
+            }
+          }
+        ],
+        "attackType": "Ransomware",
+        "severity": 8,
+        "detectionAttack": {
+          "name": "Ransomware Kill Chain"
+        },
+        "detectionLicenses": [
+          "XDR"
+        ],
+        "geolocation": {},
+        "intelixFileReputation": {
+          "score": 82,
+          "label": "Suspicious"
+        },
+        "detectionType": "Threat",
+        "suppressed": false,
+        "caseDescription": "Ransom note staging and encrypted marker proliferation detected"
+      }
+    ]
+  },
+  "caseDetail": {
+    "extraActivities": [
+      {
+        "userName": "Sophos Endpoint",
+        "action": "Sophos blocked ransomware precursor activity on DESKTOP-FIN042 before broad encryption impact occurred.",
+        "category": "caseActivity",
+        "createdAt": "-2m"
+      },
+      {
+        "userName": "Sophos Endpoint",
+        "action": "Shadow copy targeting and recovery impairment behavior correlated into a single ransomware investigation.",
+        "category": "caseActivity",
+        "createdAt": "-2m"
+      },
+      {
+        "userName": "Sophos Endpoint",
+        "action": "Ransom note staging artifacts detected under the demo path and attached to the investigation timeline.",
+        "category": "caseActivity",
+        "createdAt": "-3m"
+      }
+    ]
+  },
+  "threatGraphs": {
+    "stacCases": {
+      "summary": {
+        "closed": 1,
+        "inprogress": 0,
+        "total": 1,
+        "new": 0
+      },
+      "items": [
+        {
+          "endpointType": "computer",
+          "endpointName": "DESKTOP-FIN042",
+          "username": "{{customerDomain}}\\sarah.chen",
+          "rootCauseName": "invoice_march2026.exe",
+          "malwareName": "Troj/Ransom-GKL",
+          "cloudCreatedAt": "-3m",
+          "rootCauseDT": "-5m",
+          "status": "closed",
+          "priority": "HIGH",
+          "id": "auto",
+          "caseType": "SYSTEM_GENERATED",
+          "suspectProcessCount": 3,
+          "numberOfBusinessFiles": "5",
+          "isBehavioral": false,
+          "hasProcessBeacon": false
+        }
+      ],
+      "total": 1,
+      "filtered": 1,
+      "nextKey": null
+    }
+  },
+  "auditLogs": {
+    "mode": "prepend",
+    "items": [
+      {
+        "timestamp": "-1m",
+        "type": "admin_action",
+        "category": "endpoint",
+        "action": "Investigation escalated",
+        "actor": "SOC Analyst",
+        "actorType": "admin",
+        "target": "DESKTOP-FIN042",
+        "targetType": "endpoint",
+        "result": "success",
+        "description": "Ransomware precursor activity on DESKTOP-FIN042 escalated for immediate analyst review."
+      },
+      {
+        "timestamp": "-2m",
+        "type": "system_event",
+        "category": "endpoint",
+        "action": "CryptoGuard precursor correlation",
+        "actor": "Sophos Endpoint",
+        "actorType": "system",
+        "target": "DESKTOP-FIN042",
+        "targetType": "endpoint",
+        "result": "success",
+        "description": "Sophos correlated service impairment, shadow copy targeting, and staged impact artifacts into a ransomware investigation."
+      },
+      {
+        "timestamp": "-3m",
+        "type": "system_event",
+        "category": "endpoint",
+        "action": "Tamper protection response",
+        "actor": "Sophos Endpoint",
+        "actorType": "system",
+        "target": "DESKTOP-FIN042",
+        "targetType": "endpoint",
+        "result": "blocked",
+        "description": "Attempt to impair backup and recovery protections was blocked before broad impact could occur."
       }
     ]
   }
