@@ -1,0 +1,436 @@
+{
+  "id": "ransomware-canonical",
+  "name": "Ransomware Pre-Deployment Simulation",
+  "description": "Simulate the four-phase ransomware pre-deployment sequence: disable backup services, narrate shadow copy deletion, stage a ransom note and encrypted file markers, then generate the Sophos XDR detection handoff. Designed to show how MDR interrupts a ransomware attack before any files are actually encrypted.",
+  "version": 1,
+  "createdAt": "2026-04-14T03:16:06.262Z",
+  "customer": {
+    "name": "Contoso Healthcare",
+    "industry": "healthcare",
+    "endpointCount": 2500,
+    "serverCount": 186
+  },
+  "prelude": {
+    "enabled": true,
+    "title": "{{customerName}} — Live Attack Chain",
+    "subtitle": "A realistic multi-stage ransomware storyline built to show stakeholders exactly how a high-consequence attack unfolds, why it matters to {{customerName}}, and how Sophos surfaces the incident inside Central before impact becomes business reality.",
+    "threatFamily": "Live Attack Chain → Ransomware",
+    "type": "storyboard",
+    "videoUrl": "",
+    "posterUrl": "",
+    "ctaLabel": "Open Sophos Central Demo",
+    "autoLaunch": false,
+    "transitionLine": "Now let’s move into Sophos Central and show how this incident becomes visible to your team in real time.",
+    "expectedDetections": [
+      "VSS and WBEngine service disabled by non-system process",
+      "vssadmin or wmic shadowcopy delete command execution",
+      "Ransom note file creation (README_RECOVER_FILES.txt pattern)",
+      "Mass file extension change to .encrypted",
+      "High-confidence ransomware precursor — automatic MDR escalation"
+    ],
+    "mitreTechniques": [
+      {
+        "id": "T1562.001",
+        "name": "Impair Defenses: Disable or Modify Tools"
+      },
+      {
+        "id": "T1490",
+        "name": "Inhibit System Recovery"
+      },
+      {
+        "id": "T1489",
+        "name": "Service Stop"
+      },
+      {
+        "id": "T1486",
+        "name": "Data Encrypted for Impact"
+      }
+    ],
+    "milestones": [
+      {
+        "id": "T1562.001",
+        "label": "Defenses impaired"
+      },
+      {
+        "id": "T1490",
+        "label": "Recovery mechanisms targeted"
+      },
+      {
+        "id": "T1486",
+        "label": "Encryption attempt stopped before impact"
+      }
+    ],
+    "slides": [
+      {
+        "title": "Initial compromise at {{customerName}}",
+        "body": "A user opens a convincing business file and triggers a ransomware chain. What looks like a single bad click quickly becomes an enterprise risk event for {{customerName}}."
+      },
+      {
+        "title": "The attacker moves toward impact",
+        "body": "Before encryption begins, the attacker weakens recovery by disabling protections, targeting shadow copies, and staging the conditions for business disruption."
+      },
+      {
+        "title": "Sophos changes the outcome",
+        "body": "Sophos surfaces the precursor behavior, escalates the threat, and gives the team at {{customerName}} a response path before encryption becomes business reality."
+      }
+    ],
+    "talkingPoints": [
+      "Ransomware operators spend weeks inside a network before they encrypt anything — they're maximizing blast radius",
+      "Shadow copy deletion is the single highest-confidence ransomware signal — when we see it, we escalate immediately",
+      "Sophos MDR stops ransomware at the pre-deployment phase — before a single file is encrypted"
+    ],
+    "industryTalkingPoints": {
+      "healthcare": [
+        "Healthcare ransomware directly impacts patient care — hospitals have diverted ambulances and cancelled surgeries after attacks",
+        "The average healthcare ransomware attack costs $1.4M and takes 54 days to recover from — MDR prevention is orders of magnitude cheaper",
+        "HIPAA breach notification requirements mean every encrypted patient record is a reportable incident"
+      ],
+      "financial_services": [
+        "The average ransomware demand in financial services is now $4.7M — and that's before regulatory fines and reputational damage",
+        "Wire transfer fraud and ransomware are increasingly combined — attackers encrypt and extort simultaneously",
+        "MDR's 24/7 coverage means we catch ransomware at 3am on a Sunday — when your team isn't watching"
+      ],
+      "manufacturing": [
+        "Ransomware on OT systems stops production lines — the cost per hour of downtime often exceeds the ransom demand itself",
+        "Manufacturing is the #1 targeted sector for ransomware — attackers know operational disruption creates payment pressure",
+        "MDR catches the IT foothold before attackers ever reach OT systems"
+      ]
+    },
+    "runbookSteps": [
+      "Frame it: 'This is the scenario your prospect fears most. Let's show them exactly how we stop it.'",
+      "Launch simulation — walk through each phase as it executes",
+      "Phase 1 (defense disable): 'This is the attacker preparing the battlefield — removing your recovery options'",
+      "Phase 2 (shadow copies): 'This is the point of no return in most ransomware attacks — we catch it here'",
+      "Phase 3 (ransom note): 'Show the actual ransom note file in File Explorer on the Windows VM — very visual'",
+      "Switch to Sophos XDR: show the critical alerts firing, analyst escalation workflow, isolation recommendation"
+    ],
+    "clickPath": [
+      "Start on the alert view and show the critical ransomware-related precursor activity that would immediately draw analyst attention.",
+      "Open the investigation or case context to show how Sophos connects the activity into a coherent incident, not just isolated alerts.",
+      "Move into detections and threat activity to prove the attack chain, then close on the response outcome and why the attack did not become a business crisis."
+    ]
+  },
+  "alerts": {
+    "mode": "prepend",
+    "items": [
+      {
+        "product": "endpoint",
+        "threat": "Ransomware Precursor",
+        "threat_cleanable": false,
+        "created_at": "-3m",
+        "severity": "high",
+        "actionable": true,
+        "category": "runtime_detections",
+        "when": "-3m",
+        "allowedActions": [
+          "ACKNOWLEDGE"
+        ],
+        "location": "DESKTOP-FIN042",
+        "type": "Event::Endpoint::CoreDetection::CryptoGuard",
+        "source": null,
+        "data": {
+          "created_at": "-3m",
+          "endpoint_type": "computer",
+          "endpoint_platform": "windows"
+        },
+        "description": "Ransomware precursor behavior detected on DESKTOP-FIN042. Shadow copy deletion and recovery impairment activity observed.",
+        "info": "High-confidence ransomware precursor detected"
+      },
+      {
+        "product": "endpoint",
+        "threat": null,
+        "threat_cleanable": null,
+        "created_at": "-4m",
+        "severity": "high",
+        "actionable": false,
+        "category": "policy",
+        "when": "-4m",
+        "allowedActions": [
+          "ACKNOWLEDGE"
+        ],
+        "location": "DESKTOP-FIN042",
+        "type": "Event::Endpoint::SavDisabled",
+        "source": null,
+        "data": {
+          "created_at": "-4m",
+          "endpoint_type": "computer",
+          "endpoint_platform": "windows"
+        },
+        "description": "Malicious process attempted to impair recovery and defensive services on DESKTOP-FIN042.",
+        "info": null
+      }
+    ],
+    "summaryDelta": {
+      "high": 2,
+      "medium": 0,
+      "low": 0
+    }
+  },
+  "cases": {
+    "mode": "prepend",
+    "items": [
+      {
+        "type": "investigation",
+        "name": "(DESKTOP-FIN042) | Ransomware Pre-Deployment Simulation — {{customerName}}",
+        "managedBy": "self",
+        "createdAt": "-3m",
+        "createdBy": {
+          "name": "Auto-generated"
+        },
+        "updatedAt": "-1m",
+        "status": "investigating",
+        "initialDetection": {
+          "severity": 9,
+          "type": "Threat",
+          "detectionRule": "WIN-IMP-PRC-SHADOWCOPY-SELECT-DELETE-RESIZE-1",
+          "mitreAttacks": [
+            {
+              "tactic": {
+                "id": "TA0000",
+                "name": "Mapped Technique",
+                "techniques": [
+                  {
+                    "id": "T1562.001",
+                    "name": "Impair Defenses: Disable or Modify Tools"
+                  }
+                ]
+              }
+            },
+            {
+              "tactic": {
+                "id": "TA0000",
+                "name": "Mapped Technique",
+                "techniques": [
+                  {
+                    "id": "T1490",
+                    "name": "Inhibit System Recovery"
+                  }
+                ]
+              }
+            },
+            {
+              "tactic": {
+                "id": "TA0000",
+                "name": "Mapped Technique",
+                "techniques": [
+                  {
+                    "id": "T1489",
+                    "name": "Service Stop"
+                  }
+                ]
+              }
+            },
+            {
+              "tactic": {
+                "id": "TA0000",
+                "name": "Mapped Technique",
+                "techniques": [
+                  {
+                    "id": "T1486",
+                    "name": "Data Encrypted for Impact"
+                  }
+                ]
+              }
+            }
+          ],
+          "time": "-3m",
+          "sensor": {
+            "type": "endpoint",
+            "source": "Sophos Endpoint"
+          }
+        },
+        "assignee": {
+          "name": "SOC Analyst"
+        },
+        "overview": "Sophos escalates and interrupts the ransomware chain before broad encryption impact occurs.",
+        "detectionCount": 5,
+        "escalated": true
+      }
+    ]
+  },
+  "detections": {
+    "mode": "prepend",
+    "items": [
+      {
+        "detectionCreatedAt": "-2m",
+        "connectorGeneratedAt": "-2m",
+        "connector": {
+          "id": "SophosSensorID",
+          "type": "endpoint",
+          "vendor": "Sophos",
+          "version": "SED Driver 4.2.1"
+        },
+        "device": {
+          "type": "computer",
+          "hostname": "DESKTOP-FIN042"
+        },
+        "rawData": {
+          "meta_hostname": "DESKTOP-FIN042",
+          "meta_ip_address": "192.168.1.42",
+          "meta_os_name": "Microsoft Windows 11 Enterprise",
+          "meta_username": "sarah.chen",
+          "cmdline": "VSS and WBEngine service disabled by non-system process",
+          "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+          "parent_name": "invoice_march2026.exe",
+          "sha256": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+        },
+        "risk": 9,
+        "category": "Threat",
+        "classificationRule": "CANONICAL-GENERATED-DETECTION",
+        "ruleDescription": "VSS and WBEngine service disabled by non-system process",
+        "mitreAttacks": [],
+        "attackType": "ransomware",
+        "severity": 9,
+        "detectionAttack": {
+          "name": "Ransomware Pre-Deployment Simulation"
+        },
+        "detectionLicenses": [
+          "XDR"
+        ],
+        "geolocation": {},
+        "intelixFileReputation": {
+          "score": 100,
+          "label": "Known Malicious"
+        },
+        "detectionType": "Threat",
+        "suppressed": false,
+        "caseDescription": "VSS and WBEngine service disabled by non-system process"
+      },
+      {
+        "detectionCreatedAt": "-3m",
+        "connectorGeneratedAt": "-3m",
+        "connector": {
+          "id": "SophosSensorID",
+          "type": "endpoint",
+          "vendor": "Sophos",
+          "version": "SED Driver 4.2.1"
+        },
+        "device": {
+          "type": "computer",
+          "hostname": "DESKTOP-FIN042"
+        },
+        "rawData": {
+          "meta_hostname": "DESKTOP-FIN042",
+          "meta_ip_address": "192.168.1.42",
+          "meta_os_name": "Microsoft Windows 11 Enterprise",
+          "meta_username": "sarah.chen",
+          "cmdline": "vssadmin or wmic shadowcopy delete command execution",
+          "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+          "parent_name": "invoice_march2026.exe",
+          "sha256": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+        },
+        "risk": 9,
+        "category": "Threat",
+        "classificationRule": "CANONICAL-GENERATED-DETECTION",
+        "ruleDescription": "vssadmin or wmic shadowcopy delete command execution",
+        "mitreAttacks": [],
+        "attackType": "ransomware",
+        "severity": 9,
+        "detectionAttack": {
+          "name": "Ransomware Pre-Deployment Simulation"
+        },
+        "detectionLicenses": [
+          "XDR"
+        ],
+        "geolocation": {},
+        "intelixFileReputation": {
+          "score": 100,
+          "label": "Known Malicious"
+        },
+        "detectionType": "Threat",
+        "suppressed": false,
+        "caseDescription": "vssadmin or wmic shadowcopy delete command execution"
+      },
+      {
+        "detectionCreatedAt": "-4m",
+        "connectorGeneratedAt": "-4m",
+        "connector": {
+          "id": "SophosSensorID",
+          "type": "endpoint",
+          "vendor": "Sophos",
+          "version": "SED Driver 4.2.1"
+        },
+        "device": {
+          "type": "computer",
+          "hostname": "DESKTOP-FIN042"
+        },
+        "rawData": {
+          "meta_hostname": "DESKTOP-FIN042",
+          "meta_ip_address": "192.168.1.42",
+          "meta_os_name": "Microsoft Windows 11 Enterprise",
+          "meta_username": "sarah.chen",
+          "cmdline": "Ransom note file creation (README_RECOVER_FILES.txt pattern)",
+          "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+          "parent_name": "invoice_march2026.exe",
+          "sha256": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+        },
+        "risk": 9,
+        "category": "Threat",
+        "classificationRule": "CANONICAL-GENERATED-DETECTION",
+        "ruleDescription": "Ransom note file creation (README_RECOVER_FILES.txt pattern)",
+        "mitreAttacks": [],
+        "attackType": "ransomware",
+        "severity": 9,
+        "detectionAttack": {
+          "name": "Ransomware Pre-Deployment Simulation"
+        },
+        "detectionLicenses": [
+          "XDR"
+        ],
+        "geolocation": {},
+        "intelixFileReputation": {
+          "score": 100,
+          "label": "Known Malicious"
+        },
+        "detectionType": "Threat",
+        "suppressed": false,
+        "caseDescription": "Ransom note file creation (README_RECOVER_FILES.txt pattern)"
+      },
+      {
+        "detectionCreatedAt": "-5m",
+        "connectorGeneratedAt": "-5m",
+        "connector": {
+          "id": "SophosSensorID",
+          "type": "endpoint",
+          "vendor": "Sophos",
+          "version": "SED Driver 4.2.1"
+        },
+        "device": {
+          "type": "computer",
+          "hostname": "DESKTOP-FIN042"
+        },
+        "rawData": {
+          "meta_hostname": "DESKTOP-FIN042",
+          "meta_ip_address": "192.168.1.42",
+          "meta_os_name": "Microsoft Windows 11 Enterprise",
+          "meta_username": "sarah.chen",
+          "cmdline": "Mass file extension change to .encrypted",
+          "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+          "parent_name": "invoice_march2026.exe",
+          "sha256": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+        },
+        "risk": 9,
+        "category": "Threat",
+        "classificationRule": "CANONICAL-GENERATED-DETECTION",
+        "ruleDescription": "Mass file extension change to .encrypted",
+        "mitreAttacks": [],
+        "attackType": "ransomware",
+        "severity": 9,
+        "detectionAttack": {
+          "name": "Ransomware Pre-Deployment Simulation"
+        },
+        "detectionLicenses": [
+          "XDR"
+        ],
+        "geolocation": {},
+        "intelixFileReputation": {
+          "score": 100,
+          "label": "Known Malicious"
+        },
+        "detectionType": "Threat",
+        "suppressed": false,
+        "caseDescription": "Mass file extension change to .encrypted"
+      }
+    ]
+  }
+}
