@@ -263,6 +263,25 @@ function buildRansomwareDetections() {
   ];
 }
 
+function buildRansomwareThreatGraphDetail() {
+  return {
+    id: 'auto',
+    status: 'closed',
+    priority: 'HIGH',
+    endpointName: 'DESKTOP-FIN042',
+    rootCauseName: 'invoice_march2026.exe',
+    rootCausePath: 'C:\\Users\\sarah.chen\\Downloads\\invoice_march2026.exe',
+    username: '{{customerDomain}}\\sarah.chen',
+    malwareName: 'Troj/Ransom-GKL',
+    summary: 'Ransomware precursor activity was detected and correlated before encryption impact occurred.',
+    impactedEntities: [
+      { type: 'endpoint', name: 'DESKTOP-FIN042' },
+      { type: 'user', name: '{{customerDomain}}\\sarah.chen' },
+      { type: 'artifact', name: 'README_RECOVER_FILES.txt' }
+    ]
+  };
+}
+
 const extensionScenario = {
   id: 'ransomware-scn008-generated',
   name: identity.name || 'Generated Scenario',
@@ -417,7 +436,7 @@ const extensionScenario = {
     extraActivities: [
       {
         userName: 'Sophos Endpoint',
-        action: 'Sophos blocked ransomware precursor activity on DESKTOP-FIN042 before broad encryption impact occurred.',
+        action: 'CryptoGuard blocked ransomware precursor activity on DESKTOP-FIN042 before broad encryption impact occurred.',
         category: 'caseActivity',
         createdAt: '-2m'
       },
@@ -432,6 +451,50 @@ const extensionScenario = {
         action: 'Ransom note staging artifacts detected under the demo path and attached to the investigation timeline.',
         category: 'caseActivity',
         createdAt: '-3m'
+      }
+    ],
+    mitreSummary: {
+      tactics: [
+        {
+          id: 'TA0005',
+          name: 'Defense Evasion',
+          techniques: [{ id: 'T1562.001', name: 'Disable or Modify Tools' }]
+        },
+        {
+          id: 'TA0040',
+          name: 'Impact',
+          techniques: [
+            { id: 'T1490', name: 'Inhibit System Recovery' },
+            { id: 'T1486', name: 'Data Encrypted for Impact' }
+          ]
+        }
+      ]
+    },
+    impactedEntities: [
+      { type: 'endpoint', name: 'DESKTOP-FIN042', risk: 'high' },
+      { type: 'user', name: '{{customerDomain}}\\sarah.chen', risk: 'medium' },
+      { type: 'artifact', name: 'README_RECOVER_FILES.txt', risk: 'high' }
+    ],
+    notebook: {
+      summary: 'Ransomware precursor activity surfaced before broad encryption impact. Recovery impairment, shadow copy targeting, and impact staging were correlated into a single investigation.',
+      analystNotes: [
+        'Initial access likely came from invoice_march2026.exe executed from the user downloads path.',
+        'Recovery impairment and shadow copy targeting strongly indicate ransomware staging rather than commodity malware.',
+        'Impact staging artifacts were observed, but broad encryption was prevented before full business disruption occurred.'
+      ]
+    },
+    responseActions: [
+      {
+        name: 'Isolate endpoint',
+        status: 'completed',
+        actor: 'SOC Analyst',
+        createdAt: '-1m'
+      },
+      {
+        name: 'Investigate precursor detections',
+        status: 'completed',
+        actor: 'Sophos Endpoint',
+        createdAt: '-2m'
       }
     ]
   } : undefined,
@@ -456,7 +519,7 @@ const extensionScenario = {
           priority: 'HIGH',
           id: 'auto',
           caseType: 'SYSTEM_GENERATED',
-          suspectProcessCount: 3,
+          suspectProcessCount: 4,
           numberOfBusinessFiles: '5',
           isBehavioral: false,
           hasProcessBeacon: false
@@ -465,6 +528,66 @@ const extensionScenario = {
       total: 1,
       filtered: 1,
       nextKey: null
+    },
+    stacCaseDetail: buildRansomwareThreatGraphDetail(),
+    graph: {
+      nodes: [
+        {
+          id: 'n1',
+          type: 'process',
+          name: 'invoice_march2026.exe',
+          hostname: 'DESKTOP-FIN042',
+          properties: {
+            name: 'invoice_march2026.exe',
+            path: 'C:\\Users\\sarah.chen\\Downloads\\invoice_march2026.exe',
+            user: 'sarah.chen',
+            hostname: 'DESKTOP-FIN042'
+          },
+          decoration: { type: 'malicious', label: 'Malicious' }
+        },
+        {
+          id: 'n2',
+          type: 'process',
+          name: 'powershell.exe',
+          hostname: 'DESKTOP-FIN042',
+          properties: {
+            name: 'powershell.exe',
+            path: 'C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe',
+            cmdline: 'powershell.exe -ExecutionPolicy Bypass -C "vssadmin delete shadows /all /quiet"',
+            user: 'sarah.chen',
+            hostname: 'DESKTOP-FIN042'
+          },
+          decoration: { type: 'suspicious', label: 'Suspicious' },
+          mitreAttacks: [{ id: 'T1490', name: 'Inhibit System Recovery' }]
+        },
+        {
+          id: 'n3',
+          type: 'artifact',
+          name: 'README_RECOVER_FILES.txt',
+          properties: {
+            path: 'C:\\Users\\sarah.chen\\AppData\\Local\\Temp\\MDR-LAB-DEMO\\README_RECOVER_FILES.txt'
+          },
+          decoration: { type: 'impact', label: 'Impact Artifact' }
+        }
+      ],
+      edges: [
+        { source: 'n1', target: 'n2', type: 'spawned' },
+        { source: 'n2', target: 'n3', type: 'created' }
+      ]
+    },
+    artifacts: {
+      items: [
+        {
+          name: 'README_RECOVER_FILES.txt',
+          type: 'ransom-note',
+          path: 'C:\\Users\\sarah.chen\\AppData\\Local\\Temp\\MDR-LAB-DEMO\\README_RECOVER_FILES.txt'
+        },
+        {
+          name: 'document_1.encrypted',
+          type: 'encrypted-marker',
+          path: 'C:\\Users\\sarah.chen\\AppData\\Local\\Temp\\MDR-LAB-DEMO\\document_1.encrypted'
+        }
+      ]
     }
   } : undefined,
   auditLogs: isRansomware ? {
