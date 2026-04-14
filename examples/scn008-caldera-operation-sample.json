@@ -1,0 +1,60 @@
+{
+  "id": "op-sample-scn008",
+  "name": "SCN-008 Sample Operation",
+  "state": "finished",
+  "start": "2026-04-14T03:00:00Z",
+  "finish": "2026-04-14T03:03:15Z",
+  "adversary": {
+    "adversary_id": "scn008-ransomware-simulation"
+  },
+  "chain": [
+    {
+      "status": 2,
+      "collect": "2026-04-14T03:00:10Z",
+      "finish": "2026-04-14T03:00:35Z",
+      "command": "sc.exe config vss start= disabled && sc.exe config wbengine start= disabled",
+      "facts": [{ "trait": "service.disabled", "value": "vss" }],
+      "ability": {
+        "ability_id": "scn008-a1-disable-defenses",
+        "name": "SCN-008 | Disable Backup and Recovery Services",
+        "technique_id": "T1562.001"
+      }
+    },
+    {
+      "status": 2,
+      "collect": "2026-04-14T03:00:50Z",
+      "finish": "2026-04-14T03:01:25Z",
+      "command": "vssadmin list shadows && echo vssadmin delete shadows /all /quiet",
+      "facts": [{ "trait": "shadowcopy.targeted", "value": "true" }],
+      "ability": {
+        "ability_id": "scn008-a2-delete-shadow-copies",
+        "name": "SCN-008 | Delete Volume Shadow Copies (VSS)",
+        "technique_id": "T1490"
+      }
+    },
+    {
+      "status": 2,
+      "collect": "2026-04-14T03:01:40Z",
+      "finish": "2026-04-14T03:02:10Z",
+      "command": "New-Item README_RECOVER_FILES.txt; New-Item document_1.encrypted",
+      "facts": [{ "trait": "artifact.created", "value": "README_RECOVER_FILES.txt" }],
+      "ability": {
+        "ability_id": "scn008-a3-stage-ransom-note",
+        "name": "SCN-008 | Stage Ransom Note and Encrypted File Markers",
+        "technique_id": "T1486"
+      }
+    },
+    {
+      "status": 2,
+      "collect": "2026-04-14T03:02:20Z",
+      "finish": "2026-04-14T03:03:00Z",
+      "command": "Write-Output impact report",
+      "facts": [],
+      "ability": {
+        "ability_id": "scn008-a4-impact-report",
+        "name": "SCN-008 | Impact Report",
+        "technique_id": "T1486"
+      }
+    }
+  ]
+}
