@@ -51,8 +51,30 @@ Current pipeline supports:
 - merged canonical scenario with execution timeline
 - runtime-aware extension scenario generation
 
+## Live CALDERA pipeline
+
+### Fetch a real operation
+```bash
+node scripts/fetch-caldera-operation.mjs <operation-id>
+```
+
+Optional environment variables:
+```bash
+export CALDERA_BASE_URL=http://localhost:8080/caldera
+export CALDERA_API_KEY=MDRLABRED
+```
+
+### Full live build
+```bash
+node scripts/build-from-live-caldera.mjs <labops-scenario-json> <operation-id> [output-json]
+```
+
+Example:
+```bash
+node scripts/build-from-live-caldera.mjs /tmp/labops-scn008.json 12345678-aaaa-bbbb-cccc-1234567890ab
+```
+
 ## Next likely enhancements
-- pull live CALDERA operation JSON directly from LabOps
 - auto-name output from source scenario id
 - import generated scenario directly into extension storage
 - derive richer detections from actual command/output content
