@@ -1,0 +1,214 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://demo-studio.local/schemas/canonical-scenario.schema.json",
+  "title": "Demo Studio Canonical Scenario",
+  "type": "object",
+  "required": [
+    "source",
+    "identity",
+    "customer",
+    "narrative",
+    "attack",
+    "expectedOutcome"
+  ],
+  "properties": {
+    "source": {
+      "type": "object",
+      "required": ["type", "scenarioId", "executionEngine"],
+      "properties": {
+        "type": { "type": "string", "enum": ["labops", "manual", "agent", "mixed"] },
+        "scenarioId": { "type": "string" },
+        "calderaAdversaryId": { "type": ["string", "null"] },
+        "executionEngine": { "type": "string", "enum": ["caldera", "manual", "hybrid", "none"] },
+        "operationId": { "type": ["string", "null"] },
+        "notes": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "identity": {
+      "type": "object",
+      "required": ["name", "summary", "category", "audience", "platform"],
+      "properties": {
+        "name": { "type": "string" },
+        "summary": { "type": "string" },
+        "category": { "type": "string" },
+        "audience": { "type": "string" },
+        "platform": { "type": "string" },
+        "tags": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "customer": {
+      "type": "object",
+      "required": ["name", "industry", "endpointCount", "serverCount"],
+      "properties": {
+        "name": { "type": "string" },
+        "industry": { "type": "string" },
+        "endpointCount": { "type": "integer", "minimum": 0 },
+        "serverCount": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "narrative": {
+      "type": "object",
+      "required": [
+        "threatFamily",
+        "title",
+        "subtitle",
+        "businessStakes",
+        "transitionLine",
+        "talkingPoints",
+        "industryTalkingPoints",
+        "runbookSteps",
+        "clickPath"
+      ],
+      "properties": {
+        "threatFamily": { "type": "string" },
+        "title": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "businessStakes": { "type": "array", "items": { "type": "string" } },
+        "transitionLine": { "type": "string" },
+        "talkingPoints": { "type": "array", "items": { "type": "string" } },
+        "industryTalkingPoints": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "runbookSteps": { "type": "array", "items": { "type": "string" } },
+        "clickPath": { "type": "array", "items": { "type": "string" } },
+        "slides": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["title", "body"],
+            "properties": {
+              "title": { "type": "string" },
+              "body": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "attack": {
+      "type": "object",
+      "required": [
+        "initialVector",
+        "attackType",
+        "mitreTactics",
+        "mitreTechniques",
+        "tools",
+        "phases",
+        "milestones"
+      ],
+      "properties": {
+        "initialVector": { "type": "string" },
+        "attackType": { "type": "string" },
+        "mitreTactics": { "type": "array", "items": { "type": "string" } },
+        "mitreTechniques": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "name"],
+            "properties": {
+              "id": { "type": "string" },
+              "name": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "tools": { "type": "array", "items": { "type": "string" } },
+        "phases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "label", "techniqueIds", "status"],
+            "properties": {
+              "id": { "type": "string" },
+              "label": { "type": "string" },
+              "description": { "type": ["string", "null"] },
+              "techniqueIds": { "type": "array", "items": { "type": "string" } },
+              "status": { "type": "string", "enum": ["planned", "running", "complete", "blocked", "failed"] }
+            },
+            "additionalProperties": false
+          }
+        },
+        "milestones": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "label"],
+            "properties": {
+              "id": { "type": "string" },
+              "label": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "execution": {
+      "type": "object",
+      "properties": {
+        "mode": { "type": "string", "enum": ["caldera", "manual", "hybrid", "none"] },
+        "status": { "type": "string", "enum": ["not-run", "running", "complete", "blocked", "failed"] },
+        "timeline": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["phaseId", "name", "status"],
+            "properties": {
+              "timestamp": { "type": ["string", "null"] },
+              "phaseId": { "type": "string" },
+              "techniqueId": { "type": ["string", "null"] },
+              "name": { "type": "string" },
+              "status": { "type": "string", "enum": ["running", "complete", "blocked", "failed"] },
+              "evidence": { "type": "array", "items": { "type": "string" } }
+            },
+            "additionalProperties": false
+          }
+        },
+        "artifacts": { "type": "array", "items": { "type": "string" } },
+        "operatorNotes": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "expectedOutcome": {
+      "type": "object",
+      "required": ["stoppedAt", "sophosOutcome", "expectedDetections"],
+      "properties": {
+        "stoppedAt": { "type": ["string", "null"] },
+        "sophosOutcome": { "type": "string" },
+        "expectedDetections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["detection", "severity"],
+            "properties": {
+              "detection": { "type": "string" },
+              "severity": { "type": "string", "enum": ["critical", "high", "medium", "low"] }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "centralProjection": {
+      "type": "object",
+      "properties": {
+        "alerts": { "type": "array" },
+        "detections": { "type": "array" },
+        "cases": { "type": "array" },
+        "caseDetail": { "type": "array" },
+        "threatGraph": { "type": ["object", "null"] }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

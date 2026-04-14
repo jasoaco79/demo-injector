@@ -1,0 +1,151 @@
+{
+  "source": {
+    "type": "labops",
+    "scenarioId": "SCN-008",
+    "calderaAdversaryId": "scn008-ransomware-simulation",
+    "executionEngine": "caldera",
+    "operationId": null,
+    "notes": "Generated from LabOps SCN-008 as first canonical ransomware bridge example."
+  },
+  "identity": {
+    "name": "Ransomware Pre-Deployment Simulation",
+    "summary": "Simulates the pre-deployment sequence used by ransomware operators before encryption impact, with the story centered on Sophos stopping the chain before business damage occurs.",
+    "category": "ransomware",
+    "audience": "Executive",
+    "platform": "windows",
+    "tags": ["ransomware", "pre-deployment", "labops", "demo-studio", "golden-path"]
+  },
+  "customer": {
+    "name": "Contoso Healthcare",
+    "industry": "healthcare",
+    "endpointCount": 2500,
+    "serverCount": 186
+  },
+  "narrative": {
+    "threatFamily": "Live Attack Chain → Ransomware",
+    "title": "{{customerName}} — Live Attack Chain",
+    "subtitle": "A realistic multi-stage ransomware storyline built to show stakeholders exactly how a high-consequence attack unfolds, why it matters to {{customerName}}, and how Sophos surfaces the incident inside Central before impact becomes business reality.",
+    "businessStakes": [
+      "Operational disruption and downtime",
+      "Loss of recovery options before encryption begins",
+      "Executive escalation and business continuity impact"
+    ],
+    "transitionLine": "Now let’s move into Sophos Central and show how this incident becomes visible to your team in real time.",
+    "talkingPoints": [
+      "Ransomware operators spend time removing recovery options before they encrypt anything — they are maximizing blast radius.",
+      "Shadow copy deletion is one of the highest-confidence ransomware precursor signals in MDR telemetry.",
+      "Sophos changes the outcome by surfacing and stopping the chain before business impact becomes reality."
+    ],
+    "industryTalkingPoints": {
+      "healthcare": [
+        "For {{customerName}}, ransomware is not just an IT incident — it can become a patient safety and continuity event.",
+        "When clinical users lose access to systems, the cost is measured in delayed care, not just downtime."
+      ],
+      "financial_services": [
+        "For {{customerName}}, a compromise like this puts customer trust, transactional systems, and regulatory exposure on the line.",
+        "The ability to surface and investigate this immediately materially changes financial and reputational impact."
+      ],
+      "manufacturing": [
+        "For {{customerName}}, disruption here can move from IT systems into production schedules, shipping, and revenue impact.",
+        "Stopping the chain before impact is what protects operational continuity."
+      ]
+    },
+    "runbookSteps": [
+      "Open with business stakes, not telemetry.",
+      "Tell the attack story in three beats: preparation, movement toward impact, Sophos intervention.",
+      "Use the expected detections as the promise of what stakeholders are about to see in Central.",
+      "Then pivot directly into the injected Sophos Central experience to prove the storyline live."
+    ],
+    "clickPath": [
+      "Start on the alert view and show the critical ransomware-related precursor activity that would immediately draw analyst attention.",
+      "Open the investigation or case context to show how Sophos connects the activity into a coherent incident, not just isolated alerts.",
+      "Move into detections and threat activity to prove the attack chain, then close on the response outcome and why the attack did not become a business crisis."
+    ],
+    "slides": [
+      {
+        "title": "Initial compromise at {{customerName}}",
+        "body": "A user opens a convincing business file and triggers a ransomware chain on DESKTOP-FIN042. What looks like a single bad click quickly becomes an enterprise risk event for {{customerName}}."
+      },
+      {
+        "title": "The attacker moves toward impact",
+        "body": "Before encryption begins, the attacker weakens recovery by disabling protections, targeting shadow copies, and staging the conditions for business disruption."
+      },
+      {
+        "title": "Sophos changes the outcome",
+        "body": "Sophos surfaces the precursor behavior, escalates the threat, and gives the team at {{customerName}} a response path before encryption becomes business reality."
+      }
+    ]
+  },
+  "attack": {
+    "initialVector": "malicious file",
+    "attackType": "ransomware",
+    "mitreTactics": ["Defense Evasion", "Impact"],
+    "mitreTechniques": [
+      { "id": "T1562.001", "name": "Impair Defenses: Disable or Modify Tools" },
+      { "id": "T1490", "name": "Inhibit System Recovery" },
+      { "id": "T1489", "name": "Service Stop" },
+      { "id": "T1486", "name": "Data Encrypted for Impact" }
+    ],
+    "tools": ["sc.exe", "vssadmin", "wmic", "bcdedit", "PowerShell"],
+    "phases": [
+      {
+        "id": "phase-1-disable-defenses",
+        "label": "Disable backup and recovery services",
+        "description": "The attacker disables or impairs the Windows services that make recovery possible after ransomware deployment.",
+        "techniqueIds": ["T1562.001", "T1489"],
+        "status": "planned"
+      },
+      {
+        "id": "phase-2-target-recovery",
+        "label": "Target recovery mechanisms",
+        "description": "The attacker enumerates and targets volume shadow copies, creating the classic no-return ransomware precursor moment.",
+        "techniqueIds": ["T1490"],
+        "status": "planned"
+      },
+      {
+        "id": "phase-3-stage-impact",
+        "label": "Stage ransom note and encrypted file markers",
+        "description": "The attacker stages ransom artifacts and visible evidence of impact, even before real encryption is allowed to occur in the demo path.",
+        "techniqueIds": ["T1486"],
+        "status": "planned"
+      },
+      {
+        "id": "phase-4-handoff",
+        "label": "Generate incident handoff",
+        "description": "The scenario culminates in an investigation-ready handoff for the security console and analyst story.",
+        "techniqueIds": ["T1486"],
+        "status": "planned"
+      }
+    ],
+    "milestones": [
+      { "id": "T1562.001", "label": "Defenses impaired" },
+      { "id": "T1490", "label": "Recovery mechanisms targeted" },
+      { "id": "T1486", "label": "Encryption attempt stopped before impact" }
+    ]
+  },
+  "execution": {
+    "mode": "caldera",
+    "status": "not-run",
+    "timeline": [],
+    "artifacts": [],
+    "operatorNotes": []
+  },
+  "expectedOutcome": {
+    "stoppedAt": "T1490",
+    "sophosOutcome": "Sophos escalates and interrupts the ransomware chain before broad encryption impact occurs.",
+    "expectedDetections": [
+      { "detection": "VSS and WBEngine service disabled by non-system process", "severity": "critical" },
+      { "detection": "vssadmin or wmic shadowcopy delete command execution", "severity": "critical" },
+      { "detection": "Ransom note file creation pattern", "severity": "critical" },
+      { "detection": "Mass file extension change to .encrypted or equivalent impact markers", "severity": "critical" },
+      { "detection": "High-confidence ransomware precursor — automatic MDR escalation", "severity": "critical" }
+    ]
+  },
+  "centralProjection": {
+    "alerts": [],
+    "detections": [],
+    "cases": [],
+    "caseDetail": [],
+    "threatGraph": null
+  }
+}
