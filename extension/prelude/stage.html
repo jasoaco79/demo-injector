@@ -164,8 +164,107 @@
     .milestone-tech { font-size: 12px; color: var(--muted); }
     .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
     .pill { border: 1px solid var(--border); border-radius: 999px; padding: 8px 12px; font-size: 12px; color: rgba(255,255,255,.85); background: rgba(255,255,255,0.03); }
-    .split-wrap { position: absolute; top: 52px; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: 32% 68%; }
-    .attacker-col { background: linear-gradient(180deg, rgba(6,8,15,0.94), rgba(4,6,12,0.98)); border-right: 1px solid rgba(0,168,224,0.15); position: relative; }
+    .split-wrap { position: absolute; top: 52px; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: 26% 74%; }
+    .attacker-col { background: linear-gradient(180deg, rgba(6,8,15,0.97), rgba(4,6,12,0.99)); border-right: 1px solid rgba(0,168,224,0.12); position: relative; display: flex; flex-direction: column; }
+
+    /* Phase Navigator */
+    .phase-nav-header {
+      padding: 16px 18px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      flex-shrink: 0;
+    }
+    .phase-nav-label {
+      font-family: var(--font-display); font-size: 9px; letter-spacing: .2em;
+      color: rgba(0,168,224,0.7); text-transform: uppercase; margin-bottom: 4px;
+    }
+    .phase-nav-title { font-size: 13px; font-weight: 700; color: #fff; }
+
+    .phase-nav-list { flex: 1; padding: 10px 0; overflow-y: auto; }
+
+    .phase-item {
+      padding: 14px 18px; cursor: pointer; position: relative;
+      border-left: 3px solid transparent;
+      transition: background 0.2s, border-color 0.2s;
+      margin-bottom: 2px;
+    }
+    .phase-item:hover { background: rgba(255,255,255,0.04); }
+    .phase-item.active {
+      background: rgba(0,168,224,0.08);
+      border-left-color: var(--cyan);
+    }
+    .phase-item.completed { border-left-color: rgba(0,200,100,0.5); }
+
+    .phase-dot-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+    .phase-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(255,255,255,0.2); border: 1.5px solid rgba(255,255,255,0.3);
+      transition: all 0.3s;
+    }
+    .phase-item.active .phase-dot {
+      background: var(--cyan); border-color: var(--cyan);
+      box-shadow: 0 0 6px rgba(0,168,224,0.6);
+    }
+    .phase-item.completed .phase-dot {
+      background: #00c864; border-color: #00c864;
+    }
+    .phase-day {
+      font-family: var(--font-display); font-size: 9px; letter-spacing: .14em;
+      color: rgba(255,255,255,0.4); text-transform: uppercase;
+    }
+    .phase-item.active .phase-day { color: var(--cyan); }
+    .phase-item.completed .phase-day { color: #00c864; }
+
+    .phase-name {
+      font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.85);
+      margin-bottom: 4px; line-height: 1.3;
+    }
+    .phase-item.active .phase-name { color: #fff; }
+
+    .phase-desc {
+      font-size: 11px; color: rgba(255,255,255,0.38); line-height: 1.45;
+    }
+    .phase-item.active .phase-desc { color: rgba(255,255,255,0.55); }
+
+    .phase-connector {
+      width: 1px; height: 16px; background: rgba(255,255,255,0.08);
+      margin-left: 21px;
+    }
+    .phase-connector.done { background: rgba(0,200,100,0.3); }
+
+    .phase-nav-footer {
+      padding: 14px 18px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      flex-shrink: 0;
+    }
+    .phase-play-btn {
+      width: 100%; padding: 10px; border: 1px solid rgba(0,168,224,0.4);
+      background: rgba(0,168,224,0.1); color: var(--cyan);
+      border-radius: 8px; font-size: 12px; font-weight: 700;
+      font-family: var(--font-display); letter-spacing: .06em;
+      cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .phase-play-btn:hover { background: rgba(0,168,224,0.2); border-color: var(--cyan); }
+    .phase-play-btn.playing {
+      border-color: rgba(255,105,0,0.5); color: var(--orange);
+      background: rgba(255,105,0,0.08);
+    }
+    .phase-play-icon { font-size: 14px; }
+    .phase-status-text {
+      font-size: 10px; color: rgba(255,255,255,0.35);
+      text-align: center; margin-top: 8px; font-family: var(--font-display);
+      letter-spacing: .08em; text-transform: uppercase;
+    }
+
+    /* Win11 scenes */
+    .w11-scene {
+      position: absolute; inset: 0;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .w11-scene.w11-scene-active {
+      opacity: 1; pointer-events: all;
+    }
     .victim-col { background: linear-gradient(180deg, rgba(0,18,12,.88), rgba(5,10,20,.96)); position: relative; }
     .split-topbar { position: absolute; top: 0; left: 0; right: 0; height: 48px; padding: 0 20px; display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,.08); }
     .split-label { font-size: 12px; letter-spacing: .2em; font-weight: 700; }
@@ -192,6 +291,516 @@
       .hero-title { font-size: 32px; }
       .stage-grid, .split-wrap { grid-template-columns: 1fr; }
       .attacker-col { display: none; }
+    }
+
+    /* ─── Windows 11 Simulation ─────────────────────────────────────── */
+    .win11-sim {
+      position: absolute; top: 48px; inset-inline: 0; bottom: 0;
+      overflow: hidden;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+    .win11-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 35% 45%, rgba(0,100,180,0.9) 0%, rgba(0,60,130,0.7) 25%, transparent 55%),
+        radial-gradient(ellipse at 75% 25%, rgba(80,0,160,0.5) 0%, rgba(60,0,120,0.3) 25%, transparent 50%),
+        radial-gradient(ellipse at 60% 85%, rgba(0,40,100,0.6) 0%, transparent 45%),
+        linear-gradient(160deg, #001f5c 0%, #002d82 30%, #0042b0 60%, #001a4a 100%);
+    }
+    .win11-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 40%, rgba(120,180,255,0.12) 0%, transparent 60%);
+    }
+
+    /* Windows */
+    .w11-window {
+      position: absolute;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.08);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    #w11-explorer {
+      top: 10px; left: 12px; right: 12px;
+      height: calc(100% - 130px);
+    }
+    .w11-notepad {
+      top: 18px; left: 60px; right: 18px;
+      height: calc(100% - 120px);
+      z-index: 10;
+      opacity: 0;
+      transform: translateY(12px) scale(0.98);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+    }
+    .w11-notepad.w11-visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: all;
+    }
+
+    /* Titlebar */
+    .w11-titlebar {
+      display: flex; align-items: center; justify-content: space-between;
+      background: #202020;
+      height: 32px; padding: 0 0 0 12px;
+      flex-shrink: 0;
+    }
+    .w11-tb-left {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .w11-tb-title {
+      color: #fff; font-size: 12px; font-weight: 400;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .w11-tb-controls { display: flex; }
+    .w11-wc {
+      width: 46px; height: 32px; border: none; background: transparent;
+      color: #fff; font-size: 12px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.1s;
+    }
+    .w11-wc:hover { background: rgba(255,255,255,0.08); }
+    .w11-wc-close:hover { background: #c42b1c !important; }
+
+    /* App Icons */
+    .w11-app-icon { width: 16px; height: 16px; flex-shrink: 0; position: relative; }
+    .w11-icon-explorer .w11-folder-body {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 12px;
+      background: linear-gradient(180deg, #ffca28, #ffb300);
+      border-radius: 1px 1px 2px 2px;
+    }
+    .w11-icon-explorer .w11-folder-tab {
+      position: absolute; top: 2px; left: 0; width: 7px; height: 5px;
+      background: #ffb300; border-radius: 2px 2px 0 0;
+    }
+    .w11-icon-notepad { background: #fff; border: 1px solid #ddd; border-radius: 2px; overflow: hidden; }
+    .w11-np-lines { padding: 3px 2px; }
+    .w11-np-lines::before, .w11-np-lines::after { content: ''; display: block; height: 1.5px; background: #aaa; margin: 2px 0; }
+
+    /* Address bar */
+    .w11-address-bar {
+      display: flex; align-items: center; gap: 6px;
+      background: #f3f3f3; border-bottom: 1px solid #e0e0e0;
+      padding: 4px 8px; flex-shrink: 0;
+    }
+    .w11-nav-btns { display: flex; gap: 2px; }
+    .w11-nav-btn {
+      width: 28px; height: 28px; border: none; background: transparent;
+      border-radius: 4px; cursor: pointer; font-size: 16px; color: #444;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .w11-nav-btn:hover { background: #e0e0e0; }
+    .w11-breadcrumb {
+      flex: 1; display: flex; align-items: center; gap: 2px;
+      background: #fff; border: 1px solid #d0d0d0; border-radius: 4px;
+      padding: 4px 8px; font-size: 12px; color: #333;
+    }
+    .w11-bc-item { cursor: pointer; padding: 0 2px; border-radius: 2px; }
+    .w11-bc-item:hover { background: #e8f0fe; }
+    .w11-bc-active { font-weight: 600; color: #000; }
+    .w11-bc-sep { color: #aaa; font-size: 10px; }
+    .w11-search-box {
+      width: 28px; height: 28px; border: 1px solid #d0d0d0; background: #fff;
+      border-radius: 4px; display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: #666;
+    }
+
+    /* Command bar */
+    .w11-cmd-bar {
+      display: flex; align-items: center; gap: 2px;
+      background: #f9f9f9; border-bottom: 1px solid #e8e8e8;
+      padding: 3px 6px; flex-shrink: 0;
+    }
+    .w11-cmd-btn {
+      padding: 3px 8px; border: none; background: transparent; border-radius: 4px;
+      font-size: 11.5px; color: #1a1a1a; cursor: pointer; white-space: nowrap;
+    }
+    .w11-cmd-btn:hover { background: #e8e8e8; }
+    .w11-cmd-sep { width: 1px; height: 18px; background: #d8d8d8; margin: 0 3px; }
+
+    /* Content pane */
+    .w11-content-pane {
+      display: flex; flex: 1; overflow: hidden;
+    }
+    .w11-nav-tree {
+      width: 130px; flex-shrink: 0;
+      background: #f5f5f5; border-right: 1px solid #e0e0e0;
+      padding: 6px 0; overflow-y: auto; font-size: 11.5px;
+    }
+    .w11-tree-item {
+      padding: 3px 12px; color: #333; cursor: pointer; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis;
+    }
+    .w11-tree-item:hover { background: #e4e4e4; }
+    .w11-tree-section { font-weight: 600; color: #555; font-size: 11px; }
+    .w11-tree-child { padding-left: 20px; font-weight: 400; }
+    .w11-tree-active { background: #dce6f7 !important; color: #0055cc; }
+
+    /* Files grid */
+    .w11-files-grid {
+      flex: 1; padding: 8px; display: flex; flex-wrap: wrap;
+      align-content: flex-start; gap: 4px; overflow-y: auto;
+      background: #fff;
+    }
+    .w11-file {
+      display: flex; flex-direction: column; align-items: center;
+      width: 80px; padding: 6px 4px; border-radius: 4px; cursor: pointer;
+      transition: background 0.15s, opacity 0.3s;
+      position: relative;
+    }
+    .w11-file:hover { background: #e8f0fe; }
+    .w11-file.w11-selected { background: #cce4ff; outline: 1px solid #99c8ff; }
+    .w11-file.w11-encrypting { animation: w11-encrypt-flash 0.4s ease; }
+    .w11-file.w11-encrypted .w11-file-icon { filter: grayscale(1) opacity(0.55); }
+    .w11-file.w11-encrypted .w11-file-label { color: #888; }
+    .w11-file.w11-encrypted::after {
+      content: '🔒';
+      position: absolute; top: 2px; right: 4px;
+      font-size: 10px; filter: none;
+    }
+    @keyframes w11-encrypt-flash {
+      0% { background: transparent; }
+      30% { background: rgba(220, 38, 38, 0.2); }
+      60% { background: rgba(220, 38, 38, 0.1); }
+      100% { background: transparent; }
+    }
+
+    /* File icons */
+    .w11-file-icon {
+      width: 40px; height: 40px; border-radius: 4px; margin-bottom: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800; color: #fff; letter-spacing: -0.5px;
+      flex-shrink: 0;
+    }
+    .w11-xlsx { background: linear-gradient(145deg, #1d6f42, #21874f); }
+    .w11-docx { background: linear-gradient(145deg, #185abd, #2b7cd3); }
+    .w11-pdf  { background: linear-gradient(145deg, #cc0000, #e52222); }
+    .w11-sql  { background: linear-gradient(145deg, #cc6600, #e87722); font-size: 17px; }
+    .w11-txt-readme {
+      background: linear-gradient(145deg, #1a1a1a, #333);
+      border: 2px solid #ff4444;
+      font-size: 16px; color: #ffb900;
+    }
+
+    .w11-file-label {
+      font-size: 10.5px; text-align: center; color: #111; line-height: 1.3;
+      word-break: break-word; max-width: 76px;
+    }
+    .w11-readme-label { color: #cc0000 !important; font-weight: 700; }
+
+    /* Status bar */
+    .w11-statusbar {
+      display: flex; justify-content: space-between;
+      background: #f5f5f5; border-top: 1px solid #e0e0e0;
+      padding: 2px 10px; font-size: 11px; color: #555; flex-shrink: 0;
+    }
+
+    /* Notepad */
+    .w11-np-menubar {
+      display: flex; gap: 0;
+      background: #f9f9f9; border-bottom: 1px solid #e8e8e8;
+      padding: 2px 4px; flex-shrink: 0;
+    }
+    .w11-np-menubar span {
+      padding: 3px 8px; font-size: 12px; color: #1a1a1a; cursor: pointer;
+      border-radius: 4px;
+    }
+    .w11-np-menubar span:hover { background: #e0e0e0; }
+    .w11-np-body {
+      flex: 1; overflow-y: auto; background: #fff; padding: 8px 12px;
+    }
+    .w11-ransom-text {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 11.5px; line-height: 1.65; color: #111;
+      white-space: pre-wrap; word-wrap: break-word; margin: 0;
+    }
+
+    /* Akira Dark Web Portal Window */
+    .w11-akira-portal {
+      position: absolute;
+      top: 14px; left: 40px; right: 14px;
+      height: calc(100% - 110px);
+      z-index: 20;
+      opacity: 0; transform: translateY(16px) scale(0.97);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,255,0,0.15);
+    }
+    .w11-akira-portal.w11-visible {
+      opacity: 1; transform: translateY(0) scale(1); pointer-events: all;
+    }
+    /* Fake Edge browser chrome */
+    .akira-browser-chrome {
+      background: #202020; height: 36px;
+      display: flex; align-items: center; gap: 8px; padding: 0 10px;
+      border-bottom: 1px solid #333;
+    }
+    .akira-browser-dots { display: flex; gap: 5px; }
+    .akira-browser-dot {
+      width: 12px; height: 12px; border-radius: 50%;
+    }
+    .akira-browser-dot.red   { background: #ff5f57; }
+    .akira-browser-dot.yel   { background: #ffbd2e; }
+    .akira-browser-dot.grn   { background: #28c840; }
+    .akira-browser-url {
+      flex: 1; background: #2a2a2a; border-radius: 4px;
+      padding: 4px 10px; font-size: 11px;
+      color: rgba(255,255,255,0.6); font-family: monospace;
+      border: 1px solid #3a3a3a;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .akira-browser-url .akira-onion { color: #4caf50; }
+    /* Terminal body */
+    .akira-terminal {
+      background: #000; height: calc(100% - 36px);
+      padding: 20px 22px; overflow-y: auto;
+      font-family: 'Courier New', Courier, monospace;
+      color: #00cc00; font-size: 12px; line-height: 1.6;
+    }
+    .akira-logo {
+      font-size: 28px; font-weight: 900; letter-spacing: 4px;
+      color: #00ff00; margin-bottom: 18px;
+      font-family: 'Courier New', monospace;
+      text-shadow: 0 0 10px rgba(0,255,0,0.5);
+      display: grid;
+      grid-template-columns: repeat(5, 36px);
+      gap: 4px;
+      width: fit-content;
+    }
+    .akira-logo-cell {
+      width: 32px; height: 32px; background: #00cc00;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .akira-logo-cell.empty { background: transparent; }
+    .akira-logo-text {
+      font-size: 26px; font-weight: 900; letter-spacing: 6px;
+      color: #00ff00; margin-bottom: 18px; line-height: 1;
+      text-shadow: 0 0 12px rgba(0,255,0,0.6);
+      border: 2px solid #00cc00; padding: 8px 16px;
+      display: inline-block;
+    }
+    .akira-title-bar {
+      display: flex; align-items: center; gap: 0;
+      border: 2px solid #00cc00; padding: 4px 12px;
+      margin-bottom: 20px; color: #00ff00;
+      font-size: 14px; font-weight: bold; letter-spacing: 2px;
+    }
+    .akira-title-bar .akira-title-logo {
+      font-size: 13px; font-weight: 900; letter-spacing: 4px;
+      margin-right: 10px; padding: 2px 6px;
+      border: 1px solid #00cc00;
+    }
+    .akira-body-text { color: #00cc00; margin-bottom: 14px; }
+    .akira-section { margin-bottom: 16px; }
+    .akira-prompt { color: #00ff00; margin-top: 18px; }
+    .akira-cmd-output { margin: 8px 0 4px 0; color: #00aa00; }
+    .akira-cmd-entry { display: flex; align-items: center; gap: 0; }
+    .akira-cmd-list { margin: 6px 0 6px 4px; }
+    .akira-cmd-item {
+      display: grid; grid-template-columns: 80px 1fr;
+      gap: 4px; margin: 2px 0;
+    }
+    .akira-cmd-name { font-weight: bold; color: #00ff00; }
+    .akira-cmd-desc { color: #00aa00; }
+    .akira-cursor {
+      display: inline-block; width: 8px; height: 14px;
+      background: #00ff00; animation: akira-blink 1s step-end infinite;
+      vertical-align: middle; margin-left: 2px;
+    }
+    @keyframes akira-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* Windows Security Toast */
+    .w11-toast {
+      position: absolute; top: 12px; right: 12px;
+      width: 340px; background: #1f1f1f;
+      border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 12px 10px 12px 14px;
+      opacity: 0; transform: translateX(20px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      z-index: 20; pointer-events: none;
+    }
+    .w11-toast.w11-visible {
+      opacity: 1; transform: translateX(0); pointer-events: all;
+    }
+    .w11-toast-shield { flex-shrink: 0; margin-top: 2px; }
+    .w11-toast-body { flex: 1; }
+    .w11-toast-app { font-size: 10.5px; color: rgba(255,255,255,0.55); margin-bottom: 2px; }
+    .w11-toast-title { font-size: 13px; color: #fff; font-weight: 600; margin-bottom: 2px; }
+    .w11-toast-msg { font-size: 11.5px; color: rgba(255,255,255,0.75); line-height: 1.4; }
+    .w11-toast-dismiss {
+      background: transparent; border: none; color: rgba(255,255,255,0.5);
+      font-size: 11px; cursor: pointer; padding: 0 4px; flex-shrink: 0;
+    }
+    .w11-toast-dismiss:hover { color: #fff; }
+
+    /* Taskbar */
+    .w11-taskbar {
+      position: absolute; bottom: 40px; left: 0; right: 0;
+      height: 48px; background: rgba(18,18,18,0.88);
+      backdrop-filter: blur(20px); border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .w11-taskbar-inner {
+      display: flex; align-items: center; justify-content: center;
+      height: 100%; position: relative;
+    }
+    .w11-tb-center-icons { display: flex; align-items: center; gap: 4px; }
+    .w11-tb-icon {
+      width: 40px; height: 40px; border-radius: 6px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.85); transition: background 0.15s;
+      position: relative;
+    }
+    .w11-tb-icon:hover { background: rgba(255,255,255,0.1); }
+    .w11-tb-active::after {
+      content: ''; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%);
+      width: 16px; height: 3px; background: #00a8e0; border-radius: 2px;
+    }
+    .w11-tb-sys-tray {
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .w11-tb-warning {
+      cursor: pointer; opacity: 0; transition: opacity 0.4s;
+      display: flex; align-items: center;
+    }
+    .w11-tb-warning.w11-visible { opacity: 1; animation: w11-warn-pulse 2s infinite; }
+    @keyframes w11-warn-pulse {
+      0%,100% { opacity: 1; } 50% { opacity: 0.5; }
+    }
+    .w11-tb-sysicons {
+      display: flex; align-items: center; gap: 6px;
+      color: rgba(255,255,255,0.75);
+    }
+    .w11-clock { text-align: center; cursor: pointer; }
+    .w11-time { font-size: 12px; color: rgba(255,255,255,0.9); line-height: 1.2; }
+    .w11-date { font-size: 10.5px; color: rgba(255,255,255,0.65); }
+
+    /* CTA bar */
+    .w11-cta-bar {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 40px; background: rgba(6,8,15,0.95);
+      border-top: 1px solid rgba(0,168,224,0.2);
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 0 16px;
+    }
+    .w11-cta-bar .cta {
+      padding: 7px 16px; font-size: 12px;
+    }
+
+    /* ─── Guide Mode ─────────────────────────────────────────────────────── */
+    .guide-toggle-btn {
+      width: 100%; padding: 8px 10px; margin-top: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.45);
+      border-radius: 6px; font-size: 10px; font-weight: 600;
+      font-family: var(--font-display); letter-spacing: .08em;
+      cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      text-transform: uppercase;
+    }
+    .guide-toggle-btn:hover {
+      background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.75);
+      border-color: rgba(255,255,255,0.18);
+    }
+    .guide-toggle-btn.active {
+      background: rgba(0,168,224,0.12); border-color: rgba(0,168,224,0.45);
+      color: var(--cyan); box-shadow: 0 0 0 3px rgba(0,168,224,0.07);
+    }
+    .guide-toggle-btn .guide-indicator {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,0.25); flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .guide-toggle-btn.active .guide-indicator { background: var(--cyan); box-shadow: 0 0 6px rgba(0,168,224,0.7); }
+
+    @keyframes guide-fade-in {
+      from { opacity: 0; transform: translateY(5px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .guide-callout {
+      display: none; position: absolute;
+      background: rgba(6, 11, 24, 0.94);
+      border: 1px solid rgba(0,168,224,0.28);
+      border-left: 3px solid var(--cyan);
+      color: rgba(255,255,255,0.8);
+      border-radius: 0 8px 8px 0;
+      padding: 10px 13px 11px 12px;
+      font-size: 11px; line-height: 1.5; font-weight: 400;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.04);
+      z-index: 100; pointer-events: none;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      max-width: 190px;
+      backdrop-filter: blur(14px);
+    }
+    .guide-callout-label {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 8.5px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--cyan); margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(0,168,224,0.18);
+      font-family: var(--font-display);
+    }
+
+    /* Bordered arrows — ::before = outer (cyan border), ::after = inner (bg fill) */
+    .guide-callout.arrow-up::before {
+      content: ''; position: absolute; width: 0; height: 0;
+      top: -9px; left: 18px;
+      border: 9px solid transparent;
+      border-bottom-color: rgba(0,168,224,0.35); border-top: 0;
+    }
+    .guide-callout.arrow-up::after {
+      content: ''; position: absolute; width: 0; height: 0;
+      top: -7px; left: 19px;
+      border: 8px solid transparent;
+      border-bottom-color: rgba(6,11,24,0.94); border-top: 0;
+    }
+    .guide-callout.arrow-down::before {
+      content: ''; position: absolute; width: 0; height: 0;
+      bottom: -9px; left: 18px;
+      border: 9px solid transparent;
+      border-top-color: rgba(0,168,224,0.35); border-bottom: 0;
+    }
+    .guide-callout.arrow-down::after {
+      content: ''; position: absolute; width: 0; height: 0;
+      bottom: -7px; left: 19px;
+      border: 8px solid transparent;
+      border-top-color: rgba(6,11,24,0.94); border-bottom: 0;
+    }
+    .guide-callout.arrow-left::before {
+      content: ''; position: absolute; width: 0; height: 0;
+      left: -9px; top: 18px;
+      border: 9px solid transparent;
+      border-right-color: rgba(0,168,224,0.35); border-left: 0;
+    }
+    .guide-callout.arrow-left::after {
+      content: ''; position: absolute; width: 0; height: 0;
+      left: -7px; top: 19px;
+      border: 8px solid transparent;
+      border-right-color: rgba(6,11,24,0.94); border-left: 0;
+    }
+    .guide-callout.arrow-right::before {
+      content: ''; position: absolute; width: 0; height: 0;
+      right: -9px; top: 18px;
+      border: 9px solid transparent;
+      border-left-color: rgba(0,168,224,0.35); border-right: 0;
+    }
+    .guide-callout.arrow-right::after {
+      content: ''; position: absolute; width: 0; height: 0;
+      right: -7px; top: 19px;
+      border: 8px solid transparent;
+      border-left-color: rgba(6,11,24,0.94); border-right: 0;
+    }
+    body.guide-mode .guide-callout {
+      display: block;
+      animation: guide-fade-in 0.22s ease;
     }
   </style>
 </head>
@@ -240,6 +849,10 @@
           <div class="pill-row" id="mitre-pills"></div>
         </div>
       </div>
+      <div class="cta-row" style="margin-top:28px;">
+        <button class="cta primary" id="briefing-next">Live Attack Simulation &#x2192;</button>
+        <button class="cta secondary" id="briefing-prev">&#x2190; Attack Feed</button>
+      </div>
     </div>
   </div>
 
@@ -251,32 +864,810 @@
     </div>
     <div class="split-wrap">
       <div class="attacker-col">
-        <div class="split-topbar"><span class="split-label attacker">ATTACK CHAIN</span></div>
-        <div class="compact-feed" id="feed-compact"></div>
+        <div class="phase-nav-header">
+          <div class="phase-nav-label">Akira Ransomware</div>
+          <div class="phase-nav-title">Attack Timeline</div>
+        </div>
+        <div class="phase-nav-list">
+          <div class="phase-item active" id="phase-btn-0">
+            <div class="phase-dot-row">
+              <div class="phase-dot"></div>
+              <div class="phase-day">Day 1</div>
+            </div>
+            <div class="phase-name">Initial Access</div>
+            <div class="phase-desc">Cisco ASA exploited via CVE-2020-3259. Plaintext credentials extracted from firewall memory.</div>
+          </div>
+          <div class="phase-connector" id="phase-conn-0"></div>
+          <div class="phase-item" id="phase-btn-1">
+            <div class="phase-dot-row">
+              <div class="phase-dot"></div>
+              <div class="phase-day">Days 2 – 8</div>
+            </div>
+            <div class="phase-name">Silent Collection</div>
+            <div class="phase-desc">LSASS dump, RDP lateral movement, AnyDesk C2, 47GB exfiltrated via WinSCP to Tor exit node.</div>
+          </div>
+          <div class="phase-connector" id="phase-conn-1"></div>
+          <div class="phase-item" id="phase-btn-2">
+            <div class="phase-dot-row">
+              <div class="phase-dot"></div>
+              <div class="phase-day">Day 9</div>
+            </div>
+            <div class="phase-name">Encryption</div>
+            <div class="phase-desc">Shadow copies deleted, .akira encryption deployed, ransom note dropped. Sophos intervenes.</div>
+          </div>
+        </div>
+        <div class="phase-nav-footer">
+          <button class="phase-play-btn" id="phase-play-btn">
+            <span class="phase-play-icon">▶</span>
+            <span id="phase-play-label">Play Phase</span>
+          </button>
+          <div class="phase-status-text" id="phase-status-text">Select a phase to begin</div>
+          <button class="guide-toggle-btn" id="guide-mode-btn"><span class="guide-indicator"></span>Presenter Guide</button>
+        </div>
       </div>
       <div class="victim-col">
-        <div class="split-topbar"><span class="split-label managed">SOPHOS CENTRAL DEMO</span></div>
-        <div class="victim-inner">
-          <div class="stage-card">
-            <div class="label">WHAT YOU ARE ABOUT TO SHOW</div>
-            <div class="bigline" id="transition-headline">Operational proof inside Sophos Central</div>
-            <div class="subline" id="transition-copy"></div>
-          </div>
-          <div class="stage-card">
-            <div class="label">WHAT THE STAKEHOLDER SHOULD NOTICE</div>
-            <div class="proof-list" id="expected-points"></div>
-          </div>
-          <div class="stage-card">
-            <div class="label">SUGGESTED CLICK PATH</div>
-            <div class="proof-list" id="click-path"></div>
-          </div>
-          <div class="stage-card">
-            <div class="label">SE TRANSITION LINE</div>
-            <div class="transition-line" id="transition-line"></div>
-            <div class="cta-row">
-              <button class="cta primary" id="launchBtn">Open Sophos Central Demo</button>
-              <button class="cta secondary" id="restartBtn">Back to Briefing</button>
+        <div class="split-topbar"><span class="split-label managed">LIVE ATTACK SIMULATION → SOPHOS CENTRAL</span></div>
+        <!-- Hidden compatibility elements for JS -->
+        <div style="display:none">
+          <div id="transition-headline"></div>
+          <div id="transition-copy"></div>
+          <div id="expected-points"></div>
+          <div id="click-path"></div>
+          <div id="transition-line"></div>
+        </div>
+        <!-- Phase scenes container -->
+        <div style="position:absolute;top:48px;inset-inline:0;bottom:0;">
+
+        <!-- ── SCENE 0: Day 1 — Initial Access ───────────────────────── -->
+        <div class="w11-scene w11-scene-active" id="w11-scene-0">
+          <div class="win11-sim">
+            <div class="win11-bg"></div>
+            <!-- Guide Mode callouts – Day 1 -->
+            <div class="guide-callout arrow-up" style="left:14px;top:368px;">
+              <span class="guide-callout-label">🔑 Initial Access — VPN</span>
+              Source IP <b>185.220.101.47</b> is a known Tor exit node. Attacker used credentials stolen via CVE-2020-3259 — real location fully masked.
             </div>
+            <div class="guide-callout arrow-up" style="right:14px;top:368px;">
+              <span class="guide-callout-label">🔍 Event 4624 — Suspicious Logon</span>
+              Remote logon from an external Tor IP. Looks identical to legitimate remote access — no SIEM alert fires. Attacker is now inside.
+            </div>
+
+            <!-- Cisco Secure Client (AnyConnect) -->
+            <div class="w11-window" id="w11-vpn-win" style="top:15px;left:14px;width:298px;">
+              <div class="w11-titlebar" style="background:#00375a;">
+                <div class="w11-tb-left">
+                  <div style="display:flex;align-items:flex-end;gap:1.5px;height:14px;margin-right:2px;">
+                    <div style="width:3px;height:6px;background:#00bceb;border-radius:1px 1px 0 0;"></div>
+                    <div style="width:3px;height:9px;background:#00bceb;border-radius:1px 1px 0 0;"></div>
+                    <div style="width:3px;height:14px;background:#00bceb;border-radius:1px 1px 0 0;"></div>
+                    <div style="width:3px;height:9px;background:#00bceb;border-radius:1px 1px 0 0;"></div>
+                    <div style="width:3px;height:6px;background:#00bceb;border-radius:1px 1px 0 0;"></div>
+                  </div>
+                  <span class="w11-tb-title" style="font-size:11px;">Cisco Secure Client</span>
+                </div>
+                <div class="w11-tb-controls">
+                  <button class="w11-wc" style="background:#00375a;">&#x2015;</button>
+                  <button class="w11-wc" style="background:#00375a;">&#x25A1;</button>
+                  <button class="w11-wc w11-wc-close" style="background:#00375a;">&#x2715;</button>
+                </div>
+              </div>
+              <!-- Cisco brand header -->
+              <div style="background:linear-gradient(135deg,#004e6a,#003858);padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #002a40;">
+                <div style="display:flex;align-items:flex-end;gap:2px;height:20px;flex-shrink:0;">
+                  <div style="width:4px;height:8px;background:#00bceb;border-radius:2px 2px 0 0;"></div>
+                  <div style="width:4px;height:13px;background:#00bceb;border-radius:2px 2px 0 0;"></div>
+                  <div style="width:4px;height:20px;background:#00bceb;border-radius:2px 2px 0 0;"></div>
+                  <div style="width:4px;height:13px;background:#00bceb;border-radius:2px 2px 0 0;"></div>
+                  <div style="width:4px;height:8px;background:#00bceb;border-radius:2px 2px 0 0;"></div>
+                </div>
+                <div>
+                  <div style="font-size:13px;font-weight:700;color:#fff;line-height:1.1;">Cisco Secure Client</div>
+                  <div style="font-size:9px;color:#00bceb;margin-top:2px;letter-spacing:0.07em;text-transform:uppercase;">Secure Connectivity · VPN</div>
+                </div>
+              </div>
+              <!-- Body -->
+              <div style="background:#f2f4f7;padding:12px 14px 14px;">
+                <div style="margin-bottom:10px;">
+                  <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:#6b7f96;font-weight:700;margin-bottom:4px;">VPN Gateway</div>
+                  <div style="background:#fff;border:1px solid #c8d4e0;border-radius:5px;padding:6px 10px;display:flex;align-items:center;gap:6px;">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#7a8fa6" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg>
+                    <span style="font-size:11px;font-family:monospace;color:#2c3e50;flex:1;">vpn.contoso-healthcare.com</span>
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="#7a8fa6"><path d="M6 9l6 6 6-6"/></svg>
+                  </div>
+                </div>
+                <!-- Status card -->
+                <div style="background:#fff;border:1px solid #c8d4e0;border-radius:8px;overflow:hidden;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,55,90,0.08);">
+                  <div style="padding:11px 14px;display:flex;align-items:center;gap:12px;">
+                    <div id="vpn-status-dot" style="width:40px;height:40px;border-radius:50%;background:#f5a623;flex-shrink:0;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 5px rgba(245,166,35,0.12);transition:background 0.4s,box-shadow 0.4s;">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 5a3 3 0 110 6 3 3 0 010-6z"/></svg>
+                    </div>
+                    <div style="flex:1;">
+                      <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:#7a8fa6;font-weight:700;margin-bottom:2px;">Connection Status</div>
+                      <div id="vpn-status-text" style="font-size:14px;font-weight:700;color:#c87d00;">Connecting…</div>
+                    </div>
+                    <div style="font-size:18px;color:#7a8fa6;cursor:pointer;">&#x22EF;</div>
+                  </div>
+                  <div id="vpn-user-row" style="display:none;background:#f8fafc;border-top:1px solid #e8edf2;padding:10px 14px;">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;font-size:10px;">
+                      <div><div style="color:#7a8fa6;margin-bottom:1px;">Username</div><div style="font-weight:700;color:#1a2b3c;">sarah.chen</div></div>
+                      <div><div style="color:#7a8fa6;margin-bottom:1px;">Connected</div><div style="font-weight:700;color:#1a2b3c;">00:14:32</div></div>
+                      <div><div style="color:#7a8fa6;margin-bottom:1px;">Client IP</div><div style="font-weight:700;color:#1a2b3c;font-family:monospace;font-size:9.5px;">10.24.16.48</div></div>
+                      <div><div style="color:#7a8fa6;margin-bottom:1px;">Source IP</div><div style="font-weight:700;color:#cc0000;font-family:monospace;font-size:9.5px;">185.220.101.47 &#x26A0;</div></div>
+                    </div>
+                    <div style="margin-top:7px;padding-top:6px;border-top:1px solid #e8edf2;display:flex;gap:14px;font-size:9.5px;color:#7a8fa6;">
+                      <span>&#x2191; 4.2 MB</span><span>&#x2193; 11.7 MB</span><span>IKEv2/IPSec-AES256</span>
+                    </div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:6px;">
+                  <button style="flex:1;padding:8px;background:#c0392b;color:#fff;border:none;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;">Disconnect</button>
+                  <button style="padding:8px 10px;background:#fff;color:#555;border:1px solid #c8d4e0;border-radius:5px;font-size:11px;cursor:pointer;">Statistics</button>
+                  <button style="padding:8px 10px;background:#fff;color:#555;border:1px solid #c8d4e0;border-radius:5px;font-size:11px;cursor:pointer;">&#x2699;&#xFE0F;</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Windows Event Viewer -->
+            <div class="w11-window" id="w11-eventviewer-win" style="top:8px;left:212px;right:10px;height:348px;opacity:0;transition:opacity 0.4s;">
+              <div class="w11-titlebar" style="background:#1e1e1e;">
+                <div class="w11-tb-left">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="flex-shrink:0"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#9db8d2" stroke-width="1.5"/><path d="M7 8h10M7 12h10M7 16h6" stroke="#9db8d2" stroke-width="1.5" stroke-linecap="round"/></svg>
+                  <span class="w11-tb-title">Event Viewer</span>
+                </div>
+                <div class="w11-tb-controls">
+                  <button class="w11-wc w11-wc-min">&#x2015;</button>
+                  <button class="w11-wc w11-wc-max">&#x25A1;</button>
+                  <button class="w11-wc w11-wc-close">&#x2715;</button>
+                </div>
+              </div>
+              <div style="background:#f0f0f0;border-bottom:1px solid #d0d0d0;padding:2px 4px;display:flex;font-size:11px;">
+                <span style="padding:3px 8px;cursor:pointer;">File</span>
+                <span style="padding:3px 8px;cursor:pointer;">Action</span>
+                <span style="padding:3px 8px;cursor:pointer;">View</span>
+                <span style="padding:3px 8px;cursor:pointer;">Help</span>
+              </div>
+              <div style="flex:1;display:flex;overflow:hidden;">
+                <!-- Left nav tree -->
+                <div style="width:122px;flex-shrink:0;background:#f8f8f8;border-right:1px solid #e0e0e0;overflow-y:auto;padding:4px 0;font-size:10.5px;">
+                  <div style="padding:3px 6px;color:#333;cursor:pointer;">&#x25B6; Event Viewer (Local)</div>
+                  <div style="padding:3px 6px 3px 14px;cursor:pointer;">&#x25BC; Windows Logs</div>
+                  <div style="padding:2px 6px 2px 24px;color:#555;cursor:pointer;">Application</div>
+                  <div style="padding:2px 6px 2px 24px;color:#555;cursor:pointer;">System</div>
+                  <div style="padding:2px 6px 2px 24px;background:#cde4ff;color:#003399;cursor:pointer;font-weight:700;border-right:3px solid #0055cc;">Security</div>
+                  <div style="padding:2px 6px 2px 24px;color:#555;cursor:pointer;">Setup</div>
+                  <div style="padding:2px 6px 2px 14px;color:#555;cursor:pointer;">&#x25B6; Apps &amp; Services</div>
+                </div>
+                <!-- Center panel -->
+                <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
+                  <div style="background:#fff;border-bottom:1px solid #e8e8e8;padding:3px 8px;display:flex;align-items:center;justify-content:space-between;">
+                    <span style="font-size:11px;font-weight:700;">Security <span style="color:#888;font-weight:400;">— 47,382 events</span></span>
+                    <span style="font-size:10px;color:#0055cc;cursor:pointer;">Filter&#x2026;</span>
+                  </div>
+                  <div style="background:#f0f0f0;border-bottom:1px solid #d8d8d8;display:grid;grid-template-columns:20px 68px 50px 1fr 74px;padding:3px 6px;font-size:9.5px;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:0.03em;">
+                    <span></span><span>Level</span><span>Event ID</span><span>Source</span><span style="text-align:right;">Date/Time</span>
+                  </div>
+                  <div id="ev-rows" style="flex:1;overflow-y:auto;background:#fff;font-size:10.5px;">
+                    <div style="display:grid;grid-template-columns:20px 68px 50px 1fr 74px;padding:4px 6px;border-bottom:1px solid #f0f0f0;align-items:center;cursor:pointer;background:#e8f4ff;">
+                      <span style="font-size:13px;color:#0078d4;line-height:1;">&#x2139;</span>
+                      <span style="color:#444;">Information</span><span style="color:#0078d4;font-weight:700;">4634</span>
+                      <span style="color:#333;">Sec-Auditing</span>
+                      <span style="color:#888;text-align:right;font-size:9px;">4/19 01:39</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns:20px 68px 50px 1fr 74px;padding:4px 6px;border-bottom:1px solid #f0f0f0;align-items:center;cursor:pointer;">
+                      <span style="font-size:13px;color:#0078d4;line-height:1;">&#x2139;</span>
+                      <span style="color:#444;">Information</span><span style="color:#333;">4672</span>
+                      <span style="color:#333;">Sec-Auditing</span>
+                      <span style="color:#888;text-align:right;font-size:9px;">4/19 01:40</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns:20px 68px 50px 1fr 74px;padding:4px 6px;border-bottom:1px solid #f0f0f0;align-items:center;cursor:pointer;">
+                      <span style="font-size:13px;color:#0078d4;line-height:1;">&#x2139;</span>
+                      <span style="color:#444;">Information</span><span style="color:#333;">4624</span>
+                      <span style="color:#333;">Sec-Auditing</span>
+                      <span style="color:#888;text-align:right;font-size:9px;">4/19 01:44</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns:20px 68px 50px 1fr 74px;padding:4px 6px;border-bottom:1px solid #f0f0f0;align-items:center;cursor:pointer;">
+                      <span style="font-size:13px;color:#0078d4;line-height:1;">&#x2139;</span>
+                      <span style="color:#444;">Information</span><span style="color:#333;">4776</span>
+                      <span style="color:#333;">Sec-Auditing</span>
+                      <span style="color:#888;text-align:right;font-size:9px;">4/19 01:45</span>
+                    </div>
+                    <div id="ev-suspicious" style="display:none;grid-template-columns:20px 68px 50px 1fr 74px;padding:4px 6px;border-top:2px solid #ff8c00;border-bottom:2px solid #ff8c00;background:#fff8ed;align-items:center;cursor:pointer;">
+                      <span style="font-size:13px;line-height:1;">&#x26A0;&#xFE0F;</span>
+                      <span style="color:#cc6600;font-weight:700;">Warning</span>
+                      <span style="color:#cc0000;font-weight:800;">4624</span>
+                      <span style="color:#222;font-weight:700;">Sec-Auditing</span>
+                      <span style="color:#cc6600;text-align:right;font-size:9px;font-weight:700;">4/19 01:47</span>
+                    </div>
+                  </div>
+                  <div id="ev-detail" style="display:none;border-top:2px solid #ff8c00;background:#fffdf5;font-size:10.5px;overflow-y:auto;max-height:146px;">
+                    <div style="padding:5px 10px;background:#fff4e0;border-bottom:1px solid #ffe0a0;font-weight:700;color:#cc5500;">
+                      &#x26A0; Event 4624 — Logon — 4/19/2026 01:47:03 AM
+                    </div>
+                    <div style="display:flex;gap:0;border-bottom:1px solid #e8e8e8;">
+                      <div style="padding:3px 10px;border-bottom:2px solid #0055cc;font-size:10.5px;font-weight:700;color:#0055cc;cursor:pointer;">General</div>
+                      <div style="padding:3px 10px;font-size:10.5px;color:#555;cursor:pointer;">Details</div>
+                    </div>
+                    <div style="padding:8px 10px;display:grid;grid-template-columns:128px 1fr;gap:2px 8px;line-height:1.65;">
+                      <span style="color:#666;">Account Name:</span><span style="font-weight:600;">sarah.chen</span>
+                      <span style="color:#666;">Account Domain:</span><span>CONTOSO</span>
+                      <span style="color:#666;">Logon Type:</span><span>3 &#x2014; Network</span>
+                      <span style="color:#666;">Source IP Address:</span><span style="color:#cc0000;font-weight:700;font-family:monospace;">185.220.101.47</span>
+                      <span style="color:#666;">Auth Package:</span><span>NTLM (NTLMv2)</span>
+                      <span style="color:#666;">Process Name:</span><span style="font-family:monospace;font-size:9.5px;">C:\Windows\System32\lsass.exe</span>
+                    </div>
+                    <div style="margin:4px 10px 8px;padding:5px 8px;background:#fff0f0;border-left:3px solid #cc0000;border-radius:0 4px 4px 0;font-size:10px;color:#cc0000;font-weight:600;">
+                      &#x26A0; Source IP is a known Tor exit node &#x2014; CVE-2020-3259 exploitation suspected
+                    </div>
+                  </div>
+                </div>
+                <!-- Right actions panel -->
+                <div style="width:100px;flex-shrink:0;background:#f3f3f3;border-left:1px solid #e0e0e0;padding:4px 0;font-size:10px;">
+                  <div style="padding:3px 8px;font-weight:700;color:#333;font-size:9.5px;text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid #e0e0e0;margin-bottom:3px;">Actions</div>
+                  <div style="padding:2px 8px;color:#0055cc;cursor:pointer;">Open Saved Log&#x2026;</div>
+                  <div style="padding:2px 8px;color:#0055cc;cursor:pointer;">Filter Log&#x2026;</div>
+                  <div style="padding:2px 8px;color:#0055cc;cursor:pointer;">Properties</div>
+                  <div style="padding:2px 8px;color:#0055cc;cursor:pointer;">Find&#x2026;</div>
+                  <div style="height:1px;background:#e0e0e0;margin:3px 0;"></div>
+                  <div style="padding:2px 8px;color:#0055cc;cursor:pointer;">Copy</div>
+                  <div style="padding:2px 8px;color:#0055cc;cursor:pointer;">Refresh</div>
+                  <div style="padding:2px 8px;color:#0055cc;cursor:pointer;">Save Events&#x2026;</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Win11 Toast: suspicious login -->
+            <div class="w11-toast" id="w11-toast-d1" style="top:12px;">
+              <div class="w11-toast-shield">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2L4 6v6c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V6L12 2z" fill="#ffb900" opacity=".15"/>
+                  <path d="M12 2L4 6v6c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V6L12 2z" stroke="#ffb900" stroke-width="1.5" fill="none"/>
+                  <text x="12" y="16" text-anchor="middle" fill="#ffb900" font-size="9" font-weight="bold">!</text>
+                </svg>
+              </div>
+              <div class="w11-toast-body">
+                <div class="w11-toast-app">Microsoft Account</div>
+                <div class="w11-toast-title">Sign-in from new location</div>
+                <div class="w11-toast-msg">sarah.chen signed in from an unfamiliar IP address.</div>
+              </div>
+              <button class="w11-toast-dismiss" id="w11-toast-d1-dismiss">&#x2715;</button>
+            </div>
+
+            <!-- Taskbar -->
+            <div class="w11-taskbar">
+              <div class="w11-taskbar-inner">
+                <div class="w11-tb-center-icons">
+                  <div class="w11-tb-icon"><svg width="16" height="16" viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9" fill="#00adef"/><rect x="13" y="2" width="9" height="9" fill="#00adef"/><rect x="2" y="13" width="9" height="9" fill="#00adef"/><rect x="13" y="13" width="9" height="9" fill="#00adef"/></svg></div>
+                  <div class="w11-tb-icon w11-tb-active" title="AnyConnect" style="font-size:11px;font-weight:900;color:#009cde;">C</div>
+                  <div class="w11-tb-icon w11-tb-active" id="w11-d1-ev-taskbtn" style="display:none;font-size:13px;">📋</div>
+                </div>
+                <div class="w11-tb-sys-tray">
+                  <div class="w11-tb-warning" id="w11-d1-warn"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2z" fill="#ffb900" opacity=".2"/><path d="M12 2L2 22h20L12 2z" stroke="#ffb900" stroke-width="1.5" fill="none"/><text x="12" y="18" text-anchor="middle" fill="#ffb900" font-size="10" font-weight="bold">!</text></svg></div>
+                  <div class="w11-tb-sysicons"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="14" width="4" height="8"/><rect x="10" y="9" width="4" height="13"/><rect x="18" y="4" width="4" height="18"/></svg><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg></div>
+                  <div class="w11-clock"><div class="w11-time" id="w11-time-d1">10:47 AM</div><div class="w11-date" id="w11-date-d1">4/19/2026</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="w11-cta-bar">
+              <button class="cta secondary" id="scene0-next" style="font-size:12px;">Next: Days 2–8 &#x2192;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SCENE 1: Days 2–8 — Silent Collection ──────────────────── -->
+        <div class="w11-scene" id="w11-scene-1">
+          <div class="win11-sim">
+            <div class="win11-bg"></div>
+            <!-- Guide Mode callouts – Days 2–8 -->
+            <div class="guide-callout arrow-up" style="left:14px;top:335px;">
+              <span class="guide-callout-label">🎮 AnyDesk — Persistent Backdoor</span>
+              Installed silently on Day 2. Attacker now has persistent remote desktop access even if VPN credentials are rotated. Bypasses MFA.
+            </div>
+            <div class="guide-callout arrow-up" style="right:14px;top:295px;">
+              <span class="guide-callout-label">💀 Mimikatz — Credential Harvest</span>
+              svchost_upd.exe = Mimikatz disguised as a Windows service. Dumping LSASS memory for plaintext passwords &amp; NTLM hashes.
+            </div>
+            <div class="guide-callout arrow-up" style="bottom:148px;right:14px;">
+              <span class="guide-callout-label">📤 WinSCP — Data Exfiltration</span>
+              47.3 GB transferred to attacker's SFTP at a Tor exit node. Patient records, backups, and credentials. Double extortion payload ready.
+            </div>
+
+            <!-- Task Manager (Windows 11) -->
+            <div class="w11-window" id="w11-taskmgr" style="top:8px;left:12px;width:366px;height:320px;">
+              <div class="w11-titlebar" style="background:#1e1e1e;">
+                <div class="w11-tb-left">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="flex-shrink:0"><rect x="2" y="2" width="9" height="9" fill="#0097fb" rx="1"/><rect x="13" y="2" width="9" height="9" fill="#0097fb" rx="1"/><rect x="2" y="13" width="9" height="9" fill="#0097fb" rx="1"/><rect x="13" y="13" width="9" height="9" fill="#0097fb" rx="1"/></svg>
+                  <span class="w11-tb-title">Task Manager</span>
+                </div>
+                <div class="w11-tb-controls">
+                  <button class="w11-wc w11-wc-min">&#x2015;</button>
+                  <button class="w11-wc w11-wc-max">&#x25A1;</button>
+                  <button class="w11-wc w11-wc-close">&#x2715;</button>
+                </div>
+              </div>
+              <div style="flex:1;display:flex;overflow:hidden;background:#fff;">
+                <!-- Left sidebar -->
+                <div style="width:42px;background:#f3f3f3;border-right:1px solid #e5e5e5;display:flex;flex-direction:column;align-items:center;padding:6px 0;gap:2px;flex-shrink:0;">
+                  <div style="width:32px;padding:5px 0;border-radius:6px;background:#ddeeff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;" title="Processes">&#x26A1;</div>
+                  <div style="width:32px;padding:5px 0;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;color:#666;" title="Performance">&#x1F4CA;</div>
+                  <div style="width:32px;padding:5px 0;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;color:#666;" title="App history">&#x1F550;</div>
+                  <div style="width:32px;padding:5px 0;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;color:#666;" title="Startup apps">&#x1F680;</div>
+                  <div style="width:32px;padding:5px 0;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;color:#666;" title="Users">&#x1F464;</div>
+                  <div style="width:32px;padding:5px 0;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;color:#666;" title="Details">&#x1F4CB;</div>
+                  <div style="width:32px;padding:5px 0;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;color:#666;" title="Services">&#x2699;&#xFE0F;</div>
+                </div>
+                <!-- Main area -->
+                <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
+                  <!-- Search + efficiency mode -->
+                  <div style="padding:6px 8px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #ebebeb;">
+                    <div style="flex:1;background:#f5f5f5;border:1px solid #e0e0e0;border-radius:4px;padding:3px 8px;display:flex;align-items:center;gap:5px;">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2.5"><circle cx="10" cy="10" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+                      <span style="font-size:10.5px;color:#bbb;">Search processes</span>
+                    </div>
+                    <button style="padding:3px 7px;font-size:9px;background:#edf7ed;color:#107c10;border:1px solid #bcd9bc;border-radius:4px;cursor:pointer;font-weight:700;white-space:nowrap;">&#x26A1; Efficiency mode</button>
+                  </div>
+                  <!-- Column headers -->
+                  <div style="display:grid;grid-template-columns:1fr 40px 56px 42px 56px;padding:3px 8px;font-size:9px;font-weight:700;color:#555;border-bottom:1px solid #e8e8e8;background:#fafafa;text-transform:uppercase;letter-spacing:0.04em;">
+                    <span>Name</span><span style="text-align:right;">CPU</span><span style="text-align:right;">Memory</span><span style="text-align:right;">Disk</span><span style="text-align:right;">Network</span>
+                  </div>
+                  <!-- Process rows -->
+                  <div style="flex:1;overflow-y:auto;">
+                    <div style="padding:3px 8px;background:#f7f7f7;font-size:9.5px;font-weight:700;color:#555;border-bottom:1px solid #ebebeb;">&#x25BE; Apps (2)</div>
+                    <div style="display:grid;grid-template-columns:1fr 40px 56px 42px 56px;padding:4px 8px;border-bottom:1px solid #f3f3f3;align-items:center;font-size:10.5px;">
+                      <div style="display:flex;align-items:center;gap:5px;overflow:hidden;">
+                        <div style="width:13px;height:13px;border-radius:50%;background:conic-gradient(#ea4335 0% 25%,#fbbc05 25% 50%,#34a853 50% 75%,#4285f4 75%);flex-shrink:0;"></div>
+                        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Google Chrome</span>
+                      </div>
+                      <div style="text-align:right;"><div style="font-size:10px;color:#555;">0.4%</div><div style="height:3px;background:#e5e5e5;border-radius:2px;margin-top:2px;"><div style="height:100%;width:3%;background:#0078d4;border-radius:2px;"></div></div></div>
+                      <div style="text-align:right;"><div style="font-size:10px;color:#555;">182.4 MB</div><div style="height:3px;background:#e5e5e5;border-radius:2px;margin-top:2px;"><div style="height:100%;width:14%;background:#0078d4;border-radius:2px;"></div></div></div>
+                      <div style="text-align:right;font-size:9.5px;color:#aaa;">0 MB/s</div>
+                      <div style="text-align:right;font-size:9.5px;color:#aaa;">0 Mbps</div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 40px 56px 42px 56px;padding:4px 8px;border-bottom:1px solid #f3f3f3;align-items:center;font-size:10.5px;">
+                      <div style="display:flex;align-items:center;gap:5px;overflow:hidden;">
+                        <svg width="13" height="13" viewBox="0 0 24 24" style="flex-shrink:0"><path d="M2 6h9l2 2h9v12H2z" fill="#ffb900"/></svg>
+                        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Windows Explorer</span>
+                      </div>
+                      <div style="text-align:right;"><div style="font-size:10px;color:#555;">0.1%</div><div style="height:3px;background:#e5e5e5;border-radius:2px;margin-top:2px;"><div style="height:100%;width:1%;background:#0078d4;border-radius:2px;"></div></div></div>
+                      <div style="text-align:right;"><div style="font-size:10px;color:#555;">74.1 MB</div><div style="height:3px;background:#e5e5e5;border-radius:2px;margin-top:2px;"><div style="height:100%;width:6%;background:#0078d4;border-radius:2px;"></div></div></div>
+                      <div style="text-align:right;font-size:9.5px;color:#aaa;">0 MB/s</div>
+                      <div style="text-align:right;font-size:9.5px;color:#aaa;">0 Mbps</div>
+                    </div>
+                    <div style="padding:3px 8px;background:#f7f7f7;font-size:9.5px;font-weight:700;color:#555;border-bottom:1px solid #ebebeb;border-top:1px solid #ebebeb;">&#x25BE; Background processes (4)</div>
+                    <div style="display:grid;grid-template-columns:1fr 40px 56px 42px 56px;padding:4px 8px;border-bottom:1px solid #f3f3f3;align-items:center;font-size:10.5px;">
+                      <div style="display:flex;align-items:center;gap:5px;overflow:hidden;">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="#888" style="flex-shrink:0"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                        <span style="color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">svchost.exe (6)</span>
+                      </div>
+                      <div style="text-align:right;"><div style="font-size:10px;color:#aaa;">0.0%</div><div style="height:3px;background:#e5e5e5;border-radius:2px;margin-top:2px;"></div></div>
+                      <div style="text-align:right;"><div style="font-size:10px;color:#aaa;">28.3 MB</div><div style="height:3px;background:#e5e5e5;border-radius:2px;margin-top:2px;"><div style="height:100%;width:2%;background:#0078d4;border-radius:2px;"></div></div></div>
+                      <div style="text-align:right;font-size:9.5px;color:#aaa;">0 MB/s</div>
+                      <div style="text-align:right;font-size:9.5px;color:#aaa;">0 Mbps</div>
+                    </div>
+                    <!-- AnyDesk — shown by JS (display:grid) -->
+                    <div id="tm-anydesk" style="display:none;grid-template-columns:1fr 40px 56px 42px 56px;padding:4px 8px;border-bottom:1px solid #ffe0a0;background:#fffbf0;align-items:center;font-size:10.5px;">
+                      <div style="display:flex;align-items:center;gap:5px;overflow:hidden;">
+                        <div style="width:13px;height:13px;border-radius:3px;background:#ef2525;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:8px;font-weight:900;color:#fff;">A</div>
+                        <span style="color:#cc5500;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">AnyDesk.exe</span>
+                        <span style="font-size:8px;background:#ff9500;color:#fff;padding:1px 3px;border-radius:2px;flex-shrink:0;">NEW</span>
+                      </div>
+                      <div style="text-align:right;"><div style="font-size:10px;color:#cc5500;font-weight:700;">1.2%</div><div style="height:3px;background:#e5e5e5;border-radius:2px;margin-top:2px;"><div style="height:100%;width:6%;background:#ff9500;border-radius:2px;"></div></div></div>
+                      <div style="text-align:right;"><div style="font-size:10px;color:#cc5500;">48.2 MB</div><div style="height:3px;background:#e5e5e5;border-radius:2px;margin-top:2px;"><div style="height:100%;width:4%;background:#ff9500;border-radius:2px;"></div></div></div>
+                      <div style="text-align:right;font-size:9.5px;color:#aaa;">0 MB/s</div>
+                      <div style="text-align:right;font-size:9.5px;color:#cc5500;font-weight:700;">2.4 Mbps</div>
+                    </div>
+                    <!-- svchost_upd — shown by JS -->
+                    <div id="tm-svchost" style="display:none;grid-template-columns:1fr 40px 56px 42px 56px;padding:4px 8px;border-bottom:2px solid #ff8c00;background:#fff4e6;align-items:center;font-size:10.5px;">
+                      <div style="display:flex;align-items:center;gap:5px;overflow:hidden;">
+                        <div style="width:13px;height:13px;border-radius:3px;background:#cc3300;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;font-weight:900;color:#fff;">!</div>
+                        <span style="color:#cc3300;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">svchost_upd.exe</span>
+                        <span style="font-size:8px;background:#cc3300;color:#fff;padding:1px 3px;border-radius:2px;flex-shrink:0;">SUSPICIOUS</span>
+                      </div>
+                      <div style="text-align:right;"><div style="font-size:10px;color:#cc3300;font-weight:800;">18.4%</div><div style="height:3px;background:#e5e5e5;border-radius:2px;margin-top:2px;"><div style="height:100%;width:55%;background:#cc3300;border-radius:2px;"></div></div></div>
+                      <div style="text-align:right;"><div style="font-size:10px;color:#cc3300;font-weight:700;">312 MB</div><div style="height:3px;background:#e5e5e5;border-radius:2px;margin-top:2px;"><div style="height:100%;width:24%;background:#cc3300;border-radius:2px;"></div></div></div>
+                      <div style="text-align:right;font-size:9.5px;color:#cc3300;font-weight:700;">4.1 MB/s</div>
+                      <div style="text-align:right;font-size:9.5px;color:#aaa;">0 Mbps</div>
+                    </div>
+                    <!-- WinSCP — shown by JS -->
+                    <div id="tm-winscp" style="display:none;grid-template-columns:1fr 40px 56px 42px 56px;padding:4px 8px;border-bottom:2px solid #cc0000;background:#fff0f0;align-items:center;font-size:10.5px;">
+                      <div style="display:flex;align-items:center;gap:5px;overflow:hidden;">
+                        <div style="width:13px;height:13px;border-radius:3px;background:#1a5276;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;font-weight:900;color:#fff;">W</div>
+                        <span style="color:#cc0000;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">WinSCP.exe</span>
+                        <span style="font-size:8px;background:#cc0000;color:#fff;padding:1px 3px;border-radius:2px;flex-shrink:0;">DATA EXFIL</span>
+                      </div>
+                      <div style="text-align:right;"><div style="font-size:10px;color:#555;">0.3%</div><div style="height:3px;background:#e5e5e5;border-radius:2px;margin-top:2px;"><div style="height:100%;width:2%;background:#0078d4;border-radius:2px;"></div></div></div>
+                      <div style="text-align:right;"><div style="font-size:10px;color:#555;">62.1 MB</div><div style="height:3px;background:#e5e5e5;border-radius:2px;margin-top:2px;"><div style="height:100%;width:5%;background:#0078d4;border-radius:2px;"></div></div></div>
+                      <div style="text-align:right;font-size:9.5px;color:#aaa;">0 MB/s</div>
+                      <div style="text-align:right;font-size:9.5px;color:#cc0000;font-weight:800;">47.3 Mbps</div>
+                    </div>
+                  </div>
+                  <!-- Status bar -->
+                  <div style="padding:3px 8px;background:#f3f3f3;border-top:1px solid #e5e5e5;display:flex;gap:10px;font-size:9px;color:#666;">
+                    <span>CPU <b style="color:#333;">3.4%</b></span>
+                    <span>Memory <b style="color:#333;">6.2/16 GB</b></span>
+                    <span>Disk <b style="color:#333;">2%</b></span>
+                    <span>GPU <b style="color:#333;">8%</b></span>
+                    <span style="margin-left:auto;color:#0055cc;cursor:pointer;">Open Resource Monitor</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CMD / Mimikatz window -->
+            <div class="w11-window" id="w11-cmd-win" style="top:6px;left:200px;right:12px;height:280px;opacity:0;transition:opacity 0.4s;">
+              <div class="w11-titlebar" style="background:#0c0c0c;">
+                <div class="w11-tb-left">
+                  <div style="width:16px;height:16px;font-size:12px;">⬛</div>
+                  <span class="w11-tb-title">Administrator: Command Prompt</span>
+                </div>
+                <div class="w11-tb-controls">
+                  <button class="w11-wc w11-wc-min" style="background:#0c0c0c;">&#x2015;</button>
+                  <button class="w11-wc w11-wc-max" style="background:#0c0c0c;">&#x25A1;</button>
+                  <button class="w11-wc w11-wc-close" style="background:#0c0c0c;">&#x2715;</button>
+                </div>
+              </div>
+              <div style="background:#0c0c0c;flex:1;padding:8px 10px;overflow-y:auto;font-family:'Courier New',monospace;font-size:10.5px;color:#cccccc;line-height:1.6;">
+                <div>Microsoft Windows [Version 10.0.22621.3447]</div>
+                <div style="margin-bottom:6px;">(c) Microsoft Corporation. All rights reserved.</div>
+                <div style="color:#ffff00;" id="cmd-line1"></div>
+                <div id="cmd-output" style="display:none;">
+                  <div style="color:#888;margin-top:4px;">mimikatz # sekurlsa::logonpasswords</div>
+                  <div style="margin-top:6px;color:#aaa;">Authentication Id : 0 ; 996 (00000000:000003e4)</div>
+                  <div style="color:#aaa;">Session           : Service from 0</div>
+                  <div style="color:#aaa;">User Name         : sarah.chen</div>
+                  <div style="color:#aaa;">Domain            : CONTOSO</div>
+                  <div style="color:#aaa;">Logon Server      : DC01</div>
+                  <div style="margin-top:4px;color:#aaa;">        * Username : sarah.chen</div>
+                  <div style="color:#00ff41;font-weight:bold;">        * Password : C0nt0s0H3@lth#2024!</div>
+                  <div style="color:#aaa;margin-top:2px;">        * NTLM     : <span style="color:#ff6b6b;">8846f7eaee8fb117ad06bdd830b7586c</span></div>
+                  <div style="margin-top:6px;color:#aaa;">Authentication Id : 0 ; 48891 (00000000:0000bf3b)</div>
+                  <div style="color:#aaa;">User Name         : svc_backup</div>
+                  <div style="color:#00ff41;font-weight:bold;">        * Password : B@ckup$vc!2023</div>
+                  <div style="color:#aaa;">        * NTLM     : <span style="color:#ff6b6b;">31d6cfe0d16ae931b73c59d7e0c089c0</span></div>
+                  <div style="margin-top:8px;color:#ffff00;" id="cmd-line2"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- WinSCP Transfer Window -->
+            <div class="w11-window" id="w11-winscp-win" style="bottom:52px;left:12px;right:12px;height:136px;opacity:0;transition:opacity 0.4s;">
+              <div class="w11-titlebar" style="background:#1b3a5c;">
+                <div class="w11-tb-left">
+                  <div style="width:14px;height:14px;border-radius:2px;background:#1565c0;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;font-weight:900;color:#fff;">W</div>
+                  <span class="w11-tb-title" style="font-size:11px;">WinSCP 6.1.2 &#x2014; Transferring files</span>
+                </div>
+                <div class="w11-tb-controls">
+                  <button class="w11-wc" style="background:#1b3a5c;">&#x2015;</button>
+                  <button class="w11-wc w11-wc-close" style="background:#1b3a5c;">&#x2715;</button>
+                </div>
+              </div>
+              <div style="background:#fff;padding:10px 14px;flex:1;">
+                <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:6px;align-items:center;margin-bottom:8px;">
+                  <div>
+                    <div style="color:#888;font-size:9px;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:2px;">Source (local)</div>
+                    <div style="font-family:monospace;color:#222;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">C:\Shares\Backup\<b id="winscp-filename">Clinical_DB_Full_2026.bak</b></div>
+                  </div>
+                  <div style="font-size:16px;color:#cc0000;padding:0 4px;">&#x2192;</div>
+                  <div>
+                    <div style="color:#888;font-size:9px;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:2px;">Destination (SFTP)</div>
+                    <div style="font-family:monospace;color:#cc0000;font-weight:700;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">185.220.101.47:/drops/exfil/</div>
+                  </div>
+                </div>
+                <div style="margin-bottom:6px;">
+                  <div style="height:16px;background:#ebebeb;border-radius:4px;overflow:hidden;border:1px solid #d5d5d5;position:relative;">
+                    <div id="winscp-progress" style="height:100%;background:linear-gradient(90deg,#b71c1c,#e53935,#ff5252);width:0%;transition:width 0.5s;"></div>
+                    <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700;color:#444;">
+                      <span id="winscp-transferred">0 GB of 47.3 GB</span>
+                    </span>
+                  </div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;font-size:9.5px;color:#666;">
+                  <span>Speed: <b style="color:#cc0000;" id="winscp-speed">47.3 MB/s</b></span>
+                  <span style="color:#888;">AES-256-CTR &#xB7; <span style="color:#cc0000;font-weight:600;">&#x26A0; Tor exit node</span></span>
+                  <button style="padding:3px 8px;font-size:9.5px;background:#f5f5f5;border:1px solid #d0d0d0;border-radius:3px;cursor:pointer;">Cancel</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Taskbar -->
+            <div class="w11-taskbar">
+              <div class="w11-taskbar-inner">
+                <div class="w11-tb-center-icons">
+                  <div class="w11-tb-icon"><svg width="16" height="16" viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9" fill="#00adef"/><rect x="13" y="2" width="9" height="9" fill="#00adef"/><rect x="2" y="13" width="9" height="9" fill="#00adef"/><rect x="13" y="13" width="9" height="9" fill="#00adef"/></svg></div>
+                  <div class="w11-tb-icon w11-tb-active" title="Task Manager">⚙️</div>
+                  <div class="w11-tb-icon" id="w11-d2-cmd-taskbtn" style="display:none;" title="Command Prompt">⬛</div>
+                  <div class="w11-tb-icon" id="w11-d2-winscp-taskbtn" style="display:none;" title="WinSCP" style="font-weight:900;font-size:11px;color:#1a5276;">W</div>
+                </div>
+                <div class="w11-tb-sys-tray">
+                  <div class="w11-tb-warning w11-visible" id="w11-d2-warn"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2z" fill="#ffb900" opacity=".2"/><path d="M12 2L2 22h20L12 2z" stroke="#ffb900" stroke-width="1.5" fill="none"/><text x="12" y="18" text-anchor="middle" fill="#ffb900" font-size="10" font-weight="bold">!</text></svg></div>
+                  <div class="w11-tb-sysicons"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="14" width="4" height="8"/><rect x="10" y="9" width="4" height="13"/><rect x="18" y="4" width="4" height="18"/></svg><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg></div>
+                  <div class="w11-clock"><div class="w11-time" id="w11-time-d2">10:47 AM</div><div class="w11-date" id="w11-date-d2">4/19/2026</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="w11-cta-bar">
+              <button class="cta secondary" id="scene1-prev" style="font-size:12px;">&#x2190; Day 1</button>
+              <button class="cta secondary" id="scene1-next" style="font-size:12px;">Next: Day 9 &#x2192;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SCENE 2: Day 9 — Encryption ────────────────────────────── -->
+        <div class="w11-scene" id="w11-scene-2">
+        <!-- Windows 11 Simulation -->
+        <div class="win11-sim" id="win11-sim">
+          <div class="win11-bg"></div>
+          <!-- Guide Mode callouts – Day 9 -->
+          <div class="guide-callout arrow-up" style="bottom:148px;left:14px;">
+            <span class="guide-callout-label">🔒 Active Encryption</span>
+            Files renamed with the <b>.akira</b> extension — originals destroyed. Volume Shadow Copies were wiped 2 hours earlier. No recovery without the key.
+          </div>
+          <div class="guide-callout arrow-up" style="bottom:148px;right:14px;">
+            <span class="guide-callout-label">☠️ Double Extortion</span>
+            Ransom note + dark web leak site active. Attackers demand payment for the decryption key <em>and</em> suppression of the 47 GB stolen dataset.
+          </div>
+
+          <!-- File Explorer Window -->
+          <div class="w11-window" id="w11-explorer">
+            <div class="w11-titlebar">
+              <div class="w11-tb-left">
+                <div class="w11-app-icon w11-icon-explorer">
+                  <div class="w11-folder-body"></div><div class="w11-folder-tab"></div>
+                </div>
+                <span class="w11-tb-title">File Explorer</span>
+              </div>
+              <div class="w11-tb-controls">
+                <button class="w11-wc w11-wc-min">&#x2015;</button>
+                <button class="w11-wc w11-wc-max">&#x25A1;</button>
+                <button class="w11-wc w11-wc-close">&#x2715;</button>
+              </div>
+            </div>
+            <div class="w11-address-bar">
+              <div class="w11-nav-btns">
+                <button class="w11-nav-btn">&#x2039;</button>
+                <button class="w11-nav-btn" style="opacity:.4">&#x203A;</button>
+                <button class="w11-nav-btn">&#x2191;</button>
+              </div>
+              <div class="w11-breadcrumb">
+                <span class="w11-bc-item">This PC</span>
+                <span class="w11-bc-sep">&#x276F;</span>
+                <span class="w11-bc-item">Users</span>
+                <span class="w11-bc-sep">&#x276F;</span>
+                <span class="w11-bc-item">sarah.chen</span>
+                <span class="w11-bc-sep">&#x276F;</span>
+                <span class="w11-bc-item w11-bc-active">Documents</span>
+              </div>
+              <div class="w11-search-box">&#x1F50D;</div>
+            </div>
+            <div class="w11-cmd-bar">
+              <button class="w11-cmd-btn"><span class="w11-cmd-icon">&#x2795;</span> New</button>
+              <div class="w11-cmd-sep"></div>
+              <button class="w11-cmd-btn">&#x2702; Cut</button>
+              <button class="w11-cmd-btn">&#x2398; Copy</button>
+              <button class="w11-cmd-btn">&#x1F5C9; Paste</button>
+              <div class="w11-cmd-sep"></div>
+              <button class="w11-cmd-btn">Sort &#x25BE;</button>
+              <button class="w11-cmd-btn">View &#x25BE;</button>
+            </div>
+            <div class="w11-content-pane">
+              <div class="w11-nav-tree">
+                <div class="w11-tree-item w11-tree-section">&#x25BE; Quick access</div>
+                <div class="w11-tree-item w11-tree-child">&#x1F5B3; Desktop</div>
+                <div class="w11-tree-item w11-tree-child w11-tree-active">&#x1F4C4; Documents</div>
+                <div class="w11-tree-item w11-tree-child">&#x2B07; Downloads</div>
+                <div class="w11-tree-item w11-tree-section" style="margin-top:6px">&#x25BE; This PC</div>
+                <div class="w11-tree-item w11-tree-child">&#x1F4BE; Local Disk (C:)</div>
+                <div class="w11-tree-item w11-tree-child">&#x1F4BE; DATA (D:)</div>
+                <div class="w11-tree-item w11-tree-section" style="margin-top:6px">&#x1F310; Network</div>
+              </div>
+              <div class="w11-files-grid" id="w11-files-grid">
+                <div class="w11-file" id="wf-1" data-base="Patient_Records_2026" data-ext="xlsx">
+                  <div class="w11-file-icon w11-xlsx"><span>X</span></div>
+                  <div class="w11-file-label">Patient_Records_2026.xlsx</div>
+                </div>
+                <div class="w11-file" id="wf-2" data-base="Q1_Budget_Analysis" data-ext="xlsx">
+                  <div class="w11-file-icon w11-xlsx"><span>X</span></div>
+                  <div class="w11-file-label">Q1_Budget_Analysis.xlsx</div>
+                </div>
+                <div class="w11-file" id="wf-3" data-base="Employee_Payroll_March" data-ext="docx">
+                  <div class="w11-file-icon w11-docx"><span>W</span></div>
+                  <div class="w11-file-label">Employee_Payroll_March.docx</div>
+                </div>
+                <div class="w11-file" id="wf-4" data-base="HIPAA_Compliance_Audit" data-ext="pdf">
+                  <div class="w11-file-icon w11-pdf"><span>PDF</span></div>
+                  <div class="w11-file-label">HIPAA_Compliance_Audit.pdf</div>
+                </div>
+                <div class="w11-file" id="wf-5" data-base="Clinical_DB_Backup" data-ext="sql">
+                  <div class="w11-file-icon w11-sql"><span>&#x1F5C4;</span></div>
+                  <div class="w11-file-label">Clinical_DB_Backup.sql</div>
+                </div>
+                <div class="w11-file" id="wf-6" data-base="Vendor_Contracts_2026" data-ext="docx">
+                  <div class="w11-file-icon w11-docx"><span>W</span></div>
+                  <div class="w11-file-label">Vendor_Contracts_2026.docx</div>
+                </div>
+                <div class="w11-file" id="wf-7" data-base="Insurance_Claims_Q1" data-ext="xlsx">
+                  <div class="w11-file-icon w11-xlsx"><span>X</span></div>
+                  <div class="w11-file-label">Insurance_Claims_Q1.xlsx</div>
+                </div>
+                <div class="w11-file" id="wf-8" data-base="Annual_Security_Policy" data-ext="pdf">
+                  <div class="w11-file-icon w11-pdf"><span>PDF</span></div>
+                  <div class="w11-file-label">Annual_Security_Policy.pdf</div>
+                </div>
+                <div class="w11-file w11-readme-file" id="wf-readme" style="display:none">
+                  <div class="w11-file-icon w11-txt-readme"><span>&#x26A0;</span></div>
+                  <div class="w11-file-label w11-readme-label">akira_readme.txt</div>
+                </div>
+              </div>
+            </div>
+            <div class="w11-statusbar">
+              <span id="w11-status-count">8 items</span>
+              <span id="w11-status-sel"></span>
+            </div>
+          </div>
+
+          <!-- Notepad Window: Akira Ransom Note -->
+          <div class="w11-window w11-notepad" id="w11-notepad">
+            <div class="w11-titlebar">
+              <div class="w11-tb-left">
+                <div class="w11-app-icon w11-icon-notepad">
+                  <div class="w11-np-lines"></div>
+                </div>
+                <span class="w11-tb-title">akira_readme.txt - Notepad</span>
+              </div>
+              <div class="w11-tb-controls">
+                <button class="w11-wc w11-wc-min">&#x2015;</button>
+                <button class="w11-wc w11-wc-max">&#x25A1;</button>
+                <button class="w11-wc w11-wc-close">&#x2715;</button>
+              </div>
+            </div>
+            <div class="w11-np-menubar">
+              <span>File</span><span>Edit</span><span>Format</span><span>View</span><span>Help</span>
+            </div>
+            <div class="w11-np-body">
+<pre class="w11-ransom-text">Hi friends,
+
+Whatever who you are and what your title is if you're reading
+this, it means you're one of the IT people responsible for your
+company network. We're not going to lecture you, but just
+explain you a situation.
+
+About a week ago we penetrated your network. Since we got access
+we've been silently collecting your data: financial reports,
+intellectual property, accounting, personal information and more.
+
+On the other hand we also encrypted your files. If you are not
+going to cooperate with us, we will post the data we stole on
+our blog.
+
+To get your files back, contact us at:
+
+  akiralkzxzq2dsrzsrvbr2xgbbu2wgsmxryd4csgq6tnudjuhwtsuqd.onion
+
+Do not involve law enforcement or IT security companies.
+Do not try to decrypt files with third-party software.
+Do not delete or modify encrypted files.
+
+The faster you contact us, the less damage will be done.</pre>
+            </div>
+          </div>
+
+          <!-- Akira Dark Web Portal -->
+          <div class="w11-akira-portal" id="w11-akira-portal">
+            <div class="akira-browser-chrome">
+              <div class="akira-browser-dots">
+                <div class="akira-browser-dot red"></div>
+                <div class="akira-browser-dot yel"></div>
+                <div class="akira-browser-dot grn"></div>
+              </div>
+              <div class="akira-browser-url">
+                🔒 <span class="akira-onion">akiralkzxzq2dsrzsrvbr2xgbbu2wgsmxryd4csgq6tnudjuhwtsuqd.onion</span>
+              </div>
+            </div>
+            <div class="akira-terminal" id="akira-terminal">
+              <div class="akira-title-bar">
+                <span style="border:2px solid #00cc00;padding:2px 8px;margin-right:12px;font-size:11px">□ □</span>
+                <span style="flex:1;text-align:center">[ &nbsp; AKIRA &nbsp; ]</span>
+              </div>
+              <div class="akira-logo-text">AKIRA</div>
+              <div class="akira-section">
+                <div class="akira-body-text">Well, you are here. It means that you're suffering from cyber incident right now. Think of our actions as an unscheduled forced audit of your network for vulnerabilities. Keep in mind that there is a fair price to make it all go away.</div>
+                <div class="akira-body-text">Do not rush to assess what is happening - we did it to you. The best thing you can do is to follow our instructions to get back to your daily routine, by cooperating with us you will minimize the damage that might be done.</div>
+                <div class="akira-body-text">Those who choose different path will be shamed here publicly. The functionality of this blog is extremely simple - enter the desired command in the input line and enjoy the juiciest information that corporations around the world wanted to stay confidential.</div>
+                <div class="akira-body-text">Remember. You are unable to recover without our help. Your data is already gone and cannot be traced to the place of final storage nor deleted by anyone besides us.</div>
+              </div>
+              <div class="akira-prompt">guest@akira:~$ <span id="akira-typed-cmd"></span></div>
+              <div id="akira-help-output" style="display:none">
+                <div class="akira-cmd-output">List of all commands:</div>
+                <div class="akira-cmd-list">
+                  <div class="akira-cmd-item"><span class="akira-cmd-name">leaks</span><span class="akira-cmd-desc">— hacked companies</span></div>
+                  <div class="akira-cmd-item"><span class="akira-cmd-name">news</span><span class="akira-cmd-desc">— news about upcoming data releases</span></div>
+                  <div class="akira-cmd-item"><span class="akira-cmd-name">contact</span><span class="akira-cmd-desc">— send us a message and we will contact you</span></div>
+                  <div class="akira-cmd-item"><span class="akira-cmd-name">help</span><span class="akira-cmd-desc">— available commands</span></div>
+                  <div class="akira-cmd-item"><span class="akira-cmd-name">clear</span><span class="akira-cmd-desc">— clear screen</span></div>
+                </div>
+                <div class="akira-prompt">guest@akira:~$ <span class="akira-cursor"></span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Windows Security Toast Notification -->
+          <div class="w11-toast" id="w11-toast">
+            <div class="w11-toast-shield">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2L4 6v6c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V6L12 2z" fill="#ffb900" opacity=".15"/>
+                <path d="M12 2L4 6v6c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V6L12 2z" stroke="#ffb900" stroke-width="1.5" fill="none"/>
+                <text x="12" y="16" text-anchor="middle" fill="#ffb900" font-size="9" font-weight="bold">!</text>
+              </svg>
+            </div>
+            <div class="w11-toast-body">
+              <div class="w11-toast-app">Windows Security</div>
+              <div class="w11-toast-title">Virus &amp; threat protection</div>
+              <div class="w11-toast-msg">Threats found. Immediate action required.</div>
+            </div>
+            <button class="w11-toast-dismiss" id="w11-toast-dismiss">&#x2715;</button>
+          </div>
+
+          <!-- Windows 11 Taskbar -->
+          <div class="w11-taskbar">
+            <div class="w11-taskbar-inner">
+              <div class="w11-tb-center-icons">
+                <div class="w11-tb-icon" title="Start">
+                  <svg width="16" height="16" viewBox="0 0 24 24">
+                    <rect x="2" y="2" width="9" height="9" fill="#00adef"/>
+                    <rect x="13" y="2" width="9" height="9" fill="#00adef"/>
+                    <rect x="2" y="13" width="9" height="9" fill="#00adef"/>
+                    <rect x="13" y="13" width="9" height="9" fill="#00adef"/>
+                  </svg>
+                </div>
+                <div class="w11-tb-icon" title="Search">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="10" cy="10" r="7"/><path d="M21 21l-4.35-4.35"/>
+                  </svg>
+                </div>
+                <div class="w11-tb-icon w11-tb-active" title="File Explorer" id="w11-taskbtn-explorer">
+                  <svg width="16" height="16" viewBox="0 0 24 24">
+                    <path d="M2 6h9l2 2h9v12H2z" fill="#ffb900" opacity=".9"/>
+                    <path d="M2 6h9l2 2h9v12H2z" stroke="#e6a800" stroke-width=".5" fill="none"/>
+                  </svg>
+                </div>
+                <div class="w11-tb-icon" title="Microsoft Edge" id="w11-taskbtn-portal" style="display:none">
+                  <svg width="16" height="16" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H7l5-8v4h4l-5 8z" fill="#00cc00"/>
+                  </svg>
+                </div>
+                <div class="w11-tb-icon" title="Notepad" id="w11-taskbtn-notepad" style="display:none">
+                  <svg width="16" height="16" viewBox="0 0 24 24">
+                    <rect x="3" y="2" width="18" height="20" rx="2" fill="#fff" stroke="#ccc" stroke-width="1"/>
+                    <line x1="7" y1="8" x2="17" y2="8" stroke="#555" stroke-width="1.5"/>
+                    <line x1="7" y1="12" x2="17" y2="12" stroke="#555" stroke-width="1.5"/>
+                    <line x1="7" y1="16" x2="13" y2="16" stroke="#555" stroke-width="1.5"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="w11-tb-sys-tray">
+                <div class="w11-tb-warning" id="w11-tb-warning">
+                  <svg width="14" height="14" viewBox="0 0 24 24">
+                    <path d="M12 2L2 22h20L12 2z" fill="#ffb900" opacity=".2"/>
+                    <path d="M12 2L2 22h20L12 2z" stroke="#ffb900" stroke-width="1.5" fill="none"/>
+                    <text x="12" y="18" text-anchor="middle" fill="#ffb900" font-size="10" font-weight="bold">!</text>
+                  </svg>
+                </div>
+                <div class="w11-tb-sysicons">
+                  <svg width="12" height="12" viewBox="0 0 24 24" title="Network"><rect x="2" y="14" width="4" height="8" fill="currentColor"/><rect x="10" y="9" width="4" height="13" fill="currentColor"/><rect x="18" y="4" width="4" height="18" fill="currentColor"/></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" title="Volume" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+                  <svg width="16" height="12" viewBox="0 0 32 16" title="Battery"><rect x="1" y="2" width="26" height="12" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><rect x="2" y="3" width="18" height="10" rx="1" fill="#22c55e"/><rect x="28" y="5" width="3" height="6" rx="1" fill="currentColor"/></svg>
+                </div>
+                <div class="w11-clock">
+                  <div class="w11-time" id="w11-time">10:47 AM</div>
+                  <div class="w11-date" id="w11-date">4/19/2026</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CTA bar above taskbar -->
+          <div class="w11-cta-bar">
+            <button class="cta primary" id="launchBtn">Open Sophos Central Demo &#x2192;</button>
+            <button class="cta secondary" id="restartBtn">&#x2190; Back to Briefing</button>
           </div>
         </div>
       </div>
