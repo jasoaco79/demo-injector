@@ -581,7 +581,7 @@ function renderFeed(scenario) {
   const hero = container.querySelector('.feed-hero')?.outerHTML || '';
   container.innerHTML = hero + feedHtml;
 
-  compact.innerHTML = items.map((item) => `<div class="feed-item-sm">
+  if (compact) compact.innerHTML = items.map((item) => `<div class="feed-item-sm">
       <div class="feed-name-sm">${escapeHtml(item.title)}</div>
       <div class="feed-tactic-sm">${escapeHtml(item.type)}</div>
     </div>`).join('');
