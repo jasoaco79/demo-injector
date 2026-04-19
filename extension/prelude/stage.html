@@ -193,6 +193,311 @@
       .stage-grid, .split-wrap { grid-template-columns: 1fr; }
       .attacker-col { display: none; }
     }
+
+    /* ─── Windows 11 Simulation ─────────────────────────────────────── */
+    .win11-sim {
+      position: absolute; top: 48px; inset-inline: 0; bottom: 0;
+      overflow: hidden;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+    .win11-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 35% 45%, rgba(0,100,180,0.9) 0%, rgba(0,60,130,0.7) 25%, transparent 55%),
+        radial-gradient(ellipse at 75% 25%, rgba(80,0,160,0.5) 0%, rgba(60,0,120,0.3) 25%, transparent 50%),
+        radial-gradient(ellipse at 60% 85%, rgba(0,40,100,0.6) 0%, transparent 45%),
+        linear-gradient(160deg, #001f5c 0%, #002d82 30%, #0042b0 60%, #001a4a 100%);
+    }
+    .win11-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 40%, rgba(120,180,255,0.12) 0%, transparent 60%);
+    }
+
+    /* Windows */
+    .w11-window {
+      position: absolute;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.08);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    #w11-explorer {
+      top: 10px; left: 12px; right: 12px;
+      height: calc(100% - 130px);
+    }
+    .w11-notepad {
+      top: 18px; left: 60px; right: 18px;
+      height: calc(100% - 120px);
+      z-index: 10;
+      opacity: 0;
+      transform: translateY(12px) scale(0.98);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+    }
+    .w11-notepad.w11-visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: all;
+    }
+
+    /* Titlebar */
+    .w11-titlebar {
+      display: flex; align-items: center; justify-content: space-between;
+      background: #202020;
+      height: 32px; padding: 0 0 0 12px;
+      flex-shrink: 0;
+    }
+    .w11-tb-left {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .w11-tb-title {
+      color: #fff; font-size: 12px; font-weight: 400;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .w11-tb-controls { display: flex; }
+    .w11-wc {
+      width: 46px; height: 32px; border: none; background: transparent;
+      color: #fff; font-size: 12px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.1s;
+    }
+    .w11-wc:hover { background: rgba(255,255,255,0.08); }
+    .w11-wc-close:hover { background: #c42b1c !important; }
+
+    /* App Icons */
+    .w11-app-icon { width: 16px; height: 16px; flex-shrink: 0; position: relative; }
+    .w11-icon-explorer .w11-folder-body {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 12px;
+      background: linear-gradient(180deg, #ffca28, #ffb300);
+      border-radius: 1px 1px 2px 2px;
+    }
+    .w11-icon-explorer .w11-folder-tab {
+      position: absolute; top: 2px; left: 0; width: 7px; height: 5px;
+      background: #ffb300; border-radius: 2px 2px 0 0;
+    }
+    .w11-icon-notepad { background: #fff; border: 1px solid #ddd; border-radius: 2px; overflow: hidden; }
+    .w11-np-lines { padding: 3px 2px; }
+    .w11-np-lines::before, .w11-np-lines::after { content: ''; display: block; height: 1.5px; background: #aaa; margin: 2px 0; }
+
+    /* Address bar */
+    .w11-address-bar {
+      display: flex; align-items: center; gap: 6px;
+      background: #f3f3f3; border-bottom: 1px solid #e0e0e0;
+      padding: 4px 8px; flex-shrink: 0;
+    }
+    .w11-nav-btns { display: flex; gap: 2px; }
+    .w11-nav-btn {
+      width: 28px; height: 28px; border: none; background: transparent;
+      border-radius: 4px; cursor: pointer; font-size: 16px; color: #444;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .w11-nav-btn:hover { background: #e0e0e0; }
+    .w11-breadcrumb {
+      flex: 1; display: flex; align-items: center; gap: 2px;
+      background: #fff; border: 1px solid #d0d0d0; border-radius: 4px;
+      padding: 4px 8px; font-size: 12px; color: #333;
+    }
+    .w11-bc-item { cursor: pointer; padding: 0 2px; border-radius: 2px; }
+    .w11-bc-item:hover { background: #e8f0fe; }
+    .w11-bc-active { font-weight: 600; color: #000; }
+    .w11-bc-sep { color: #aaa; font-size: 10px; }
+    .w11-search-box {
+      width: 28px; height: 28px; border: 1px solid #d0d0d0; background: #fff;
+      border-radius: 4px; display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: #666;
+    }
+
+    /* Command bar */
+    .w11-cmd-bar {
+      display: flex; align-items: center; gap: 2px;
+      background: #f9f9f9; border-bottom: 1px solid #e8e8e8;
+      padding: 3px 6px; flex-shrink: 0;
+    }
+    .w11-cmd-btn {
+      padding: 3px 8px; border: none; background: transparent; border-radius: 4px;
+      font-size: 11.5px; color: #1a1a1a; cursor: pointer; white-space: nowrap;
+    }
+    .w11-cmd-btn:hover { background: #e8e8e8; }
+    .w11-cmd-sep { width: 1px; height: 18px; background: #d8d8d8; margin: 0 3px; }
+
+    /* Content pane */
+    .w11-content-pane {
+      display: flex; flex: 1; overflow: hidden;
+    }
+    .w11-nav-tree {
+      width: 130px; flex-shrink: 0;
+      background: #f5f5f5; border-right: 1px solid #e0e0e0;
+      padding: 6px 0; overflow-y: auto; font-size: 11.5px;
+    }
+    .w11-tree-item {
+      padding: 3px 12px; color: #333; cursor: pointer; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis;
+    }
+    .w11-tree-item:hover { background: #e4e4e4; }
+    .w11-tree-section { font-weight: 600; color: #555; font-size: 11px; }
+    .w11-tree-child { padding-left: 20px; font-weight: 400; }
+    .w11-tree-active { background: #dce6f7 !important; color: #0055cc; }
+
+    /* Files grid */
+    .w11-files-grid {
+      flex: 1; padding: 8px; display: flex; flex-wrap: wrap;
+      align-content: flex-start; gap: 4px; overflow-y: auto;
+      background: #fff;
+    }
+    .w11-file {
+      display: flex; flex-direction: column; align-items: center;
+      width: 80px; padding: 6px 4px; border-radius: 4px; cursor: pointer;
+      transition: background 0.15s, opacity 0.3s;
+      position: relative;
+    }
+    .w11-file:hover { background: #e8f0fe; }
+    .w11-file.w11-selected { background: #cce4ff; outline: 1px solid #99c8ff; }
+    .w11-file.w11-encrypting { animation: w11-encrypt-flash 0.4s ease; }
+    .w11-file.w11-encrypted .w11-file-icon { filter: grayscale(1) opacity(0.55); }
+    .w11-file.w11-encrypted .w11-file-label { color: #888; }
+    .w11-file.w11-encrypted::after {
+      content: '🔒';
+      position: absolute; top: 2px; right: 4px;
+      font-size: 10px; filter: none;
+    }
+    @keyframes w11-encrypt-flash {
+      0% { background: transparent; }
+      30% { background: rgba(220, 38, 38, 0.2); }
+      60% { background: rgba(220, 38, 38, 0.1); }
+      100% { background: transparent; }
+    }
+
+    /* File icons */
+    .w11-file-icon {
+      width: 40px; height: 40px; border-radius: 4px; margin-bottom: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800; color: #fff; letter-spacing: -0.5px;
+      flex-shrink: 0;
+    }
+    .w11-xlsx { background: linear-gradient(145deg, #1d6f42, #21874f); }
+    .w11-docx { background: linear-gradient(145deg, #185abd, #2b7cd3); }
+    .w11-pdf  { background: linear-gradient(145deg, #cc0000, #e52222); }
+    .w11-sql  { background: linear-gradient(145deg, #cc6600, #e87722); font-size: 17px; }
+    .w11-txt-readme {
+      background: linear-gradient(145deg, #1a1a1a, #333);
+      border: 2px solid #ff4444;
+      font-size: 16px; color: #ffb900;
+    }
+
+    .w11-file-label {
+      font-size: 10.5px; text-align: center; color: #111; line-height: 1.3;
+      word-break: break-word; max-width: 76px;
+    }
+    .w11-readme-label { color: #cc0000 !important; font-weight: 700; }
+
+    /* Status bar */
+    .w11-statusbar {
+      display: flex; justify-content: space-between;
+      background: #f5f5f5; border-top: 1px solid #e0e0e0;
+      padding: 2px 10px; font-size: 11px; color: #555; flex-shrink: 0;
+    }
+
+    /* Notepad */
+    .w11-np-menubar {
+      display: flex; gap: 0;
+      background: #f9f9f9; border-bottom: 1px solid #e8e8e8;
+      padding: 2px 4px; flex-shrink: 0;
+    }
+    .w11-np-menubar span {
+      padding: 3px 8px; font-size: 12px; color: #1a1a1a; cursor: pointer;
+      border-radius: 4px;
+    }
+    .w11-np-menubar span:hover { background: #e0e0e0; }
+    .w11-np-body {
+      flex: 1; overflow-y: auto; background: #fff; padding: 8px 12px;
+    }
+    .w11-ransom-text {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 11.5px; line-height: 1.65; color: #111;
+      white-space: pre-wrap; word-wrap: break-word; margin: 0;
+    }
+
+    /* Windows Security Toast */
+    .w11-toast {
+      position: absolute; top: 12px; right: 12px;
+      width: 340px; background: #1f1f1f;
+      border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 12px 10px 12px 14px;
+      opacity: 0; transform: translateX(20px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      z-index: 20; pointer-events: none;
+    }
+    .w11-toast.w11-visible {
+      opacity: 1; transform: translateX(0); pointer-events: all;
+    }
+    .w11-toast-shield { flex-shrink: 0; margin-top: 2px; }
+    .w11-toast-body { flex: 1; }
+    .w11-toast-app { font-size: 10.5px; color: rgba(255,255,255,0.55); margin-bottom: 2px; }
+    .w11-toast-title { font-size: 13px; color: #fff; font-weight: 600; margin-bottom: 2px; }
+    .w11-toast-msg { font-size: 11.5px; color: rgba(255,255,255,0.75); line-height: 1.4; }
+    .w11-toast-dismiss {
+      background: transparent; border: none; color: rgba(255,255,255,0.5);
+      font-size: 11px; cursor: pointer; padding: 0 4px; flex-shrink: 0;
+    }
+    .w11-toast-dismiss:hover { color: #fff; }
+
+    /* Taskbar */
+    .w11-taskbar {
+      position: absolute; bottom: 40px; left: 0; right: 0;
+      height: 48px; background: rgba(18,18,18,0.88);
+      backdrop-filter: blur(20px); border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .w11-taskbar-inner {
+      display: flex; align-items: center; justify-content: center;
+      height: 100%; position: relative;
+    }
+    .w11-tb-center-icons { display: flex; align-items: center; gap: 4px; }
+    .w11-tb-icon {
+      width: 40px; height: 40px; border-radius: 6px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.85); transition: background 0.15s;
+      position: relative;
+    }
+    .w11-tb-icon:hover { background: rgba(255,255,255,0.1); }
+    .w11-tb-active::after {
+      content: ''; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%);
+      width: 16px; height: 3px; background: #00a8e0; border-radius: 2px;
+    }
+    .w11-tb-sys-tray {
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .w11-tb-warning {
+      cursor: pointer; opacity: 0; transition: opacity 0.4s;
+      display: flex; align-items: center;
+    }
+    .w11-tb-warning.w11-visible { opacity: 1; animation: w11-warn-pulse 2s infinite; }
+    @keyframes w11-warn-pulse {
+      0%,100% { opacity: 1; } 50% { opacity: 0.5; }
+    }
+    .w11-tb-sysicons {
+      display: flex; align-items: center; gap: 6px;
+      color: rgba(255,255,255,0.75);
+    }
+    .w11-clock { text-align: center; cursor: pointer; }
+    .w11-time { font-size: 12px; color: rgba(255,255,255,0.9); line-height: 1.2; }
+    .w11-date { font-size: 10.5px; color: rgba(255,255,255,0.65); }
+
+    /* CTA bar */
+    .w11-cta-bar {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 40px; background: rgba(6,8,15,0.95);
+      border-top: 1px solid rgba(0,168,224,0.2);
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 0 16px;
+    }
+    .w11-cta-bar .cta {
+      padding: 7px 16px; font-size: 12px;
+    }
   </style>
 </head>
 <body>
@@ -255,28 +560,248 @@
         <div class="compact-feed" id="feed-compact"></div>
       </div>
       <div class="victim-col">
-        <div class="split-topbar"><span class="split-label managed">SOPHOS CENTRAL DEMO</span></div>
-        <div class="victim-inner">
-          <div class="stage-card">
-            <div class="label">WHAT YOU ARE ABOUT TO SHOW</div>
-            <div class="bigline" id="transition-headline">Operational proof inside Sophos Central</div>
-            <div class="subline" id="transition-copy"></div>
-          </div>
-          <div class="stage-card">
-            <div class="label">WHAT THE STAKEHOLDER SHOULD NOTICE</div>
-            <div class="proof-list" id="expected-points"></div>
-          </div>
-          <div class="stage-card">
-            <div class="label">SUGGESTED CLICK PATH</div>
-            <div class="proof-list" id="click-path"></div>
-          </div>
-          <div class="stage-card">
-            <div class="label">SE TRANSITION LINE</div>
-            <div class="transition-line" id="transition-line"></div>
-            <div class="cta-row">
-              <button class="cta primary" id="launchBtn">Open Sophos Central Demo</button>
-              <button class="cta secondary" id="restartBtn">Back to Briefing</button>
+        <div class="split-topbar"><span class="split-label managed">LIVE ATTACK SIMULATION → SOPHOS CENTRAL</span></div>
+        <!-- Hidden compatibility elements for JS -->
+        <div style="display:none">
+          <div id="transition-headline"></div>
+          <div id="transition-copy"></div>
+          <div id="expected-points"></div>
+          <div id="click-path"></div>
+          <div id="transition-line"></div>
+        </div>
+        <!-- Windows 11 Simulation -->
+        <div class="win11-sim" id="win11-sim">
+          <div class="win11-bg"></div>
+
+          <!-- File Explorer Window -->
+          <div class="w11-window" id="w11-explorer">
+            <div class="w11-titlebar">
+              <div class="w11-tb-left">
+                <div class="w11-app-icon w11-icon-explorer">
+                  <div class="w11-folder-body"></div><div class="w11-folder-tab"></div>
+                </div>
+                <span class="w11-tb-title">File Explorer</span>
+              </div>
+              <div class="w11-tb-controls">
+                <button class="w11-wc w11-wc-min">&#x2015;</button>
+                <button class="w11-wc w11-wc-max">&#x25A1;</button>
+                <button class="w11-wc w11-wc-close">&#x2715;</button>
+              </div>
             </div>
+            <div class="w11-address-bar">
+              <div class="w11-nav-btns">
+                <button class="w11-nav-btn">&#x2039;</button>
+                <button class="w11-nav-btn" style="opacity:.4">&#x203A;</button>
+                <button class="w11-nav-btn">&#x2191;</button>
+              </div>
+              <div class="w11-breadcrumb">
+                <span class="w11-bc-item">This PC</span>
+                <span class="w11-bc-sep">&#x276F;</span>
+                <span class="w11-bc-item">Users</span>
+                <span class="w11-bc-sep">&#x276F;</span>
+                <span class="w11-bc-item">sarah.chen</span>
+                <span class="w11-bc-sep">&#x276F;</span>
+                <span class="w11-bc-item w11-bc-active">Documents</span>
+              </div>
+              <div class="w11-search-box">&#x1F50D;</div>
+            </div>
+            <div class="w11-cmd-bar">
+              <button class="w11-cmd-btn"><span class="w11-cmd-icon">&#x2795;</span> New</button>
+              <div class="w11-cmd-sep"></div>
+              <button class="w11-cmd-btn">&#x2702; Cut</button>
+              <button class="w11-cmd-btn">&#x2398; Copy</button>
+              <button class="w11-cmd-btn">&#x1F5C9; Paste</button>
+              <div class="w11-cmd-sep"></div>
+              <button class="w11-cmd-btn">Sort &#x25BE;</button>
+              <button class="w11-cmd-btn">View &#x25BE;</button>
+            </div>
+            <div class="w11-content-pane">
+              <div class="w11-nav-tree">
+                <div class="w11-tree-item w11-tree-section">&#x25BE; Quick access</div>
+                <div class="w11-tree-item w11-tree-child">&#x1F5B3; Desktop</div>
+                <div class="w11-tree-item w11-tree-child w11-tree-active">&#x1F4C4; Documents</div>
+                <div class="w11-tree-item w11-tree-child">&#x2B07; Downloads</div>
+                <div class="w11-tree-item w11-tree-section" style="margin-top:6px">&#x25BE; This PC</div>
+                <div class="w11-tree-item w11-tree-child">&#x1F4BE; Local Disk (C:)</div>
+                <div class="w11-tree-item w11-tree-child">&#x1F4BE; DATA (D:)</div>
+                <div class="w11-tree-item w11-tree-section" style="margin-top:6px">&#x1F310; Network</div>
+              </div>
+              <div class="w11-files-grid" id="w11-files-grid">
+                <div class="w11-file" id="wf-1" data-base="Patient_Records_2026" data-ext="xlsx">
+                  <div class="w11-file-icon w11-xlsx"><span>X</span></div>
+                  <div class="w11-file-label">Patient_Records_2026.xlsx</div>
+                </div>
+                <div class="w11-file" id="wf-2" data-base="Q1_Budget_Analysis" data-ext="xlsx">
+                  <div class="w11-file-icon w11-xlsx"><span>X</span></div>
+                  <div class="w11-file-label">Q1_Budget_Analysis.xlsx</div>
+                </div>
+                <div class="w11-file" id="wf-3" data-base="Employee_Payroll_March" data-ext="docx">
+                  <div class="w11-file-icon w11-docx"><span>W</span></div>
+                  <div class="w11-file-label">Employee_Payroll_March.docx</div>
+                </div>
+                <div class="w11-file" id="wf-4" data-base="HIPAA_Compliance_Audit" data-ext="pdf">
+                  <div class="w11-file-icon w11-pdf"><span>PDF</span></div>
+                  <div class="w11-file-label">HIPAA_Compliance_Audit.pdf</div>
+                </div>
+                <div class="w11-file" id="wf-5" data-base="Clinical_DB_Backup" data-ext="sql">
+                  <div class="w11-file-icon w11-sql"><span>&#x1F5C4;</span></div>
+                  <div class="w11-file-label">Clinical_DB_Backup.sql</div>
+                </div>
+                <div class="w11-file" id="wf-6" data-base="Vendor_Contracts_2026" data-ext="docx">
+                  <div class="w11-file-icon w11-docx"><span>W</span></div>
+                  <div class="w11-file-label">Vendor_Contracts_2026.docx</div>
+                </div>
+                <div class="w11-file" id="wf-7" data-base="Insurance_Claims_Q1" data-ext="xlsx">
+                  <div class="w11-file-icon w11-xlsx"><span>X</span></div>
+                  <div class="w11-file-label">Insurance_Claims_Q1.xlsx</div>
+                </div>
+                <div class="w11-file" id="wf-8" data-base="Annual_Security_Policy" data-ext="pdf">
+                  <div class="w11-file-icon w11-pdf"><span>PDF</span></div>
+                  <div class="w11-file-label">Annual_Security_Policy.pdf</div>
+                </div>
+                <div class="w11-file w11-readme-file" id="wf-readme" style="display:none">
+                  <div class="w11-file-icon w11-txt-readme"><span>&#x26A0;</span></div>
+                  <div class="w11-file-label w11-readme-label">akira_readme.txt</div>
+                </div>
+              </div>
+            </div>
+            <div class="w11-statusbar">
+              <span id="w11-status-count">8 items</span>
+              <span id="w11-status-sel"></span>
+            </div>
+          </div>
+
+          <!-- Notepad Window: Akira Ransom Note -->
+          <div class="w11-window w11-notepad" id="w11-notepad">
+            <div class="w11-titlebar">
+              <div class="w11-tb-left">
+                <div class="w11-app-icon w11-icon-notepad">
+                  <div class="w11-np-lines"></div>
+                </div>
+                <span class="w11-tb-title">akira_readme.txt - Notepad</span>
+              </div>
+              <div class="w11-tb-controls">
+                <button class="w11-wc w11-wc-min">&#x2015;</button>
+                <button class="w11-wc w11-wc-max">&#x25A1;</button>
+                <button class="w11-wc w11-wc-close">&#x2715;</button>
+              </div>
+            </div>
+            <div class="w11-np-menubar">
+              <span>File</span><span>Edit</span><span>Format</span><span>View</span><span>Help</span>
+            </div>
+            <div class="w11-np-body">
+<pre class="w11-ransom-text">Hi friends,
+
+Whatever who you are and what your title is if you're reading this,
+it means you're one of the IT people responsible for your company
+network. We're not going to lecture you, but just explain you a
+situation.
+
+About a week or so ago we have penetrated your network. Since we
+got access we've been silently collecting your data: financial
+reports, intellectual property, accounting, personal information
+and more.
+
+[COMPANY] files are now encrypted. If you are not going to negotiate
+with us, we will post the data we stole on our blog.
+
+To restore your data, contact us:
+
+  https://akiralkzxzq2dsrzsrvbr2xgbbu2wgsmxryd4csgq6tnudjuhwtsuqd.onion
+
+In case you are not familiar with onion addresses:
+
+  https://akira.support
+
+Important notes:
+
+  * Do not delete or modify encrypted files, it may lead to
+    permanent data loss.
+  * Do not involve law enforcement or IT security companies,
+    it will only result in your data being published.
+  * Do not try to decrypt your files using third-party software.
+
+We expect to hear from you in the next 48 hours. After that,
+we will start posting your data publicly.
+
+                                                            Akira.</pre>
+            </div>
+          </div>
+
+          <!-- Windows Security Toast Notification -->
+          <div class="w11-toast" id="w11-toast">
+            <div class="w11-toast-shield">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2L4 6v6c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V6L12 2z" fill="#ffb900" opacity=".15"/>
+                <path d="M12 2L4 6v6c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V6L12 2z" stroke="#ffb900" stroke-width="1.5" fill="none"/>
+                <text x="12" y="16" text-anchor="middle" fill="#ffb900" font-size="9" font-weight="bold">!</text>
+              </svg>
+            </div>
+            <div class="w11-toast-body">
+              <div class="w11-toast-app">Windows Security</div>
+              <div class="w11-toast-title">Virus &amp; threat protection</div>
+              <div class="w11-toast-msg">Threats found. Immediate action required.</div>
+            </div>
+            <button class="w11-toast-dismiss" id="w11-toast-dismiss">&#x2715;</button>
+          </div>
+
+          <!-- Windows 11 Taskbar -->
+          <div class="w11-taskbar">
+            <div class="w11-taskbar-inner">
+              <div class="w11-tb-center-icons">
+                <div class="w11-tb-icon" title="Start">
+                  <svg width="16" height="16" viewBox="0 0 24 24">
+                    <rect x="2" y="2" width="9" height="9" fill="#00adef"/>
+                    <rect x="13" y="2" width="9" height="9" fill="#00adef"/>
+                    <rect x="2" y="13" width="9" height="9" fill="#00adef"/>
+                    <rect x="13" y="13" width="9" height="9" fill="#00adef"/>
+                  </svg>
+                </div>
+                <div class="w11-tb-icon" title="Search">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="10" cy="10" r="7"/><path d="M21 21l-4.35-4.35"/>
+                  </svg>
+                </div>
+                <div class="w11-tb-icon w11-tb-active" title="File Explorer" id="w11-taskbtn-explorer">
+                  <svg width="16" height="16" viewBox="0 0 24 24">
+                    <path d="M2 6h9l2 2h9v12H2z" fill="#ffb900" opacity=".9"/>
+                    <path d="M2 6h9l2 2h9v12H2z" stroke="#e6a800" stroke-width=".5" fill="none"/>
+                  </svg>
+                </div>
+                <div class="w11-tb-icon" title="Notepad" id="w11-taskbtn-notepad" style="display:none">
+                  <svg width="16" height="16" viewBox="0 0 24 24">
+                    <rect x="3" y="2" width="18" height="20" rx="2" fill="#fff" stroke="#ccc" stroke-width="1"/>
+                    <line x1="7" y1="8" x2="17" y2="8" stroke="#555" stroke-width="1.5"/>
+                    <line x1="7" y1="12" x2="17" y2="12" stroke="#555" stroke-width="1.5"/>
+                    <line x1="7" y1="16" x2="13" y2="16" stroke="#555" stroke-width="1.5"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="w11-tb-sys-tray">
+                <div class="w11-tb-warning" id="w11-tb-warning">
+                  <svg width="14" height="14" viewBox="0 0 24 24">
+                    <path d="M12 2L2 22h20L12 2z" fill="#ffb900" opacity=".2"/>
+                    <path d="M12 2L2 22h20L12 2z" stroke="#ffb900" stroke-width="1.5" fill="none"/>
+                    <text x="12" y="18" text-anchor="middle" fill="#ffb900" font-size="10" font-weight="bold">!</text>
+                  </svg>
+                </div>
+                <div class="w11-tb-sysicons">
+                  <svg width="12" height="12" viewBox="0 0 24 24" title="Network"><rect x="2" y="14" width="4" height="8" fill="currentColor"/><rect x="10" y="9" width="4" height="13" fill="currentColor"/><rect x="18" y="4" width="4" height="18" fill="currentColor"/></svg>
+                  <svg width="12" height="12" viewBox="0 0 24 24" title="Volume" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+                  <svg width="16" height="12" viewBox="0 0 32 16" title="Battery"><rect x="1" y="2" width="26" height="12" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><rect x="2" y="3" width="18" height="10" rx="1" fill="#22c55e"/><rect x="28" y="5" width="3" height="6" rx="1" fill="currentColor"/></svg>
+                </div>
+                <div class="w11-clock">
+                  <div class="w11-time" id="w11-time">10:47 AM</div>
+                  <div class="w11-date" id="w11-date">4/19/2026</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CTA bar above taskbar -->
+          <div class="w11-cta-bar">
+            <button class="cta primary" id="launchBtn">Open Sophos Central Demo &#x2192;</button>
+            <button class="cta secondary" id="restartBtn">&#x2190; Back to Briefing</button>
           </div>
         </div>
       </div>

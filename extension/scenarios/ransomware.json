@@ -1,9 +1,9 @@
 {
-  "id": "ransomware-default",
-  "name": "Ransomware Attack",
-  "description": "CryptoLocker ransomware detected on DESKTOP-FIN042. CryptoGuard blocks encryption. Shadow copies targeted. MITRE: T1486, T1490.",
+  "id": "ransomware-akira",
+  "name": "Akira Ransomware — Active Intrusion",
+  "description": "Akira ransomware via Cisco VPN CVE-2023-20269. Mimikatz credential dump, RDP lateral movement, AnyDesk C2, WinSCP exfiltration, shadow copy deletion, .akira encryption. MITRE: T1133, T1003.001, T1021.001, T1219, T1048, T1490, T1486.",
   "version": 1,
-  "createdAt": "2026-03-23T00:00:00Z",
+  "createdAt": "2026-04-19T00:00:00Z",
   "customer": {
     "name": "Contoso Healthcare",
     "industry": "healthcare",
@@ -12,77 +12,88 @@
   },
   "prelude": {
     "enabled": true,
-    "title": "{{customerName}} — Live Attack Chain Prelude",
-    "subtitle": "A realistic multi-stage ransomware storyline built to show stakeholders exactly how a high-consequence attack unfolds, why it matters to {{customerName}}, and how Sophos surfaces the incident inside Central before impact becomes business reality.",
-    "threatFamily": "Live Attack Chain → Ransomware",
+    "title": "{{customerName}} — Akira Ransomware Intrusion",
+    "subtitle": "A double-extortion attack against {{customerName}} using Akira ransomware. The attackers spent 9 days inside the network collecting data before deploying encryption — exactly the kind of high-consequence event Sophos is built to surface and stop.",
+    "threatFamily": "Akira Ransomware",
     "type": "storyboard",
     "videoUrl": "",
     "posterUrl": "",
     "ctaLabel": "Open Sophos Central Demo",
     "autoLaunch": false,
-    "transitionLine": "Now let’s pivot into Sophos Central and show exactly what your team at {{customerName}} would see live: the alerts, case context, detections, threat graph, and response path that turn this story into action.",
+    "transitionLine": "Now let's pivot into Sophos Central and show exactly what your team at {{customerName}} would see — the alerts, case context, detections, and the response path that turns this story into action before business impact.",
     "expectedDetections": [
-      "Malicious file execution detected on the initial endpoint",
-      "Shadow copy deletion behavior flagged as a ransomware precursor",
-      "CryptoGuard blocks encryption behavior before broad impact",
-      "Tamper Protection prevents the attacker from disabling defenses",
-      "A high-priority investigation appears with context your team can act on immediately"
+      "Cisco VPN authentication anomaly flagged on an account not seen in 47 days",
+      "LSASS memory access by a non-system process — Mimikatz credential dump detected",
+      "AnyDesk installation by a non-admin user outside business hours",
+      "WinSCP SFTP session to an external IP transferring 47GB over 6 hours",
+      "Shadow copy deletion via vssadmin — classic Akira ransomware precursor",
+      "CryptoGuard blocks .akira encryption attempt — 2,847 files protected"
     ],
     "mitreTechniques": [
-      { "id": "T1204.002", "name": "Malicious File" },
-      { "id": "T1059.001", "name": "PowerShell" },
-      { "id": "T1490", "name": "Inhibit System Recovery" },
-      { "id": "T1486", "name": "Data Encrypted for Impact" }
+      { "id": "T1133",    "name": "External Remote Services (Cisco VPN)" },
+      { "id": "T1078",    "name": "Valid Accounts" },
+      { "id": "T1003.001","name": "OS Credential Dumping: LSASS Memory" },
+      { "id": "T1021.001","name": "Remote Services: RDP" },
+      { "id": "T1219",    "name": "Remote Access Software (AnyDesk)" },
+      { "id": "T1048.002","name": "Exfiltration Over Alternative Protocol" },
+      { "id": "T1562.001","name": "Impair Defenses: Disable or Modify Tools" },
+      { "id": "T1490",    "name": "Inhibit System Recovery" },
+      { "id": "T1486",    "name": "Data Encrypted for Impact" }
     ],
     "milestones": [
-      { "id": "T1204.002", "label": "Initial compromise" },
-      { "id": "T1490", "label": "Recovery mechanisms targeted" },
-      { "id": "T1486", "label": "Encryption attempt blocked" }
+      { "id": "T1133",    "label": "Cisco VPN compromised" },
+      { "id": "T1003",    "label": "LSASS credentials dumped" },
+      { "id": "T1219",    "label": "AnyDesk C2 established" },
+      { "id": "T1048",    "label": "47GB exfiltrated via WinSCP" },
+      { "id": "T1490",    "label": "Shadow copies deleted" },
+      { "id": "T1486",    "label": "Akira encryption blocked" }
     ],
     "slides": [
       {
-        "title": "Initial compromise at {{customerName}}",
-        "body": "A user opens a convincing business file and triggers a ransomware chain on DESKTOP-FIN042. What looks like a single bad click immediately becomes an enterprise risk event for {{customerName}}."
+        "title": "Day 1: Akira gains access through {{customerName}}'s VPN",
+        "body": "Attackers exploit CVE-2023-20269 in Cisco AnyConnect to authenticate as a valid user. No phishing. No malware. They walk in through the front door using a known vulnerability that had not yet been patched in {{customerName}}'s environment."
       },
       {
-        "title": "The attacker moves toward impact",
-        "body": "Before encryption starts, the attacker attempts to weaken recovery by deleting shadow copies, staging follow-on activity, and creating the conditions for business disruption, outage, and executive escalation."
+        "title": "Days 2–8: Silent collection inside {{customerName}}'s network",
+        "body": "The attackers dump credentials from LSASS using Mimikatz, move laterally via RDP to file servers and backup systems, install AnyDesk for persistent C2, and exfiltrate 47GB of patient records, financial data, and HR files via WinSCP before anyone notices."
       },
       {
-        "title": "Sophos changes the outcome",
-        "body": "Sophos detects the malicious file, correlates the behavior, blocks encryption, preserves defensive controls, and gives the team at {{customerName}} an investigation path they can use immediately inside Central."
+        "title": "Day 9: Encryption — Sophos changes the outcome",
+        "body": "Akira deletes shadow copies, stops backup services, and deploys the ransomware binary. Sophos detects the shadow copy deletion, CryptoGuard blocks the encryption attempt, and gives the team at {{customerName}} an active investigation with full attack context — before the business crisis begins."
       }
     ],
     "talkingPoints": [
-      "This is not just malware — this is the beginning of a business interruption event for {{customerName}}.",
-      "The customer value is not only prevention, but clear operational visibility when seconds matter.",
-      "What we are about to show in Central is the difference between suspicious activity and actionable context.",
-      "For stakeholders, the story is simple: faster visibility, faster decisions, less business impact."
+      "Akira is a double-extortion group — they steal data first, then encrypt. Even if you restore from backup, they still publish your data.",
+      "This attack started with a VPN vulnerability, not a phishing email. Perimeter tools alone don't catch this.",
+      "The 9-day dwell time is typical for Akira. The question is whether your team sees it on day 1 or day 9.",
+      "What we're about to show in Central is the difference between an alert and an actionable investigation that tells your team exactly what happened and what to do."
     ],
     "industryTalkingPoints": {
       "healthcare": [
-        "For {{customerName}}, ransomware is not just an IT incident — it can become a patient safety and continuity event.",
-        "When clinical users lose access to systems, the cost is measured in delayed care, not just downtime."
+        "For {{customerName}}, the 47GB exfiltrated by Akira likely includes patient records — that's a HIPAA breach event before the encryption even starts.",
+        "When clinical systems encrypt, the cost isn't just downtime — it's delayed care, diverted patients, and regulatory exposure."
       ],
       "financial_services": [
-        "For {{customerName}}, a compromise like this puts customer trust, transactional systems, and regulatory exposure on the line.",
-        "The ability to surface and investigate this immediately materially changes financial and reputational impact."
+        "Akira's data exfiltration before encryption means {{customerName}} faces both ransomware recovery costs and regulatory breach notification requirements.",
+        "The dwell time alone — 9 days undetected — is a material compliance failure under most financial services frameworks."
       ],
       "manufacturing": [
-        "For {{customerName}}, disruption here can move from IT systems into production schedules, shipping, and revenue impact.",
-        "Stopping the chain before impact is what protects operational continuity."
+        "For {{customerName}}, a 9-day undetected intrusion means the attackers likely have full visibility into production systems, OT network topology, and supplier relationships.",
+        "Encryption of operational systems doesn't just stop IT — it stops the production floor."
       ]
     },
     "runbookSteps": [
-      "Open with business stakes, not telemetry.",
-      "Tell the attack story in three beats: compromise, movement toward impact, Sophos intervention.",
-      "Use the expected detections as the promise of what stakeholders are about to see in Central.",
-      "Then pivot directly into the injected Sophos Central experience to prove the storyline live."
+      "Open with the business stakes, not the technical details — for healthcare, lead with patient data and HIPAA.",
+      "Tell the 3-beat story: VPN access → silent collection → encryption attempt stopped.",
+      "Use the expected detections as the promise of what the stakeholder is about to see in Central.",
+      "The Win11 simulation shows what an infected machine looks like — then pivot to Central to show Sophos had the answer before it got there.",
+      "Close on the response outcome: Sophos stopped the encryption, preserved the evidence trail, and gave the team a path to act immediately."
     ],
     "clickPath": [
-      "Start on the alert view and show the critical ransomware-related signal that would immediately draw analyst attention at {{customerName}}.",
-      "Open the investigation or case context to show how Sophos connects the activity into a coherent incident, not just isolated alerts.",
-      "Move into detections and threat activity to prove the attack chain, then close on the response outcome and why the attack did not become a business crisis."
+      "Open the high-severity alert — show the shadow copy deletion that fired as Akira prepared to encrypt. This is the moment that matters.",
+      "Move into the investigation/case view — show how Sophos correlates 9 days of attacker activity into a single coherent incident, not 40 disconnected alerts.",
+      "Show the detection chain: VPN anomaly → LSASS dump → AnyDesk → WinSCP exfil → shadow copy deletion → CryptoGuard block.",
+      "Close on the response actions: isolation, forensic preservation, and the clear path your team at {{customerName}} would take to contain and recover."
     ]
   },
   "alerts": {
@@ -90,102 +101,134 @@
     "items": [
       {
         "product": "endpoint",
-        "threat": "Troj/Ransom-GKL",
-        "threat_cleanable": true,
-        "created_at": "-3m",
-        "severity": "high",
-        "actionable": true,
-        "category": "malware",
-        "when": "-3m",
-        "allowedActions": [
-          "CLEAN",
-          "ACKNOWLEDGE"
-        ],
-        "location": "DESKTOP-FIN042",
-        "type": "Event::Endpoint::Threat::CleanupFailed::KillFailed",
-        "source": null,
-        "data": {
-          "created_at": "-3m",
-          "endpoint_type": "computer",
-          "endpoint_platform": "windows"
-        },
-        "description": "Ransomware detected: 'Troj/Ransom-GKL' at 'C:\\\\Users\\\\sarah.chen\\\\AppData\\\\Local\\\\Temp\\\\cryptolocker.exe'",
-        "info": "Manual cleanup required: 'Troj/Ransom-GKL'"
-      },
-      {
-        "product": "endpoint",
-        "threat": "CryptoGuard",
+        "threat": "Akira",
         "threat_cleanable": false,
-        "created_at": "-2m",
+        "created_at": "-4m",
         "severity": "high",
         "actionable": true,
         "category": "runtime_detections",
-        "when": "-2m",
-        "allowedActions": [
-          "ACKNOWLEDGE"
-        ],
-        "location": "DESKTOP-FIN042",
+        "when": "-4m",
+        "allowedActions": ["ACKNOWLEDGE"],
+        "location": "SRV-FILESTORE01",
         "type": "Event::Endpoint::CoreDetection::CryptoGuard",
         "source": null,
         "data": {
-          "created_at": "-2m",
-          "endpoint_type": "computer",
+          "created_at": "-4m",
+          "endpoint_type": "server",
           "endpoint_platform": "windows"
         },
-        "description": "CryptoGuard detected ransomware activity on DESKTOP-FIN042. Remote encryption attempt blocked from 192.168.1.47.",
-        "info": "Ransomware behavior detected and blocked by CryptoGuard"
+        "description": "CryptoGuard blocked Akira ransomware encryption on SRV-FILESTORE01. 2,847 files protected. Ransom note 'akira_readme.txt' drop attempted.",
+        "info": "Akira ransomware behavior detected and blocked by CryptoGuard"
       },
       {
         "product": "endpoint",
         "threat": null,
         "threat_cleanable": null,
-        "created_at": "-2m",
-        "severity": "high",
-        "actionable": false,
-        "category": "policy",
-        "when": "-2m",
-        "allowedActions": [
-          "ACKNOWLEDGE"
-        ],
-        "location": "DESKTOP-FIN042",
-        "type": "Event::Endpoint::SavDisabled",
-        "source": null,
-        "data": {
-          "created_at": "-2m",
-          "endpoint_type": "computer",
-          "endpoint_platform": "windows"
-        },
-        "description": "Malicious process attempted to disable real-time protection on DESKTOP-FIN042. Tamper Protection blocked the attempt.",
-        "info": null
-      },
-      {
-        "product": "endpoint",
-        "threat": "Mal/Generic-S",
-        "threat_cleanable": true,
         "created_at": "-5m",
-        "severity": "medium",
+        "severity": "high",
         "actionable": true,
-        "category": "malware",
+        "category": "runtime_detections",
         "when": "-5m",
-        "allowedActions": [
-          "CLEAN",
-          "ACKNOWLEDGE"
-        ],
-        "location": "DESKTOP-FIN042",
-        "type": "Event::Endpoint::Threat::Detected",
+        "allowedActions": ["ACKNOWLEDGE"],
+        "location": "SRV-FILESTORE01",
+        "type": "Event::Endpoint::CoreDetection::ShadowCopyDeletion",
         "source": null,
         "data": {
           "created_at": "-5m",
+          "endpoint_type": "server",
+          "endpoint_platform": "windows"
+        },
+        "description": "Shadow copy deletion detected on SRV-FILESTORE01. Command: vssadmin delete shadows /all /quiet. Executed by: svchost_upd.exe (PID 7742). Ransomware precursor behavior.",
+        "info": "Inhibit System Recovery — T1490"
+      },
+      {
+        "product": "endpoint",
+        "threat": null,
+        "threat_cleanable": null,
+        "created_at": "-3d",
+        "severity": "high",
+        "actionable": true,
+        "category": "runtime_detections",
+        "when": "-3d",
+        "allowedActions": ["ACKNOWLEDGE"],
+        "location": "DESKTOP-FIN042",
+        "type": "Event::Endpoint::CoreDetection::CredentialAccess",
+        "source": null,
+        "data": {
+          "created_at": "-3d",
           "endpoint_type": "computer",
           "endpoint_platform": "windows"
         },
-        "description": "Malware detected: 'Mal/Generic-S' at 'C:\\\\Users\\\\sarah.chen\\\\Downloads\\\\invoice_march2026.exe'",
-        "info": "Malware cleaned successfully: 'Mal/Generic-S'"
+        "description": "LSASS memory access by non-system process on DESKTOP-FIN042. Process: svchost_upd.exe accessing lsass.exe (PID 872). Mimikatz credential dumping pattern detected.",
+        "info": "OS Credential Dumping: LSASS Memory — T1003.001"
+      },
+      {
+        "product": "endpoint",
+        "threat": null,
+        "threat_cleanable": null,
+        "created_at": "-6d",
+        "severity": "medium",
+        "actionable": true,
+        "category": "runtime_detections",
+        "when": "-6d",
+        "allowedActions": ["ACKNOWLEDGE"],
+        "location": "DESKTOP-FIN042",
+        "type": "Event::Endpoint::CoreDetection::RemoteAccessTool",
+        "source": null,
+        "data": {
+          "created_at": "-6d",
+          "endpoint_type": "computer",
+          "endpoint_platform": "windows"
+        },
+        "description": "AnyDesk remote access software installed outside business hours on DESKTOP-FIN042. User: sarah.chen. Installation source: C:\\Users\\sarah.chen\\AppData\\Local\\Temp\\AnyDesk.exe. Not authorized by IT policy.",
+        "info": "Remote Access Software — T1219"
+      },
+      {
+        "product": "endpoint",
+        "threat": null,
+        "threat_cleanable": null,
+        "created_at": "-2d",
+        "severity": "medium",
+        "actionable": false,
+        "category": "runtime_detections",
+        "when": "-2d",
+        "allowedActions": ["ACKNOWLEDGE"],
+        "location": "SRV-BACKUP02",
+        "type": "Event::Endpoint::CoreDetection::LargeDataTransfer",
+        "source": null,
+        "data": {
+          "created_at": "-2d",
+          "endpoint_type": "server",
+          "endpoint_platform": "windows"
+        },
+        "description": "Large outbound data transfer detected from SRV-BACKUP02. WinSCP process transferred 47.3GB via SFTP to 185.220.101.47 (Tor exit node) over 6.2 hours. Possible exfiltration — T1048.002.",
+        "info": "Exfiltration over alternative protocol detected"
+      },
+      {
+        "product": "endpoint",
+        "threat": null,
+        "threat_cleanable": null,
+        "created_at": "-4m",
+        "severity": "high",
+        "actionable": false,
+        "category": "policy",
+        "when": "-4m",
+        "allowedActions": ["ACKNOWLEDGE"],
+        "location": "SRV-FILESTORE01",
+        "type": "Event::Endpoint::SavDisabled",
+        "source": null,
+        "data": {
+          "created_at": "-4m",
+          "endpoint_type": "server",
+          "endpoint_platform": "windows"
+        },
+        "description": "Attempt to disable Windows Defender real-time protection on SRV-FILESTORE01 blocked by Tamper Protection. Process: svchost_upd.exe (PID 7742).",
+        "info": "Tamper Protection blocked defense evasion attempt"
       }
     ],
     "summaryDelta": {
-      "high": 3,
-      "medium": 1,
+      "high": 4,
+      "medium": 2,
       "low": 0
     }
   },
@@ -194,29 +237,43 @@
     "items": [
       {
         "type": "investigation",
-        "name": "(DESKTOP-FIN042) | Ransomware Attack \u2014 {{customerName}}",
+        "name": "(SRV-FILESTORE01) | Akira Ransomware — {{customerName}} — Active Intrusion",
         "managedBy": "self",
-        "createdAt": "-3m",
-        "createdBy": {
-          "name": "Auto-generated"
-        },
+        "createdAt": "-5m",
+        "createdBy": { "name": "Auto-generated" },
         "updatedAt": "-1m",
         "status": "investigating",
         "initialDetection": {
-          "severity": 9,
+          "severity": 10,
           "type": "Threat",
           "detectionRule": "WIN-IMP-PRC-SHADOWCOPY-SELECT-DELETE-RESIZE-1",
           "mitreAttacks": [
             {
               "tactic": {
-                "id": "TA0002",
-                "name": "Execution",
-                "techniques": [
-                  {
-                    "id": "T1059.001",
-                    "name": "PowerShell"
-                  }
-                ]
+                "id": "TA0001",
+                "name": "Initial Access",
+                "techniques": [{ "id": "T1133", "name": "External Remote Services" }]
+              }
+            },
+            {
+              "tactic": {
+                "id": "TA0006",
+                "name": "Credential Access",
+                "techniques": [{ "id": "T1003.001", "name": "LSASS Memory" }]
+              }
+            },
+            {
+              "tactic": {
+                "id": "TA0008",
+                "name": "Lateral Movement",
+                "techniques": [{ "id": "T1021.001", "name": "Remote Desktop Protocol" }]
+              }
+            },
+            {
+              "tactic": {
+                "id": "TA0010",
+                "name": "Exfiltration",
+                "techniques": [{ "id": "T1048.002", "name": "Exfiltration Over Alternative Protocol" }]
               }
             },
             {
@@ -224,14 +281,8 @@
                 "id": "TA0040",
                 "name": "Impact",
                 "techniques": [
-                  {
-                    "id": "T1486",
-                    "name": "Data Encrypted for Impact"
-                  },
-                  {
-                    "id": "T1490",
-                    "name": "Inhibit System Recovery"
-                  }
+                  { "id": "T1490", "name": "Inhibit System Recovery" },
+                  { "id": "T1486", "name": "Data Encrypted for Impact" }
                 ]
               }
             },
@@ -239,26 +290,19 @@
               "tactic": {
                 "id": "TA0005",
                 "name": "Defense Evasion",
-                "techniques": [
-                  {
-                    "id": "T1562.001",
-                    "name": "Disable or Modify Tools"
-                  }
-                ]
+                "techniques": [{ "id": "T1562.001", "name": "Disable or Modify Tools" }]
               }
             }
           ],
-          "time": "-3m",
+          "time": "-5m",
           "sensor": {
             "type": "endpoint",
             "source": "Sophos Endpoint"
           }
         },
-        "assignee": {
-          "name": "SOC Analyst"
-        },
-        "overview": "Active ransomware attack detected on DESKTOP-FIN042. CryptoGuard blocked encryption. Shadow copy deletion attempted. Lateral movement to 3 additional hosts detected.",
-        "detectionCount": 24,
+        "assignee": { "name": "SOC Analyst" },
+        "overview": "Akira ransomware group active inside {{customerName}} network for an estimated 9 days. Initial access via Cisco AnyConnect VPN CVE-2023-20269. Credential dump from LSASS on DESKTOP-FIN042. Lateral movement via RDP to 6 additional hosts including SRV-FILESTORE01 and SRV-BACKUP02. AnyDesk C2 channel maintained for 6 days. 47.3GB exfiltrated via WinSCP to Tor exit node 185.220.101.47. Shadow copies deleted across 4 servers. CryptoGuard blocked encryption on SRV-FILESTORE01 — 2,847 files protected. Ransomware binary: svchost_upd.exe (masquerading as Windows service). akira_readme.txt drop blocked.",
+        "detectionCount": 47,
         "escalated": true
       }
     ]
@@ -266,64 +310,6 @@
   "detections": {
     "mode": "prepend",
     "items": [
-      {
-        "detectionCreatedAt": "-3m",
-        "connectorGeneratedAt": "-3m",
-        "connector": {
-          "id": "SophosSensorID",
-          "type": "endpoint",
-          "vendor": "Sophos",
-          "version": "SED Driver 4.2.1"
-        },
-        "device": {
-          "type": "computer",
-          "hostname": "DESKTOP-FIN042"
-        },
-        "rawData": {
-          "meta_hostname": "DESKTOP-FIN042",
-          "meta_ip_address": "192.168.1.42",
-          "meta_os_name": "Microsoft Windows 11 Enterprise",
-          "meta_username": "sarah.chen",
-          "cmdline": "powershell.exe -ExecutionPolicy Bypass -C \"vssadmin delete shadows /all /quiet\"",
-          "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-          "parent_name": "invoice_march2026.exe",
-          "sha256": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
-        },
-        "risk": 9,
-        "category": "Threat",
-        "classificationRule": "WIN-IMP-PRC-SHADOWCOPY-SELECT-DELETE-RESIZE-1",
-        "ruleDescription": "Shadow copy deletion detected \u2014 common ransomware precursor",
-        "mitreAttacks": [
-          {
-            "tactic": {
-              "id": "TA0040",
-              "name": "Impact",
-              "techniques": [
-                {
-                  "id": "T1490",
-                  "name": "Inhibit System Recovery"
-                }
-              ]
-            }
-          }
-        ],
-        "attackType": "Ransomware",
-        "severity": 9,
-        "detectionAttack": {
-          "name": "Ransomware Kill Chain"
-        },
-        "detectionLicenses": [
-          "XDR"
-        ],
-        "geolocation": {},
-        "intelixFileReputation": {
-          "score": 100,
-          "label": "Known Malicious"
-        },
-        "detectionType": "Threat",
-        "suppressed": false,
-        "caseDescription": "Active ransomware attack \u2014 shadow copy deletion"
-      },
       {
         "detectionCreatedAt": "-5m",
         "connectorGeneratedAt": "-5m",
@@ -333,54 +319,125 @@
           "vendor": "Sophos",
           "version": "SED Driver 4.2.1"
         },
-        "device": {
-          "type": "computer",
-          "hostname": "DESKTOP-FIN042"
-        },
+        "device": { "type": "server", "hostname": "SRV-FILESTORE01" },
         "rawData": {
-          "meta_hostname": "DESKTOP-FIN042",
-          "meta_ip_address": "192.168.1.42",
-          "meta_os_name": "Microsoft Windows 11 Enterprise",
-          "meta_username": "sarah.chen",
-          "cmdline": "C:\\Users\\sarah.chen\\Downloads\\invoice_march2026.exe",
-          "path": "C:\\Users\\sarah.chen\\Downloads\\invoice_march2026.exe",
-          "parent_name": "explorer.exe",
-          "sha256": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+          "meta_hostname": "SRV-FILESTORE01",
+          "meta_ip_address": "10.0.1.15",
+          "meta_os_name": "Windows Server 2022 Standard",
+          "meta_username": "CONTOSO\\svc_backup",
+          "cmdline": "powershell.exe -ExecutionPolicy Bypass -NonInteractive -WindowStyle Hidden -enc JABjAG0AZAA9ACIAdgBzAHMAYQBkAG0AaQBuACAAZABlAGwAZQB0AGUAIABzAGgAYQBkAG8AdwBzACAALwBhAGwAbAAgAC8AcQB1AGkAZQB0ACIA",
+          "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+          "parent_name": "svchost_upd.exe",
+          "sha256": "3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c"
         },
-        "risk": 8,
+        "risk": 10,
         "category": "Threat",
-        "classificationRule": "WIN-PROT-VDL-MALWARE-ATK-RANSOM-1",
-        "ruleDescription": "Ransomware executable detected via deep learning",
+        "classificationRule": "WIN-IMP-PRC-SHADOWCOPY-SELECT-DELETE-RESIZE-1",
+        "ruleDescription": "Shadow copy deletion — Akira ransomware precursor (T1490)",
         "mitreAttacks": [
           {
             "tactic": {
-              "id": "TA0002",
-              "name": "Execution",
-              "techniques": [
-                {
-                  "id": "T1204.002",
-                  "name": "Malicious File"
-                }
-              ]
+              "id": "TA0040",
+              "name": "Impact",
+              "techniques": [{ "id": "T1490", "name": "Inhibit System Recovery" }]
             }
           }
         ],
         "attackType": "Ransomware",
-        "severity": 8,
-        "detectionAttack": {
-          "name": "Ransomware Kill Chain"
-        },
-        "detectionLicenses": [
-          "XDR"
-        ],
+        "severity": 10,
+        "detectionAttack": { "name": "Akira Ransomware Kill Chain" },
+        "detectionLicenses": ["XDR"],
         "geolocation": {},
-        "intelixFileReputation": {
-          "score": 100,
-          "label": "Known Malicious"
-        },
+        "intelixFileReputation": { "score": 100, "label": "Known Malicious" },
         "detectionType": "Threat",
         "suppressed": false,
-        "caseDescription": "Ransomware binary executed from phishing email"
+        "caseDescription": "Akira ransomware — shadow copy deletion before encryption"
+      },
+      {
+        "detectionCreatedAt": "-3d",
+        "connectorGeneratedAt": "-3d",
+        "connector": {
+          "id": "SophosSensorID",
+          "type": "endpoint",
+          "vendor": "Sophos",
+          "version": "SED Driver 4.2.1"
+        },
+        "device": { "type": "computer", "hostname": "DESKTOP-FIN042" },
+        "rawData": {
+          "meta_hostname": "DESKTOP-FIN042",
+          "meta_ip_address": "10.0.2.42",
+          "meta_os_name": "Windows 11 Enterprise 23H2",
+          "meta_username": "CONTOSO\\sarah.chen",
+          "cmdline": "svchost_upd.exe --dump-creds --target lsass --output C:\\ProgramData\\upd\\c.bin",
+          "path": "C:\\ProgramData\\upd\\svchost_upd.exe",
+          "parent_name": "AnyDesk.exe",
+          "sha256": "a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c3d2e1f0a9b8"
+        },
+        "risk": 9,
+        "category": "Threat",
+        "classificationRule": "WIN-CRED-PROC-LSASS-ACCESS-MIMIKATZ-1",
+        "ruleDescription": "LSASS credential dumping — Mimikatz pattern (T1003.001)",
+        "mitreAttacks": [
+          {
+            "tactic": {
+              "id": "TA0006",
+              "name": "Credential Access",
+              "techniques": [{ "id": "T1003.001", "name": "OS Credential Dumping: LSASS Memory" }]
+            }
+          }
+        ],
+        "attackType": "Credential Access",
+        "severity": 9,
+        "detectionAttack": { "name": "Akira Ransomware Kill Chain" },
+        "detectionLicenses": ["XDR"],
+        "geolocation": {},
+        "intelixFileReputation": { "score": 100, "label": "Known Malicious" },
+        "detectionType": "Threat",
+        "suppressed": false,
+        "caseDescription": "Mimikatz credential dump — Akira lateral movement preparation"
+      },
+      {
+        "detectionCreatedAt": "-6d",
+        "connectorGeneratedAt": "-6d",
+        "connector": {
+          "id": "SophosSensorID",
+          "type": "endpoint",
+          "vendor": "Sophos",
+          "version": "SED Driver 4.2.1"
+        },
+        "device": { "type": "computer", "hostname": "DESKTOP-FIN042" },
+        "rawData": {
+          "meta_hostname": "DESKTOP-FIN042",
+          "meta_ip_address": "10.0.2.42",
+          "meta_os_name": "Windows 11 Enterprise 23H2",
+          "meta_username": "CONTOSO\\sarah.chen",
+          "cmdline": "AnyDesk.exe --install C:\\ProgramData\\AnyDesk --start-with-win --silent",
+          "path": "C:\\Users\\sarah.chen\\AppData\\Local\\Temp\\AnyDesk.exe",
+          "parent_name": "svchost_upd.exe",
+          "sha256": "f1e2d3c4b5a6978869504132241516071819202122232425262728293031323334"
+        },
+        "risk": 7,
+        "category": "Threat",
+        "classificationRule": "WIN-TOOL-ANYDESK-SILENT-INSTALL-NONIT-1",
+        "ruleDescription": "AnyDesk silent install by non-admin — remote access tool (T1219)",
+        "mitreAttacks": [
+          {
+            "tactic": {
+              "id": "TA0011",
+              "name": "Command and Control",
+              "techniques": [{ "id": "T1219", "name": "Remote Access Software" }]
+            }
+          }
+        ],
+        "attackType": "Command and Control",
+        "severity": 7,
+        "detectionAttack": { "name": "Akira Ransomware Kill Chain" },
+        "detectionLicenses": ["XDR"],
+        "geolocation": {},
+        "intelixFileReputation": { "score": 72, "label": "Suspicious" },
+        "detectionType": "Threat",
+        "suppressed": false,
+        "caseDescription": "AnyDesk C2 installation — Akira persistence and remote control"
       }
     ]
   },
@@ -388,49 +445,56 @@
     "extraActivities": [
       {
         "userName": "Sophos Endpoint",
-        "action": "CryptoGuard blocked ransomware encryption on DESKTOP-FIN042. 47 files protected.",
+        "action": "CryptoGuard blocked Akira encryption on SRV-FILESTORE01. 2,847 files protected. Ransom note drop (akira_readme.txt) blocked.",
+        "category": "caseActivity",
+        "createdAt": "-4m"
+      },
+      {
+        "userName": "Sophos Endpoint",
+        "action": "Tamper Protection blocked attempt to disable Windows Defender on SRV-FILESTORE01. Process: svchost_upd.exe (PID 7742).",
+        "category": "caseActivity",
+        "createdAt": "-4m"
+      },
+      {
+        "userName": "SOC Analyst",
+        "action": "SRV-FILESTORE01 isolated from network. Threat confirmed: Akira ransomware. Incident escalated to IR team.",
         "category": "caseActivity",
         "createdAt": "-2m"
       },
       {
         "userName": "Sophos Endpoint",
-        "action": "Tamper Protection blocked attempt to disable real-time scanning on DESKTOP-FIN042.",
+        "action": "Ransomware binary quarantined: C:\\ProgramData\\upd\\svchost_upd.exe (SHA256: 3b4c5d6e...a3b4c). AnyDesk C2 process terminated on DESKTOP-FIN042.",
         "category": "caseActivity",
-        "createdAt": "-2m"
+        "createdAt": "-5m"
       },
       {
         "userName": "Sophos Endpoint",
-        "action": "Malicious file quarantined: C:\\Users\\sarah.chen\\Downloads\\invoice_march2026.exe (SHA256: deadbeef...)",
+        "action": "Large data transfer alert correlated to case. WinSCP transferred 47.3GB from SRV-BACKUP02 to 185.220.101.47 (Tor exit node) over 6.2 hours — 2 days prior to encryption attempt.",
         "category": "caseActivity",
-        "createdAt": "-3m"
+        "createdAt": "-2d"
       }
     ]
   },
   "threatGraphs": {
     "stacCases": {
-      "summary": {
-        "closed": 1,
-        "inprogress": 0,
-        "total": 1,
-        "new": 0
-      },
+      "summary": { "closed": 1, "inprogress": 0, "total": 1, "new": 0 },
       "items": [
         {
-          "endpointType": "computer",
-          "endpointName": "DESKTOP-FIN042",
-          "username": "{{customerDomain}}\\sarah.chen",
-          "rootCauseName": "invoice_march2026.exe",
-          "malwareName": "Troj/Ransom-GKL",
-          "cloudCreatedAt": "-3m",
-          "rootCauseDT": "-5m",
+          "endpointType": "server",
+          "endpointName": "SRV-FILESTORE01",
+          "username": "CONTOSO\\svc_backup",
+          "rootCauseName": "svchost_upd.exe",
+          "malwareName": "Akira",
+          "cloudCreatedAt": "-5m",
+          "rootCauseDT": "-9d",
           "status": "closed",
           "priority": "HIGH",
           "id": "auto",
           "caseType": "SYSTEM_GENERATED",
-          "suspectProcessCount": 4,
-          "numberOfBusinessFiles": "47",
-          "isBehavioral": false,
-          "hasProcessBeacon": false
+          "suspectProcessCount": 12,
+          "numberOfBusinessFiles": "2847",
+          "isBehavioral": true,
+          "hasProcessBeacon": true
         }
       ],
       "total": 1,
@@ -446,59 +510,69 @@
     "overrideCompany": "{{customerName}}",
     "overrideAlias": "{{customerName}}"
   },
-  "healthScore": {
-    "override": 72
-  },
+  "healthScore": { "override": 58 },
   "auditLogs": {
     "mode": "prepend",
     "items": [
       {
-        "timestamp": "-1m",
+        "timestamp": "-2m",
         "type": "admin_action",
         "category": "endpoint",
         "action": "Device isolation initiated",
         "actor": "SOC Analyst",
         "actorType": "admin",
-        "target": "DESKTOP-FIN042",
+        "target": "SRV-FILESTORE01",
         "targetType": "endpoint",
         "result": "success",
-        "description": "DESKTOP-FIN042 isolated from network following CryptoLocker ransomware detection. User: sarah.chen."
+        "description": "SRV-FILESTORE01 isolated from network following Akira ransomware detection. Threat actor: CONTOSO\\svc_backup (compromised account)."
       },
       {
-        "timestamp": "-2m",
-        "type": "system_event",
-        "category": "endpoint",
-        "action": "Threat cleanup initiated",
-        "actor": "Sophos Endpoint",
-        "actorType": "system",
-        "target": "DESKTOP-FIN042",
-        "targetType": "endpoint",
-        "result": "success",
-        "description": "Automatic cleanup of 'Troj/Ransom-GKL' initiated on DESKTOP-FIN042. File quarantined: cryptolocker.exe"
-      },
-      {
-        "timestamp": "-2m",
+        "timestamp": "-4m",
         "type": "system_event",
         "category": "endpoint",
         "action": "CryptoGuard activation",
         "actor": "Sophos Endpoint",
         "actorType": "system",
-        "target": "DESKTOP-FIN042",
+        "target": "SRV-FILESTORE01",
         "targetType": "endpoint",
         "result": "success",
-        "description": "CryptoGuard blocked ransomware encryption activity. 47 files protected from encryption. Remote encryption attempt from 192.168.1.47 blocked."
+        "description": "CryptoGuard blocked Akira ransomware file encryption. 2,847 files protected. Ransom note akira_readme.txt drop blocked. Ransomware binary svchost_upd.exe (SHA256: 3b4c5d6e…) quarantined."
       },
       {
-        "timestamp": "-3m",
+        "timestamp": "-5m",
         "type": "system_event",
         "category": "endpoint",
-        "action": "Tamper Protection triggered",
+        "action": "Shadow copy deletion blocked",
+        "actor": "Sophos Endpoint",
+        "actorType": "system",
+        "target": "SRV-FILESTORE01",
+        "targetType": "endpoint",
+        "result": "blocked",
+        "description": "Akira ransomware attempted to delete all VSS shadow copies via encoded PowerShell. Sophos detected and flagged the activity. vssadmin delete shadows /all /quiet — T1490."
+      },
+      {
+        "timestamp": "-3d",
+        "type": "system_event",
+        "category": "endpoint",
+        "action": "LSASS credential dump detected",
         "actor": "Sophos Endpoint",
         "actorType": "system",
         "target": "DESKTOP-FIN042",
         "targetType": "endpoint",
-        "result": "blocked",
-        "description": "Tamper Protection blocked attempt to disable real-time scanning by malicious process invoice_march2026.exe (PID 9412)."
+        "result": "detected",
+        "description": "svchost_upd.exe accessed lsass.exe process memory on DESKTOP-FIN042. Mimikatz credential dump pattern. Domain admin credentials at risk. User: CONTOSO\\sarah.chen."
+      },
+      {
+        "timestamp": "-9d",
+        "type": "system_event",
+        "category": "endpoint",
+        "action": "VPN authentication anomaly",
+        "actor": "Sophos Endpoint",
+        "actorType": "system",
+        "target": "DESKTOP-FIN042",
+        "targetType": "endpoint",
+        "result": "detected",
+        "description": "Cisco AnyConnect authentication from 185.220.101.47 (Tor exit node) using account sarah.chen — not seen in 47 days. CVE-2023-20269 exploitation suspected. Initial Akira access point."
       }
     ]
   },
@@ -506,93 +580,52 @@
     "queryResults": {
       "id": "auto",
       "status": "completed",
-      "query": "SELECT pid, name, path, cmdline, parent FROM processes WHERE name LIKE '%powershell%' OR cmdline LIKE '%vssadmin%' OR cmdline LIKE '%shadow%'",
-      "queryName": "Ransomware Indicator Hunt \u2014 Shadow Copy & PowerShell",
-      "startedAt": "-2m",
-      "completedAt": "-1m",
-      "endpointsQueried": 12,
-      "endpointsResponded": 12,
-      "totalResults": 4,
+      "query": "SELECT pid, name, path, cmdline, parent FROM processes WHERE name LIKE '%svchost_upd%' OR name LIKE '%AnyDesk%' OR name LIKE '%WinSCP%' OR cmdline LIKE '%vssadmin%' OR cmdline LIKE '%lsass%' ORDER BY start_time DESC",
+      "queryName": "Akira Ransomware IOC Hunt — Active Processes",
+      "startedAt": "-3m",
+      "completedAt": "-2m",
+      "endpointsQueried": 18,
+      "endpointsResponded": 18,
+      "totalResults": 7,
       "columns": [
-        {
-          "name": "pid",
-          "type": "INTEGER"
-        },
-        {
-          "name": "name",
-          "type": "TEXT"
-        },
-        {
-          "name": "path",
-          "type": "TEXT"
-        },
-        {
-          "name": "cmdline",
-          "type": "TEXT"
-        },
-        {
-          "name": "endpoint_hostname",
-          "type": "TEXT"
-        }
+        { "name": "pid", "type": "INTEGER" },
+        { "name": "name", "type": "TEXT" },
+        { "name": "path", "type": "TEXT" },
+        { "name": "cmdline", "type": "TEXT" },
+        { "name": "endpoint_hostname", "type": "TEXT" }
       ],
       "rows": [
-        [
-          12028,
-          "powershell.exe",
-          "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-          "powershell.exe -ExecutionPolicy Bypass -C \"vssadmin delete shadows /all /quiet\"",
-          "DESKTOP-FIN042"
-        ],
-        [
-          8844,
-          "powershell.exe",
-          "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-          "powershell.exe -ep bypass -file C:\\Users\\sarah.chen\\AppData\\Local\\Temp\\encrypt.ps1",
-          "DESKTOP-FIN042"
-        ],
-        [
-          9412,
-          "invoice_march2026.exe",
-          "C:\\Users\\sarah.chen\\Downloads\\invoice_march2026.exe",
-          "invoice_march2026.exe --encrypt --target=C:\\Users",
-          "DESKTOP-FIN042"
-        ],
-        [
-          3104,
-          "wmic.exe",
-          "C:\\Windows\\System32\\wbem\\WMIC.exe",
-          "wmic shadowcopy delete",
-          "DESKTOP-FIN042"
-        ]
+        [7742, "svchost_upd.exe", "C:\\ProgramData\\upd\\svchost_upd.exe", "svchost_upd.exe --encrypt --ext .akira --target C:\\", "SRV-FILESTORE01"],
+        [7891, "powershell.exe", "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "powershell.exe -ep bypass -enc JABjAG0AZAA9...", "SRV-FILESTORE01"],
+        [8102, "powershell.exe", "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "powershell.exe -ExecutionPolicy Bypass -C \"vssadmin delete shadows /all /quiet\"", "SRV-BACKUP02"],
+        [4471, "AnyDesk.exe", "C:\\ProgramData\\AnyDesk\\AnyDesk.exe", "AnyDesk.exe --with-password", "DESKTOP-FIN042"],
+        [6612, "WinSCP.exe", "C:\\Users\\svc_backup\\AppData\\Local\\Programs\\WinSCP\\WinSCP.exe", "WinSCP.exe /script=C:\\ProgramData\\upd\\sync.txt", "SRV-BACKUP02"],
+        [3304, "net.exe", "C:\\Windows\\System32\\net.exe", "net stop vss & net stop wbengine & net stop swprv", "SRV-FILESTORE01"],
+        [2988, "svchost_upd.exe", "C:\\ProgramData\\upd\\svchost_upd.exe", "svchost_upd.exe --dump-creds --target lsass --output C:\\ProgramData\\upd\\c.bin", "DESKTOP-FIN042"]
       ]
     }
   },
   "timedEvents": [
     {
-      "delaySeconds": 45,
+      "delaySeconds": 30,
       "alert": {
         "product": "endpoint",
-        "threat": "Troj/Ransom-GKL",
+        "threat": "Akira",
         "threat_cleanable": false,
         "severity": "high",
         "actionable": true,
         "category": "runtime_detections",
-        "allowedActions": [
-          "ACKNOWLEDGE"
-        ],
-        "location": "LAPTOP-MKT007",
+        "allowedActions": ["ACKNOWLEDGE"],
+        "location": "SRV-BACKUP02",
         "type": "Event::Endpoint::CoreDetection::CryptoGuard",
         "source": null,
-        "data": {
-          "endpoint_type": "computer",
-          "endpoint_platform": "windows"
-        },
-        "description": "\ud83d\udea8 NEW: CryptoGuard blocked ransomware spreading to LAPTOP-MKT007 (user: mike.jones). Lateral movement from DESKTOP-FIN042 detected. Second endpoint targeted \u2014 attack is expanding.",
-        "info": "Ransomware attempting to spread via network shares"
+        "data": { "endpoint_type": "server", "endpoint_platform": "windows" },
+        "description": "🚨 NEW: Akira ransomware attempting to spread to SRV-BACKUP02. CryptoGuard blocked encryption. Attacker pivoting to secondary target — backup server at risk.",
+        "info": "Akira lateral encryption attempt — backup server targeted"
       }
     },
     {
-      "delaySeconds": 90,
+      "delaySeconds": 75,
       "alert": {
         "product": "endpoint",
         "threat": null,
@@ -600,18 +633,13 @@
         "severity": "high",
         "actionable": false,
         "category": "policy",
-        "allowedActions": [
-          "ACKNOWLEDGE"
-        ],
-        "location": "DESKTOP-FIN042",
+        "allowedActions": ["ACKNOWLEDGE"],
+        "location": "SRV-FILESTORE01",
         "type": "Event::Endpoint::DeviceIsolated",
         "source": null,
-        "data": {
-          "endpoint_type": "computer",
-          "endpoint_platform": "windows"
-        },
-        "description": "\ud83d\udd12 DESKTOP-FIN042 automatically isolated from network by Sophos. Ransomware containment in progress. All network connections terminated.",
-        "info": "Automatic isolation triggered \u2014 threat contained"
+        "data": { "endpoint_type": "server", "endpoint_platform": "windows" },
+        "description": "🔒 SRV-FILESTORE01 automatically isolated by Sophos. Akira ransomware contained. All network connections terminated. 2,847 files protected from encryption.",
+        "info": "Automatic network isolation — threat contained"
       }
     }
   ],
@@ -620,7 +648,7 @@
     "overrideSummary": {
       "total": "{{endpointCount}}",
       "active": "{{endpointCount * 0.85}}",
-      "unprotected": 1,
+      "unprotected": 2,
       "inactive": "{{endpointCount * 0.03}}",
       "dormant": "{{endpointCount * 0.12}}"
     }
