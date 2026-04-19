@@ -693,6 +693,62 @@
     .w11-cta-bar .cta {
       padding: 7px 16px; font-size: 12px;
     }
+
+    /* ─── Guide Mode ─────────────────────────────────────────────────────── */
+    .guide-toggle-btn {
+      width: 100%; padding: 7px; margin-top: 8px;
+      border: 1px solid rgba(255,220,50,0.3);
+      background: rgba(255,220,50,0.04); color: rgba(255,220,50,0.62);
+      border-radius: 8px; font-size: 10px; font-weight: 700;
+      font-family: var(--font-display); letter-spacing: .06em;
+      cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+    }
+    .guide-toggle-btn:hover { background: rgba(255,220,50,0.10); color: rgba(255,220,50,0.9); }
+    .guide-toggle-btn.active {
+      background: rgba(255,220,50,0.15); border-color: rgba(255,220,50,0.7);
+      color: #ffe033; box-shadow: 0 0 0 3px rgba(255,220,50,0.08);
+    }
+    .guide-callout {
+      display: none; position: absolute;
+      background: #fffde7; color: #1a1200;
+      border-radius: 8px; padding: 9px 11px;
+      font-size: 10.5px; line-height: 1.45; font-weight: 500;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4), 0 0 0 1.5px rgba(255,200,0,0.5);
+      z-index: 100; pointer-events: none;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      max-width: 186px;
+    }
+    .guide-callout-label {
+      display: block; font-size: 9px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.07em;
+      color: #a05000; margin-bottom: 4px;
+    }
+    .guide-callout.arrow-up::before {
+      content: ''; position: absolute;
+      top: -8px; left: 14px;
+      border: 8px solid transparent;
+      border-bottom-color: #fffde7; border-top: 0;
+    }
+    .guide-callout.arrow-down::before {
+      content: ''; position: absolute;
+      bottom: -8px; left: 14px;
+      border: 8px solid transparent;
+      border-top-color: #fffde7; border-bottom: 0;
+    }
+    .guide-callout.arrow-left::before {
+      content: ''; position: absolute;
+      left: -8px; top: 14px;
+      border: 8px solid transparent;
+      border-right-color: #fffde7; border-left: 0;
+    }
+    .guide-callout.arrow-right::before {
+      content: ''; position: absolute;
+      right: -8px; top: 14px;
+      border: 8px solid transparent;
+      border-left-color: #fffde7; border-right: 0;
+    }
+    body.guide-mode .guide-callout { display: block; }
   </style>
 </head>
 <body>
@@ -793,6 +849,7 @@
             <span id="phase-play-label">Play Phase</span>
           </button>
           <div class="phase-status-text" id="phase-status-text">Select a phase to begin</div>
+          <button class="guide-toggle-btn" id="guide-mode-btn">💡 Guide Mode</button>
         </div>
       </div>
       <div class="victim-col">
@@ -812,6 +869,15 @@
         <div class="w11-scene w11-scene-active" id="w11-scene-0">
           <div class="win11-sim">
             <div class="win11-bg"></div>
+            <!-- Guide Mode callouts – Day 1 -->
+            <div class="guide-callout arrow-up" style="left:14px;top:368px;">
+              <span class="guide-callout-label">🔑 Initial Access — VPN</span>
+              Source IP <b>185.220.101.47</b> is a known Tor exit node. Attacker used credentials stolen via CVE-2020-3259 — real location fully masked.
+            </div>
+            <div class="guide-callout arrow-up" style="right:14px;top:368px;">
+              <span class="guide-callout-label">🔍 Event 4624 — Suspicious Logon</span>
+              Remote logon from an external Tor IP. Looks identical to legitimate remote access — no SIEM alert fires. Attacker is now inside.
+            </div>
 
             <!-- Cisco Secure Client (AnyConnect) -->
             <div class="w11-window" id="w11-vpn-win" style="top:15px;left:14px;width:298px;">
@@ -1038,6 +1104,19 @@
         <div class="w11-scene" id="w11-scene-1">
           <div class="win11-sim">
             <div class="win11-bg"></div>
+            <!-- Guide Mode callouts – Days 2–8 -->
+            <div class="guide-callout arrow-up" style="left:14px;top:335px;">
+              <span class="guide-callout-label">🎮 AnyDesk — Persistent Backdoor</span>
+              Installed silently on Day 2. Attacker now has persistent remote desktop access even if VPN credentials are rotated. Bypasses MFA.
+            </div>
+            <div class="guide-callout arrow-up" style="right:14px;top:295px;">
+              <span class="guide-callout-label">💀 Mimikatz — Credential Harvest</span>
+              svchost_upd.exe = Mimikatz disguised as a Windows service. Dumping LSASS memory for plaintext passwords &amp; NTLM hashes.
+            </div>
+            <div class="guide-callout arrow-down" style="bottom:102px;right:14px;">
+              <span class="guide-callout-label">📤 WinSCP — Data Exfiltration</span>
+              47.3 GB transferred to attacker's SFTP at a Tor exit node. Patient records, backups, and credentials. Double extortion payload ready.
+            </div>
 
             <!-- Task Manager (Windows 11) -->
             <div class="w11-window" id="w11-taskmgr" style="top:8px;left:12px;width:366px;height:320px;">
@@ -1264,6 +1343,15 @@
         <!-- Windows 11 Simulation -->
         <div class="win11-sim" id="win11-sim">
           <div class="win11-bg"></div>
+          <!-- Guide Mode callouts – Day 9 -->
+          <div class="guide-callout arrow-down" style="bottom:102px;left:14px;">
+            <span class="guide-callout-label">🔒 Active Encryption</span>
+            Files being renamed with the <b>.akira</b> extension — originals destroyed. Volume Shadow Copies deleted 2 hours earlier. No recovery without the key.
+          </div>
+          <div class="guide-callout arrow-down" style="bottom:102px;right:14px;">
+            <span class="guide-callout-label">☠️ Double Extortion</span>
+            Ransom note dropped + dark web leak site active. Attackers demand payment for the decryption key <em>and</em> suppression of the 47 GB of stolen data.
+          </div>
 
           <!-- File Explorer Window -->
           <div class="w11-window" id="w11-explorer">

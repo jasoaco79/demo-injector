@@ -693,6 +693,13 @@ function renderBriefing(scenario) {
   on('scene1-prev', () => selectPhase(0));
   on('scene1-next', () => selectPhase(2));
 
+  // Guide Mode toggle
+  on('guide-mode-btn', () => {
+    document.body.classList.toggle('guide-mode');
+    const btn = document.getElementById('guide-mode-btn');
+    if (btn) btn.classList.toggle('active');
+  });
+
   // Toast dismiss (Day 1)
   on('w11-toast-d1-dismiss', () => {
     const t = document.getElementById('w11-toast-d1');
