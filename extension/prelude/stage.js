@@ -662,24 +662,39 @@ function renderBriefing(scenario) {
   document.getElementById('launchBtn').addEventListener('click', launchCentral);
   document.getElementById('restartBtn').addEventListener('click', () => goToSlide(1));
 
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') navigate(1);
+    else if (e.key === 'ArrowLeft') navigate(-1);
+    else if (e.key === 'Escape') window.close();
+  });
+})();
+
+// ─── Static UI Wiring (runs immediately, not inside async init) ──────
+// These must be outside the async IIFE so chrome.runtime timing cannot
+// prevent them from being registered.
+(function wireUI() {
+  function on(id, fn) {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('click', fn);
+  }
+
   // Briefing slide nav
-  document.getElementById('briefing-next').addEventListener('click', () => navigate(1));
-  document.getElementById('briefing-prev').addEventListener('click', () => navigate(-1));
+  on('briefing-next', () => navigate(1));
+  on('briefing-prev', () => navigate(-1));
 
   // Phase navigator
-  document.getElementById('phase-btn-0').addEventListener('click', () => selectPhase(0));
-  document.getElementById('phase-btn-1').addEventListener('click', () => selectPhase(1));
-  document.getElementById('phase-btn-2').addEventListener('click', () => selectPhase(2));
-  document.getElementById('phase-play-btn').addEventListener('click', playCurrentPhase);
+  on('phase-btn-0', () => selectPhase(0));
+  on('phase-btn-1', () => selectPhase(1));
+  on('phase-btn-2', () => selectPhase(2));
+  on('phase-play-btn', playCurrentPhase);
 
   // Scene CTA buttons
-  document.getElementById('scene0-next').addEventListener('click', () => selectPhase(1));
-  document.getElementById('scene1-prev').addEventListener('click', () => selectPhase(0));
-  document.getElementById('scene1-next').addEventListener('click', () => selectPhase(2));
+  on('scene0-next', () => selectPhase(1));
+  on('scene1-prev', () => selectPhase(0));
+  on('scene1-next', () => selectPhase(2));
 
-  // Toast dismiss
-  const d1dismiss = document.getElementById('w11-toast-d1-dismiss');
-  if (d1dismiss) d1dismiss.addEventListener('click', () => {
+  // Toast dismiss (Day 1)
+  on('w11-toast-d1-dismiss', () => {
     const t = document.getElementById('w11-toast-d1');
     if (t) t.classList.remove('w11-visible');
   });
@@ -687,10 +702,4 @@ function renderBriefing(scenario) {
   // Init phase navigator label
   const labelEl = document.getElementById('phase-play-label');
   if (labelEl) labelEl.textContent = '▶  Play Day 1';
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight') navigate(1);
-    else if (e.key === 'ArrowLeft') navigate(-1);
-    else if (e.key === 'Escape') window.close();
-  });
 })();
