@@ -741,8 +741,8 @@
         </div>
       </div>
       <div class="cta-row" style="margin-top:28px;">
-        <button class="cta primary" onclick="navigate(1)">Live Attack Simulation &#x2192;</button>
-        <button class="cta secondary" onclick="navigate(-1)">&#x2190; Attack Feed</button>
+        <button class="cta primary" id="briefing-next">Live Attack Simulation &#x2192;</button>
+        <button class="cta secondary" id="briefing-prev">&#x2190; Attack Feed</button>
       </div>
     </div>
   </div>
@@ -760,7 +760,7 @@
           <div class="phase-nav-title">Attack Timeline</div>
         </div>
         <div class="phase-nav-list">
-          <div class="phase-item active" id="phase-btn-0" onclick="selectPhase(0)">
+          <div class="phase-item active" id="phase-btn-0">
             <div class="phase-dot-row">
               <div class="phase-dot"></div>
               <div class="phase-day">Day 1</div>
@@ -769,7 +769,7 @@
             <div class="phase-desc">Cisco ASA exploited via CVE-2020-3259. Plaintext credentials extracted from firewall memory.</div>
           </div>
           <div class="phase-connector" id="phase-conn-0"></div>
-          <div class="phase-item" id="phase-btn-1" onclick="selectPhase(1)">
+          <div class="phase-item" id="phase-btn-1">
             <div class="phase-dot-row">
               <div class="phase-dot"></div>
               <div class="phase-day">Days 2 – 8</div>
@@ -778,7 +778,7 @@
             <div class="phase-desc">LSASS dump, RDP lateral movement, AnyDesk C2, 47GB exfiltrated via WinSCP to Tor exit node.</div>
           </div>
           <div class="phase-connector" id="phase-conn-1"></div>
-          <div class="phase-item" id="phase-btn-2" onclick="selectPhase(2)">
+          <div class="phase-item" id="phase-btn-2">
             <div class="phase-dot-row">
               <div class="phase-dot"></div>
               <div class="phase-day">Day 9</div>
@@ -788,7 +788,7 @@
           </div>
         </div>
         <div class="phase-nav-footer">
-          <button class="phase-play-btn" id="phase-play-btn" onclick="playCurrentPhase()">
+          <button class="phase-play-btn" id="phase-play-btn">
             <span class="phase-play-icon">▶</span>
             <span id="phase-play-label">Play Phase</span>
           </button>
@@ -914,7 +914,7 @@
                 <div class="w11-toast-title">Sign-in from new location</div>
                 <div class="w11-toast-msg">sarah.chen signed in from an unfamiliar IP address.</div>
               </div>
-              <button class="w11-toast-dismiss" onclick="this.parentElement.classList.remove('w11-visible')">&#x2715;</button>
+              <button class="w11-toast-dismiss" id="w11-toast-d1-dismiss">&#x2715;</button>
             </div>
 
             <!-- Taskbar -->
@@ -933,7 +933,7 @@
               </div>
             </div>
             <div class="w11-cta-bar">
-              <button class="cta secondary" onclick="selectPhase(1)" style="font-size:12px;">Next: Days 2–8 &#x2192;</button>
+              <button class="cta secondary" id="scene0-next" style="font-size:12px;">Next: Days 2–8 &#x2192;</button>
             </div>
           </div>
         </div>
@@ -1066,8 +1066,8 @@
               </div>
             </div>
             <div class="w11-cta-bar">
-              <button class="cta secondary" onclick="selectPhase(0)" style="font-size:12px;">&#x2190; Day 1</button>
-              <button class="cta secondary" onclick="selectPhase(2)" style="font-size:12px;">Next: Day 9 &#x2192;</button>
+              <button class="cta secondary" id="scene1-prev" style="font-size:12px;">&#x2190; Day 1</button>
+              <button class="cta secondary" id="scene1-next" style="font-size:12px;">Next: Day 9 &#x2192;</button>
             </div>
           </div>
         </div>

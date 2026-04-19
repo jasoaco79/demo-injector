@@ -662,6 +662,28 @@ function renderBriefing(scenario) {
   document.getElementById('launchBtn').addEventListener('click', launchCentral);
   document.getElementById('restartBtn').addEventListener('click', () => goToSlide(1));
 
+  // Briefing slide nav
+  document.getElementById('briefing-next').addEventListener('click', () => navigate(1));
+  document.getElementById('briefing-prev').addEventListener('click', () => navigate(-1));
+
+  // Phase navigator
+  document.getElementById('phase-btn-0').addEventListener('click', () => selectPhase(0));
+  document.getElementById('phase-btn-1').addEventListener('click', () => selectPhase(1));
+  document.getElementById('phase-btn-2').addEventListener('click', () => selectPhase(2));
+  document.getElementById('phase-play-btn').addEventListener('click', playCurrentPhase);
+
+  // Scene CTA buttons
+  document.getElementById('scene0-next').addEventListener('click', () => selectPhase(1));
+  document.getElementById('scene1-prev').addEventListener('click', () => selectPhase(0));
+  document.getElementById('scene1-next').addEventListener('click', () => selectPhase(2));
+
+  // Toast dismiss
+  const d1dismiss = document.getElementById('w11-toast-d1-dismiss');
+  if (d1dismiss) d1dismiss.addEventListener('click', () => {
+    const t = document.getElementById('w11-toast-d1');
+    if (t) t.classList.remove('w11-visible');
+  });
+
   // Init phase navigator label
   const labelEl = document.getElementById('phase-play-label');
   if (labelEl) labelEl.textContent = '▶  Play Day 1';
