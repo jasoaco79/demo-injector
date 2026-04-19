@@ -164,8 +164,107 @@
     .milestone-tech { font-size: 12px; color: var(--muted); }
     .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
     .pill { border: 1px solid var(--border); border-radius: 999px; padding: 8px 12px; font-size: 12px; color: rgba(255,255,255,.85); background: rgba(255,255,255,0.03); }
-    .split-wrap { position: absolute; top: 52px; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: 32% 68%; }
-    .attacker-col { background: linear-gradient(180deg, rgba(6,8,15,0.94), rgba(4,6,12,0.98)); border-right: 1px solid rgba(0,168,224,0.15); position: relative; }
+    .split-wrap { position: absolute; top: 52px; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: 26% 74%; }
+    .attacker-col { background: linear-gradient(180deg, rgba(6,8,15,0.97), rgba(4,6,12,0.99)); border-right: 1px solid rgba(0,168,224,0.12); position: relative; display: flex; flex-direction: column; }
+
+    /* Phase Navigator */
+    .phase-nav-header {
+      padding: 16px 18px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      flex-shrink: 0;
+    }
+    .phase-nav-label {
+      font-family: var(--font-display); font-size: 9px; letter-spacing: .2em;
+      color: rgba(0,168,224,0.7); text-transform: uppercase; margin-bottom: 4px;
+    }
+    .phase-nav-title { font-size: 13px; font-weight: 700; color: #fff; }
+
+    .phase-nav-list { flex: 1; padding: 10px 0; overflow-y: auto; }
+
+    .phase-item {
+      padding: 14px 18px; cursor: pointer; position: relative;
+      border-left: 3px solid transparent;
+      transition: background 0.2s, border-color 0.2s;
+      margin-bottom: 2px;
+    }
+    .phase-item:hover { background: rgba(255,255,255,0.04); }
+    .phase-item.active {
+      background: rgba(0,168,224,0.08);
+      border-left-color: var(--cyan);
+    }
+    .phase-item.completed { border-left-color: rgba(0,200,100,0.5); }
+
+    .phase-dot-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+    .phase-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(255,255,255,0.2); border: 1.5px solid rgba(255,255,255,0.3);
+      transition: all 0.3s;
+    }
+    .phase-item.active .phase-dot {
+      background: var(--cyan); border-color: var(--cyan);
+      box-shadow: 0 0 6px rgba(0,168,224,0.6);
+    }
+    .phase-item.completed .phase-dot {
+      background: #00c864; border-color: #00c864;
+    }
+    .phase-day {
+      font-family: var(--font-display); font-size: 9px; letter-spacing: .14em;
+      color: rgba(255,255,255,0.4); text-transform: uppercase;
+    }
+    .phase-item.active .phase-day { color: var(--cyan); }
+    .phase-item.completed .phase-day { color: #00c864; }
+
+    .phase-name {
+      font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.85);
+      margin-bottom: 4px; line-height: 1.3;
+    }
+    .phase-item.active .phase-name { color: #fff; }
+
+    .phase-desc {
+      font-size: 11px; color: rgba(255,255,255,0.38); line-height: 1.45;
+    }
+    .phase-item.active .phase-desc { color: rgba(255,255,255,0.55); }
+
+    .phase-connector {
+      width: 1px; height: 16px; background: rgba(255,255,255,0.08);
+      margin-left: 21px;
+    }
+    .phase-connector.done { background: rgba(0,200,100,0.3); }
+
+    .phase-nav-footer {
+      padding: 14px 18px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      flex-shrink: 0;
+    }
+    .phase-play-btn {
+      width: 100%; padding: 10px; border: 1px solid rgba(0,168,224,0.4);
+      background: rgba(0,168,224,0.1); color: var(--cyan);
+      border-radius: 8px; font-size: 12px; font-weight: 700;
+      font-family: var(--font-display); letter-spacing: .06em;
+      cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .phase-play-btn:hover { background: rgba(0,168,224,0.2); border-color: var(--cyan); }
+    .phase-play-btn.playing {
+      border-color: rgba(255,105,0,0.5); color: var(--orange);
+      background: rgba(255,105,0,0.08);
+    }
+    .phase-play-icon { font-size: 14px; }
+    .phase-status-text {
+      font-size: 10px; color: rgba(255,255,255,0.35);
+      text-align: center; margin-top: 8px; font-family: var(--font-display);
+      letter-spacing: .08em; text-transform: uppercase;
+    }
+
+    /* Win11 scenes */
+    .w11-scene {
+      position: absolute; inset: 0;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .w11-scene.w11-scene-active {
+      opacity: 1; pointer-events: all;
+    }
     .victim-col { background: linear-gradient(180deg, rgba(0,18,12,.88), rgba(5,10,20,.96)); position: relative; }
     .split-topbar { position: absolute; top: 0; left: 0; right: 0; height: 48px; padding: 0 20px; display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,.08); }
     .split-label { font-size: 12px; letter-spacing: .2em; font-weight: 700; }
@@ -652,8 +751,45 @@
     </div>
     <div class="split-wrap">
       <div class="attacker-col">
-        <div class="split-topbar"><span class="split-label attacker">ATTACK CHAIN</span></div>
-        <div class="compact-feed" id="feed-compact"></div>
+        <div class="phase-nav-header">
+          <div class="phase-nav-label">Akira Ransomware</div>
+          <div class="phase-nav-title">Attack Timeline</div>
+        </div>
+        <div class="phase-nav-list">
+          <div class="phase-item active" id="phase-btn-0" onclick="selectPhase(0)">
+            <div class="phase-dot-row">
+              <div class="phase-dot"></div>
+              <div class="phase-day">Day 1</div>
+            </div>
+            <div class="phase-name">Initial Access</div>
+            <div class="phase-desc">Cisco ASA exploited via CVE-2020-3259. Plaintext credentials extracted from firewall memory.</div>
+          </div>
+          <div class="phase-connector" id="phase-conn-0"></div>
+          <div class="phase-item" id="phase-btn-1" onclick="selectPhase(1)">
+            <div class="phase-dot-row">
+              <div class="phase-dot"></div>
+              <div class="phase-day">Days 2 – 8</div>
+            </div>
+            <div class="phase-name">Silent Collection</div>
+            <div class="phase-desc">LSASS dump, RDP lateral movement, AnyDesk C2, 47GB exfiltrated via WinSCP to Tor exit node.</div>
+          </div>
+          <div class="phase-connector" id="phase-conn-1"></div>
+          <div class="phase-item" id="phase-btn-2" onclick="selectPhase(2)">
+            <div class="phase-dot-row">
+              <div class="phase-dot"></div>
+              <div class="phase-day">Day 9</div>
+            </div>
+            <div class="phase-name">Encryption</div>
+            <div class="phase-desc">Shadow copies deleted, .akira encryption deployed, ransom note dropped. Sophos intervenes.</div>
+          </div>
+        </div>
+        <div class="phase-nav-footer">
+          <button class="phase-play-btn" id="phase-play-btn" onclick="playCurrentPhase()">
+            <span class="phase-play-icon">▶</span>
+            <span id="phase-play-label">Play Phase</span>
+          </button>
+          <div class="phase-status-text" id="phase-status-text">Select a phase to begin</div>
+        </div>
       </div>
       <div class="victim-col">
         <div class="split-topbar"><span class="split-label managed">LIVE ATTACK SIMULATION → SOPHOS CENTRAL</span></div>
@@ -665,6 +801,275 @@
           <div id="click-path"></div>
           <div id="transition-line"></div>
         </div>
+        <!-- Phase scenes container -->
+        <div style="position:absolute;top:48px;inset-inline:0;bottom:0;">
+
+        <!-- ── SCENE 0: Day 1 — Initial Access ───────────────────────── -->
+        <div class="w11-scene w11-scene-active" id="w11-scene-0">
+          <div class="win11-sim">
+            <div class="win11-bg"></div>
+
+            <!-- Cisco AnyConnect VPN Window -->
+            <div class="w11-window" id="w11-vpn-win" style="top:10px;left:12px;width:340px;">
+              <div class="w11-titlebar">
+                <div class="w11-tb-left">
+                  <div style="width:16px;height:16px;background:linear-gradient(135deg,#009cde,#003087);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;font-weight:900;">C</div>
+                  <span class="w11-tb-title">Cisco AnyConnect Secure Mobility Client</span>
+                </div>
+                <div class="w11-tb-controls">
+                  <button class="w11-wc w11-wc-min">&#x2015;</button>
+                  <button class="w11-wc w11-wc-max">&#x25A1;</button>
+                  <button class="w11-wc w11-wc-close">&#x2715;</button>
+                </div>
+              </div>
+              <div style="background:#fff;padding:16px;">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                  <div style="width:36px;height:36px;background:linear-gradient(135deg,#009cde,#003087);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;font-weight:900;">C</div>
+                  <div>
+                    <div style="font-size:13px;font-weight:700;color:#003087;">Cisco AnyConnect</div>
+                    <div style="font-size:11px;color:#666;">Secure Mobility Client</div>
+                  </div>
+                </div>
+                <div style="background:#f0f7ff;border:1px solid #cce0ff;border-radius:6px;padding:10px 12px;margin-bottom:10px;">
+                  <div style="font-size:11px;color:#666;margin-bottom:2px;">VPN:</div>
+                  <div style="font-size:12px;font-weight:700;color:#003087;">vpn.contoso-healthcare.com</div>
+                </div>
+                <div id="vpn-status-box" style="background:#f8f8f8;border:1px solid #e0e0e0;border-radius:6px;padding:10px 12px;margin-bottom:10px;">
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <div id="vpn-status-dot" style="width:10px;height:10px;border-radius:50%;background:#ffb300;"></div>
+                    <div id="vpn-status-text" style="font-size:12px;font-weight:600;color:#555;">Connecting…</div>
+                  </div>
+                  <div id="vpn-user-row" style="display:none;margin-top:6px;">
+                    <div style="font-size:11px;color:#666;">Authenticated as:</div>
+                    <div style="font-size:12px;font-weight:700;color:#333;">sarah.chen@contoso-healthcare.com</div>
+                    <div style="font-size:10px;color:#999;margin-top:2px;">Source IP: 185.220.101.47</div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:8px;">
+                  <button style="flex:1;padding:7px;background:#003087;color:#fff;border:none;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;">Disconnect</button>
+                  <button style="flex:1;padding:7px;background:#f0f0f0;color:#333;border:1px solid #ddd;border-radius:4px;font-size:12px;cursor:pointer;">Statistics</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Windows Event Viewer -->
+            <div class="w11-window" id="w11-eventviewer-win" style="top:8px;left:160px;right:12px;height:340px;opacity:0;transition:opacity 0.4s;">
+              <div class="w11-titlebar">
+                <div class="w11-tb-left">
+                  <div style="width:16px;height:16px;font-size:12px;">📋</div>
+                  <span class="w11-tb-title">Event Viewer — Windows Security Log</span>
+                </div>
+                <div class="w11-tb-controls">
+                  <button class="w11-wc w11-wc-min">&#x2015;</button>
+                  <button class="w11-wc w11-wc-max">&#x25A1;</button>
+                  <button class="w11-wc w11-wc-close">&#x2715;</button>
+                </div>
+              </div>
+              <div style="background:#f5f5f5;border-bottom:1px solid #e0e0e0;padding:4px 8px;display:flex;gap:8px;font-size:11px;color:#333;">
+                <span style="padding:2px 8px;background:#e0e0e0;border-radius:3px;cursor:pointer;">Action</span>
+                <span style="padding:2px 8px;cursor:pointer;">View</span>
+                <span style="padding:2px 8px;cursor:pointer;">Help</span>
+              </div>
+              <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;">
+                <div style="background:#fff;border-bottom:1px solid #e8e8e8;display:grid;grid-template-columns:90px 70px 1fr 90px;padding:4px 8px;font-size:10px;font-weight:700;color:#555;text-transform:uppercase;">
+                  <span>Level</span><span>Event ID</span><span>Source</span><span>Date/Time</span>
+                </div>
+                <div id="ev-rows" style="flex:1;overflow-y:auto;font-size:11px;">
+                  <div style="display:grid;grid-template-columns:90px 70px 1fr 90px;padding:5px 8px;border-bottom:1px solid #f0f0f0;align-items:center;">
+                    <span style="color:#555;">&#x2139; Information</span><span style="color:#0078d4;font-weight:700;">4624</span><span>Microsoft-Windows-Security-Auditing</span><span style="color:#888;">4/10 02:14 AM</span>
+                  </div>
+                  <div style="display:grid;grid-template-columns:90px 70px 1fr 90px;padding:5px 8px;border-bottom:1px solid #f0f0f0;align-items:center;">
+                    <span style="color:#555;">&#x2139; Information</span><span>4634</span><span>Microsoft-Windows-Security-Auditing</span><span style="color:#888;">4/10 02:13 AM</span>
+                  </div>
+                  <div id="ev-suspicious" style="display:none;grid-template-columns:90px 70px 1fr 90px;padding:5px 8px;border-bottom:2px solid #ffb300;background:#fffbe6;align-items:center;">
+                    <span style="color:#cc8800;font-weight:700;">⚠ Warning</span><span style="color:#cc0000;font-weight:700;">4624</span><span style="font-weight:600;">Microsoft-Windows-Security-Auditing</span><span style="color:#888;">4/19 01:47 AM</span>
+                  </div>
+                </div>
+                <div id="ev-detail" style="background:#fff8f0;border-top:2px solid #ffb300;padding:10px 12px;font-size:11px;line-height:1.7;display:none;">
+                  <div style="font-weight:700;color:#cc6600;margin-bottom:6px;">⚠ Event 4624 — An account was successfully logged on</div>
+                  <div><span style="color:#666;min-width:120px;display:inline-block;">Account Name:</span><span style="font-weight:600;">sarah.chen</span></div>
+                  <div><span style="color:#666;min-width:120px;display:inline-block;">Logon Type:</span><span>3 (Network)</span></div>
+                  <div><span style="color:#666;min-width:120px;display:inline-block;">Source IP:</span><span style="color:#cc0000;font-weight:700;">185.220.101.47</span></div>
+                  <div><span style="color:#666;min-width:120px;display:inline-block;">Auth Package:</span><span>NTLM</span></div>
+                  <div style="margin-top:6px;padding:6px 8px;background:#fff0f0;border-left:3px solid #cc0000;border-radius:0 4px 4px 0;color:#cc0000;font-weight:600;font-size:10.5px;">⚠ IP is a known Tor exit node — CVE-2020-3259 exploitation suspected</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Win11 Toast: suspicious login -->
+            <div class="w11-toast" id="w11-toast-d1" style="top:12px;">
+              <div class="w11-toast-shield">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2L4 6v6c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V6L12 2z" fill="#ffb900" opacity=".15"/>
+                  <path d="M12 2L4 6v6c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V6L12 2z" stroke="#ffb900" stroke-width="1.5" fill="none"/>
+                  <text x="12" y="16" text-anchor="middle" fill="#ffb900" font-size="9" font-weight="bold">!</text>
+                </svg>
+              </div>
+              <div class="w11-toast-body">
+                <div class="w11-toast-app">Microsoft Account</div>
+                <div class="w11-toast-title">Sign-in from new location</div>
+                <div class="w11-toast-msg">sarah.chen signed in from an unfamiliar IP address.</div>
+              </div>
+              <button class="w11-toast-dismiss" onclick="this.parentElement.classList.remove('w11-visible')">&#x2715;</button>
+            </div>
+
+            <!-- Taskbar -->
+            <div class="w11-taskbar">
+              <div class="w11-taskbar-inner">
+                <div class="w11-tb-center-icons">
+                  <div class="w11-tb-icon"><svg width="16" height="16" viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9" fill="#00adef"/><rect x="13" y="2" width="9" height="9" fill="#00adef"/><rect x="2" y="13" width="9" height="9" fill="#00adef"/><rect x="13" y="13" width="9" height="9" fill="#00adef"/></svg></div>
+                  <div class="w11-tb-icon w11-tb-active" title="AnyConnect" style="font-size:11px;font-weight:900;color:#009cde;">C</div>
+                  <div class="w11-tb-icon w11-tb-active" id="w11-d1-ev-taskbtn" style="display:none;font-size:13px;">📋</div>
+                </div>
+                <div class="w11-tb-sys-tray">
+                  <div class="w11-tb-warning" id="w11-d1-warn"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2z" fill="#ffb900" opacity=".2"/><path d="M12 2L2 22h20L12 2z" stroke="#ffb900" stroke-width="1.5" fill="none"/><text x="12" y="18" text-anchor="middle" fill="#ffb900" font-size="10" font-weight="bold">!</text></svg></div>
+                  <div class="w11-tb-sysicons"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="14" width="4" height="8"/><rect x="10" y="9" width="4" height="13"/><rect x="18" y="4" width="4" height="18"/></svg><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg></div>
+                  <div class="w11-clock"><div class="w11-time" id="w11-time-d1">10:47 AM</div><div class="w11-date" id="w11-date-d1">4/19/2026</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="w11-cta-bar">
+              <button class="cta secondary" onclick="selectPhase(1)" style="font-size:12px;">Next: Days 2–8 &#x2192;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SCENE 1: Days 2–8 — Silent Collection ──────────────────── -->
+        <div class="w11-scene" id="w11-scene-1">
+          <div class="win11-sim">
+            <div class="win11-bg"></div>
+
+            <!-- Task Manager -->
+            <div class="w11-window" id="w11-taskmgr" style="top:8px;left:12px;width:360px;height:320px;">
+              <div class="w11-titlebar">
+                <div class="w11-tb-left">
+                  <div style="width:16px;height:16px;font-size:12px;">⚙️</div>
+                  <span class="w11-tb-title">Task Manager</span>
+                </div>
+                <div class="w11-tb-controls">
+                  <button class="w11-wc w11-wc-min">&#x2015;</button>
+                  <button class="w11-wc w11-wc-max">&#x25A1;</button>
+                  <button class="w11-wc w11-wc-close">&#x2715;</button>
+                </div>
+              </div>
+              <div style="background:#f0f0f0;border-bottom:1px solid #ddd;display:flex;font-size:11px;">
+                <span style="padding:6px 12px;background:#fff;border-bottom:2px solid #0078d4;font-weight:600;">Processes</span>
+                <span style="padding:6px 12px;color:#666;cursor:pointer;">Performance</span>
+                <span style="padding:6px 12px;color:#666;cursor:pointer;">Details</span>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 60px 60px 70px;padding:4px 8px;font-size:10px;font-weight:700;color:#555;background:#f8f8f8;border-bottom:1px solid #e8e8e8;text-transform:uppercase;">
+                <span>Name</span><span style="text-align:right;">CPU</span><span style="text-align:right;">Memory</span><span style="text-align:right;">Network</span>
+              </div>
+              <div style="flex:1;overflow-y:auto;font-size:11.5px;">
+                <div style="display:grid;grid-template-columns:1fr 60px 60px 70px;padding:4px 8px;border-bottom:1px solid #f0f0f0;align-items:center;">
+                  <span>chrome.exe</span><span style="text-align:right;color:#555;">0.4%</span><span style="text-align:right;">182MB</span><span style="text-align:right;color:#555;">0.1 MB/s</span>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 60px 60px 70px;padding:4px 8px;border-bottom:1px solid #f0f0f0;align-items:center;">
+                  <span>explorer.exe</span><span style="text-align:right;color:#555;">0.1%</span><span style="text-align:right;">74MB</span><span style="text-align:right;color:#555;">0 MB/s</span>
+                </div>
+                <div id="tm-anydesk" style="display:grid;grid-template-columns:1fr 60px 60px 70px;padding:4px 8px;border-bottom:1px solid #f0f0f0;background:#fff8e1;align-items:center;display:none;">
+                  <span style="color:#cc6600;font-weight:600;">AnyDesk.exe ⚠</span><span style="text-align:right;color:#cc6600;">1.2%</span><span style="text-align:right;">48MB</span><span style="text-align:right;color:#cc6600;">2.4 MB/s</span>
+                </div>
+                <div id="tm-svchost" style="display:grid;grid-template-columns:1fr 60px 60px 70px;padding:4px 8px;border-bottom:2px solid #ffb300;background:#fff3e0;align-items:center;display:none;">
+                  <span style="color:#cc4400;font-weight:700;">svchost_upd.exe ⚠</span><span style="text-align:right;color:#cc4400;font-weight:700;">18.4%</span><span style="text-align:right;font-weight:700;">312MB</span><span style="text-align:right;color:#cc4400;">0.2 MB/s</span>
+                </div>
+                <div id="tm-winscp" style="display:grid;grid-template-columns:1fr 60px 60px 70px;padding:4px 8px;border-bottom:2px solid #cc0000;background:#fff0f0;align-items:center;display:none;">
+                  <span style="color:#cc0000;font-weight:700;">WinSCP.exe ⚠</span><span style="text-align:right;color:#555;">0.3%</span><span style="text-align:right;">62MB</span><span style="text-align:right;color:#cc0000;font-weight:700;">47.3 MB/s</span>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 60px 60px 70px;padding:4px 8px;border-bottom:1px solid #f0f0f0;align-items:center;">
+                  <span>svchost.exe</span><span style="text-align:right;color:#555;">0.0%</span><span style="text-align:right;">28MB</span><span style="text-align:right;color:#555;">0 MB/s</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- CMD / Mimikatz window -->
+            <div class="w11-window" id="w11-cmd-win" style="top:6px;left:200px;right:12px;height:280px;opacity:0;transition:opacity 0.4s;">
+              <div class="w11-titlebar" style="background:#0c0c0c;">
+                <div class="w11-tb-left">
+                  <div style="width:16px;height:16px;font-size:12px;">⬛</div>
+                  <span class="w11-tb-title">Administrator: Command Prompt</span>
+                </div>
+                <div class="w11-tb-controls">
+                  <button class="w11-wc w11-wc-min" style="background:#0c0c0c;">&#x2015;</button>
+                  <button class="w11-wc w11-wc-max" style="background:#0c0c0c;">&#x25A1;</button>
+                  <button class="w11-wc w11-wc-close" style="background:#0c0c0c;">&#x2715;</button>
+                </div>
+              </div>
+              <div style="background:#0c0c0c;flex:1;padding:8px 10px;overflow-y:auto;font-family:'Courier New',monospace;font-size:10.5px;color:#cccccc;line-height:1.6;">
+                <div>Microsoft Windows [Version 10.0.22621.3447]</div>
+                <div style="margin-bottom:6px;">(c) Microsoft Corporation. All rights reserved.</div>
+                <div style="color:#ffff00;" id="cmd-line1"></div>
+                <div id="cmd-output" style="display:none;">
+                  <div style="color:#888;margin-top:4px;">mimikatz # sekurlsa::logonpasswords</div>
+                  <div style="margin-top:6px;color:#aaa;">Authentication Id : 0 ; 996 (00000000:000003e4)</div>
+                  <div style="color:#aaa;">Session           : Service from 0</div>
+                  <div style="color:#aaa;">User Name         : sarah.chen</div>
+                  <div style="color:#aaa;">Domain            : CONTOSO</div>
+                  <div style="color:#aaa;">Logon Server      : DC01</div>
+                  <div style="margin-top:4px;color:#aaa;">        * Username : sarah.chen</div>
+                  <div style="color:#00ff41;font-weight:bold;">        * Password : C0nt0s0H3@lth#2024!</div>
+                  <div style="color:#aaa;margin-top:2px;">        * NTLM     : <span style="color:#ff6b6b;">8846f7eaee8fb117ad06bdd830b7586c</span></div>
+                  <div style="margin-top:6px;color:#aaa;">Authentication Id : 0 ; 48891 (00000000:0000bf3b)</div>
+                  <div style="color:#aaa;">User Name         : svc_backup</div>
+                  <div style="color:#00ff41;font-weight:bold;">        * Password : B@ckup$vc!2023</div>
+                  <div style="color:#aaa;">        * NTLM     : <span style="color:#ff6b6b;">31d6cfe0d16ae931b73c59d7e0c089c0</span></div>
+                  <div style="margin-top:8px;color:#ffff00;" id="cmd-line2"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- WinSCP Transfer Window -->
+            <div class="w11-window" id="w11-winscp-win" style="bottom:52px;left:12px;right:12px;height:130px;opacity:0;transition:opacity 0.4s;">
+              <div class="w11-titlebar">
+                <div class="w11-tb-left">
+                  <div style="width:16px;height:16px;background:#1a5276;border-radius:2px;font-size:9px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;">W</div>
+                  <span class="w11-tb-title">WinSCP — Transferring to 185.220.101.47</span>
+                </div>
+                <div class="w11-tb-controls">
+                  <button class="w11-wc w11-wc-min">&#x2015;</button>
+                  <button class="w11-wc w11-wc-close">&#x2715;</button>
+                </div>
+              </div>
+              <div style="background:#fff;padding:10px 14px;">
+                <div style="font-size:11px;color:#333;margin-bottom:6px;">
+                  <span style="color:#cc0000;font-weight:700;">↑ Uploading:</span> C:\Shares\Backup\<span id="winscp-filename" style="font-weight:600;">Clinical_DB_Full_2026.bak</span>
+                </div>
+                <div style="height:14px;background:#e0e0e0;border-radius:3px;overflow:hidden;margin-bottom:6px;">
+                  <div id="winscp-progress" style="height:100%;background:linear-gradient(90deg,#cc0000,#ff4444);width:0%;transition:width 0.5s;"></div>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:10.5px;color:#666;">
+                  <span id="winscp-transferred">0 GB of 47.3 GB</span>
+                  <span style="color:#cc0000;font-weight:600;">→ 185.220.101.47 (Tor exit node)</span>
+                  <span id="winscp-speed">47.3 MB/s</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Taskbar -->
+            <div class="w11-taskbar">
+              <div class="w11-taskbar-inner">
+                <div class="w11-tb-center-icons">
+                  <div class="w11-tb-icon"><svg width="16" height="16" viewBox="0 0 24 24"><rect x="2" y="2" width="9" height="9" fill="#00adef"/><rect x="13" y="2" width="9" height="9" fill="#00adef"/><rect x="2" y="13" width="9" height="9" fill="#00adef"/><rect x="13" y="13" width="9" height="9" fill="#00adef"/></svg></div>
+                  <div class="w11-tb-icon w11-tb-active" title="Task Manager">⚙️</div>
+                  <div class="w11-tb-icon" id="w11-d2-cmd-taskbtn" style="display:none;" title="Command Prompt">⬛</div>
+                  <div class="w11-tb-icon" id="w11-d2-winscp-taskbtn" style="display:none;" title="WinSCP" style="font-weight:900;font-size:11px;color:#1a5276;">W</div>
+                </div>
+                <div class="w11-tb-sys-tray">
+                  <div class="w11-tb-warning w11-visible" id="w11-d2-warn"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2z" fill="#ffb900" opacity=".2"/><path d="M12 2L2 22h20L12 2z" stroke="#ffb900" stroke-width="1.5" fill="none"/><text x="12" y="18" text-anchor="middle" fill="#ffb900" font-size="10" font-weight="bold">!</text></svg></div>
+                  <div class="w11-tb-sysicons"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="14" width="4" height="8"/><rect x="10" y="9" width="4" height="13"/><rect x="18" y="4" width="4" height="18"/></svg><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg></div>
+                  <div class="w11-clock"><div class="w11-time" id="w11-time-d2">10:47 AM</div><div class="w11-date" id="w11-date-d2">4/19/2026</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="w11-cta-bar">
+              <button class="cta secondary" onclick="selectPhase(0)" style="font-size:12px;">&#x2190; Day 1</button>
+              <button class="cta secondary" onclick="selectPhase(2)" style="font-size:12px;">Next: Day 9 &#x2192;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SCENE 2: Day 9 — Encryption ────────────────────────────── -->
+        <div class="w11-scene" id="w11-scene-2">
         <!-- Windows 11 Simulation -->
         <div class="win11-sim" id="win11-sim">
           <div class="win11-bg"></div>
