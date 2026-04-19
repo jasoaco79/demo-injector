@@ -1,7 +1,7 @@
 {
   "id": "ransomware-akira",
   "name": "Akira Ransomware — Active Intrusion",
-  "description": "Akira ransomware via Cisco VPN CVE-2023-20269. Mimikatz credential dump, RDP lateral movement, AnyDesk C2, WinSCP exfiltration, shadow copy deletion, .akira encryption. MITRE: T1133, T1003.001, T1021.001, T1219, T1048, T1490, T1486.",
+  "description": "Akira ransomware via Cisco VPN CVE-2020-3259. Mimikatz credential dump, RDP lateral movement, AnyDesk C2, WinSCP exfiltration, shadow copy deletion, .akira encryption. MITRE: T1133, T1003.001, T1021.001, T1219, T1048, T1490, T1486.",
   "version": 1,
   "createdAt": "2026-04-19T00:00:00Z",
   "customer": {
@@ -51,7 +51,7 @@
     "slides": [
       {
         "title": "Day 1: Akira gains access through {{customerName}}'s VPN",
-        "body": "Attackers exploit CVE-2023-20269 in Cisco AnyConnect to authenticate as a valid user. No phishing. No malware. They walk in through the front door using a known vulnerability that had not yet been patched in {{customerName}}'s environment."
+        "body": "Attackers exploit CVE-2020-3259 in {{customerName}}'s Cisco ASA firewall — extracting plaintext VPN credentials directly from device memory. No phishing. No malware. Eight employee accounts compromised silently. The attackers authenticate as legitimate users and the VPN logs show nothing unusual."
       },
       {
         "title": "Days 2–8: Silent collection inside {{customerName}}'s network",
@@ -301,7 +301,7 @@
           }
         },
         "assignee": { "name": "SOC Analyst" },
-        "overview": "Akira ransomware group active inside {{customerName}} network for an estimated 9 days. Initial access via Cisco AnyConnect VPN CVE-2023-20269. Credential dump from LSASS on DESKTOP-FIN042. Lateral movement via RDP to 6 additional hosts including SRV-FILESTORE01 and SRV-BACKUP02. AnyDesk C2 channel maintained for 6 days. 47.3GB exfiltrated via WinSCP to Tor exit node 185.220.101.47. Shadow copies deleted across 4 servers. CryptoGuard blocked encryption on SRV-FILESTORE01 — 2,847 files protected. Ransomware binary: svchost_upd.exe (masquerading as Windows service). akira_readme.txt drop blocked.",
+        "overview": "Akira ransomware group active inside {{customerName}} network for an estimated 9 days. Initial access via Cisco ASA/FTD CVE-2020-3259. Credential dump from LSASS on DESKTOP-FIN042. Lateral movement via RDP to 6 additional hosts including SRV-FILESTORE01 and SRV-BACKUP02. AnyDesk C2 channel maintained for 6 days. 47.3GB exfiltrated via WinSCP to Tor exit node 185.220.101.47. Shadow copies deleted across 4 servers. CryptoGuard blocked encryption on SRV-FILESTORE01 — 2,847 files protected. Ransomware binary: svchost_upd.exe (masquerading as Windows service). akira_readme.txt drop blocked.",
         "detectionCount": 47,
         "escalated": true
       }
@@ -572,7 +572,7 @@
         "target": "DESKTOP-FIN042",
         "targetType": "endpoint",
         "result": "detected",
-        "description": "Cisco AnyConnect authentication from 185.220.101.47 (Tor exit node) using account sarah.chen — not seen in 47 days. CVE-2023-20269 exploitation suspected. Initial Akira access point."
+        "description": "VPN authentication using account sarah.chen from 185.220.101.47. Account not seen in 47 days. Credentials likely extracted from Cisco ASA device memory via CVE-2020-3259. No brute force or spray pattern detected — consistent with Akira credential harvesting. Initial intrusion point."
       }
     ]
   },

@@ -129,7 +129,17 @@ function startWin11Sim() {
     if (nptb) nptb.style.display = 'flex';
   }, readmeTime + 1400);
 
-  schedule(() => { win11SimDone = true; }, readmeTime + 2000);
+  // Akira dark web portal appears — the killer moment
+  schedule(() => {
+    const portal = document.getElementById('w11-akira-portal');
+    if (portal) portal.classList.add('w11-visible');
+    const ptb = document.getElementById('w11-taskbtn-portal');
+    if (ptb) ptb.style.display = 'flex';
+    // Type "help" into the terminal prompt
+    typeAkiraCmd('help');
+  }, readmeTime + 2800);
+
+  schedule(() => { win11SimDone = true; }, readmeTime + 4000);
 }
 
 function resetWin11Sim() {
@@ -165,14 +175,43 @@ function resetWin11Sim() {
   const nptb = document.getElementById('w11-taskbtn-notepad');
   if (nptb) nptb.style.display = 'none';
 
+  const portal = document.getElementById('w11-akira-portal');
+  if (portal) portal.classList.remove('w11-visible');
+  const ptb = document.getElementById('w11-taskbtn-portal');
+  if (ptb) ptb.style.display = 'none';
+  const typedCmd = document.getElementById('akira-typed-cmd');
+  if (typedCmd) typedCmd.textContent = '';
+  const helpOut = document.getElementById('akira-help-output');
+  if (helpOut) helpOut.style.display = 'none';
+
   const st = document.getElementById('w11-status-count');
   if (st) st.textContent = '8 items';
   const sel = document.getElementById('w11-status-sel');
   if (sel) sel.textContent = '';
 }
 
+function typeAkiraCmd(cmd) {
+  const el = document.getElementById('akira-typed-cmd');
+  const output = document.getElementById('akira-help-output');
+  if (!el) return;
+  let i = 0;
+  el.textContent = '';
+  const interval = setInterval(() => {
+    if (i < cmd.length) {
+      el.textContent += cmd[i++];
+    } else {
+      clearInterval(interval);
+      setTimeout(() => {
+        if (output) output.style.display = 'block';
+        el.textContent = '';
+      }, 400);
+    }
+  }, 80);
+  win11SimTimers.push(interval);
+}
+
 function clearWin11Timers() {
-  win11SimTimers.forEach(clearTimeout);
+  win11SimTimers.forEach(id => { clearTimeout(id); clearInterval(id); });
   win11SimTimers = [];
 }
 

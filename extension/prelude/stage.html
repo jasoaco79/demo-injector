@@ -419,6 +419,102 @@
       white-space: pre-wrap; word-wrap: break-word; margin: 0;
     }
 
+    /* Akira Dark Web Portal Window */
+    .w11-akira-portal {
+      position: absolute;
+      top: 14px; left: 40px; right: 14px;
+      height: calc(100% - 110px);
+      z-index: 20;
+      opacity: 0; transform: translateY(16px) scale(0.97);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,255,0,0.15);
+    }
+    .w11-akira-portal.w11-visible {
+      opacity: 1; transform: translateY(0) scale(1); pointer-events: all;
+    }
+    /* Fake Edge browser chrome */
+    .akira-browser-chrome {
+      background: #202020; height: 36px;
+      display: flex; align-items: center; gap: 8px; padding: 0 10px;
+      border-bottom: 1px solid #333;
+    }
+    .akira-browser-dots { display: flex; gap: 5px; }
+    .akira-browser-dot {
+      width: 12px; height: 12px; border-radius: 50%;
+    }
+    .akira-browser-dot.red   { background: #ff5f57; }
+    .akira-browser-dot.yel   { background: #ffbd2e; }
+    .akira-browser-dot.grn   { background: #28c840; }
+    .akira-browser-url {
+      flex: 1; background: #2a2a2a; border-radius: 4px;
+      padding: 4px 10px; font-size: 11px;
+      color: rgba(255,255,255,0.6); font-family: monospace;
+      border: 1px solid #3a3a3a;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .akira-browser-url .akira-onion { color: #4caf50; }
+    /* Terminal body */
+    .akira-terminal {
+      background: #000; height: calc(100% - 36px);
+      padding: 20px 22px; overflow-y: auto;
+      font-family: 'Courier New', Courier, monospace;
+      color: #00cc00; font-size: 12px; line-height: 1.6;
+    }
+    .akira-logo {
+      font-size: 28px; font-weight: 900; letter-spacing: 4px;
+      color: #00ff00; margin-bottom: 18px;
+      font-family: 'Courier New', monospace;
+      text-shadow: 0 0 10px rgba(0,255,0,0.5);
+      display: grid;
+      grid-template-columns: repeat(5, 36px);
+      gap: 4px;
+      width: fit-content;
+    }
+    .akira-logo-cell {
+      width: 32px; height: 32px; background: #00cc00;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .akira-logo-cell.empty { background: transparent; }
+    .akira-logo-text {
+      font-size: 26px; font-weight: 900; letter-spacing: 6px;
+      color: #00ff00; margin-bottom: 18px; line-height: 1;
+      text-shadow: 0 0 12px rgba(0,255,0,0.6);
+      border: 2px solid #00cc00; padding: 8px 16px;
+      display: inline-block;
+    }
+    .akira-title-bar {
+      display: flex; align-items: center; gap: 0;
+      border: 2px solid #00cc00; padding: 4px 12px;
+      margin-bottom: 20px; color: #00ff00;
+      font-size: 14px; font-weight: bold; letter-spacing: 2px;
+    }
+    .akira-title-bar .akira-title-logo {
+      font-size: 13px; font-weight: 900; letter-spacing: 4px;
+      margin-right: 10px; padding: 2px 6px;
+      border: 1px solid #00cc00;
+    }
+    .akira-body-text { color: #00cc00; margin-bottom: 14px; }
+    .akira-section { margin-bottom: 16px; }
+    .akira-prompt { color: #00ff00; margin-top: 18px; }
+    .akira-cmd-output { margin: 8px 0 4px 0; color: #00aa00; }
+    .akira-cmd-entry { display: flex; align-items: center; gap: 0; }
+    .akira-cmd-list { margin: 6px 0 6px 4px; }
+    .akira-cmd-item {
+      display: grid; grid-template-columns: 80px 1fr;
+      gap: 4px; margin: 2px 0;
+    }
+    .akira-cmd-name { font-weight: bold; color: #00ff00; }
+    .akira-cmd-desc { color: #00aa00; }
+    .akira-cursor {
+      display: inline-block; width: 8px; height: 14px;
+      background: #00ff00; animation: akira-blink 1s step-end infinite;
+      vertical-align: middle; margin-left: 2px;
+    }
+    @keyframes akira-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
     /* Windows Security Toast */
     .w11-toast {
       position: absolute; top: 12px; right: 12px;
@@ -692,39 +788,67 @@
             <div class="w11-np-body">
 <pre class="w11-ransom-text">Hi friends,
 
-Whatever who you are and what your title is if you're reading this,
-it means you're one of the IT people responsible for your company
-network. We're not going to lecture you, but just explain you a
-situation.
+Whatever who you are and what your title is if you're reading
+this, it means you're one of the IT people responsible for your
+company network. We're not going to lecture you, but just
+explain you a situation.
 
-About a week or so ago we have penetrated your network. Since we
-got access we've been silently collecting your data: financial
-reports, intellectual property, accounting, personal information
-and more.
+About a week ago we penetrated your network. Since we got access
+we've been silently collecting your data: financial reports,
+intellectual property, accounting, personal information and more.
 
-[COMPANY] files are now encrypted. If you are not going to negotiate
-with us, we will post the data we stole on our blog.
+On the other hand we also encrypted your files. If you are not
+going to cooperate with us, we will post the data we stole on
+our blog.
 
-To restore your data, contact us:
+To get your files back, contact us at:
 
-  https://akiralkzxzq2dsrzsrvbr2xgbbu2wgsmxryd4csgq6tnudjuhwtsuqd.onion
+  akiralkzxzq2dsrzsrvbr2xgbbu2wgsmxryd4csgq6tnudjuhwtsuqd.onion
 
-In case you are not familiar with onion addresses:
+Do not involve law enforcement or IT security companies.
+Do not try to decrypt files with third-party software.
+Do not delete or modify encrypted files.
 
-  https://akira.support
+The faster you contact us, the less damage will be done.</pre>
+            </div>
+          </div>
 
-Important notes:
-
-  * Do not delete or modify encrypted files, it may lead to
-    permanent data loss.
-  * Do not involve law enforcement or IT security companies,
-    it will only result in your data being published.
-  * Do not try to decrypt your files using third-party software.
-
-We expect to hear from you in the next 48 hours. After that,
-we will start posting your data publicly.
-
-                                                            Akira.</pre>
+          <!-- Akira Dark Web Portal -->
+          <div class="w11-akira-portal" id="w11-akira-portal">
+            <div class="akira-browser-chrome">
+              <div class="akira-browser-dots">
+                <div class="akira-browser-dot red"></div>
+                <div class="akira-browser-dot yel"></div>
+                <div class="akira-browser-dot grn"></div>
+              </div>
+              <div class="akira-browser-url">
+                🔒 <span class="akira-onion">akiralkzxzq2dsrzsrvbr2xgbbu2wgsmxryd4csgq6tnudjuhwtsuqd.onion</span>
+              </div>
+            </div>
+            <div class="akira-terminal" id="akira-terminal">
+              <div class="akira-title-bar">
+                <span style="border:2px solid #00cc00;padding:2px 8px;margin-right:12px;font-size:11px">□ □</span>
+                <span style="flex:1;text-align:center">[ &nbsp; AKIRA &nbsp; ]</span>
+              </div>
+              <div class="akira-logo-text">AKIRA</div>
+              <div class="akira-section">
+                <div class="akira-body-text">Well, you are here. It means that you're suffering from cyber incident right now. Think of our actions as an unscheduled forced audit of your network for vulnerabilities. Keep in mind that there is a fair price to make it all go away.</div>
+                <div class="akira-body-text">Do not rush to assess what is happening - we did it to you. The best thing you can do is to follow our instructions to get back to your daily routine, by cooperating with us you will minimize the damage that might be done.</div>
+                <div class="akira-body-text">Those who choose different path will be shamed here publicly. The functionality of this blog is extremely simple - enter the desired command in the input line and enjoy the juiciest information that corporations around the world wanted to stay confidential.</div>
+                <div class="akira-body-text">Remember. You are unable to recover without our help. Your data is already gone and cannot be traced to the place of final storage nor deleted by anyone besides us.</div>
+              </div>
+              <div class="akira-prompt">guest@akira:~$ <span id="akira-typed-cmd"></span></div>
+              <div id="akira-help-output" style="display:none">
+                <div class="akira-cmd-output">List of all commands:</div>
+                <div class="akira-cmd-list">
+                  <div class="akira-cmd-item"><span class="akira-cmd-name">leaks</span><span class="akira-cmd-desc">— hacked companies</span></div>
+                  <div class="akira-cmd-item"><span class="akira-cmd-name">news</span><span class="akira-cmd-desc">— news about upcoming data releases</span></div>
+                  <div class="akira-cmd-item"><span class="akira-cmd-name">contact</span><span class="akira-cmd-desc">— send us a message and we will contact you</span></div>
+                  <div class="akira-cmd-item"><span class="akira-cmd-name">help</span><span class="akira-cmd-desc">— available commands</span></div>
+                  <div class="akira-cmd-item"><span class="akira-cmd-name">clear</span><span class="akira-cmd-desc">— clear screen</span></div>
+                </div>
+                <div class="akira-prompt">guest@akira:~$ <span class="akira-cursor"></span></div>
+              </div>
             </div>
           </div>
 
@@ -766,6 +890,11 @@ we will start posting your data publicly.
                   <svg width="16" height="16" viewBox="0 0 24 24">
                     <path d="M2 6h9l2 2h9v12H2z" fill="#ffb900" opacity=".9"/>
                     <path d="M2 6h9l2 2h9v12H2z" stroke="#e6a800" stroke-width=".5" fill="none"/>
+                  </svg>
+                </div>
+                <div class="w11-tb-icon" title="Microsoft Edge" id="w11-taskbtn-portal" style="display:none">
+                  <svg width="16" height="16" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H7l5-8v4h4l-5 8z" fill="#00cc00"/>
                   </svg>
                 </div>
                 <div class="w11-tb-icon" title="Notepad" id="w11-taskbtn-notepad" style="display:none">
